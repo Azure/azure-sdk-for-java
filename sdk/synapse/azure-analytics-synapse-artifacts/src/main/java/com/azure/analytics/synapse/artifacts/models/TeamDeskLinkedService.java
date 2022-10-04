@@ -25,15 +25,13 @@ public class TeamDeskLinkedService extends LinkedService {
     private TeamDeskAuthenticationType authenticationType;
 
     /*
-     * The url to connect TeamDesk source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect TeamDesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * The username of the TeamDesk source. Type: string (or Expression with
-     * resultType string).
+     * The username of the TeamDesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -51,9 +49,8 @@ public class TeamDeskLinkedService extends LinkedService {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

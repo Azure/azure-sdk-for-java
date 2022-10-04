@@ -23,10 +23,10 @@ import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,7 +37,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -222,13 +221,14 @@ public final class TestHelpers {
     }
 
     private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
+        if (ex instanceof HttpResponseException) {
+            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
-        assertEquals(HttpResponseException.class, ex.getClass());
-
-        assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
-
-        if (expectedMessage != null) {
-            assertTrue(ex.getMessage().contains(expectedMessage));
+            if (expectedMessage != null) {
+                assertTrue(ex.getMessage().contains(expectedMessage));
+            }
+        } else {
+            fail("Expected exception to be instanceof HttpResponseException", ex);
         }
     }
 
@@ -293,19 +293,22 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename));
-
-        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
-    }
-
-    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
-        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
-    }
-
-    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
         try {
-            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
+            Path path = Paths.get(TestHelpers.class.getClassLoader().getResource(filename).toURI());
+
+            return deserializeToType(Files.readAllBytes(path), LIST_TYPE_REFERENCE);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static Map<String, Object> convertToMap(byte[] json) {
+        return deserializeToType(json, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    }
+
+    private static <T> T deserializeToType(byte[] json, TypeReference<T> type) {
+        try {
+            return getDefaultSerializerAdapter().deserialize(json, type.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }

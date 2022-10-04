@@ -16,12 +16,14 @@ public interface VendorNetworkFunctions {
      * @param locationName The Azure region where the network function resource was created by the customer.
      * @param vendorName The name of the vendor.
      * @param serviceKey The GUID for the vendor network function.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor network function.
+     * @return information about the specified vendor network function along with {@link Response}.
      */
-    VendorNetworkFunction get(String locationName, String vendorName, String serviceKey);
+    Response<VendorNetworkFunction> getWithResponse(
+        String locationName, String vendorName, String serviceKey, Context context);
 
     /**
      * Gets information about the specified vendor network function.
@@ -29,14 +31,12 @@ public interface VendorNetworkFunctions {
      * @param locationName The Azure region where the network function resource was created by the customer.
      * @param vendorName The name of the vendor.
      * @param serviceKey The GUID for the vendor network function.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified vendor network function.
      */
-    Response<VendorNetworkFunction> getWithResponse(
-        String locationName, String vendorName, String serviceKey, Context context);
+    VendorNetworkFunction get(String locationName, String vendorName, String serviceKey);
 
     /**
      * Lists all the vendor network function sub resources in an Azure region, filtered by skuType, skuName,
@@ -47,7 +47,7 @@ public interface VendorNetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VendorNetworkFunction> list(String locationName, String vendorName);
 
@@ -63,7 +63,7 @@ public interface VendorNetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VendorNetworkFunction> list(String locationName, String vendorName, String filter, Context context);
 
@@ -74,7 +74,7 @@ public interface VendorNetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor network function.
+     * @return information about the specified vendor network function along with {@link Response}.
      */
     VendorNetworkFunction getById(String id);
 
@@ -86,7 +86,7 @@ public interface VendorNetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor network function.
+     * @return information about the specified vendor network function along with {@link Response}.
      */
     Response<VendorNetworkFunction> getByIdWithResponse(String id, Context context);
 

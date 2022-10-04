@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FilterTrackPropertyType. */
+/** The track property type. */
 public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTrackPropertyType> {
     /** Static value Unknown for FilterTrackPropertyType. */
     public static final FilterTrackPropertyType UNKNOWN = fromString("Unknown");
@@ -39,7 +39,11 @@ public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTr
         return fromString(name, FilterTrackPropertyType.class);
     }
 
-    /** @return known FilterTrackPropertyType values. */
+    /**
+     * Gets known FilterTrackPropertyType values.
+     *
+     * @return known FilterTrackPropertyType values.
+     */
     public static Collection<FilterTrackPropertyType> values() {
         return values(FilterTrackPropertyType.class);
     }

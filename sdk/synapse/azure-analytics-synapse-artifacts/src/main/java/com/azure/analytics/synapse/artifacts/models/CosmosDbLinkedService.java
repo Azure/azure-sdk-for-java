@@ -19,37 +19,32 @@ import java.util.Map;
 @Fluent
 public class CosmosDbLinkedService extends LinkedService {
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
-     * The endpoint of the Azure CosmosDB account. Type: string (or Expression
-     * with resultType string)
+     * The endpoint of the Azure CosmosDB account. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.accountEndpoint")
     private Object accountEndpoint;
 
     /*
-     * The name of the database. Type: string (or Expression with resultType
-     * string)
+     * The name of the database. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.database")
     private Object database;
 
     /*
-     * The account key of the Azure CosmosDB account. Type: SecureString or
-     * AzureKeyVaultSecretReference.
+     * The account key of the Azure CosmosDB account. Type: SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.accountKey")
     private SecretBase accountKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

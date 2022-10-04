@@ -57,7 +57,7 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        request.UseGatewayMode = true;
+        request.useGatewayMode = true;
         request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         final DocumentClientRetryPolicy retryPolicyInstance =

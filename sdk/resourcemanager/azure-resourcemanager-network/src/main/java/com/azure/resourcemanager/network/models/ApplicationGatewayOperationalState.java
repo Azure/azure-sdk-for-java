@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayOperationalState. */
+/** Operational state of the application gateway resource. */
 public final class ApplicationGatewayOperationalState extends ExpandableStringEnum<ApplicationGatewayOperationalState> {
     /** Static value Stopped for ApplicationGatewayOperationalState. */
     public static final ApplicationGatewayOperationalState STOPPED = fromString("Stopped");
@@ -33,7 +33,11 @@ public final class ApplicationGatewayOperationalState extends ExpandableStringEn
         return fromString(name, ApplicationGatewayOperationalState.class);
     }
 
-    /** @return known ApplicationGatewayOperationalState values. */
+    /**
+     * Gets known ApplicationGatewayOperationalState values.
+     *
+     * @return known ApplicationGatewayOperationalState values.
+     */
     public static Collection<ApplicationGatewayOperationalState> values() {
         return values(ApplicationGatewayOperationalState.class);
     }

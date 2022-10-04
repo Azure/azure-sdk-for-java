@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Gremlin graph resource object. */
 @Fluent
 public class GremlinGraphResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphResource.class);
-
     /*
      * Name of the Cosmos DB Gremlin graph
      */
@@ -21,15 +18,14 @@ public class GremlinGraphResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is
-     * automatic for all document paths within the graph
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
+     * the graph
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
 
     /*
-     * The configuration of the partition key to be used for partitioning data
-     * into multiple partitions
+     * The configuration of the partition key to be used for partitioning data into multiple partitions
      */
     @JsonProperty(value = "partitionKey")
     private ContainerPartitionKey partitionKey;
@@ -41,9 +37,8 @@ public class GremlinGraphResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness
-     * constraints on documents in the collection in the Azure Cosmos DB
-     * service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
+     * Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -53,6 +48,12 @@ public class GremlinGraphResource {
      */
     @JsonProperty(value = "conflictResolutionPolicy")
     private ConflictResolutionPolicy conflictResolutionPolicy;
+
+    /*
+     * Analytical TTL.
+     */
+    @JsonProperty(value = "analyticalStorageTtl")
+    private Long analyticalStorageTtl;
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin graph.
@@ -181,13 +182,33 @@ public class GremlinGraphResource {
     }
 
     /**
+     * Get the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @return the analyticalStorageTtl value.
+     */
+    public Long analyticalStorageTtl() {
+        return this.analyticalStorageTtl;
+    }
+
+    /**
+     * Set the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @param analyticalStorageTtl the analyticalStorageTtl value to set.
+     * @return the GremlinGraphResource object itself.
+     */
+    public GremlinGraphResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        this.analyticalStorageTtl = analyticalStorageTtl;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
         }
@@ -204,4 +225,6 @@ public class GremlinGraphResource {
             conflictResolutionPolicy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinGraphResource.class);
 }

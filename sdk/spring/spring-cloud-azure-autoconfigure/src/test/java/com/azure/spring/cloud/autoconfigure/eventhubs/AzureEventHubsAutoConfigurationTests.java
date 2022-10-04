@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     EventHubClientBuilderFactory, AzureEventHubsProperties> {
-
+    private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class));
 
@@ -87,7 +88,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     @Test
     void configureWithConnectionString() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=test-connection-string")
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
@@ -105,7 +106,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
                 "spring.cloud.azure.eventhubs.retry.exponential.base-delay=2m",
-                "spring.cloud.azure.eventhubs.connection-string=test-connection-string"
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -114,7 +115,8 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
                 assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
-                assertThat(properties.getConnectionString()).isEqualTo("test-connection-string");
+                assertThat(properties.getClient().getTransportType()).isEqualTo(AmqpTransportType.AMQP);
+                assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
@@ -146,7 +148,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
-                
+
                 "spring.cloud.azure.eventhubs.shared-connection=true",
                 "spring.cloud.azure.eventhubs.domain-name=fake-domain",
                 "spring.cloud.azure.eventhubs.namespace=fake-namespace",
@@ -191,7 +193,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                
+
                 assertTrue(properties.getSharedConnection());
                 assertEquals("fake-domain", properties.getDomainName());
                 assertEquals("fake-namespace", properties.getNamespace());

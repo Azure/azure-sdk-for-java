@@ -27,7 +27,11 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
         return fromString(name, AuthenticationType.class);
     }
 
-    /** @return known AuthenticationType values. */
+    /**
+     * Gets known AuthenticationType values.
+     *
+     * @return known AuthenticationType values.
+     */
     public static Collection<AuthenticationType> values() {
         return values(AuthenticationType.class);
     }

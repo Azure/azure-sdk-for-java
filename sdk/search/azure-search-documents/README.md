@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.10</version>
+    <version>11.6.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -130,8 +130,8 @@ URL endpoint and admin key.
 
 ```java readme-sample-createIndexClient
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildClient();
 ```
 
@@ -139,8 +139,8 @@ or
 
 ```java readme-sample-createIndexAsyncClient
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildAsyncClient();
 ```
 
@@ -151,8 +151,8 @@ URL endpoint and admin key.
 
 ```java readme-sample-createIndexerClient
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildClient();
 ```
 
@@ -160,8 +160,8 @@ or
 
 ```java readme-sample-createIndexerAsyncClient
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildAsyncClient();
 ```
 
@@ -172,9 +172,9 @@ admin key, you can create the `SearchClient/SearchAsyncClient` with an existing 
 
 ```java readme-sample-createSearchClient
 SearchClient searchClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(ADMIN_KEY))
+    .indexName(INDEX_NAME)
     .buildClient();
 ```
 
@@ -182,9 +182,9 @@ or
 
 ```java readme-sample-createAsyncSearchClient
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(ADMIN_KEY))
+    .indexName(INDEX_NAME)
     .buildAsyncClient();
 ```
 
@@ -234,6 +234,7 @@ These are just a few of the basics - please [check out our Samples][samples_read
 * [Adding documents to your index](#adding-documents-to-your-index)
 * [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
 * [Async APIs](#async-apis)
+- [Create a client that can authenticate in a national cloud](#authenticate-in-a-national-cloud)
 
 ### Querying
 
@@ -247,7 +248,7 @@ Let's explore them with a search for a "luxury" hotel.
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
 ```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : searchClient.search("luxury")) {
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
@@ -287,7 +288,7 @@ public class Hotel {
 Use it in place of `SearchDocument` when querying.
 
 ```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : searchClient.search("luxury")) {
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
     String name = doc.getName();
@@ -308,7 +309,7 @@ SearchOptions options = new SearchOptions()
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
-SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
+SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
 // ...
 ```
 
@@ -324,7 +325,7 @@ to configure the field of model class.
 
 ```java readme-sample-createIndexUseFieldBuilder
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
-searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
 ```
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
@@ -376,7 +377,7 @@ SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList(
 // Prepare SearchIndex with index name and search fields.
 SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
 // Create an index
-searchIndexClient.createIndex(index);
+SEARCH_INDEX_CLIENT.createIndex(index);
 ```
 
 ### Retrieving a specific document from your index
@@ -386,7 +387,7 @@ your index if you already know the key. You could get the key from a query, for 
 information about it or navigate your customer to that document.
 
 ```java readme-sample-retrieveDocuments
-Hotel hotel = searchClient.getDocument("1", Hotel.class);
+Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
@@ -400,7 +401,7 @@ to be aware of.
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
-searchClient.indexDocuments(batch);
+SEARCH_CLIENT.indexDocuments(batch);
 ```
 
 The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use
@@ -413,11 +414,30 @@ The examples so far have been using synchronous APIs, but we provide full suppor
 to use [SearchAsyncClient](#create-a-searchclient).
 
 ```java readme-sample-searchWithAsyncClient
-searchAsyncClient.search("luxury")
+SEARCH_ASYNC_CLIENT.search("luxury")
     .subscribe(result -> {
         Hotel hotel = result.getDocument(Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     });
+```
+
+### Authenticate in a National Cloud
+
+To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+
+- Set the `AuthorityHost` in the credential options or via the `AZURE_AUTHORITY_HOST` environment variable
+- Set the `audience` in `SearchClientBuilder`, `SearchIndexClientBuilder`, or `SearchIndexerClientBuilder`
+
+```java readme-sample-nationalCloud
+// Create a SearchClient that will authenticate through AAD in the China national cloud.
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(ENDPOINT)
+    .indexName(INDEX_NAME)
+    .credential(new DefaultAzureCredentialBuilder()
+        .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
+        .build())
+    .audience(SearchAudience.AZURE_CHINA)
+    .buildClient();
 ```
 
 ## Troubleshooting
@@ -438,7 +458,7 @@ Any Search API operation that fails will throw an [`HttpResponseException`][Http
 
 ```java readme-sample-handleErrorsWithSyncClient
 try {
-    Iterable<SearchResult> results = searchClient.search("hotel");
+    Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service

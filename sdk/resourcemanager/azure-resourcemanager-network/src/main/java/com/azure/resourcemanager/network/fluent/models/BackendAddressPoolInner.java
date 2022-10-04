@@ -22,9 +22,8 @@ public final class BackendAddressPoolInner extends SubResource {
     private BackendAddressPoolPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of backend
-     * address pools used by the load balancer. This name can be used to access
-     * the resource.
+     * The name of the resource that is unique within the set of backend address pools used by the load balancer. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -220,6 +219,31 @@ public final class BackendAddressPoolInner extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @return the drainPeriodInSeconds value.
+     */
+    public Integer drainPeriodInSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().drainPeriodInSeconds();
+    }
+
+    /**
+     * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withDrainPeriodInSeconds(drainPeriodInSeconds);
+        return this;
     }
 
     /**

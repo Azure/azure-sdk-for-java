@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.DataCenterResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of managed Cassandra data centers and their properties. */
 @Immutable
 public final class ListDataCenters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListDataCenters.class);
-
     /*
      * Container for array of data centers.
      */

@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.23.0-beta.1 (Unreleased)
+### 3.29.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -10,7 +10,63 @@
 
 #### Other Changes
 
+### 3.28.0 (2022-09-30)
+
+#### Bugs Fixed
+* Fixing ARRAY_CONTAINS annotated query bug introduced by fixing to IN annotated queries. - See [PR 31179](https://github.com/Azure/azure-sdk-for-java/pull/31179)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.37.0`.
+
+### 3.27.0 (2022-09-15)
+
+#### Features Added
+* Exposed `maxBufferedItemCount` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30921](https://github.com/Azure/azure-sdk-for-java/pull/30921)
+* Exposed `responseContinuationTokenLimitInKb` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30980](https://github.com/Azure/azure-sdk-for-java/pull/30980)
+
+#### Bugs Fixed
+* Fixing pagination bug when performing a cross-partition query to fill every page and fix the total page count reporting. - See [PR 30694](https://github.com/Azure/azure-sdk-for-java/pull/30694)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.36.0`.
+
+### 3.26.0 (2022-08-19)
+#### Features Added
+* Added support for NOT CONTAINS. - See [PR 30379](https://github.com/Azure/azure-sdk-for-java/pull/30379)
+
+#### Bugs Fixed
+* Fixed issues with pagination when an offset is passed in with the pageable object. - See [PR 29462](https://github.com/Azure/azure-sdk-for-java/pull/29462)
+* Fixed an issue with @Query annotation using IN queries in `azure-spring-data-cosmos` which were not working - See [PR 30123](https://github.com/Azure/azure-sdk-for-java/pull/30123)
+* Fixed sorted queries to utilize composite indexes. - See [PR 30199](https://github.com/Azure/azure-sdk-for-java/pull/30199)
+* Fixed issues with pagination when accessing a page other than the first page. - See [PR 30276](https://github.com/Azure/azure-sdk-for-java/pull/30276)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.35.0`.
+
+### 3.25.0 (2022-07-22)
+#### Bugs Fixed
+* Fixed issues with offset and limit where you cannot use offset and limit. - See [PR 29841](https://github.com/Azure/azure-sdk-for-java/pull/29841)  
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.33.1`.
+
+### 3.24.0 (2022-07-14)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.33.0`.
+
+### 3.23.0 (2022-06-27)
+> [!IMPORTANT]
+> This release supports Spring Boot version 2.7.x and above.
+#### Features Added
+* Updated `azure-cosmos` to version `4.32.0`.
+* Updated `Spring Boot` to version `2.7.1`.
+* Updated `Spring Data Commons` to version `2.7.1`.
+#### Other Changes
+* Performance improvement for case-insensitive queries - See [PR 29597](https://github.com/Azure/azure-sdk-for-java/pull/29597) and [PR 29644](https://github.com/Azure/azure-sdk-for-java/pull/29644)
+
 ### 3.22.0 (2022-06-08)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 3.22.0 and above.
 #### Features Added
 * Exposed `maxDegreeOfParallelism` feature from CosmosQueryRequestOptions through application.properties flag - See [PR 28756](https://github.com/Azure/azure-sdk-for-java/pull/28756)
 
@@ -105,8 +161,6 @@
 * Fixed spring data cosmos `query plan` caching.
 
 ### 3.10.0 (2021-08-16)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 3.10.0 and above.
 #### New Features
 * Updated `Spring Boot` to version 2.5.3.
 * Updated `azure-cosmos` to version 4.18.0.

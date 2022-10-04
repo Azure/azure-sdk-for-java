@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KubeEnvironments List. */
 public final class KubeEnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_ListBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_ListBySubscription.json
      */
     /**
      * Sample code: List kube environments by subscription.

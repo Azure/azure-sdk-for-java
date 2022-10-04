@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagementPolicyVersion {
     /*
-     * The function to tier blob version to cool storage. Support blob version
-     * currently at Hot tier
+     * The function to tier blob version to cool storage. Support blob version currently at Hot tier
      */
     @JsonProperty(value = "tierToCool")
     private DateAfterCreation tierToCool;
 
     /*
-     * The function to tier blob version to archive storage. Support blob
-     * version currently at Hot or Cool tier
+     * The function to tier blob version to archive storage. Support blob version currently at Hot or Cool tier
      */
     @JsonProperty(value = "tierToArchive")
     private DateAfterCreation tierToArchive;

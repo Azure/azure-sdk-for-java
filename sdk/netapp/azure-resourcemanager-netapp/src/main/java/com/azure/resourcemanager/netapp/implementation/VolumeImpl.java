@@ -18,9 +18,13 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.Volume;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
@@ -117,6 +121,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().snapshotId();
     }
 
+    public Boolean deleteBaseSnapshot() {
+        return this.innerModel().deleteBaseSnapshot();
+    }
+
     public String backupId() {
         return this.innerModel().backupId();
     }
@@ -178,6 +186,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().smbEncryption();
     }
 
+    public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
+        return this.innerModel().smbAccessBasedEnumeration();
+    }
+
+    public SmbNonBrowsable smbNonBrowsable() {
+        return this.innerModel().smbNonBrowsable();
+    }
+
     public Boolean smbContinuouslyAvailable() {
         return this.innerModel().smbContinuouslyAvailable();
     }
@@ -188,6 +204,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public EncryptionKeySource encryptionKeySource() {
         return this.innerModel().encryptionKeySource();
+    }
+
+    public String keyVaultPrivateEndpointResourceId() {
+        return this.innerModel().keyVaultPrivateEndpointResourceId();
     }
 
     public Boolean ldapEnabled() {
@@ -408,6 +428,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().breakReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void reestablishReplication(ReestablishReplicationRequest body) {
+        serviceManager.volumes().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public void reestablishReplication(ReestablishReplicationRequest body, Context context) {
+        serviceManager
+            .volumes()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
     public PagedIterable<Replication> listReplications() {
         return serviceManager.volumes().listReplications(resourceGroupName, accountName, poolName, volumeName);
     }
@@ -458,12 +488,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void relocate(RelocateVolumeRequest body) {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
     public void relocate() {
         serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void relocate(Context context) {
-        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, context);
+    public void relocate(RelocateVolumeRequest body, Context context) {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void finalizeRelocation() {
@@ -547,6 +581,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withDeleteBaseSnapshot(Boolean deleteBaseSnapshot) {
+        this.innerModel().withDeleteBaseSnapshot(deleteBaseSnapshot);
+        return this;
+    }
+
     public VolumeImpl withBackupId(String backupId) {
         this.innerModel().withBackupId(backupId);
         return this;
@@ -592,6 +631,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
+        this.innerModel().withSmbAccessBasedEnumeration(smbAccessBasedEnumeration);
+        return this;
+    }
+
+    public VolumeImpl withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
+        this.innerModel().withSmbNonBrowsable(smbNonBrowsable);
+        return this;
+    }
+
     public VolumeImpl withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable) {
         this.innerModel().withSmbContinuouslyAvailable(smbContinuouslyAvailable);
         return this;
@@ -612,19 +661,34 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId) {
+        this.innerModel().withKeyVaultPrivateEndpointResourceId(keyVaultPrivateEndpointResourceId);
+        return this;
+    }
+
     public VolumeImpl withLdapEnabled(Boolean ldapEnabled) {
         this.innerModel().withLdapEnabled(ldapEnabled);
         return this;
     }
 
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
-        this.innerModel().withCoolAccess(coolAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccess(coolAccess);
+            return this;
+        } else {
+            this.updateBody.withCoolAccess(coolAccess);
+            return this;
+        }
     }
 
     public VolumeImpl withCoolnessPeriod(Integer coolnessPeriod) {
-        this.innerModel().withCoolnessPeriod(coolnessPeriod);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolnessPeriod(coolnessPeriod);
+            return this;
+        } else {
+            this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
     }
 
     public VolumeImpl withUnixPermissions(String unixPermissions) {

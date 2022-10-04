@@ -14,11 +14,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 public class AbstractQueryGeneratorTest {
 
@@ -46,6 +49,84 @@ public class AbstractQueryGeneratorTest {
         MatcherAssert.assertThat(querySpec.getQueryText(), Matchers.stringContainsInOrder(
             parameterNames.get(0), CriteriaType.AND.getSqlKeyword(),
             "(", parameterNames.get(1), CriteriaType.OR.getSqlKeyword(), parameterNames.get(2), ")"));
+    }
+
+    @Test
+    public void generateBinaryQueryWithStartsWithDoesNotUseUpper() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STARTS_WITH, "firstName",
+            Collections.singletonList("TREVOR"),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(nameStartsWith);
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE STARTSWITH(r.firstName, @firstName0, true) ");
+    }
+
+    @Test
+    public void generateBinaryQueryWithSort() {
+        Criteria hasLastName = Criteria.getInstance(CriteriaType.ARRAY_CONTAINS, "lastName",
+            Collections.singletonList("ANDERSON"),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(hasLastName).with(Sort.by(ASC, "id"));
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ORDER BY r.id ASC");
+    }
+
+    @Test
+    public void generateBinaryQueryWithArrayContainsUsesUpper() {
+        Criteria hasLastName = Criteria.getInstance(CriteriaType.ARRAY_CONTAINS, "lastName",
+            Collections.singletonList("ANDERSON"),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(hasLastName);
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE ARRAY_CONTAINS(UPPER(r.lastName), UPPER(@lastName0)) ");
+    }
+
+    @Test
+    public void generateBinaryQueryWithStringEquals() {
+        for (Part.IgnoreCaseType ignoreCaseType : Part.IgnoreCaseType.values()) {
+            Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STRING_EQUALS, "firstName",
+                    Collections.singletonList("TREVOR"),
+                    ignoreCaseType);
+            CosmosQuery query = new CosmosQuery(nameStartsWith);
+
+            SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+            if (ignoreCaseType == Part.IgnoreCaseType.NEVER) {
+                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
+            } else {
+                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+            }
+        }
+    }
+
+    @Test
+    public void generateBinaryQueryWithIsEqualIntUsesUpper() {
+        Criteria isEqualInt = Criteria.getInstance(CriteriaType.IS_EQUAL, "zipcode",
+            Collections.singletonList(20180),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(isEqualInt);
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE UPPER(r.zipcode) = UPPER(@zipcode0) ");
+    }
+
+    @Test
+    public void generateBinaryQueryWithIsEqualStringDoesNotUseUpper() {
+        Criteria isEqualString = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList("TREVOR"),
+            Part.IgnoreCaseType.ALWAYS);
+        CosmosQuery query = new CosmosQuery(isEqualString);
+
+        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+
+        Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
     }
 
     private static class EmptyQueryGenerator extends AbstractQueryGenerator implements QuerySpecGenerator {

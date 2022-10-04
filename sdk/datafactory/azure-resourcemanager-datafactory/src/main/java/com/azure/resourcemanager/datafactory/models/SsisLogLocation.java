@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SsisLogLocation {
     /*
-     * The SSIS package execution log path. Type: string (or Expression with
-     * resultType string).
+     * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logPath", required = true)
     private Object logPath;

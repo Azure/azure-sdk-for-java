@@ -6,45 +6,38 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CORS policy for the Cosmos DB database account. */
 @Fluent
 public final class CorsPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsPolicy.class);
-
     /*
-     * The origin domains that are permitted to make a request against the
-     * service via CORS.
+     * The origin domains that are permitted to make a request against the service via CORS.
      */
     @JsonProperty(value = "allowedOrigins", required = true)
     private String allowedOrigins;
 
     /*
-     * The methods (HTTP request verbs) that the origin domain may use for a
-     * CORS request.
+     * The methods (HTTP request verbs) that the origin domain may use for a CORS request.
      */
     @JsonProperty(value = "allowedMethods")
     private String allowedMethods;
 
     /*
-     * The request headers that the origin domain may specify on the CORS
-     * request.
+     * The request headers that the origin domain may specify on the CORS request.
      */
     @JsonProperty(value = "allowedHeaders")
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS
-     * request and exposed by the browser to the request issuer.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer.
      */
     @JsonProperty(value = "exposedHeaders")
     private String exposedHeaders;
 
     /*
-     * The maximum amount time that a browser should cache the preflight
-     * OPTIONS request.
+     * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
     @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
@@ -164,9 +157,11 @@ public final class CorsPolicy {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CorsPolicy.class);
 }

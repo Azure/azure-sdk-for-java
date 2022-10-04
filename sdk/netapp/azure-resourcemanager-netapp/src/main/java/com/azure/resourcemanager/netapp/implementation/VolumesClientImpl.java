@@ -41,6 +41,8 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ListReplications;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.VolumeList;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
@@ -209,6 +211,23 @@ public final class VolumesClientImpl implements VolumesClient {
             @BodyParam("application/json") BreakReplicationRequest body,
             Context context);
 
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
+                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reestablishReplication")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reestablishReplication(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReestablishReplicationRequest body,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
@@ -339,6 +358,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("poolName") String poolName,
             @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RelocateVolumeRequest body,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -385,7 +405,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -447,7 +469,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -507,7 +531,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -525,7 +551,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -545,7 +573,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -561,7 +591,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all volumes within the capacity pool.
+     * Describe all volumes
+     *
+     * <p>List all volumes within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -579,7 +611,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the details of the specified volume.
+     * Describe a volume
+     *
+     * <p>Get the details of the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -637,7 +671,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the details of the specified volume.
+     * Describe a volume
+     *
+     * <p>Get the details of the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -693,7 +729,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the details of the specified volume.
+     * Describe a volume
+     *
+     * <p>Get the details of the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -712,7 +750,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the details of the specified volume.
+     * Describe a volume
+     *
+     * <p>Get the details of the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -729,7 +769,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the details of the specified volume.
+     * Describe a volume
+     *
+     * <p>Get the details of the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -748,7 +790,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -813,7 +857,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -881,7 +927,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -905,7 +953,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -936,7 +986,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -955,7 +1007,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -981,7 +1035,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1002,7 +1058,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1029,7 +1087,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1048,7 +1108,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Create or update the specified volume within the capacity pool.
+     * Create or Update a volume
+     *
+     * <p>Create or update the specified volume within the capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1073,7 +1135,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1138,7 +1202,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1206,7 +1272,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1230,7 +1298,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1261,7 +1331,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1280,7 +1352,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1305,7 +1379,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1326,7 +1402,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1353,7 +1431,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1372,7 +1452,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Patch the specified volume.
+     * Update a volume
+     *
+     * <p>Patch the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1397,7 +1479,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1456,7 +1540,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1518,7 +1604,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1543,7 +1631,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1574,7 +1664,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1594,7 +1686,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1621,7 +1715,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1643,7 +1739,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1663,7 +1761,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1691,7 +1791,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1710,7 +1812,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1727,7 +1831,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the specified volume.
+     * Delete a volume
+     *
+     * <p>Delete the specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1752,7 +1858,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1815,7 +1923,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1881,7 +1991,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1905,7 +2017,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1935,7 +2049,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1954,7 +2070,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1979,7 +2097,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2000,7 +2120,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2027,7 +2149,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2045,7 +2169,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Revert a volume to the snapshot specified in the body.
+     * Revert a volume to one of its snapshots
+     *
+     * <p>Revert a volume to the snapshot specified in the body.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2069,7 +2195,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2125,7 +2253,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2179,7 +2309,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2202,7 +2334,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2226,7 +2360,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2244,7 +2380,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2264,7 +2402,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2284,7 +2424,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2305,7 +2447,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2321,7 +2465,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reset cifs password from volume.
+     * Reset cifs password
+     *
+     * <p>Reset cifs password from volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2339,7 +2485,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2404,7 +2552,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2468,7 +2618,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2496,7 +2648,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2526,7 +2680,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2549,7 +2705,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2575,7 +2733,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2600,7 +2760,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2621,7 +2783,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2648,7 +2812,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2670,7 +2836,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2687,7 +2855,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Break the replication connection on the destination volume.
+     * Break volume replication
+     *
+     * <p>Break the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2711,7 +2881,379 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the status of the replication.
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reestablishReplicationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .reestablishReplication(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            this.client.getApiVersion(),
+                            body,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reestablishReplicationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .reestablishReplication(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                this.client.getApiVersion(),
+                body,
+                context);
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReestablishReplicationAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            reestablishReplicationWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReestablishReplicationAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            reestablishReplicationWithResponseAsync(
+                resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reestablishReplicationAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reestablishReplicationAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        reestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+    }
+
+    /**
+     * Re-establish volume replication
+     *
+     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        reestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+    }
+
+    /**
+     * Get volume replication status
+     *
+     * <p>Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2769,7 +3311,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the status of the replication.
+     * Get volume replication status
+     *
+     * <p>Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2825,7 +3369,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the status of the replication.
+     * Get volume replication status
+     *
+     * <p>Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2844,7 +3390,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the status of the replication.
+     * Get volume replication status
+     *
+     * <p>Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2862,7 +3410,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Get the status of the replication.
+     * Get volume replication status
+     *
+     * <p>Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2882,7 +3432,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2944,7 +3496,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3004,7 +3558,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3023,7 +3579,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3043,7 +3601,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3061,7 +3621,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * List all replications for a specified volume.
+     * List replications for volume
+     *
+     * <p>List all replications for a specified volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3081,7 +3643,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3138,7 +3702,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3193,7 +3759,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3217,7 +3785,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3242,7 +3812,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3261,7 +3833,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3282,7 +3856,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3303,7 +3879,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3325,7 +3903,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3342,7 +3922,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * Resync volume replication
+     *
+     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
      *
      * @param resourceGroupName The name of the resource group.
@@ -3361,7 +3943,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3417,7 +4001,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3471,7 +4057,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3494,7 +4082,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3518,7 +4108,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3536,7 +4128,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3556,7 +4150,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3576,7 +4172,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3597,7 +4195,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3613,7 +4213,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * Delete volume replication
+     *
+     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3631,7 +4233,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3694,7 +4298,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3760,7 +4366,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3784,7 +4392,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3814,7 +4424,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3834,7 +4446,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3860,7 +4474,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3881,7 +4497,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3908,7 +4526,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3926,7 +4546,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Authorize the replication connection on the source volume.
+     * Authorize source volume replication
+     *
+     * <p>Authorize the replication connection on the source volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -3950,7 +4572,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4006,7 +4630,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4060,7 +4686,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4083,7 +4711,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4107,7 +4737,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4125,7 +4757,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4145,7 +4779,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4165,7 +4801,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4186,7 +4824,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4203,7 +4843,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Re-Initializes the replication connection on the destination volume.
+     * ReInitialize volume replication
+     *
+     * <p>Re-Initializes the replication connection on the destination volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4221,7 +4863,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4284,7 +4928,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4350,7 +4996,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4374,7 +5022,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4404,7 +5054,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4423,7 +5075,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4449,7 +5103,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4470,7 +5126,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4497,7 +5155,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4515,7 +5175,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Moves volume to another pool.
+     * Change pool for volume
+     *
+     * <p>Moves volume to another pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4539,12 +5201,15 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4552,7 +5217,7 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> relocateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4577,6 +5242,9 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
         }
         return FluxUtil
             .withContext(
@@ -4590,17 +5258,21 @@ public final class VolumesClientImpl implements VolumesClient {
                             poolName,
                             volumeName,
                             this.client.getApiVersion(),
+                            body,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4609,7 +5281,12 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> relocateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4635,6 +5312,9 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        if (body != null) {
+            body.validate();
+        }
         context = this.client.mergeContext(context);
         return service
             .relocate(
@@ -4645,16 +5325,20 @@ public final class VolumesClientImpl implements VolumesClient {
                 poolName,
                 volumeName,
                 this.client.getApiVersion(),
+                body,
                 context);
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4662,9 +5346,9 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRelocateAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            relocateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
+            relocateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -4672,12 +5356,15 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4686,22 +5373,30 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRelocateAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            relocateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
+            relocateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4709,17 +5404,20 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRelocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName).getSyncPoller();
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
+        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body).getSyncPoller();
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4728,12 +5426,42 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRelocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, context).getSyncPoller();
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
+        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).getSyncPoller();
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> relocateAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
+        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4746,18 +5474,22 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> relocateAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName)
+        final RelocateVolumeRequest body = null;
+        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4766,14 +5498,41 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> relocateAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, context)
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
+        return beginRelocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void relocate(
+        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body) {
+        relocateAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+    }
+
+    /**
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4785,16 +5544,20 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void relocate(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        relocateAsync(resourceGroupName, accountName, poolName, volumeName).block();
+        final RelocateVolumeRequest body = null;
+        relocateAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
     }
 
     /**
-     * Relocates volume to a new stamp.
+     * Relocate volume
+     *
+     * <p>Relocates volume to a new stamp.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body Relocate volume request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4802,12 +5565,19 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void relocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        relocateAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        RelocateVolumeRequest body,
+        Context context) {
+        relocateAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4863,7 +5633,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4917,7 +5689,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4940,7 +5714,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4964,7 +5740,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -4982,7 +5760,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5002,7 +5782,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5022,7 +5804,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5043,7 +5827,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5059,7 +5845,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Finalizes the relocation of the volume and cleans up the old volume.
+     * Finalize volume relocation
+     *
+     * <p>Finalizes the relocation of the volume and cleans up the old volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5077,7 +5865,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5133,7 +5923,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5187,7 +5979,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5210,7 +6004,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5234,7 +6030,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5252,7 +6050,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5272,7 +6072,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5292,7 +6094,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5313,7 +6117,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5329,7 +6135,9 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * Revert volume relocation
+     *
+     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -5349,7 +6157,8 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5384,7 +6193,8 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

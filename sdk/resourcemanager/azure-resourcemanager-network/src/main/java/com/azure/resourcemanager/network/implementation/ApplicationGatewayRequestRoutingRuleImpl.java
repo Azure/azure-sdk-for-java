@@ -68,6 +68,11 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
+    public Integer priority() {
+        return this.innerModel().priority();
+    }
+
+    @Override
     public boolean cookieBasedAffinity() {
         final ApplicationGatewayBackendHttpConfiguration backendConfig = this.backendHttpConfiguration();
         return (backendConfig != null) ? backendConfig.cookieBasedAffinity() : false;
@@ -444,6 +449,12 @@ class ApplicationGatewayRequestRoutingRuleImpl
                 new SubResource().withId(this.parent().futureResourceId() + "/urlPathMaps/" + urlPathMapName);
             this.innerModel().withUrlPathMap(ref);
         }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withPriority(int priority) {
+        this.innerModel().withPriority(priority);
         return this;
     }
 }

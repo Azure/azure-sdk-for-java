@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ZendeskAuthenticationType. */
+/** The authentication type to use. */
 public final class ZendeskAuthenticationType extends ExpandableStringEnum<ZendeskAuthenticationType> {
     /** Static value Basic for ZendeskAuthenticationType. */
     public static final ZendeskAuthenticationType BASIC = fromString("Basic");

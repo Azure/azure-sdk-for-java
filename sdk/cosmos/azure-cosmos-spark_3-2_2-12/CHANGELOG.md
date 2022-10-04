@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.12.0-beta.1 (Unreleased)
+### 4.15.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,49 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.14.0 (2022-09-30)
+
+#### Features Added
+* Added new config options for Change Feed Modes, Incremental as `LatestVersion` and Full Fidelity as `AllVersionsAndDeletes` changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065) 
+
+### 4.13.1 (2022-09-22)
+
+#### Bugs Fixed
+* Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). This issue could occur when ingesting data into Cosmos DB via structured streaming jobs. - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+### 4.13.0 (2022-09-15)
+
+#### Other Changes
+* Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
+
+### 4.12.2 (2022-08-04)
+
+#### Bugs Fixed
+* Fixed the SerializationDateTimeConversionMode `AlwaysEpochMillisecdsWithSystemDefaultTimezone` where ZoneOffset calculation could be wrong especially for dates in the 19xx years. - See [PR 30266](https://github.com/Azure/azure-sdk-for-java/pull/30266)
+
+#### Other Changes
+* Added support to allow config different account for throughput control - See [PR 30127](https://github.com/Azure/azure-sdk-for-java/pull/30127)
+
+### 4.12.1 (2022-07-22)
+
+#### Bugs Fixed
+* Fixed `NotFoundException` for changeFeed after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
+
+#### Other Changes
+* Added a new `spark.cosmos.serialization.dateTimeConversionMode` mode called `AlwaysEpochMillisecondsWithSystemDefaultTimezone` that will assume SystemDefault time zone instead of UTC when a Date/time to be parsed has no explicit time zone. - See [PR 30001](https://github.com/Azure/azure-sdk-for-java/pull/30001)
+
+### 4.12.0 (2022-07-14)
+
+#### Features Added
+* Added a new config option `spark.cosmos.changeFeed.batchCheckpointLocation` that allows to also proceed a change feed batch query from a checkpoint/offset - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added an option to also restrict the memory consumption for batch change feed queries (via the `spark.cosmos.changeFeed.itemCountPerTriggerHint` config option) - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added a UDF `CreateChangeFeedOffsetFromSpark2` that allows creating a Spark 3.* offset/checkpoint from a Spark 2.4 checkpoint - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+
+#### Bugs Fixed
+* Fixed a bug preventing use patch on container not partitioned by `id`. - See [PR 29883](https://github.com/Azure/azure-sdk-for-java/pull/29883)
 
 ### 4.11.2 (2022-06-17)
 

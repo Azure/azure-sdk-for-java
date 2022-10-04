@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The managed identity for the DigitalTwinsInstance. */
 @Fluent
 public class DigitalTwinsIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsIdentity.class);
-
     /*
      * The type of Managed Identity used by the DigitalTwinsInstance. Only
      * SystemAssigned is supported.

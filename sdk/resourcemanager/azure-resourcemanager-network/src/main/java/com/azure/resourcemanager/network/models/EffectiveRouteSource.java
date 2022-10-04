@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EffectiveRouteSource. */
+/** Who created the route. */
 public final class EffectiveRouteSource extends ExpandableStringEnum<EffectiveRouteSource> {
     /** Static value Unknown for EffectiveRouteSource. */
     public static final EffectiveRouteSource UNKNOWN = fromString("Unknown");
@@ -33,7 +33,11 @@ public final class EffectiveRouteSource extends ExpandableStringEnum<EffectiveRo
         return fromString(name, EffectiveRouteSource.class);
     }
 
-    /** @return known EffectiveRouteSource values. */
+    /**
+     * Gets known EffectiveRouteSource values.
+     *
+     * @return known EffectiveRouteSource values.
+     */
     public static Collection<EffectiveRouteSource> values() {
         return values(EffectiveRouteSource.class);
     }

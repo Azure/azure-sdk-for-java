@@ -415,6 +415,29 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
+     * Get the authorizationKey property: The authorizationKey.
+     *
+     * @return the authorizationKey value.
+     */
+    public String authorizationKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationKey();
+    }
+
+    /**
+     * Set the authorizationKey property: The authorizationKey.
+     *
+     * @param authorizationKey the authorizationKey value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withAuthorizationKey(String authorizationKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withAuthorizationKey(authorizationKey);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

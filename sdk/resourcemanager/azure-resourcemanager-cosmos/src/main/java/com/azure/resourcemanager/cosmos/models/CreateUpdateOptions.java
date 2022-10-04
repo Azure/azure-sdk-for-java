@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class CreateUpdateOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateUpdateOptions.class);
-
     /*
      * Request Units per second. For example, "throughput": 10000.
      */

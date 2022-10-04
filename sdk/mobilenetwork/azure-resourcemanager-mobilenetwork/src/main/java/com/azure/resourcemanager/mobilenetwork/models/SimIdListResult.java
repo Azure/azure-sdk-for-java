@@ -11,7 +11,7 @@ import java.util.List;
 /** An immutable client-side representation of SimIdListResult. */
 public interface SimIdListResult {
     /**
-     * Gets the value property: A list of sim profile ids in a resource group.
+     * Gets the value property: A list of SIM IDs.
      *
      * @return the value value.
      */

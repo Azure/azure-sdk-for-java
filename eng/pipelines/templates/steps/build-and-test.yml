@@ -14,9 +14,6 @@ parameters:
   - name: TestOptions
     type: string
     default: ''
-  - name: AdditionalBuildOptions
-    type: string
-    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
@@ -32,22 +29,30 @@ parameters:
   - name: TestEnvVars
     type: object
     default: {}
+  - name: TestVersionSupport
+    type: string
+    default: 'false'
   - name: IsLiveTest
     type: boolean
     default: false
+  - name: ExcludeProjectList
+    type: string
+    default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
   - task: Maven@3
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }} -pl $(ProjectList) -am
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
+    env:
+      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
@@ -70,15 +75,15 @@ steps:
     displayName: 'Generate pom for aggregate code coverage report'
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
-      scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
-      arguments: '--project-list $(ProjectList)'
+      scriptPath: 'eng/scripts/generate_aggregate_pom.py'
+      arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
-      mavenPomFile: aggregate-coverage-pom.xml
+      mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
@@ -96,7 +101,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }}
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)

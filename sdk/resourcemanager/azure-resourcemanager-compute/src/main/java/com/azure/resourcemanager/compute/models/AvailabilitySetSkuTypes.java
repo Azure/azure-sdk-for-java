@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvailabilitySetSkuTypes. */
+/**
+ * Specifies the sku of an Availability Set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for
+ * virtual machines with unmanaged disks. Default value is 'Classic'.
+ */
 public final class AvailabilitySetSkuTypes extends ExpandableStringEnum<AvailabilitySetSkuTypes> {
     /** Static value Classic for AvailabilitySetSkuTypes. */
     public static final AvailabilitySetSkuTypes CLASSIC = fromString("Classic");

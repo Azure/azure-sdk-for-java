@@ -29,14 +29,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class WebLinkedServiceTypeProperties {
     /*
-     * The URL of the web service endpoint, e.g. http://www.microsoft.com .
-     * Type: string (or Expression with resultType string).
+     * The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /**
-     * Get the url property: The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or
+     * Get the url property: The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or
      * Expression with resultType string).
      *
      * @return the url value.
@@ -46,7 +46,7 @@ public class WebLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the url property: The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or
+     * Set the url property: The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or
      * Expression with resultType string).
      *
      * @param url the url value to set.

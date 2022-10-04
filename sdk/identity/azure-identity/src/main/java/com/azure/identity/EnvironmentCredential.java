@@ -8,8 +8,10 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
@@ -26,6 +28,7 @@ import reactor.core.publisher.Mono;
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH AZURE_CLIENT_CERTIFICATE_PATH}</li>
+ *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD AZURE_CLIENT_CERTIFICATE_PASSWORD}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  * or:
@@ -56,8 +59,13 @@ public class EnvironmentCredential implements TokenCredential {
         String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+        String certPassword = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
+        if (CoreUtils.isNullOrEmpty(identityClientOptions.getAdditionallyAllowedTenants())) {
+            identityClientOptions
+                .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+        }
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
         if (verifyNotNull(clientId)) {
@@ -71,7 +79,7 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     LOGGER.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
-                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
+                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, certPassword,
                             identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedClusterPodIdentityProvisioningState. */
+/** The current provisioning state of the pod identity. */
 public final class ManagedClusterPodIdentityProvisioningState
     extends ExpandableStringEnum<ManagedClusterPodIdentityProvisioningState> {
     /** Static value Assigned for ManagedClusterPodIdentityProvisioningState. */

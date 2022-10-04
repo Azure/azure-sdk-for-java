@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public class DedicatedHostInstanceView {
     /*
-     * Specifies the unique id of the dedicated physical machine on which the
-     * dedicated host resides.
+     * Specifies the unique id of the dedicated physical machine on which the dedicated host resides.
      */
     @JsonProperty(value = "assetId", access = JsonProperty.Access.WRITE_ONLY)
     private String assetId;

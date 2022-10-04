@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.32.0-beta.1 (Unreleased)
+### 4.38.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -10,20 +10,84 @@
 
 #### Other Changes
 
-### 4.31.0 (2022-06-08)
+### 4.37.0 (2022-09-30)
 
+#### Features Added
+* Added new preview APIs to `ChangeFeedProcessor` for handling all versions and deletes changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
+
+#### Bugs Fixed
+* Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+#### Other Changes
+* Enable replica validation by default - See [PR 31159](https://github.com/Azure/azure-sdk-for-java/pull/31159)
+
+### 4.36.0 (2022-09-15)
+
+#### Other Changes
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Improvement when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 30281](https://github.com/Azure/azure-sdk-for-java/pull/30281)
+* Added replica validation for Unknown status if `openConnectionsAndInitCaches` is used and replica validation is enabled - See [PR 30277](https://github.com/Azure/azure-sdk-for-java/pull/30277)
+
+### 4.35.1 (2022-08-29)
+#### Other Changes
+* Added non-blocking async lazy cache to improve upgrade and scaling scenarios - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
+* Improved performance of `StoreResponse` using array headers - See [PR 30596](https://github.com/Azure/azure-sdk-for-java/pull/30596)
+
+### 4.35.0 (2022-08-19)
+#### Other Changes
+* Updated netty library version to `4.1.79.Final`.
+* Updated `reactor-core` version to `3.4.21`.
+
+### 4.34.0 (2022-08-05)
+#### Features Added
+* GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
+
+#### Other Changes
+* Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
+* Reverted changes of [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944) to avoid possible regression when customers use id with special characters and their account is on ComputeGateway already. - See [PR 30283](https://github.com/Azure/azure-sdk-for-java/pull/30283)
+
+### 4.33.1 (2022-07-22)
+#### Bugs Fixed
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. - See [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `ForbiddenException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+* Fixed a regression introduced in [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) which causes an `IllegalArgumentException` for distinct queries when using POJO serialization. - See [PR 30025](https://github.com/Azure/azure-sdk-for-java/pull/30025)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
+
+#### Other Changes
+* Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+
+### 4.33.0 (2022-07-14)
+#### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
+
+### 4.32.1 (2022-06-30)
+
+#### Bugs Fixed
+* Added a fix for `CloneNotSupportedException` when trying to instantiate a `Cosmos(Async)Client` and using a MAC provider which would not support cloning. Instead, this should be handled gracefully (less ideal perf is expected - but functionally it should work.) - See [PR 29719](https://github.com/Azure/azure-sdk-for-java/pull/29719)
+
+### 4.32.0 (2022-06-27)
+#### Other Changes
+* Remove requires `io.netty.transport.epoll` from `module-info` - See [PR 29509](https://github.com/Azure/azure-sdk-for-java/pull/29509)
+* Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
+
+### 4.31.0 (2022-06-08)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.31.0 and above.
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
 #### Other Changes
-* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
 
 ### 4.30.1 (2022-06-01)
-
 #### Other Changes
 * Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
 * Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
-* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
+* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29174](https://github.com/Azure/azure-sdk-for-java/pull/29174)
 
 ### 4.30.0 (2022-05-20)
 #### Bugs Fixed
@@ -215,8 +279,6 @@
 * Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.18.0 and above.
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
 

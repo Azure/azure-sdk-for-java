@@ -12,6 +12,7 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -23,7 +24,9 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -114,8 +117,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .orElse(this.responseTimeout);
 
         return nettyClient
-            .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
-            .doAfterRequest((r, connection) -> addResponseTimeoutHandler(connection, effectiveResponseTimeout))
+            .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
+            .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
@@ -148,30 +151,14 @@ class NettyAsyncHttpClient implements HttpClient {
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader hdr : restRequest.getHeaders()) {
-                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
-                // therefore, we must call rb.addHeader for each value, using the same key for all of them.
-                // We would ideally replace this for-loop with code akin to the code in ReactorNettyHttpResponseBase,
-                // whereby we would wrap the azure-core HttpHeaders in a Netty HttpHeaders wrapper, but as of today it
-                // is not possible in reactor-netty to do this without copying occurring within that library. This
-                // issue has been reported to the reactor-netty team at
-                // https://github.com/reactor/reactor-netty/issues/1479
-                if (reactorNettyRequest.requestHeaders().contains(hdr.getName())) {
-                    // The Reactor-Netty request headers include headers by default, to prevent a scenario where we end
-                    // adding a header twice that isn't allowed, such as User-Agent, check against the initial request
-                    // header names. If our request header already exists in the Netty request we overwrite it initially
-                    // then append our additional values if it is a multi-value header.
-                    boolean first = true;
-                    for (String value : hdr.getValuesList()) {
-                        if (first) {
-                            first = false;
-                            reactorNettyRequest.header(hdr.getName(), value);
-                        } else {
-                            reactorNettyRequest.addHeader(hdr.getName(), value);
-                        }
-                    }
-                } else {
-                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
-                }
+                // Get the Netty headers from Reactor Netty and work with the Netty headers directly. This removes the
+                // need to do contains checks to determine if headers added by Reactor Netty need to be overwritten.
+                // Additionally, this gives direct access to the set(String, Iterable<String>) API which is more
+                // performant as it only needs to validate the header name once instead of each time a value from the
+                // list is added.
+                // This reduces header name and header name equality checks greatly, once for getting rid of contains
+                // and once for each additional value in the header.
+                reactorNettyRequest.requestHeaders().set(hdr.getName(), hdr.getValuesList());
             }
             BinaryData body = restRequest.getBodyAsBinaryData();
             if (body != null) {
@@ -270,8 +257,8 @@ class NettyAsyncHttpClient implements HttpClient {
             if (eagerlyReadResponse) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return FluxUtil.collectBytesFromNetworkResponse(
-                    reactorNettyConnection.inbound().receive().asByteBuffer(),
-                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                        reactorNettyConnection.inbound().receive().asByteBuffer(),
+                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
             } else {
@@ -282,19 +269,30 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Adds write timeout handler once the request is ready to begin sending.
+     * Adds request handlers:
+     * - write timeout handler once the request is ready to begin sending.
+     * - progress handler if progress tracking has been requested.
      */
-    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
+    private void addRequestHandlers(Connection connection, Context context) {
+        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
+        if (progressReporter != null) {
+            connection.addHandlerLast(
+                RequestProgressReportingHandler.HANDLER_NAME, new RequestProgressReportingHandler(progressReporter));
+        }
     }
 
     /*
-     * Remove write timeout handler from the connection as the request has finished sending, then add response timeout
+     * After request has been sent:
+     * - Remove Progress Handler
+     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
      * handler.
      */
-    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
+    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
     }
 
     /*

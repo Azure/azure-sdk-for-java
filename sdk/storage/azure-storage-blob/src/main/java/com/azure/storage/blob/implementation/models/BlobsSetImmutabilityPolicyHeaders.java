@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,6 +51,29 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BlobsSetImmutabilityPolicyHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BlobsSetImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
+        if (rawHeaders.getValue("x-ms-immutability-policy-mode") != null) {
+            this.xMsImmutabilityPolicyMode =
+                    BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
+        }
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        if (rawHeaders.getValue("x-ms-immutability-policy-until-date") != null) {
+            this.xMsImmutabilityPolicyUntilDate =
+                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+    }
 
     /**
      * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.extendedlocation.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -127,6 +128,13 @@ public interface CustomLocation {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationInner object.
@@ -447,4 +455,31 @@ public interface CustomLocation {
      * @return the refreshed resource.
      */
     CustomLocation refresh(Context context);
+
+    /**
+     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
+     * rules passed in with the Find Target Resource Group Request.
+     *
+     * @param parameters Parameters of the find target resource group request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Find Target Resource Group operation response.
+     */
+    CustomLocationFindTargetResourceGroupResult findTargetResourceGroup(
+        CustomLocationFindTargetResourceGroupProperties parameters);
+
+    /**
+     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
+     * rules passed in with the Find Target Resource Group Request.
+     *
+     * @param parameters Parameters of the find target resource group request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Find Target Resource Group operation response along with {@link Response}.
+     */
+    Response<CustomLocationFindTargetResourceGroupResult> findTargetResourceGroupWithResponse(
+        CustomLocationFindTargetResourceGroupProperties parameters, Context context);
 }

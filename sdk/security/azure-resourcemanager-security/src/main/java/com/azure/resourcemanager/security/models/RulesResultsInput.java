@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Rules results input. */
 @Fluent
 public final class RulesResultsInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RulesResultsInput.class);
-
     /*
      * Take results from latest scan.
      */
@@ -27,6 +24,7 @@ public final class RulesResultsInput {
      * Leave this field empty it LatestScan == true.
      */
     @JsonProperty(value = "results")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<List<String>>> results;
 
     /**

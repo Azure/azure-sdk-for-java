@@ -36,7 +36,11 @@ public final class JobAgentState extends ExpandableStringEnum<JobAgentState> {
         return fromString(name, JobAgentState.class);
     }
 
-    /** @return known JobAgentState values. */
+    /**
+     * Gets known JobAgentState values.
+     *
+     * @return known JobAgentState values.
+     */
     public static Collection<JobAgentState> values() {
         return values(JobAgentState.class);
     }

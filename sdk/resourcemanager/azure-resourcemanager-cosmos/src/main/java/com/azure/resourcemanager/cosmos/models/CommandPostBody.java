@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Specification of which command to run where. */
 @Fluent
 public final class CommandPostBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommandPostBody.class);
-
     /*
      * The command which should be run
      */
@@ -36,15 +33,13 @@ public final class CommandPostBody {
     private String host;
 
     /*
-     * If true, stops cassandra before executing the command and then start it
-     * again
+     * If true, stops cassandra before executing the command and then start it again
      */
     @JsonProperty(value = "cassandra-stop-start")
     private Boolean cassandraStopStart;
 
     /*
-     * If true, allows the command to *write* to the cassandra directory,
-     * otherwise read-only.
+     * If true, allows the command to *write* to the cassandra directory, otherwise read-only.
      */
     @JsonProperty(value = "readwrite")
     private Boolean readwrite;
@@ -160,14 +155,16 @@ public final class CommandPostBody {
      */
     public void validate() {
         if (command() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property command in model CommandPostBody"));
         }
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property host in model CommandPostBody"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommandPostBody.class);
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2022-09-06)
+
+### New Features
+- Add metrics exporter.
+- Add logs exporter.
+- Add disk persistence and retries for ingestion failures.
+- Add heartbeat telemetry.
 
 ## 1.0.0-beta.5 (2021-11-12)
 

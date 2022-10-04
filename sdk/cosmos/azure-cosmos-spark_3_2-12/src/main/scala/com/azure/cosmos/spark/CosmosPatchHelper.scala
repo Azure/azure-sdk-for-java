@@ -36,8 +36,7 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   // There are some properties are immutable, these kind properties include:
   // 1. System properties : _ts, _rid, _etag
   // 2. id, and partitionKeyPath
-  if ((path.startsWith("/") && !systemProperties.contains(path.substring(1)))
-   && IdAttributeName != path
+  if ((path.startsWith("/") && !systemProperties.contains(path.substring(1)) && IdAttributeName != path.substring(1))
    && !StringUtils.join(partitionKeyDefinition.getPaths, "").contains(path)) {
    true
   } else {

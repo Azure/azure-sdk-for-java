@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ConnectionCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update connection operation. */
-@JsonFlatten
 @Fluent
-public class ConnectionCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionCreateOrUpdateParameters.class);
-
+public final class ConnectionCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the connection.
      */
@@ -24,22 +20,10 @@ public class ConnectionCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the description of the connection.
+     * Gets or sets the properties of the connection.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the connectionType of the connection.
-     */
-    @JsonProperty(value = "properties.connectionType", required = true)
-    private ConnectionTypeAssociationProperty connectionType;
-
-    /*
-     * Gets or sets the field definition properties of the connection.
-     */
-    @JsonProperty(value = "properties.fieldDefinitionValues")
-    private Map<String, String> fieldDefinitionValues;
+    @JsonProperty(value = "properties", required = true)
+    private ConnectionCreateOrUpdateProperties innerProperties = new ConnectionCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the connection.
@@ -62,12 +46,21 @@ public class ConnectionCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the connection.
+     *
+     * @return the innerProperties value.
+     */
+    private ConnectionCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the connection.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -77,7 +70,10 @@ public class ConnectionCreateOrUpdateParameters {
      * @return the ConnectionCreateOrUpdateParameters object itself.
      */
     public ConnectionCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -87,7 +83,7 @@ public class ConnectionCreateOrUpdateParameters {
      * @return the connectionType value.
      */
     public ConnectionTypeAssociationProperty connectionType() {
-        return this.connectionType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionType();
     }
 
     /**
@@ -97,7 +93,10 @@ public class ConnectionCreateOrUpdateParameters {
      * @return the ConnectionCreateOrUpdateParameters object itself.
      */
     public ConnectionCreateOrUpdateParameters withConnectionType(ConnectionTypeAssociationProperty connectionType) {
-        this.connectionType = connectionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionCreateOrUpdateProperties();
+        }
+        this.innerProperties().withConnectionType(connectionType);
         return this;
     }
 
@@ -107,7 +106,7 @@ public class ConnectionCreateOrUpdateParameters {
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
-        return this.fieldDefinitionValues;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDefinitionValues();
     }
 
     /**
@@ -117,7 +116,10 @@ public class ConnectionCreateOrUpdateParameters {
      * @return the ConnectionCreateOrUpdateParameters object itself.
      */
     public ConnectionCreateOrUpdateParameters withFieldDefinitionValues(Map<String, String> fieldDefinitionValues) {
-        this.fieldDefinitionValues = fieldDefinitionValues;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFieldDefinitionValues(fieldDefinitionValues);
         return this;
     }
 
@@ -128,18 +130,20 @@ public class ConnectionCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ConnectionCreateOrUpdateParameters"));
         }
-        if (connectionType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionType in model ConnectionCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model ConnectionCreateOrUpdateParameters"));
         } else {
-            connectionType().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionCreateOrUpdateParameters.class);
 }

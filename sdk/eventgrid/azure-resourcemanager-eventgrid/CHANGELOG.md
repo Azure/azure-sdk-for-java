@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,287 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.3 (2022-07-06)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2022-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.PartnerDestinationInfo` was removed
+
+* `models.PartnerUpdateDestinationInfo` was removed
+
+* `models.EventChannel` was removed
+
+* `models.Sku` was removed
+
+* `models.PartnerDestination$Definition` was removed
+
+* `models.ResourceSku` was removed
+
+* `models.ResourceKind` was removed
+
+* `models.PartnerClientAuthentication` was removed
+
+* `models.EventChannelSource` was removed
+
+* `models.PartnerEndpointType` was removed
+
+* `models.ParentType` was removed
+
+* `models.PartnerDestinationProvisioningState` was removed
+
+* `models.TopicTypePropertiesSupportedScopesForSourceItem` was removed
+
+* `models.PartnerDestinations` was removed
+
+* `models.PartnerDestination` was removed
+
+* `models.EventChannelFilter` was removed
+
+* `models.ResourceMoveChangeHistory` was removed
+
+* `models.EventChannel$UpdateStages` was removed
+
+* `models.WebhookPartnerDestinationInfo` was removed
+
+* `models.PartnerDestination$Update` was removed
+
+* `models.PartnerEventSubscriptionDestination` was removed
+
+* `models.EventChannel$Definition` was removed
+
+* `models.EventChannels` was removed
+
+* `models.EventChannelDestination` was removed
+
+* `models.PartnerDestinationUpdateParameters` was removed
+
+* `models.EventChannelProvisioningState` was removed
+
+* `models.PartnerClientAuthenticationType` was removed
+
+* `models.EventChannel$DefinitionStages` was removed
+
+* `models.PartnerDestinationActivationState` was removed
+
+* `models.PartnerTopicReadinessState` was removed
+
+* `models.EventChannel$Update` was removed
+
+* `models.WebhookUpdatePartnerDestinationInfo` was removed
+
+* `models.EventChannelsListResult` was removed
+
+* `models.PartnerRegistrationVisibilityState` was removed
+
+* `models.AzureADPartnerClientAuthentication` was removed
+
+* `models.PartnerDestination$UpdateStages` was removed
+
+* `models.ExtendedLocation` was removed
+
+* `models.PartnerDestination$DefinitionStages` was removed
+
+* `models.PartnerDestinationsListResult` was removed
+
+#### `models.EventSubscription$DefinitionStages` was modified
+
+* `withExistingScope(java.lang.String)` was removed in stage 1
+
+#### `models.Channel` was modified
+
+* `partnerDestinationInfo()` was removed
+
+#### `models.EventSubscription$Definition` was modified
+
+* `withExistingScope(java.lang.String)` was removed
+
+#### `models.TopicUpdateParameters` was modified
+
+* `sku()` was removed
+* `withSku(models.ResourceSku)` was removed
+
+#### `models.Domain$Update` was modified
+
+* `withSku(models.ResourceSku)` was removed
+
+#### `models.Topic$Definition` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+* `withSku(models.ResourceSku)` was removed
+* `withKind(models.ResourceKind)` was removed
+
+#### `models.DomainUpdateParameters` was modified
+
+* `sku()` was removed
+* `withSku(models.ResourceSku)` was removed
+
+#### `models.PartnerRegistration$Definition` was modified
+
+* `withPartnerResourceTypeName(java.lang.String)` was removed
+* `withPartnerResourceTypeDescription(java.lang.String)` was removed
+* `withCustomerServiceUri(java.lang.String)` was removed
+* `withSetupUri(java.lang.String)` was removed
+* `withPartnerCustomerServiceExtension(java.lang.String)` was removed
+* `withPartnerCustomerServiceNumber(java.lang.String)` was removed
+* `withPartnerResourceTypeDisplayName(java.lang.String)` was removed
+* `withPartnerName(java.lang.String)` was removed
+* `withLongDescription(java.lang.String)` was removed
+* `withLogoUri(java.lang.String)` was removed
+* `withAuthorizedAzureSubscriptionIds(java.util.List)` was removed
+* `withVisibilityState(models.PartnerRegistrationVisibilityState)` was removed
+
+#### `models.Topic$Update` was modified
+
+* `withSku(models.ResourceSku)` was removed
+
+#### `models.Domain` was modified
+
+* `sku()` was removed
+
+#### `models.PartnerRegistration` was modified
+
+* `partnerCustomerServiceNumber()` was removed
+* `visibilityState()` was removed
+* `partnerName()` was removed
+* `longDescription()` was removed
+* `customerServiceUri()` was removed
+* `logoUri()` was removed
+* `authorizedAzureSubscriptionIds()` was removed
+* `partnerResourceTypeDescription()` was removed
+* `partnerResourceTypeName()` was removed
+* `partnerCustomerServiceExtension()` was removed
+* `setupUri()` was removed
+* `partnerResourceTypeDisplayName()` was removed
+
+#### `models.Channel$Update` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was removed
+
+#### `models.EventSubscriptions` was modified
+
+* `define(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `EventGridManager` was modified
+
+* `partnerDestinations()` was removed
+* `eventChannels()` was removed
+
+#### `models.TopicEventSubscriptions` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters,com.azure.core.util.Context)` was removed
+
+#### `models.Topic` was modified
+
+* `extendedLocation()` was removed
+* `sku()` was removed
+* `kind()` was removed
+
+#### `models.PartnerRegistration$Update` was modified
+
+* `withPartnerTopicTypeDescription(java.lang.String)` was removed
+* `withPartnerTopicTypeDisplayName(java.lang.String)` was removed
+* `withAuthorizedAzureSubscriptionIds(java.util.List)` was removed
+* `withLogoUri(java.lang.String)` was removed
+* `withPartnerTopicTypeName(java.lang.String)` was removed
+* `withSetupUri(java.lang.String)` was removed
+
+#### `models.Channel$Definition` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `update(java.lang.String,models.ParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,com.azure.core.util.Context)` was removed
+* `getWithResponse(java.lang.String,models.ParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResource(java.lang.String,models.ParentType,java.lang.String)` was removed
+* `get(java.lang.String,models.ParentType,java.lang.String,java.lang.String)` was removed
+* `update(java.lang.String,models.ParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner)` was removed
+* `delete(java.lang.String,models.ParentType,java.lang.String,java.lang.String)` was removed
+* `delete(java.lang.String,models.ParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResource(java.lang.String,models.ParentType,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+
+#### `models.PartnerRegistrationUpdateParameters` was modified
+
+* `withPartnerTopicTypeDisplayName(java.lang.String)` was removed
+* `withPartnerTopicTypeDescription(java.lang.String)` was removed
+* `partnerTopicTypeDescription()` was removed
+* `withSetupUri(java.lang.String)` was removed
+* `setupUri()` was removed
+* `authorizedAzureSubscriptionIds()` was removed
+* `logoUri()` was removed
+* `partnerTopicTypeDisplayName()` was removed
+* `partnerTopicTypeName()` was removed
+* `withPartnerTopicTypeName(java.lang.String)` was removed
+* `withLogoUri(java.lang.String)` was removed
+* `withAuthorizedAzureSubscriptionIds(java.util.List)` was removed
+
+#### `models.ChannelUpdateParameters` was modified
+
+* `partnerDestinationInfo()` was removed
+* `withPartnerDestinationInfo(models.PartnerUpdateDestinationInfo)` was removed
+
+#### `models.Domain$Definition` was modified
+
+* `withSku(models.ResourceSku)` was removed
+
+#### `models.VerifiedPartner` was modified
+
+* `partnerDestinationDetails()` was removed
+
+### Features Added
+
+* `models.PrivateEndpointConnectionsParentType` was added
+
+* `models.TopicTypeSourceScope` was added
+
+#### `models.InlineEventProperties` was modified
+
+* `displayName()` was added
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.EventSubscription$Definition` was modified
+
+* `withExistingTopic(java.lang.String,java.lang.String)` was added
+
+#### `models.EventSubscription` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.EventSubscriptions` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner)` was added
+* `update(java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,models.EventSubscriptionUpdateParameters)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.EventSubscriptionInner,com.azure.core.util.Context)` was added
+
+#### `models.TopicEventSubscriptions` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `getWithResponse(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String)` was added
+* `update(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,com.azure.core.util.Context)` was added
+* `listByResource(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String)` was added
+* `listByResource(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String)` was added
+* `update(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner)` was added
+* `delete(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.2.0-beta.2 (2022-05-13)
 

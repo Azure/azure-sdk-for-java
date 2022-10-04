@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceProperties;
+import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -207,6 +208,25 @@ public final class MediaServiceUpdate {
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Media Services account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The Private Endpoint Connections created for the Media Service
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

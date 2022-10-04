@@ -214,6 +214,19 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         return macPool.take();
     }
 
+    private static Mac createMac(byte[] masterKeyBytes) {
+        byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+        SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+        try {
+            Mac macInstance = Mac.getInstance("HMACSHA256");
+            macInstance.init(signingKey);
+
+            return macInstance;
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     /*
      * Ensures that this.macInstance is initialized
      * In-case of credential change, optimistically will try to refresh the macInstance
@@ -233,17 +246,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 try {
                     if (this.currentCredentialKey != this.credential.getKey()) {
                         byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
-                        byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
-                        SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-                        try {
-                            Mac macInstance = Mac.getInstance("HMACSHA256");
-                            macInstance.init(signingKey);
-
-                            this.currentCredentialKey = this.credential.getKey();
-                            this.macPool = new MacPool(macInstance);
-                        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                            throw new IllegalStateException(e);
-                        }
+                        this.currentCredentialKey = this.credential.getKey();
+                        this.macPool = new MacPool(() -> createMac(masterKeyBytes));
                     }
                 } finally {
                     this.macInstanceLock.unlock();

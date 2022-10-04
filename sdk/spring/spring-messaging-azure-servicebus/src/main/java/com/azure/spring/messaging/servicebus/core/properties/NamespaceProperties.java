@@ -12,6 +12,17 @@ public class NamespaceProperties extends CommonProperties implements ServiceBusN
 
     private Boolean crossEntityTransactions;
 
+    /**
+     * The default constructor.
+     *
+     * The object constructed from this constructor will have a domain name and cloud type default
+     * to the Azure global cloud.
+     */
+    public NamespaceProperties() {
+        this.setDomainName("servicebus.windows.net");
+        this.getProfile().setCloudType(CloudType.AZURE);
+    }
+
     @Override
     public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;

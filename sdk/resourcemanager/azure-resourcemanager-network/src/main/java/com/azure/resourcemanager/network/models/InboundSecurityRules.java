@@ -17,8 +17,7 @@ public final class InboundSecurityRules {
     private InboundSecurityRulesProtocol protocol;
 
     /*
-     * The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are
-     * allowed.
+     * The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
      */
     @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;

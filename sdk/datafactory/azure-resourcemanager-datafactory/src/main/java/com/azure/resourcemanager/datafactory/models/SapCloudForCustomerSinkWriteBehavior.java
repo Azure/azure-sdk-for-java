@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapCloudForCustomerSinkWriteBehavior. */
+/** The write behavior for the operation. Default is 'Insert'. */
 public final class SapCloudForCustomerSinkWriteBehavior
     extends ExpandableStringEnum<SapCloudForCustomerSinkWriteBehavior> {
     /** Static value Insert for SapCloudForCustomerSinkWriteBehavior. */

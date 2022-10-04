@@ -177,7 +177,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -244,7 +246,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -314,7 +318,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -335,7 +341,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -355,7 +363,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -382,7 +392,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -400,7 +412,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -425,7 +439,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -484,7 +500,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -541,7 +559,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -556,18 +576,13 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> getAsync(
         String resourceGroupName, String accountName, String transformName, String jobName) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -584,7 +599,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -603,7 +620,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -669,7 +688,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -738,7 +759,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -754,18 +777,13 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> createAsync(
         String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -784,7 +802,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -810,7 +830,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -869,7 +891,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -926,7 +950,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -940,11 +966,13 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String transformName, String jobName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -960,7 +988,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -979,8 +1009,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1046,8 +1078,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1116,8 +1150,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1133,19 +1169,14 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> updateAsync(
         String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1164,8 +1195,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1191,7 +1224,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1250,7 +1285,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1307,7 +1344,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1322,11 +1361,13 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<Void> cancelJobAsync(
         String resourceGroupName, String accountName, String transformName, String jobName) {
         return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1342,7 +1383,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1363,7 +1406,8 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1398,7 +1442,8 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

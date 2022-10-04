@@ -173,7 +173,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -209,7 +211,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -239,7 +241,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -276,7 +280,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -303,7 +307,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -325,7 +331,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -345,7 +353,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -368,7 +378,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -386,7 +398,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Lists the Streaming Locators in the account.
+     * List Streaming Locators
+     *
+     * <p>Lists the Streaming Locators in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -407,7 +421,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Get the details of a Streaming Locator in the Media Services account.
+     * Get a Streaming Locator
+     *
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -444,7 +460,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -463,7 +479,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Get the details of a Streaming Locator in the Media Services account.
+     * Get a Streaming Locator
+     *
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -501,7 +519,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -517,7 +535,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Get the details of a Streaming Locator in the Media Services account.
+     * Get a Streaming Locator
+     *
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -532,18 +552,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<StreamingLocatorInner> getAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<StreamingLocatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the details of a Streaming Locator in the Media Services account.
+     * Get a Streaming Locator
+     *
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -559,7 +574,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Get the details of a Streaming Locator in the Media Services account.
+     * Get a Streaming Locator
+     *
+     * <p>Get the details of a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -577,7 +594,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Create a Streaming Locator in the Media Services account.
+     * Create a Streaming Locator
+     *
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -619,7 +638,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -639,7 +658,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Create a Streaming Locator in the Media Services account.
+     * Create a Streaming Locator
+     *
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -686,7 +707,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -703,7 +724,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Create a Streaming Locator in the Media Services account.
+     * Create a Streaming Locator
+     *
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -718,18 +741,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<StreamingLocatorInner> createAsync(
         String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, parameters)
-            .flatMap(
-                (Response<StreamingLocatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Create a Streaming Locator in the Media Services account.
+     * Create a Streaming Locator
+     *
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -747,7 +765,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Create a Streaming Locator in the Media Services account.
+     * Create a Streaming Locator
+     *
+     * <p>Create a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -771,7 +791,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Deletes a Streaming Locator in the Media Services account.
+     * Delete a Streaming Locator
+     *
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -807,7 +829,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -826,7 +848,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Deletes a Streaming Locator in the Media Services account.
+     * Delete a Streaming Locator
+     *
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -863,7 +887,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -879,7 +903,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Deletes a Streaming Locator in the Media Services account.
+     * Delete a Streaming Locator
+     *
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -892,11 +918,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingLocatorName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes a Streaming Locator in the Media Services account.
+     * Delete a Streaming Locator
+     *
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -911,7 +939,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * Deletes a Streaming Locator in the Media Services account.
+     * Delete a Streaming Locator
+     *
+     * <p>Deletes a Streaming Locator in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -929,7 +959,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Content Keys used by this Streaming Locator.
+     * List Content Keys
+     *
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -966,7 +998,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -985,7 +1017,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Content Keys used by this Streaming Locator.
+     * List Content Keys
+     *
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1023,7 +1057,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1039,7 +1073,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Content Keys used by this Streaming Locator.
+     * List Content Keys
+     *
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1053,18 +1089,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<ListContentKeysResponseInner> listContentKeysAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return listContentKeysWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<ListContentKeysResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List Content Keys used by this Streaming Locator.
+     * List Content Keys
+     *
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1081,7 +1112,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Content Keys used by this Streaming Locator.
+     * List Content Keys
+     *
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1099,7 +1132,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Paths supported by this Streaming Locator.
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1136,7 +1171,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1155,7 +1190,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Paths supported by this Streaming Locator.
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1193,7 +1230,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingLocatorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1209,7 +1246,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Paths supported by this Streaming Locator.
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1223,18 +1262,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<ListPathsResponseInner> listPathsAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return listPathsWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<ListPathsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List Paths supported by this Streaming Locator.
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1250,7 +1284,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     }
 
     /**
-     * List Paths supported by this Streaming Locator.
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1270,7 +1306,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1306,7 +1343,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

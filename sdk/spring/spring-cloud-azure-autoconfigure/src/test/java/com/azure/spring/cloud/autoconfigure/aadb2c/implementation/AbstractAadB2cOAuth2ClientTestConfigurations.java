@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
@@ -16,6 +15,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.Map;
 
@@ -58,7 +58,7 @@ abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
                     Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
                         AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
                     Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
-                        AadAuthorizationGrantType.CLIENT_CREDENTIALS);
+                        AuthorizationGrantType.CLIENT_CREDENTIALS);
                 }
             });
     }

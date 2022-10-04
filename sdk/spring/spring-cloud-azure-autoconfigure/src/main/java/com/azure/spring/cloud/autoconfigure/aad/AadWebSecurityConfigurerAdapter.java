@@ -3,9 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.aad;
 
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -23,6 +27,8 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.Filter;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
+
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
@@ -37,6 +43,13 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Autowired
     protected ClientRegistrationRepository repo;
 
+
+    /**
+     * restTemplateBuilder bean used to create RestTemplate for Azure AD related http request.
+     */
+    @Autowired
+    protected RestTemplateBuilder restTemplateBuilder;
+
     /**
      * OIDC user service.
      */
@@ -48,6 +61,12 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     @Autowired
     protected AadAuthenticationProperties properties;
+
+    /**
+     * JWK resolver implementation for client authentication.
+     */
+    @Autowired
+    protected ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers;
 
     /**
      * configure
@@ -113,10 +132,16 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
+        result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (repo instanceof AadClientRegistrationRepository) {
-            result.setRequestEntityConverter(
+            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
-                    ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes()));
+                    ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes());
+            OAuth2ClientAuthenticationJwkResolver jwkResolver = jwkResolvers.getIfUnique();
+            if (jwkResolver != null) {
+                converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
+            }
+            result.setRequestEntityConverter(converter);
         }
         return result;
     }

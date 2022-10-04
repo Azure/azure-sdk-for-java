@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationTokenOperation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a RegistrationInfo definition. */
 @Fluent
 public final class RegistrationInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationInfoInner.class);
-
     /*
      * Expiration time of registration token.
      */

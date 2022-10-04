@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -49,6 +50,27 @@ public final class DirectoriesForceCloseHandlesHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of DirectoriesForceCloseHandlesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public DirectoriesForceCloseHandlesHeaders(HttpHeaders rawHeaders) {
+        this.xMsMarker = rawHeaders.getValue("x-ms-marker");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        if (rawHeaders.getValue("x-ms-number-of-handles-closed") != null) {
+            this.xMsNumberOfHandlesClosed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-closed"));
+        }
+        if (rawHeaders.getValue("x-ms-number-of-handles-failed") != null) {
+            this.xMsNumberOfHandlesFailed = Integer.parseInt(rawHeaders.getValue("x-ms-number-of-handles-failed"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+    }
 
     /**
      * Get the xMsMarker property: The x-ms-marker property.

@@ -6,12 +6,14 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -22,11 +24,10 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
-import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
+import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -95,6 +96,7 @@ public class ShareAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -103,15 +105,17 @@ public class ShareAsyncClient {
      *
      * @param client Client that interacts with the service interfaces
      * @param shareName Name of the share
+     * @param sasToken The SAS token to use for authenticating requests.
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName,
-        ShareServiceVersion serviceVersion) {
+        ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
         this.accountName = accountName;
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -145,6 +149,10 @@ public class ShareAsyncClient {
         return serviceVersion;
     }
 
+    AzureSasCredential getSasToken() {
+        return sasToken;
+    }
+
     /**
      * Constructs a {@link ShareDirectoryAsyncClient} that interacts with the root directory in the share.
      *
@@ -171,7 +179,7 @@ public class ShareAsyncClient {
             ? ""
             : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -185,7 +193,7 @@ public class ShareAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -196,7 +204,7 @@ public class ShareAsyncClient {
      */
     public ShareAsyncClient getSnapshotClient(String snapshot) {
         return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(),
-            getServiceVersion());
+            getServiceVersion(), getSasToken());
     }
 
     /**
@@ -2280,7 +2288,8 @@ public class ShareAsyncClient {
             new ShareInfo(eTag, lastModified));
     }
 
-    private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(SharesCreateSnapshotResponse response) {
+    private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(
+        ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
         SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
         ShareSnapshotInfo snapshotInfo =
             new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
@@ -2288,7 +2297,8 @@ public class ShareAsyncClient {
         return new SimpleResponse<>(response, snapshotInfo);
     }
 
-    private Response<ShareProperties> mapGetPropertiesResponse(SharesGetPropertiesResponse response) {
+    private Response<ShareProperties> mapGetPropertiesResponse(
+        ResponseBase<SharesGetPropertiesHeaders, Void> response) {
         SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         ShareProperties shareProperties = new ShareProperties()
             .setETag(headers.getETag())
@@ -2312,7 +2322,8 @@ public class ShareAsyncClient {
         return new SimpleResponse<>(response, shareProperties);
     }
 
-    private Response<ShareStatistics> mapGetStatisticsResponse(SharesGetStatisticsResponse response) {
+    private Response<ShareStatistics> mapGetStatisticsResponse(
+        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response) {
         ShareStatistics shareStatistics =
             new ShareStatistics(response.getValue().getShareUsageBytes());
 

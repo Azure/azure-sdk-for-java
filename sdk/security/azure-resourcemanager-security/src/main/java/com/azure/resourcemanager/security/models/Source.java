@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Source. */
+/** The platform where the assessed resource resides. */
 public final class Source extends ExpandableStringEnum<Source> {
     /** Static value Azure for Source. */
     public static final Source AZURE = fromString("Azure");
@@ -30,7 +30,11 @@ public final class Source extends ExpandableStringEnum<Source> {
         return fromString(name, Source.class);
     }
 
-    /** @return known Source values. */
+    /**
+     * Gets known Source values.
+     *
+     * @return known Source values.
+     */
     public static Collection<Source> values() {
         return values(Source.class);
     }

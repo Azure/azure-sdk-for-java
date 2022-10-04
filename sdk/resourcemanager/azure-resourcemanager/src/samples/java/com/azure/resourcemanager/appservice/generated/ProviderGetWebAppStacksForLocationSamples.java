@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Provider GetWebAppStacksForLocation. */
 public final class ProviderGetWebAppStacksForLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacksForLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Web App Stacks.

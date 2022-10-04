@@ -29,9 +29,7 @@ class DecryptionTests extends APISpec {
         keyId = "keyId"
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
 
-        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false,
-            getBlobClientBuilder(environment.primaryAccount.getCredential(), environment.primaryAccount.blobEndpoint)
-                .containerName(generateContainerName()).blobName(generateBlobName()).buildAsyncClient())
+        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false)
 
         blobName = generateBlobName()
     }
@@ -57,7 +55,7 @@ class DecryptionTests extends APISpec {
         def encryptionData = EncryptionData.fromJsonString(encryptionDataString)
         def decryptedData = collectBytesInBuffer(
             blobDecryptionPolicy.decryptBlob(flow, new EncryptedBlobRange(blobRange, encryptionData), true,
-                encryptionData, ""))
+                encryptionData, new URL("http://www.foo.com/path")))
             .block()
 
         then:

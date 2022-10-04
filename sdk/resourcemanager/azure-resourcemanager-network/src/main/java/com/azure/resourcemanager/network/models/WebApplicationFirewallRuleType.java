@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallRuleType. */
+/** The rule type. */
 public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<WebApplicationFirewallRuleType> {
     /** Static value MatchRule for WebApplicationFirewallRuleType. */
     public static final WebApplicationFirewallRuleType MATCH_RULE = fromString("MatchRule");
@@ -27,7 +27,11 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
         return fromString(name, WebApplicationFirewallRuleType.class);
     }
 
-    /** @return known WebApplicationFirewallRuleType values. */
+    /**
+     * Gets known WebApplicationFirewallRuleType values.
+     *
+     * @return known WebApplicationFirewallRuleType values.
+     */
     public static Collection<WebApplicationFirewallRuleType> values() {
         return values(WebApplicationFirewallRuleType.class);
     }

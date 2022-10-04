@@ -28,9 +28,6 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     /** Static value Healthcare for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind HEALTHCARE = fromString("Healthcare");
 
-    /** Static value ExtractiveSummarization for AnalyzeTextLROTaskKind. */
-    public static final AnalyzeTextLROTaskKind EXTRACTIVE_SUMMARIZATION = fromString("ExtractiveSummarization");
-
     /** Static value CustomEntityRecognition for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind CUSTOM_ENTITY_RECOGNITION = fromString("CustomEntityRecognition");
 
@@ -53,7 +50,11 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
         return fromString(name, AnalyzeTextLROTaskKind.class);
     }
 
-    /** @return known AnalyzeTextLROTaskKind values. */
+    /**
+     * Gets known AnalyzeTextLROTaskKind values.
+     *
+     * @return known AnalyzeTextLROTaskKind values.
+     */
     public static Collection<AnalyzeTextLROTaskKind> values() {
         return values(AnalyzeTextLROTaskKind.class);
     }

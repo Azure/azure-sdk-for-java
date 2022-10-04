@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Visibility. */
+/**
+ * When PlayerVisibility is set to "Visible", the text track will be present in the DASH manifest or HLS playlist when
+ * requested by a client. When the PlayerVisibility is set to "Hidden", the text will not be available to the client.
+ * The default value is "Visible".
+ */
 public final class Visibility extends ExpandableStringEnum<Visibility> {
     /** Static value Hidden for Visibility. */
     public static final Visibility HIDDEN = fromString("Hidden");
@@ -27,7 +31,11 @@ public final class Visibility extends ExpandableStringEnum<Visibility> {
         return fromString(name, Visibility.class);
     }
 
-    /** @return known Visibility values. */
+    /**
+     * Gets known Visibility values.
+     *
+     * @return known Visibility values.
+     */
     public static Collection<Visibility> values() {
         return values(Visibility.class);
     }

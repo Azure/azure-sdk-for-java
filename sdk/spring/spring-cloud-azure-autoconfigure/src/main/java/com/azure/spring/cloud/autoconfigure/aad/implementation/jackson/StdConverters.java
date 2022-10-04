@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.ON_BEHALF_OF;
+
 final class StdConverters {
 
     private static final String FIELD_NAME_OF_VALUE = "value";
@@ -27,6 +29,9 @@ final class StdConverters {
             if (ClientAuthenticationMethod.CLIENT_SECRET_POST.getValue().equalsIgnoreCase(value)
                 || ClientAuthenticationMethod.POST.getValue().equalsIgnoreCase(value)) {
                 return ClientAuthenticationMethod.CLIENT_SECRET_POST;
+            }
+            if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.getValue().equalsIgnoreCase(value)) {
+                return ClientAuthenticationMethod.PRIVATE_KEY_JWT;
             }
             if (ClientAuthenticationMethod.NONE.getValue().equalsIgnoreCase(value)) {
                 return ClientAuthenticationMethod.NONE;
@@ -52,6 +57,10 @@ final class StdConverters {
             }
             if (AuthorizationGrantType.PASSWORD.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.PASSWORD;
+            }
+            if (AuthorizationGrantType.JWT_BEARER.getValue().equalsIgnoreCase(value)
+                || ON_BEHALF_OF.getValue().equalsIgnoreCase(value)) {
+                return AuthorizationGrantType.JWT_BEARER;
             }
             return new AuthorizationGrantType(value);
         }

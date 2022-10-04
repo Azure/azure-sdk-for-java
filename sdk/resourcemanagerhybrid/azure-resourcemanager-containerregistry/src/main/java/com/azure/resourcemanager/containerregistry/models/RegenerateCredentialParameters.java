@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to regenerate the login credential. */
 @Fluent
 public final class RegenerateCredentialParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateCredentialParameters.class);
-
     /*
      * Specifies name of the password which should be regenerated -- password
      * or password2.
@@ -48,10 +45,12 @@ public final class RegenerateCredentialParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model RegenerateCredentialParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegenerateCredentialParameters.class);
 }

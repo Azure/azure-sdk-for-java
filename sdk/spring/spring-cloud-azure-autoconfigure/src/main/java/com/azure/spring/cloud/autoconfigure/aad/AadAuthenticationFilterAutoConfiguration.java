@@ -7,11 +7,11 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfi
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
-import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -40,25 +41,27 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @Import(AadPropertiesConfiguration.class)
 public class AadAuthenticationFilterAutoConfiguration {
-    /**
-     * The property prefix
-     */
-    public static final String PROPERTY_PREFIX = "spring.cloud.azure.active-directory";
 
-    private static final Logger LOG = LoggerFactory.getLogger(AadAuthenticationProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
     private final AadAuthenticationProperties properties;
     private final AadAuthorizationServerEndpoints endpoints;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadAuthenticationFilterAutoConfiguration}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the RestTemplateBuilder
      */
-    public AadAuthenticationFilterAutoConfiguration(AadAuthenticationProperties properties) {
+    public AadAuthenticationFilterAutoConfiguration(
+            AadAuthenticationProperties properties,
+            RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-            properties.getProfile().getTenantId());
+        this.restTemplateBuilder = restTemplateBuilder;
+        this.endpoints = new AadAuthorizationServerEndpoints(
+                properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                properties.getProfile().getTenantId());
     }
 
     /**
@@ -71,13 +74,16 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
-        LOG.info("AadAuthenticationFilter Constructor.");
+    public AadAuthenticationFilter aadAuthenticationFilter(
+            ResourceRetriever resourceRetriever,
+            JWKSetCache jwkSetCache) {
+        LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
             resourceRetriever,
-            jwkSetCache
+            jwkSetCache,
+            restTemplateBuilder
         );
     }
 
@@ -91,7 +97,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(AadAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == true")
     public AadAppRoleStatelessAuthenticationFilter aadStatelessAuthFilter(ResourceRetriever resourceRetriever) {
-        LOG.info("Creating AadStatelessAuthFilter bean.");
+        LOGGER.info("Creating AadStatelessAuthFilter bean.");
         return new AadAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
                 endpoints,
@@ -110,11 +116,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever jwtResourceRetriever() {
-        return new DefaultResourceRetriever(
-            (int) properties.getJwtConnectTimeout().toMillis(),
-            (int) properties.getJwtReadTimeout().toMillis(),
-            properties.getJwtSizeLimit()
-        );
+        return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
     /**

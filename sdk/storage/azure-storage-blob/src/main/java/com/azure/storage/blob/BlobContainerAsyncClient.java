@@ -12,6 +12,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -20,9 +21,11 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
-import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
-import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
+import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -1133,8 +1136,8 @@ public final class BlobContainerAsyncClient {
 
     /*
      * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
-     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobFlatSegmentResponse> backing the
-     * PagedFlux.
+     * ContainerClient. Applies the given timeout to each
+     * Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> backing the PagedFlux.
      *
      * @param options {@link ListBlobsOptions}.
      * @param timeout An optional timeout to be applied to the network asynchronous operations.
@@ -1194,17 +1197,17 @@ public final class BlobContainerAsyncClient {
      *
      * @return Emits the successful response.
      */
-    private Mono<ContainersListBlobFlatSegmentResponse> listBlobsFlatSegment(String marker, ListBlobsOptions options,
-        Duration timeout) {
+    private Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
+        listBlobsFlatSegment(String marker, ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
         ArrayList<ListBlobsIncludeItem> include =
             options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(),
-                marker, options.getMaxResultsPerPage(), include,
-                null, null, Context.NONE), timeout);
+            this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponseAsync(containerName,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+            timeout);
     }
 
     /**
@@ -1306,7 +1309,8 @@ public final class BlobContainerAsyncClient {
 
     /*
      * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
-     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobHierarchySegmentResponse> backing the
+     * ContainerClient. Applies the given timeout to each
+     * Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> backing the
      * PagedFlux.
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
@@ -1359,8 +1363,8 @@ public final class BlobContainerAsyncClient {
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
-    private Mono<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(String marker, String delimiter,
-        ListBlobsOptions options, Duration timeout) {
+    private Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
+        listBlobsHierarchySegment(String marker, String delimiter, ListBlobsOptions options, Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
         if (options.getDetails().getRetrieveSnapshots()) {
             throw LOGGER.logExceptionAsError(
@@ -1533,51 +1537,26 @@ public final class BlobContainerAsyncClient {
             });
     }
 
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     *
-//     * @param destinationContainerName The new name of the container.
-//     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
 //        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
 //    }
-//
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     *
-//     * @param options {@link BlobContainerRenameOptions}
-//     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
 //        try {
 //            return withContext(context -> this.renameWithResponse(options, context));
 //        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
+//            return monoError(LOGGER, ex);
 //        }
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options, Context context) {
-//        // TODO (gapra) : Change this when we have migrated to new generator. There will be a cleaner way to do this by
-//        //  calling the container constructor directly instead of needing to do URI surgery
 //        BlobContainerAsyncClient destinationContainerClient = getServiceAsyncClient()
 //            .getBlobContainerAsyncClient(options.getDestinationContainerName());
 //        return destinationContainerClient.renameWithResponseHelper(this.getBlobContainerName(), options, context);
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponseHelper(String sourceContainerName,
 //        BlobContainerRenameOptions options, Context context) {
 //        StorageImplUtils.assertNotNull("options", options);
@@ -1587,7 +1566,7 @@ public final class BlobContainerAsyncClient {
 //
 //        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
 //            || requestConditions.getTagsConditions() != null) {
-//            throw logger.logExceptionAsError(new UnsupportedOperationException(
+//            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
 //                "Lease-Id is the only HTTP access condition supported for this API"));
 //        }
 //

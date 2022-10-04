@@ -35,7 +35,7 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response}.
      */
     Response<TestJob> createWithResponse(
         String resourceGroupName,
@@ -67,7 +67,7 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response}.
      */
     Response<TestJob> getWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
@@ -94,7 +94,7 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> resumeWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
@@ -121,7 +121,7 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> stopWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);
@@ -148,7 +148,7 @@ public interface TestJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> suspendWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context);

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkInterfaceMigrationPhase. */
+/** Migration phase of Network Interface resource. */
 public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<NetworkInterfaceMigrationPhase> {
     /** Static value None for NetworkInterfaceMigrationPhase. */
     public static final NetworkInterfaceMigrationPhase NONE = fromString("None");
@@ -36,7 +36,11 @@ public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<N
         return fromString(name, NetworkInterfaceMigrationPhase.class);
     }
 
-    /** @return known NetworkInterfaceMigrationPhase values. */
+    /**
+     * Gets known NetworkInterfaceMigrationPhase values.
+     *
+     * @return known NetworkInterfaceMigrationPhase values.
+     */
     public static Collection<NetworkInterfaceMigrationPhase> values() {
         return values(NetworkInterfaceMigrationPhase.class);
     }

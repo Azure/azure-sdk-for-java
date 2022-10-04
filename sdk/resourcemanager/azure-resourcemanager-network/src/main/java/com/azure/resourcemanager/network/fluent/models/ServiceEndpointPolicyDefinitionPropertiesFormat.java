@@ -31,8 +31,7 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     private List<String> serviceResources;
 
     /*
-     * The provisioning state of the service endpoint policy definition
-     * resource.
+     * The provisioning state of the service endpoint policy definition resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;

@@ -94,8 +94,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathPieces[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
-                    parts.getAccountName()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority() + "/" + parts.getAccountName());
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
@@ -117,7 +116,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathSegments[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
             }
 
             // Attempt to get the SAS token from the URL passed
@@ -216,6 +215,7 @@ public final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 

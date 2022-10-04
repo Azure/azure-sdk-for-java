@@ -35,6 +35,10 @@ public final class AssetTrackImpl implements AssetTrack, AssetTrack.Definition, 
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AssetTrackInner innerModel() {
         return this.innerObject;
     }

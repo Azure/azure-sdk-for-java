@@ -4,16 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import org.springframework.http.HttpEntity;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
-import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -32,18 +30,14 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     @Override
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
-        RequestEntity<?> requestEntity = super.convert(request);
-        Assert.notNull(requestEntity, "requestEntity can not be null");
-
-        HttpHeaders httpHeaders = getHttpHeaders();
-        Optional.of(requestEntity)
-                .map(HttpEntity::getHeaders)
-                .ifPresent(httpHeaders::putAll);
-        MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
-        Assert.notNull(body, "body can not be null");
-        Optional.ofNullable(getHttpBody(request)).ifPresent(body::putAll);
-        return new RequestEntity<>(body, httpHeaders, requestEntity.getMethod(), requestEntity.getUrl());
+        addHeadersConverter(headersConverter);
+        addParametersConverter(parametersConverter);
+        return super.convert(request);
     }
+
+    private final Converter<OAuth2AuthorizationCodeGrantRequest, HttpHeaders> headersConverter = (request) -> getHttpHeaders();
+
+    private final Converter<OAuth2AuthorizationCodeGrantRequest, MultiValueMap<String, String>> parametersConverter = this::getHttpBody;
 
     /**
      * Additional default headers information.

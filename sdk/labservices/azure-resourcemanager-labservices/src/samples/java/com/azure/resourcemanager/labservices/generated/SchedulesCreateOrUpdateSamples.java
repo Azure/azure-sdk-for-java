@@ -6,13 +6,12 @@ package com.azure.resourcemanager.labservices.generated;
 
 import com.azure.resourcemanager.labservices.models.RecurrenceFrequency;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 /** Samples for Schedules CreateOrUpdate. */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/putSchedule.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/putSchedule.json
      */
     /**
      * Sample code: putSchedule.
@@ -30,7 +29,7 @@ public final class SchedulesCreateOrUpdateSamples {
                 new RecurrencePattern()
                     .withFrequency(RecurrenceFrequency.DAILY)
                     .withInterval(2)
-                    .withExpirationDate(LocalDate.parse("2020-08-14")))
+                    .withExpirationDate(OffsetDateTime.parse("2020-08-14T23:59:59Z")))
             .withTimeZoneId("America/Los_Angeles")
             .withNotes("Schedule 1 for students")
             .create();

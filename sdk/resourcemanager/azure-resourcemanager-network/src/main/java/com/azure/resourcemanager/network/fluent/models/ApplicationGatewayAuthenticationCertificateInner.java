@@ -19,8 +19,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
     private ApplicationGatewayAuthenticationCertificatePropertiesFormat innerProperties;
 
     /*
-     * Name of the authentication certificate that is unique within an
-     * Application Gateway.
+     * Name of the authentication certificate that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

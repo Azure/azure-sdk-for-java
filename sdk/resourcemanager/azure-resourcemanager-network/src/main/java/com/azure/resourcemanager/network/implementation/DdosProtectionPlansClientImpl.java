@@ -215,7 +215,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +267,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -454,7 +454,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -507,7 +507,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -535,14 +535,7 @@ public final class DdosProtectionPlansClientImpl
     public Mono<DdosProtectionPlanInner> getByResourceGroupAsync(
         String resourceGroupName, String ddosProtectionPlanName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ddosProtectionPlanName)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -618,7 +611,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -678,7 +671,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -897,7 +890,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -957,7 +950,7 @@ public final class DdosProtectionPlansClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -987,14 +980,7 @@ public final class DdosProtectionPlansClientImpl
     public Mono<DdosProtectionPlanInner> updateTagsAsync(
         String resourceGroupName, String ddosProtectionPlanName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1054,7 +1040,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1097,7 +1083,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1194,7 +1180,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1249,7 +1235,7 @@ public final class DdosProtectionPlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1336,7 +1322,8 @@ public final class DdosProtectionPlansClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1372,7 +1359,8 @@ public final class DdosProtectionPlansClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1409,7 +1397,8 @@ public final class DdosProtectionPlansClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1446,7 +1435,8 @@ public final class DdosProtectionPlansClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

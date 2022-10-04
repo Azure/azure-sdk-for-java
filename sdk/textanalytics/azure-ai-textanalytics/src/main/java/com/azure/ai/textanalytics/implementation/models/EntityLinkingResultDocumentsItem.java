@@ -4,10 +4,37 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import java.util.List;
 
 /** The EntityLinkingResultDocumentsItem model. */
-@Immutable
+@Fluent
 public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocumentResult {
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResultDocumentsItem setEntities(List<LinkedEntity> entities) {
+        super.setEntities(entities);
+        return this;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResultDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

@@ -62,7 +62,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @return the url value.
@@ -72,7 +72,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Set the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @param url the url value to set.

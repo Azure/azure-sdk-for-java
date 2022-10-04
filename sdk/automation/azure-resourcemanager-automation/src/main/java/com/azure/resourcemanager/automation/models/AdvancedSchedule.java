@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the create Advanced Schedule. */
 @Fluent
 public final class AdvancedSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvancedSchedule.class);
-
     /*
      * Days of the week that the job should execute on.
      */
@@ -22,8 +18,7 @@ public final class AdvancedSchedule {
     private List<String> weekDays;
 
     /*
-     * Days of the month that the job should execute on. Must be between 1 and
-     * 31.
+     * Days of the month that the job should execute on. Must be between 1 and 31.
      */
     @JsonProperty(value = "monthDays")
     private List<Integer> monthDays;

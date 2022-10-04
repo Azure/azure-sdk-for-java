@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
@@ -89,7 +90,8 @@ class CBSChannelTest extends IntegrationTestBase {
 
         retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(1));
         reactorProvider = new ReactorProvider();
-        handlerProvider = new ReactorHandlerProvider(reactorProvider);
+
+        handlerProvider = new ReactorHandlerProvider(reactorProvider, new TestMeter(false));
 
         clientOptions.setHeaders(
             Arrays.asList(new Header("name", product), new Header("version", clientVersion)));
@@ -113,7 +115,7 @@ class CBSChannelTest extends IntegrationTestBase {
             connectionProperties.getSharedAccessKeyName(), connectionProperties.getSharedAccessKey());
         ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic(), clientOptions,
+            AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), clientOptions,
             SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-client-version");
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer);
@@ -137,7 +139,7 @@ class CBSChannelTest extends IntegrationTestBase {
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionProperties.getEndpoint().getHost(),
             invalidToken, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic(), clientOptions,
+            AmqpTransportType.AMQP, RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(), clientOptions,
             SslDomain.VerifyMode.VERIFY_PEER, "test-product", "test-client-version");
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
             azureTokenManagerProvider, messageSerializer);

@@ -27,7 +27,11 @@ public final class SourceTriggerEvent extends ExpandableStringEnum<SourceTrigger
         return fromString(name, SourceTriggerEvent.class);
     }
 
-    /** @return known SourceTriggerEvent values. */
+    /**
+     * Gets known SourceTriggerEvent values.
+     *
+     * @return known SourceTriggerEvent values.
+     */
     public static Collection<SourceTriggerEvent> values() {
         return values(SourceTriggerEvent.class);
     }
