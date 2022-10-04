@@ -14,8 +14,9 @@
 | -----------------  |:----------------------- |:------------------ |
 | All Tcp calls      | 5s                      | 5s                 |
 
--`Network Request Timeout`: can be changed through `directConnectionConfig.setNetworkRequestTimeout`. Allowed value [5, 10].
--`Connection Timeout`: can be changed through `directConnectionConfig.setConnectionTimeout`
+- `Network Request Timeout`: can be changed through `directConnectionConfig.setNetworkRequestTimeout`. Allowed value [5, 10].
+- `Connection Timeout`: can be changed through `directConnectionConfig.setConnectionTimeout`
+
 
 ### Retry config
 `Note: the following config only tracks what would happen within a region.`
