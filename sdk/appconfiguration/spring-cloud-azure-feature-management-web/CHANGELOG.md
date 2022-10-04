@@ -2,15 +2,13 @@
 
 ## 4.0.0-beta.2 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Dynamic Feature release with:
+  - Geo-replication
+  - Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
+  - Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
 
 ## 4.0.0-beta.1 (2022-06-21)
+
 - Adds Support for Dynamic Features.
 - Updated to use both the old and new Feature Management schema.
 
