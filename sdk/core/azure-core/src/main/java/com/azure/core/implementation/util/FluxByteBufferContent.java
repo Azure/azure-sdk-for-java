@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.BiConsumer;
 
 /**
@@ -24,10 +25,13 @@ import java.util.function.BiConsumer;
 public final class FluxByteBufferContent extends BinaryDataContent {
 
     private final Flux<ByteBuffer> content;
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
     private final AtomicReference<FluxByteBufferContent> cachedReplayableContent = new AtomicReference<>();
     private final Long length;
     private final boolean isReplayable;
+
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<FluxByteBufferContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(FluxByteBufferContent.class, byte[].class, "bytes");
 
     /**
      * Creates an instance of {@link FluxByteBufferContent}.
@@ -66,8 +70,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public Long getLength() {
-        if (bytes.get() != null) {
-            return (long) bytes.get().length;
+        byte[] data = BYTES_UPDATER.get(this);
+        if (data != null) {
+            return (long) data.length;
         }
         return length;
     }
@@ -79,12 +84,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
