@@ -51,17 +51,15 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         return this;
     }
 
-    Mono<Boolean> registerCache() {
-        return Mono.defer(() -> {
+    Boolean registerCache() {
             try {
                 PersistenceSettings persistenceSettings = getPersistenceSettings();
                 cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
-                return Mono.just(true);
+                return true;
             } catch (Throwable t) {
-                return Mono.error(LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t)));
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t));
             }
-        });
     }
 
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
