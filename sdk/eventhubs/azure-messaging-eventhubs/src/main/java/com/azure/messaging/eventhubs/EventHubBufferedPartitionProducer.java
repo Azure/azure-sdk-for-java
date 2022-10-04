@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
-import com.azure.messaging.eventhubs.implementation.UncheckedInterruptedException;
+import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
@@ -208,7 +208,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
      *
      * @return A new EventDataBatch
      *
-     * @throws UncheckedInterruptedException If an exception occurred when trying to create a new batch.  It is
+     * @throws UncheckedExecutionException If an exception occurred when trying to create a new batch.  It is
      *     possible when the thread is interrupted while creating the batch.
      */
     private EventDataBatch createNewBatch() {
@@ -216,9 +216,9 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             return batch.toFuture().get();
         } catch (InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedInterruptedException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedExecutionException(e));
         } catch (ExecutionException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedInterruptedException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedExecutionException(e));
         }
     }
 

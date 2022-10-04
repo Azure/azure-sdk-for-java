@@ -8,7 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
-import com.azure.messaging.eventhubs.implementation.UncheckedInterruptedException;
+import com.azure.messaging.eventhubs.implementation.UncheckedExecutionException;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -280,7 +280,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         this.currentBatch = null;
                     }
                 }
-            } catch (UncheckedInterruptedException exception) {
+            } catch (UncheckedExecutionException exception) {
                 logger.info("An exception occurred while trying to create a new batch.", exception);
 
                 if (this.lastError != null) {

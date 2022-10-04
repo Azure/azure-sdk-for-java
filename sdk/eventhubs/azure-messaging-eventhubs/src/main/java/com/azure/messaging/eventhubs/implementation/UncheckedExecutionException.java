@@ -8,13 +8,13 @@ import java.util.concurrent.ExecutionException;
 /**
  * Adding an unchecked {@link InterruptedException}.
  */
-public class UncheckedInterruptedException extends RuntimeException {
+public class UncheckedExecutionException extends RuntimeException {
     /**
      * Creates a new instance.
      *
      * @param error Exception that occurred.
      */
-    public UncheckedInterruptedException(InterruptedException error) {
+    public UncheckedExecutionException(InterruptedException error) {
         super("Unable to create a new batch because thread was interrupted.", error);
     }
 
@@ -23,7 +23,7 @@ public class UncheckedInterruptedException extends RuntimeException {
      *
      * @param error Error that occurred.
      */
-    public UncheckedInterruptedException(ExecutionException error) {
+    public UncheckedExecutionException(ExecutionException error) {
         super("Unable to create a new batch because task was aborted.", error);
     }
 }
