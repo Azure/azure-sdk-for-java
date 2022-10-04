@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public class AbstractiveSummarizationTaskParametersBase {
     /*
-     * The sentenceCount property.
+     * It controls the approximate number of sentences in the output summaries.
      */
     @JsonProperty(value = "sentenceCount")
     private Integer sentenceCount;
@@ -31,7 +31,7 @@ public class AbstractiveSummarizationTaskParametersBase {
     private List<PhraseControl> phraseControls;
 
     /**
-     * Get the sentenceCount property: The sentenceCount property.
+     * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @return the sentenceCount value.
      */
@@ -40,7 +40,7 @@ public class AbstractiveSummarizationTaskParametersBase {
     }
 
     /**
-     * Set the sentenceCount property: The sentenceCount property.
+     * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @param sentenceCount the sentenceCount value to set.
      * @return the AbstractiveSummarizationTaskParametersBase object itself.

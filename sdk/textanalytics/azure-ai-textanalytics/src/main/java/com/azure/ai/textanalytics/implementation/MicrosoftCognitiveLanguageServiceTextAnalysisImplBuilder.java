@@ -10,7 +10,9 @@ import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -20,6 +22,7 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -46,11 +49,15 @@ import java.util.stream.Collectors;
 public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
         implements HttpTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 ConfigurationTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
+                TokenCredentialTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 AzureKeyCredentialTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder>,
                 EndpointTrait<MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] {"https://cognitiveservices.azure.com/.default"};
 
     @Generated private final Map<String, String> properties = new HashMap<>();
 
@@ -145,6 +152,19 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     @Override
     public MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated private TokenCredential tokenCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -275,6 +295,9 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
         policies.add(new CookiePolicy());
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
+        }
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()
