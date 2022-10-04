@@ -44,7 +44,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndHangupTest", next))
             .buildAsyncClient();
 
@@ -92,7 +92,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
             .buildAsyncClient();
 
@@ -142,7 +142,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 5. verify that call connection cannot be found.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("startACallWithMultipleTargetsTest", next))
             .buildAsyncClient();
 

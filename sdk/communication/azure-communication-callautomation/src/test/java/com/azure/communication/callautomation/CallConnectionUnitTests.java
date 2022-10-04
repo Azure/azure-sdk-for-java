@@ -248,7 +248,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
-            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))), CALL_OPERATION_CONTEXT);
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))));
 
         assertNotNull(removeParticipantsResult);
         assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());
