@@ -1,19 +1,21 @@
-## Cosmos DB Java SDK – Detailing timeout config and Retries config
+## Cosmos DB Java SDK – Timeout configurations and Retry configurations
 
 ### Timeout config - Gateway
 
 | OperationType      | Network Request Timeout | Connection Timeout |
-| -----------------  |------------------------ |------------------ |
+| -----------------  |------------------------ |------------------- |
 | QueryPlan          | 5s                      | 45s                |
 | AddressRefresh     | 5s                      | 45s                |
-| Others             | 65s                     | 45s                |
+| Other Http calls   | 60s                     | 45s                |
 
 
 ### Timeout config - Direct
 | OperationType      | Network Request Timeout | Connection Timeout |
 | -----------------  |:----------------------- |:------------------ |
-| All                | 5s                      | 5s                 |
+| All Tcp calls      | 5s                      | 5s                 |
 
+-`Network Request Timeout`: can be changed through `directConnectionConfig.setNetworkRequestTimeout`. Allowed value [5, 10].
+-`Connection Timeout`: can be changed through `directConnectionConfig.setConnectionTimeout`
 
 ### Retry config
 `Note: the following config only tracks what would happen within a region.`
