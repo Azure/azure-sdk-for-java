@@ -46,6 +46,12 @@ public final class PathsFlushDataHeaders {
     private String xMsEncryptionKeySha256;
 
     /*
+     * The x-ms-lease-renewed property.
+     */
+    @JsonProperty(value = "x-ms-lease-renewed")
+    private Boolean xMsLeaseRenewed;
+
+    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
@@ -85,6 +91,9 @@ public final class PathsFlushDataHeaders {
             this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        if (rawHeaders.getValue("x-ms-lease-renewed") != null) {
+            this.xMsLeaseRenewed = Boolean.parseBoolean(rawHeaders.getValue("x-ms-lease-renewed"));
+        }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
@@ -199,6 +208,26 @@ public final class PathsFlushDataHeaders {
      */
     public PathsFlushDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseRenewed property: The x-ms-lease-renewed property.
+     *
+     * @return the xMsLeaseRenewed value.
+     */
+    public Boolean isXMsLeaseRenewed() {
+        return this.xMsLeaseRenewed;
+    }
+
+    /**
+     * Set the xMsLeaseRenewed property: The x-ms-lease-renewed property.
+     *
+     * @param xMsLeaseRenewed the xMsLeaseRenewed value to set.
+     * @return the PathsFlushDataHeaders object itself.
+     */
+    public PathsFlushDataHeaders setXMsLeaseRenewed(Boolean xMsLeaseRenewed) {
+        this.xMsLeaseRenewed = xMsLeaseRenewed;
         return this;
     }
 
