@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
+import java.nio.ByteBuffer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -21,7 +22,7 @@ import static java.lang.StrictMath.toIntExact;
 
 /**
  * This class provides helper methods for lazy/chunked download.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class ChunkedDownloadUtils {
@@ -99,16 +100,10 @@ public class ChunkedDownloadUtils {
             });
     }
 
-    public static <T> Flux<T> downloadChunk(Integer chunkNum, BlobDownloadAsyncResponse initialResponse,
-        BlobRange finalRange, ParallelTransferOptions finalParallelTransferOptions,
-        BlobRequestConditions requestConditions, long newCount,
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader,
-        Function<BlobDownloadAsyncResponse, Flux<T>> returnTransformer) {
-        // The first chunk was retrieved during setup.
-        if (chunkNum == 0) {
-            return returnTransformer.apply(initialResponse);
-        }
-
+    public static <T> Flux<T> downloadChunk(Integer chunkNum, BlobRange finalRange,
+        ParallelTransferOptions finalParallelTransferOptions, BlobRequestConditions requestConditions, long newCount,
+        BiFunction<BlobRange, BlobRequestConditions, Flux<ByteBuffer>> downloader,
+        Function<Flux<ByteBuffer>, Flux<T>> returnTransformer) {
         // Calculate whether we need a full chunk or something smaller because we are at the end.
         long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
         long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
@@ -116,21 +111,17 @@ public class ChunkedDownloadUtils {
         BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
         // Make the download call.
-        return downloader.apply(chunkRange, requestConditions)
-            .subscribeOn(Schedulers.boundedElastic())
-            .flatMapMany(returnTransformer);
+        return returnTransformer.apply(downloader.apply(chunkRange, requestConditions)
+            .subscribeOn(Schedulers.boundedElastic()));
     }
 
     private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
         // We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
         return new BlobRequestConditions()
-            .setIfModifiedSince(
-                requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(
-                requestConditions.getIfModifiedSince())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfModifiedSince())
             .setIfMatch(etag)
-            .setIfNoneMatch(
-                requestConditions.getIfNoneMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setLeaseId(requestConditions.getLeaseId());
     }
 

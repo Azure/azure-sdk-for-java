@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -50,22 +51,29 @@ class BlobChunkedDownloader {
 
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (range, conditions)
             -> client.downloadWithResponse(range, null, conditions, false);
+        BiFunction<BlobRange, BlobRequestConditions, Flux<ByteBuffer>> chunkDownloadFunc = (range, conditions) ->
+            client.downloadStreamWithResponse(range, null, conditions, false).flatMapMany(Response::getValue);
 
         /* We don't etag lock since the Changefeed can append to the blob while we are reading it. */
         return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc, false)
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
+                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
 
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount, options.getBlockSizeLong());
 
-                // In case it is an empty blob, this ensures we still actually perform a download operation.
-                numChunks = numChunks == 0 ? 1 : numChunks;
+                // Begin by writing the initial download first chunk response to file, then download additional chunks
+                // if necessary, finishing by returning the initial download response as the final response.
+                //
+                // If the number of chunks is less than or equal to 1, or in terms of downloading the blob is empty or
+                // was downloaded in the first chunk, there are no additional chunks to download.
+                Flux<ByteBuffer> additionalChunksDownload = (numChunks <= 1)
+                    ? Flux.empty()
+                    : Flux.range(1, numChunks).flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum,
+                        range, options, finalConditions, newCount, chunkDownloadFunc, flux -> flux));
 
-                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-                return Flux.range(0, numChunks)
-                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
-                        range, options, finalConditions, newCount, downloadFunc, BlobDownloadAsyncResponse::getValue));
+                return initialResponse.getValue().concatWith(additionalChunksDownload);
             });
     }
 

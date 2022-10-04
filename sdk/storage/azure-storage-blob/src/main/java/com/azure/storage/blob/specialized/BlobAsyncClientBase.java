@@ -1564,41 +1564,60 @@ public class BlobAsyncClientBase {
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> firstChunkDownloadFunc =
             (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, context);
 
+        /*
+         * Downloads additional chunks.
+         */
+        BiFunction<BlobRange, BlobRequestConditions, Flux<ByteBuffer>> chunkDownloadFunc =
+            (range, conditions) -> this.downloadRange(range, requestConditions, requestConditions.getIfMatch(),
+                    rangeGetContentMd5, context)
+                .flatMapMany(Response::getValue);
+
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
-            downloadFunc, true)
+            firstChunkDownloadFunc, true)
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
+                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
+
+                // The initial response is the only response that will have its properties converted to the type
+                // returned by the API and it will be used as the final response.
+                Response<BlobProperties> finalResponse = ModelHelper.buildBlobPropertiesResponse(initialResponse);
 
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
                     finalParallelTransferOptions.getBlockSizeLong());
 
-                // In case it is an empty blob, this ensures we still actually perform a download operation.
-                numChunks = numChunks == 0 ? 1 : numChunks;
-
-                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-                return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
-                        finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                // Begin by writing the initial download first chunk response to file, then download additional chunks
+                // if necessary, finishing by returning the initial download response as the final response.
+                //
+                // If the number of chunks is less than or equal to 1, or in terms of downloading the blob is empty or
+                // was downloaded in the first chunk, there are no additional chunks to download.
+                Flux<Void> additionalChunksDownload = (numChunks <= 1)
+                    ? Flux.empty()
+                    : Flux.range(1, numChunks).flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum,
+                        finalRange, finalParallelTransferOptions, finalConditions, newCount, chunkDownloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild()
-                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()).flux()),
+                        finalParallelTransferOptions.getMaxConcurrency());
 
-                    // Only the first download call returns a value.
-                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
+                return writeBodyToFile(initialResponse.getValue(), file, 0, finalParallelTransferOptions,
+                    progressReporter == null ? null : progressReporter.createChild())
+                    .thenMany(additionalChunksDownload)
+                    .then(Mono.just(finalResponse));
             });
     }
 
-    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
+    private static Mono<Void> writeBodyToFile(Flux<ByteBuffer> response, AsynchronousFileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         ProgressReporter progressReporter) {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+
+        return FluxUtil.writeToAsynchronousByteChannel(FluxUtil.addProgressReporting(response, progressReporter),
+            IOUtils.toAsynchronousByteChannel(file, position));
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
