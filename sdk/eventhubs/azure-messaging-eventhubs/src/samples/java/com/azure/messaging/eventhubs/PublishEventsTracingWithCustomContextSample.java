@@ -23,7 +23,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
  * on {@link EventData}. Note that in most cases (when you use Reactor or write synchronous code)
  * setting context manually should not be necessary.
  */
-public class PublishEventsJaegerExporterSample {
+public class PublishEventsTracingWithCustomContextSample {
 
     private static final Tracer TRACER = configureJaegerExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
@@ -62,7 +62,7 @@ public class PublishEventsJaegerExporterSample {
             .connectionString(CONNECTION_STRING, "<eventHub Name>")
             .buildAsyncProducerClient();
 
-        // BEGIN: readme-sample-context-manual-propagation-amqp
+        // BEGIN: sample-trace-context-manual-propagation
         Flux<EventData> events = Flux.just(
             new EventData("EventData Sample 1"),
             new EventData("EventData Sample 2"));
@@ -89,7 +89,7 @@ public class PublishEventsJaegerExporterSample {
                 return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
             })
             .block();
-        // END: readme-sample-context-manual-propagation-amqp
+        // END: sample-trace-context-manual-propagatio
         producer.close();
     }
 

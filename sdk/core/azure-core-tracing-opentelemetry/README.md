@@ -122,36 +122,9 @@ try {
 
 Send a single event/message using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing enabled.
 
-Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object:
+Users can additionally pass custom value of the trace context to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object.
+Please refer to EventHubs examples  
 
-```java readme-sample-context-manual-propagation-amqp
-Flux<EventData> events = Flux.just(
-    new EventData("EventData Sample 1"),
-    new EventData("EventData Sample 2"));
-
-// Create a batch to send the events.
-final AtomicReference<EventDataBatch> batchRef = new AtomicReference<>(
-    producer.createBatch().block());
-
-final AtomicReference<io.opentelemetry.context.Context> traceContextRef = new AtomicReference<>(io.opentelemetry.context.Context.current());
-
-// when using async clients and instrumenting without ApplicationInsights or OpenTelemetry agent, context needs to be propagated manually
-// you would also want to propagate it manually when not making spans current.
-// we'll propagate context to events (to propagate it over to consumer)
-events.collect(batchRef::get, (b, e) ->
-        b.tryAdd(e.addContext(PARENT_TRACE_CONTEXT_KEY, traceContextRef.get())))
-    .flatMap(b -> producer.send(b))
-    .doFinally(i -> Span.fromContext(traceContextRef.get()).end())
-    .contextWrite(ctx -> {
-        // this block is executed first, we'll create an outer span, which usually represents incoming request
-        // or some logical operation
-        Span span = TRACER.spanBuilder("my-span").startSpan();
-
-        // and pass the new context with span to reactor for EventHubs producer client to pick it up.
-        return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
-    })
-    .block();
-```
 
 ## Troubleshooting
 
