@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network function vendor details. */
 @Fluent
 public final class VendorDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorDetails.class);
-
     /*
      * The network function vendor name.
      */
@@ -26,6 +22,10 @@ public final class VendorDetails {
      */
     @JsonProperty(value = "skuList")
     private List<SkuOverviewInner> skuList;
+
+    /** Creates an instance of VendorDetails class. */
+    public VendorDetails() {
+    }
 
     /**
      * Get the vendorName property: The network function vendor name.

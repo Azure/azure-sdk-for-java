@@ -11,8 +11,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultConfiguration;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

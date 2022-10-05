@@ -2174,6 +2174,8 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
@@ -2630,6 +2632,13 @@
     <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
+  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
+    <Method name="computeHash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
   <!-- Non Shipped code -->
   <Match>
     <Or>
@@ -2644,6 +2653,21 @@
                   UPM_UNCALLED_PRIVATE_METHOD,
                   DLS_DEAD_LOCAL_STORE,
                   DM_STRING_TOSTRING"/>
+  </Match>
+
+  <!-- Implementations of BinaryDataContent were transitioned from AtomicReference<byte[]> to volatile byte[] and AtomicReferenceFieldUpdater to reduce object size. -->
+  <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
+  <Match>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
+    <Or>
+      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.FileContent"/>
+      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.SerializableContent"/>
+      <Class name="com.azure.core.implementation.util.StringContent"/>
+    </Or>
+    <Field name="bytes"/>
   </Match>
 
 </FindBugsFilter>

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CapacityReservations Delete. */
 public final class CapacityReservationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservations_Delete_MinimumSet_Gen.
@@ -26,7 +26,7 @@ public final class CapacityReservationsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservations_Delete_MaximumSet_Gen.

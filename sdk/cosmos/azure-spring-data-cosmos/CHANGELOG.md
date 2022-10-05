@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.28.0-beta.1 (Unreleased)
+### 3.29.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.28.0 (2022-09-30)
+
+#### Bugs Fixed
+* Fixing ARRAY_CONTAINS annotated query bug introduced by fixing to IN annotated queries. - See [PR 31179](https://github.com/Azure/azure-sdk-for-java/pull/31179)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.37.0`.
 
 ### 3.27.0 (2022-09-15)
 
