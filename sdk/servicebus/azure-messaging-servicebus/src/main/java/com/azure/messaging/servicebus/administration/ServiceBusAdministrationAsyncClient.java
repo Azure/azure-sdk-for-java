@@ -27,7 +27,6 @@ import com.azure.messaging.servicebus.administration.implementation.EntityHelper
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.Utility;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
@@ -71,29 +70,29 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.NUMBER_OF_ELEMENTS;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.QUEUES_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.TOPICS_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.addSupplementaryAuthHeader;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.extractPage;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateQueueBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateRuleBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateSubscriptionBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateTopicBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueuePropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesSimpleResponse;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesSimpleResponse;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getTitleValue;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicPropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getTracingContext;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getUpdateRuleBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getUpdateTopicBody;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.validateQueueName;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.validateRuleName;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.validateSubscriptionName;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.validateTopicName;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.NUMBER_OF_ELEMENTS;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.QUEUES_ENTITY_TYPE;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.addSupplementaryAuthHeader;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.extractPage;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateQueueBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateRuleBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateTopicBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueuePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesSimpleResponse;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesSimpleResponse;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTitleValue;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopicPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTracingContext;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateQueueName;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateRuleName;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateSubscriptionName;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateTopicName;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
@@ -1426,11 +1425,11 @@ public final class ServiceBusAdministrationAsyncClient {
             final Context contextWithHeaders
                 = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
-            String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
+            final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
             if (forwardTo != null) {
                 createQueueOptions.setForwardTo(forwardTo);
             }
-            String forwardDlq
+            final String forwardDlq
                 = getForwardDlqEntity(createQueueOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
             if (forwardDlq != null) {
                 createQueueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
@@ -1496,11 +1495,11 @@ public final class ServiceBusAdministrationAsyncClient {
             final Context contextWithHeaders
                 = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
-            String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
+            final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
             if (forwardTo != null) {
                 subscriptionOptions.setForwardTo(forwardTo);
             }
-            String forwardDlq
+            final String forwardDlq
                 = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
             if (forwardDlq != null) {
                 subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
@@ -1678,7 +1677,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
-                        final HttpResponse notFoundResponse = new Utility.EntityNotFoundHttpResponse<>(deserialize);
+                        final HttpResponse notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
                         sink.error(new ResourceNotFoundException(String.format("Queue '%s' does not exist.", queueName),
                             notFoundResponse));
                     } else {
@@ -1726,7 +1725,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
-                        final HttpResponse notFoundResponse = new Utility.EntityNotFoundHttpResponse<>(deserialize);
+                        final HttpResponse notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
                         sink.error(new ResourceNotFoundException(String.format(
                             "Subscription '%s' in topic '%s' does not exist.", topicName, subscriptionName),
                             notFoundResponse));
@@ -1785,7 +1784,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
-                        final HttpResponse notFoundResponse = new Utility.EntityNotFoundHttpResponse<>(deserialize);
+                        final HttpResponse notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(deserialize);
                         sink.error(new ResourceNotFoundException(String.format("Topic '%s' does not exist.", topicName),
                             notFoundResponse));
                     } else {
@@ -1892,11 +1891,11 @@ public final class ServiceBusAdministrationAsyncClient {
 
         final Context contextWithHeaders
             = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
-        String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
+        final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
         }
-        String forwardDlq
+        final String forwardDlq
             = getForwardDlqEntity(queue.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
         if (forwardDlq != null) {
             queue.setForwardDeadLetteredMessagesTo(forwardDlq);
@@ -2035,11 +2034,11 @@ public final class ServiceBusAdministrationAsyncClient {
         context = context == null ? Context.NONE : context;
         final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
             .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
-        String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
+        final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             subscription.setForwardTo(forwardTo);
         }
-        String forwardDlq
+        final String forwardDlq
             = getForwardDlqEntity(subscription.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
         if (forwardDlq != null) {
             subscription.setForwardDeadLetteredMessagesTo(forwardDlq);

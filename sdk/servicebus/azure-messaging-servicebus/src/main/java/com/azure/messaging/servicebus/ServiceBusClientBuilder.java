@@ -44,7 +44,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnec
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.apache.qpid.proton.engine.SslDomain;
