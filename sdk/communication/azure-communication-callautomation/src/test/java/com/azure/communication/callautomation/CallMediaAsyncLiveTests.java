@@ -98,7 +98,7 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
          * 2. create a call from source to one ACS target.
          * 3. get updated call properties and check for the connected state.
          * 4. prompt and recognize dtmf tones from target participant
-         * 4. hang up the call.
+         * 5. hang up the call.
          */
 
         CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
@@ -111,7 +111,6 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
 
         try {
             String callbackUrl = "https://localhost";
-            //String promptUrl = "https://localhost/audio/bot-hold-music-2.wav";
             CommunicationIdentifier source = identityClient.createUser().block();
             PhoneNumberIdentifier targetUser = new PhoneNumberIdentifier(PHONE_USER_1);
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(targetUser));
@@ -140,13 +139,11 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
                 .setStopTones(stopTones)
                 .setInterToneTimeout(Duration.ofSeconds(5));
             callMediaRecognizeDtmfOptions.setInitialSilenceTimeout(Duration.ofSeconds(15));
-            //callMediaRecognizeDtmfOptions.setPlayPrompt(new FileSource().setUri(promptUrl));
             callMediaRecognizeDtmfOptions.setPlayPrompt(new FileSource().setUri(MEDIA_SOURCE));
 
             Response<Void> dtmfResponse = callMediaAsync.startRecognizingWithResponse(new CallMediaRecognizeDtmfOptions(targetUser, 5)).block();
             assertNotNull(dtmfResponse);
             assertEquals(202, dtmfResponse.getStatusCode());
-            waitForOperationCompletion(5000);
 
             callConnectionAsync.hangUp(true).block();
             waitForOperationCompletion(5000);
