@@ -124,7 +124,7 @@ Send a single event/message using [azure-messaging-eventhubs][azure-messaging-ev
 
 Users can additionally pass custom value of the trace context to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object.
 
-Please refer to [EventHubs samples](https://github.com/Azure/azure-sdk-for-java/blob/b492ef92a6f19b17ca2865baff02826d80ab82fa/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsTracingWithCustomContextSample.java#L65)
+Please refer to [EventHubs samples](https://github.com/Azure/azure-sdk-for-java/blob/10a18ccc2f20cad6004ae90d64f22009d65e9ef7/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsTracingWithCustomContextSample.java)
 for more information.
 
 ```java
