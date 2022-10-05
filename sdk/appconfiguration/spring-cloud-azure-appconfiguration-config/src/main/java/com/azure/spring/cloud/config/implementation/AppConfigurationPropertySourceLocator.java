@@ -218,10 +218,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (configStore.getFeatureFlags().getEnabled()) {
             for (AppConfigurationPropertySource propertySource : sources) {
                 if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
-                    List<ConfigurationSetting> watchKeys = ((AppConfigurationFeatureManagementPropertySource) propertySource)
+                    watchKeysFeatures = ((AppConfigurationFeatureManagementPropertySource) propertySource)
                         .getFeatureFlagSettings();
-                    watchKeys.forEach(
-                        watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
                 }
             }
         }
