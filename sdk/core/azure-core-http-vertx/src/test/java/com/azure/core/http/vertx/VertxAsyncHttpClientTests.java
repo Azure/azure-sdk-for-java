@@ -54,6 +54,7 @@ public class VertxAsyncHttpClientTests {
             .extensions(new VertxAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
+            .containerThreads(25)
             .gzipDisabled(true));
 
         server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
@@ -161,23 +162,24 @@ public class VertxAsyncHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequests() throws NoSuchAlgorithmException {
-        int numRequests = 100; // 100 = 1GB of data read
-        int concurrency = 10;
+    public void testConcurrentRequests() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(concurrency)
+        int numberOfRequests = 100; // 100 = 100MB of data
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
+            .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> getResponse(client, "/long", Context.NONE)
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+            .flatMap(ignored -> getResponse(client, "/long", Context.NONE))
+            .flatMap(HttpResponse::getBodyAsByteArray)
             .sequential()
-            .map(buffer -> (long) buffer.length)
+            .map(bytes -> {
+                assertArrayEquals(LONG_BODY, bytes);
+                return (long) bytes.length;
+            })
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(numberOfBytesMono)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }

@@ -72,6 +72,7 @@ public class JdkHttpClientTests {
         server = new WireMockServer(WireMockConfiguration.options()
             .dynamicPort()
             .disableRequestJournal()
+            .containerThreads(25)
             .gzipDisabled(true));
 
         server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
@@ -382,21 +383,23 @@ public class JdkHttpClientTests {
 
     @Test
     public void testConcurrentRequests() {
-        int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
+        int numberOfRequests = 100; // 100 = 100MB of data
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long")
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(HttpResponse::getBodyAsByteArray)
             .sequential()
-            .map(buffer -> (long) buffer.length)
+            .map(bytes -> {
+                assertArrayEquals(LONG_BODY, bytes);
+                return (long) bytes.length;
+            })
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(numberOfBytesMono)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }
@@ -406,20 +409,21 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
+        int numberOfRequests = 100; // 100 = 100MB of data
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> {
+            .map(ignored -> {
                 HttpResponse response = doRequestSync(client, "/long");
                 byte[] body = response.getBodyAsBinaryData().toBytes();
                 assertArrayEquals(LONG_BODY, body);
-                return Flux.just((long) body.length);
+                return (long) body.length;
             })
             .sequential()
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(numberOfBytesMono)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }

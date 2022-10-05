@@ -57,6 +57,7 @@ public class OkHttpAsyncHttpClientTests {
             .extensions(new OkHttpAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
+            .containerThreads(25)
             .gzipDisabled(true));
 
         server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
@@ -183,26 +184,27 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testConcurrentRequests() {
-        int numRequests = 100; // 100 = 1GB of data read
-        int concurrency = 10;
         Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequestsPerHost(concurrency); // this is 5 by default.
+        dispatcher.setMaxRequestsPerHost(25); // this is 5 by default.
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
             .dispatcher(dispatcher)
             .build();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(concurrency)
+        int numberOfRequests = 100; // 100 = 100MB of data
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
+            .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> getResponse(client, "/long")
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+            .flatMap(ignored -> getResponse(client, "/long"))
+            .flatMap(HttpResponse::getBodyAsByteArray)
             .sequential()
-            .map(buffer -> (long) buffer.length)
+            .map(bytes -> {
+                assertArrayEquals(LONG_BODY, bytes);
+                return (long) bytes.length;
+            })
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(numberOfBytesMono)
+            .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
     }

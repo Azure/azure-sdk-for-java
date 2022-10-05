@@ -92,6 +92,7 @@ public class NettyAsyncHttpClientTests {
             .extensions(new NettyAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
+            .containerThreads(25)
             .gzipDisabled(true));
 
         server.stubFor(get(SHORT_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
@@ -257,11 +258,13 @@ public class NettyAsyncHttpClientTests {
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
-                .flatMap(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+            .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))))
+            .flatMap(HttpResponse::getBodyAsByteArray)
             .sequential()
-            .map(bytes -> (long) bytes.length)
+            .map(bytes -> {
+                assertArrayEquals(LONG_BODY, bytes);
+                return (long) bytes.length;
+            })
             .reduce(0L, Long::sum);
 
         StepVerifier.create(numberOfBytesMono)
