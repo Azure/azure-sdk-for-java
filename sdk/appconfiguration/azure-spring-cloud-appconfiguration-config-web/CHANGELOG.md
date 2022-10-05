@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where Feature Flags didn't NormalizeNull on refresh checks, causing `(No Label)`/empty label feature flags to not cause refreshes when their value changed.
+
 ### Other Changes
 
 ## 2.9.0 (2022-09-22)
