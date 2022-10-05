@@ -8,15 +8,15 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.11
-com.fasterxml.jackson.core:jackson-annotations;2.13.4
-com.fasterxml.jackson.core:jackson-core;2.13.4
-com.fasterxml.jackson.core:jackson-databind;2.13.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.4
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.4
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.4
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.4
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.4
+com.fasterxml.jackson.core:jackson-annotations;2.14.0-rc1
+com.fasterxml.jackson.core:jackson-core;2.14.0-rc1
+com.fasterxml.jackson.core:jackson-databind;2.14.0-rc1
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.14.0-rc1
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.14.0-rc1
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.14.0-rc1
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.14.0-rc1
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.14.0-rc1
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.14.0-rc1
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
