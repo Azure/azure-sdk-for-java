@@ -95,7 +95,7 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
          * 3. get updated call properties and check for the connected state.
-         * 4. prompt and recognize dtmf tones from target participant
+         * 4. prompt and recognize dtmf tones from target participant.
          * 5. hang up the call.
          */
 
