@@ -27,7 +27,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.Exceptions;
@@ -360,8 +359,6 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
@@ -557,7 +554,6 @@ public class CosmosContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(asyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
@@ -724,7 +720,6 @@ public class CosmosContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<FeedRange> getFeedRanges() {
         try {
             return asyncContainer.getFeedRanges().block();
@@ -755,7 +750,6 @@ public class CosmosContainer {
      *
      * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         this.asyncContainer.enableLocalThroughputControlGroup(groupConfig);
     }
@@ -785,7 +779,6 @@ public class CosmosContainer {
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
@@ -799,7 +792,6 @@ public class CosmosContainer {
      *  </p>
      *
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void openConnectionsAndInitCaches() {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }

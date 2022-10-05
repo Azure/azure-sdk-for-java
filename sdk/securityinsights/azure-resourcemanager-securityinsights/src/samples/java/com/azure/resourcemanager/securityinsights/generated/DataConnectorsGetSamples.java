@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataConnectors Get. */
 public final class DataConnectorsGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetOffice365ProjectDataConnetorById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOffice365ProjectDataConnetorById.json
      */
     /**
      * Sample code: Get an Office365 Project data connector.
@@ -24,7 +24,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetGenericUI.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetGenericUI.json
      */
     /**
      * Sample code: Get a GenericUI data connector.
@@ -39,7 +39,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
      */
     /**
      * Sample code: Get an Office ATP data connector.
@@ -54,7 +54,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetIoTById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetIoTById.json
      */
     /**
      * Sample code: Get a IoT data connector.
@@ -69,7 +69,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
      */
     /**
      * Sample code: Get a MCAS data connector.
@@ -84,7 +84,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetThreatIntelligenceTaxiiById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetThreatIntelligenceTaxiiById.json
      */
     /**
      * Sample code: Get a TI Taxii data connector.
@@ -99,7 +99,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetMicrosoftThreatIntelligenceById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftThreatIntelligenceById.json
      */
     /**
      * Sample code: Get a MicrosoftThreatIntelligence data connector.
@@ -114,7 +114,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAzureSecurityCenterById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureSecurityCenterById.json
      */
     /**
      * Sample code: Get a ASC data connector.
@@ -129,7 +129,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetThreatIntelligenceById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetThreatIntelligenceById.json
      */
     /**
      * Sample code: Get a TI data connector.
@@ -143,7 +143,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
      */
     /**
      * Sample code: Get an AwsCloudTrail data connector.
@@ -158,7 +158,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
      */
     /**
      * Sample code: Get a MDATP data connector.
@@ -173,7 +173,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetMicrosoftThreatProtectionById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftThreatProtectionById.json
      */
     /**
      * Sample code: Get a MicrosoftThreatProtection data connector.
@@ -188,7 +188,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAzureActiveDirectoryById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureActiveDirectoryById.json
      */
     /**
      * Sample code: Get an AAD data connector.
@@ -203,7 +203,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
      */
     /**
      * Sample code: Get an AATP data connector.
@@ -218,7 +218,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAPIPolling.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAPIPolling.json
      */
     /**
      * Sample code: Get a APIPolling data connector.
@@ -233,7 +233,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
      */
     /**
      * Sample code: Get an Office IRM data connector.
@@ -248,7 +248,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetDynamics365DataConnectorById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetDynamics365DataConnectorById.json
      */
     /**
      * Sample code: Get a Dynamics365 data connector.
@@ -263,7 +263,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetOfficeDataConnetorById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOfficeDataConnetorById.json
      */
     /**
      * Sample code: Get an Office365 data connector.
@@ -278,7 +278,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetAmazonWebServicesS3ById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetAmazonWebServicesS3ById.json
      */
     /**
      * Sample code: Get an Aws S3 data connector.
@@ -293,7 +293,7 @@ public final class DataConnectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/GetOfficePowerBIDataConnetorById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/GetOfficePowerBIDataConnetorById.json
      */
     /**
      * Sample code: Get an Office365 PowerBI data connector.

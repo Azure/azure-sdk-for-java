@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Schedule model. */
+/** Set assessment schedule for SQL Server. */
 @Fluent
 public final class Schedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Schedule.class);
-
     /*
      * Enable or disable assessment schedule on SQL virtual machine.
      */
@@ -21,15 +17,14 @@ public final class Schedule {
     private Boolean enable;
 
     /*
-     * Number of weeks to schedule between 2 assessment runs. Takes value from
-     * 1-6
+     * Number of weeks to schedule between 2 assessment runs. Takes value from 1-6
      */
     @JsonProperty(value = "weeklyInterval")
     private Integer weeklyInterval;
 
     /*
-     * Occurrence of the DayOfWeek day within a month to schedule assessment.
-     * Takes values: 1,2,3,4 and -1. Use -1 for last DayOfWeek day of the month
+     * Occurrence of the DayOfWeek day within a month to schedule assessment. Takes values: 1,2,3,4 and -1. Use -1 for
+     * last DayOfWeek day of the month
      */
     @JsonProperty(value = "monthlyOccurrence")
     private Integer monthlyOccurrence;
@@ -38,7 +33,7 @@ public final class Schedule {
      * Day of the week to run assessment.
      */
     @JsonProperty(value = "dayOfWeek")
-    private DayOfWeek dayOfWeek;
+    private AssessmentDayOfWeek dayOfWeek;
 
     /*
      * Time of the day in HH:mm format. Eg. 17:30
@@ -113,7 +108,7 @@ public final class Schedule {
      *
      * @return the dayOfWeek value.
      */
-    public DayOfWeek dayOfWeek() {
+    public AssessmentDayOfWeek dayOfWeek() {
         return this.dayOfWeek;
     }
 
@@ -123,7 +118,7 @@ public final class Schedule {
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the Schedule object itself.
      */
-    public Schedule withDayOfWeek(DayOfWeek dayOfWeek) {
+    public Schedule withDayOfWeek(AssessmentDayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }

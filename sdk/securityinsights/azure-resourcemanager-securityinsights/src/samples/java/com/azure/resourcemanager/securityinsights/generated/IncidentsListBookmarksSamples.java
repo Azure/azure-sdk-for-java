@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Incidents ListBookmarks. */
 public final class IncidentsListBookmarksSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/GetAllIncidentBookmarks.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/GetAllIncidentBookmarks.json
      */
     /**
      * Sample code: Get all incident bookmarks.

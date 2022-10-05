@@ -48,7 +48,7 @@ public class CpuMemoryReader {
         }
     }
 
-    public long getSystemWideMemoryUsage() {
+    public long getSystemWideMemoryAvailableInMB() {
         try {
             long totalMemory = Runtime.getRuntime().totalMemory() / (1024*1024);
             long freeMemory = Runtime.getRuntime().freeMemory() / (1024*1024);

@@ -34,7 +34,7 @@ public class BasicOperationTest {
     private CosmosContainer createdTestContainer;
     private CosmosContainer createdResultsContainer;
 
-    @BeforeClass(groups = {"emulator"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = TIMEOUT)
     public void before_BasicOperationTest() {
         assertThat(this.client).isNull();
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
@@ -60,7 +60,7 @@ public class BasicOperationTest {
         this.createdResultsContainer = this.createdDatabase.getContainer("results" + suffix);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple"}, timeOut = TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         assertThat(this.createdDatabase).isNotNull();

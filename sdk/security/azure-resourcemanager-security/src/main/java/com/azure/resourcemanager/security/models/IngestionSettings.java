@@ -15,7 +15,7 @@ public interface IngestionSettings {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IngestionSetting> list();
 
@@ -26,7 +26,7 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IngestionSetting> list(Context context);
 
@@ -49,7 +49,8 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     Response<IngestionSetting> getWithResponse(String ingestionSettingName, Context context);
 
@@ -71,7 +72,7 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String ingestionSettingName, Context context);
 
@@ -94,7 +95,8 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     Response<IngestionSettingToken> listTokensWithResponse(String ingestionSettingName, Context context);
 
@@ -117,7 +119,7 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
+     * @return connection string for ingesting security data and logs along with {@link Response}.
      */
     Response<ConnectionStrings> listConnectionStringsWithResponse(String ingestionSettingName, Context context);
 
@@ -128,7 +130,8 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     IngestionSetting getById(String id);
 
@@ -140,7 +143,8 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     Response<IngestionSetting> getByIdWithResponse(String id, Context context);
 
@@ -162,7 +166,7 @@ public interface IngestionSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

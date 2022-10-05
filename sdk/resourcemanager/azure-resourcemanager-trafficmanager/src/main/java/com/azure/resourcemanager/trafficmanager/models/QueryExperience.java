@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a Traffic Manager HeatMap query experience properties. */
 @Fluent
 public final class QueryExperience {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryExperience.class);
-
     /*
-     * The id of the endpoint from the 'endpoints' array which these queries
-     * were routed to.
+     * The id of the endpoint from the 'endpoints' array which these queries were routed to.
      */
     @JsonProperty(value = "endpointId", required = true)
     private int endpointId;
@@ -32,6 +27,10 @@ public final class QueryExperience {
      */
     @JsonProperty(value = "latency")
     private Double latency;
+
+    /** Creates an instance of QueryExperience class. */
+    public QueryExperience() {
+    }
 
     /**
      * Get the endpointId property: The id of the endpoint from the 'endpoints' array which these queries were routed

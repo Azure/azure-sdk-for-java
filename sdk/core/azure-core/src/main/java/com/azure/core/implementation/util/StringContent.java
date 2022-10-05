@@ -13,14 +13,17 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
  */
 public final class StringContent extends BinaryDataContent {
     private final String content;
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link StringContent}.
@@ -43,12 +46,7 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
