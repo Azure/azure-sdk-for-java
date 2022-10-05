@@ -19,6 +19,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
@@ -109,6 +111,8 @@ public final class TextAnalyticsAsyncClient {
     final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
     final AnalyzeActionsAsyncClient analyzeActionsAsyncClient;
 
+    final DynamicClassificationAsyncClient dynamicClassificationAsyncClient;
+
     /**
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
@@ -135,6 +139,7 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService, serviceVersion);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService, serviceVersion);
         this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null, serviceVersion);
+        this.dynamicClassificationAsyncClient = new DynamicClassificationAsyncClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -156,6 +161,7 @@ public final class TextAnalyticsAsyncClient {
             serviceVersion);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.dynamicClassificationAsyncClient = new DynamicClassificationAsyncClient(service, serviceVersion);
     }
 
     /**
@@ -1687,6 +1693,30 @@ public final class TextAnalyticsAsyncClient {
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
+
+
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DynamicClassifyDocumentResultCollection> analyzeDynamicClassificationBatch(
+        Iterable<String> documents, String language, DynamicClassificationOptions options) {
+        try {
+            return analyzeDynamicClassificationBatchWithResponse(
+                mapByIndex(documents, (index, value) -> {
+                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                    textDocumentInput.setLanguage(language);
+                    return textDocumentInput;
+                }), options).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DynamicClassifyDocumentResultCollection>> analyzeDynamicClassificationBatchWithResponse(
+        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
+        return dynamicClassificationAsyncClient.dynamicClassificationBatch(documents, options);
+    }
+
 
     /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of {@link String documents}.

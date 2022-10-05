@@ -15,6 +15,8 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -1576,6 +1578,102 @@ public final class TextAnalyticsClient {
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
     }
+
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param language
+     * @param options
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicClassifyDocumentResultCollection analyzeDynamicClassificationBatch(Iterable<String> documents,
+        String language, DynamicClassificationOptions options) {
+        return client.analyzeDynamicClassificationBatch(documents, language, options).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze sentiment and mine the opinions for each sentence in a list of
+     * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
+     *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
+     *         .setLanguage&#40;&quot;en&quot;&#41;,
+     *     new TextDocumentInput&#40;&quot;2&quot;, &quot;The restaurant had amazing gnocchi. The hotel was dark and unclean.&quot;&#41;
+     *         .setLanguage&#40;&quot;en&quot;&#41;
+     * &#41;;
+     *
+     * AnalyzeSentimentOptions options = new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;
+     *     .setIncludeStatistics&#40;true&#41;;
+     *
+     * &#47;&#47; Analyzing batch sentiments
+     * Response&lt;AnalyzeSentimentResultCollection&gt; response =
+     *     textAnalyticsClient.analyzeSentimentBatchWithResponse&#40;textDocumentInputs, options, Context.NONE&#41;;
+     *
+     * &#47;&#47; Response's status code
+     * System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * AnalyzeSentimentResultCollection resultCollection = response.getValue&#40;&#41;;
+     *
+     * &#47;&#47; Batch statistics
+     * TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
+     * System.out.printf&#40;&quot;A batch of documents statistics, transaction count: %s, valid document count: %s.%n&quot;,
+     *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Analyzed sentiment for each of documents from a batch of documents
+     * resultCollection.forEach&#40;analyzeSentimentResult -&gt; &#123;
+     *     System.out.printf&#40;&quot;Document ID: %s%n&quot;, analyzeSentimentResult.getId&#40;&#41;&#41;;
+     *     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment&#40;&#41;;
+     *     documentSentiment.getSentences&#40;&#41;.forEach&#40;sentenceSentiment -&gt; &#123;
+     *         System.out.printf&#40;&quot;&#92;tSentence sentiment: %s%n&quot;, sentenceSentiment.getSentiment&#40;&#41;&#41;;
+     *         sentenceSentiment.getOpinions&#40;&#41;.forEach&#40;opinion -&gt; &#123;
+     *             TargetSentiment targetSentiment = opinion.getTarget&#40;&#41;;
+     *             System.out.printf&#40;&quot;&#92;tTarget sentiment: %s, target text: %s%n&quot;, targetSentiment.getSentiment&#40;&#41;,
+     *                 targetSentiment.getText&#40;&#41;&#41;;
+     *             for &#40;AssessmentSentiment assessmentSentiment : opinion.getAssessments&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t'%s' sentiment because of &#92;&quot;%s&#92;&quot;. Is the assessment negated: %s.%n&quot;,
+     *                     assessmentSentiment.getSentiment&#40;&#41;, assessmentSentiment.getText&#40;&#41;,
+     *                     assessmentSentiment.isNegated&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DynamicClassifyDocumentResultCollection> analyzeDynamicClassificationBatchWithResponse(
+        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
+        return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
+            documents, options, context).block();
+    }
+
 
     /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of {@link String documents}.
