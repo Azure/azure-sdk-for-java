@@ -32,12 +32,12 @@ public class TranslateDocuments {
 
         // Step 1: Construct the request object
         JsonObject source = Json.createObjectBuilder()
-            .add("sourceUrl", "SOURCE_URL}")
+            .add("sourceUrl", "SOURCE_URL")
             .build();
 
         JsonObject target = Json.createObjectBuilder()
             .add("language", "zh-Hans")
-            .add("targetUrl", "TARGER_URL")
+            .add("targetUrl", "TARGET_URL")
             .build();
 
         JsonObject input = Json.createObjectBuilder()
