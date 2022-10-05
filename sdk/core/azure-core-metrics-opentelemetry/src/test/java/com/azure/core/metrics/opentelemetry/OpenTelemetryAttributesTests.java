@@ -69,12 +69,15 @@ public class OpenTelemetryAttributesTests {
                 put("deliveryState", "rejected");
                 put("amqpStatusCode", "no_content");
                 put("amqpOperation", "peek");
+                put("partitionId", 42);
+                put("status", "error");
+                put("consumerGroup", "$Default");
             }});
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
 
-        assertEquals(8, attributes.size());
+        assertEquals(11, attributes.size());
         assertEquals("value", attributes.get(AttributeKey.stringKey("foobar")));
         assertEquals("host", attributes.get(AttributeKey.stringKey("net.peer.name")));
         assertEquals("entity", attributes.get(AttributeKey.stringKey("messaging.destination")));
@@ -83,6 +86,9 @@ public class OpenTelemetryAttributesTests {
         assertEquals("rejected", attributes.get(AttributeKey.stringKey("amqp.delivery_state")));
         assertEquals("peek", attributes.get(AttributeKey.stringKey("amqp.operation")));
         assertEquals("no_content", attributes.get(AttributeKey.stringKey("amqp.status_code")));
+        assertEquals(42, attributes.get(AttributeKey.longKey("messaging.eventhubs.partition_id")));
+        assertEquals("error", attributes.get(AttributeKey.stringKey("otel.status_code")));
+        assertEquals("$Default", attributes.get(AttributeKey.stringKey("messaging.eventhubs.consumer_group")));
     }
 
     @Test

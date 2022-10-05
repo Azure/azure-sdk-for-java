@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.communication.callautomation.models.Tone;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,14 +15,14 @@ public final class CollectTonesResult {
      * The tones property.
      */
     @JsonProperty(value = "tones", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Tone> tones;
+    private List<DtmfTone> tones;
 
     /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
      */
-    public List<Tone> getTones() {
+    public List<DtmfTone> getTones() {
         return this.tones;
     }
 }

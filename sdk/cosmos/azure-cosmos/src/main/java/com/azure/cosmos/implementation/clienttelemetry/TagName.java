@@ -16,7 +16,7 @@ public enum TagName {
     RegionName("RegionName", 1 << 8),
     ServiceEndpoint("ServiceEndpoint", 1 << 9),
     ServiceAddress("ServiceAddress", 1 << 10),
-    IsForceRefresh("IsForceRefresh", 1 << 12),
+    IsForceRefresh("IsForceRefresh", 1 << 11),
     IsForceCollectionRoutingMapRefresh("IsForceCollectionRoutingMapRefresh",  1 << 12);
 
     private final int value;

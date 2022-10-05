@@ -246,7 +246,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
         RemoveParticipantsResult removeParticipantsResult = callConnectionAsync.removeParticipants(
-            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))), CALL_OPERATION_CONTEXT).block();
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID)))).block();
 
         assertNotNull(removeParticipantsResult);
         assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());

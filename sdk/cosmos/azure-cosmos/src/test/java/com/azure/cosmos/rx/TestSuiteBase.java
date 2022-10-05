@@ -521,7 +521,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
         CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition(UUID.randomUUID().toString());
-        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
         return cosmosContainerProperties;
     }
 
