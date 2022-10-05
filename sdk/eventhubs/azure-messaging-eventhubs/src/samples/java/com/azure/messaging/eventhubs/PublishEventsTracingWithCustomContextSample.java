@@ -89,7 +89,7 @@ public class PublishEventsTracingWithCustomContextSample {
                 return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
             })
             .block();
-        // END: sample-trace-context-manual-propagatio
+        // END: sample-trace-context-manual-propagation
         producer.close();
     }
 
