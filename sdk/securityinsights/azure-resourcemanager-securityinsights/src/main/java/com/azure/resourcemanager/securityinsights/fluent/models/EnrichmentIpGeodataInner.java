@@ -29,8 +29,7 @@ public final class EnrichmentIpGeodataInner {
     private String city;
 
     /*
-     * A numeric rating of confidence that the value in the 'city' field is
-     * correct, on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'city' field is correct, on a scale of 0-100
      */
     @JsonProperty(value = "cityCf")
     private Integer cityCf;
@@ -48,15 +47,13 @@ public final class EnrichmentIpGeodataInner {
     private String country;
 
     /*
-     * A numeric rating of confidence that the value in the 'country' field is
-     * correct on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'country' field is correct on a scale of 0-100
      */
     @JsonProperty(value = "countryCf")
     private Integer countryCf;
 
     /*
-     * The dotted-decimal or colon-separated string representation of the IP
-     * address
+     * The dotted-decimal or colon-separated string representation of the IP address
      */
     @JsonProperty(value = "ipAddr")
     private String ipAddr;
@@ -104,8 +101,7 @@ public final class EnrichmentIpGeodataInner {
     private String state;
 
     /*
-     * A numeric rating of confidence that the value in the 'state' field is
-     * correct on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
      */
     @JsonProperty(value = "stateCf")
     private Integer stateCf;

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of secure scores. */
 @Immutable
 public final class SecureScoresList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoresList.class);
-
     /*
      * Collection of secure scores in this page
      */

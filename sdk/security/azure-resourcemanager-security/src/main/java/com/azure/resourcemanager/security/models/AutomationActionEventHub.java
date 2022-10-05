@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The target Event Hub to which event data will be exported. To learn more about Security Center continuous export
- * capabilities, visit https://aka.ms/ASCExportLearnMore.
+ * The target Event Hub to which event data will be exported. To learn more about Microsoft Defender for Cloud
+ * continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
 @JsonTypeName("EventHub")
 @Fluent
 public final class AutomationActionEventHub extends AutomationAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationActionEventHub.class);
-
     /*
      * The target Event Hub Azure Resource ID.
      */
@@ -34,8 +30,7 @@ public final class AutomationActionEventHub extends AutomationAction {
     private String sasPolicyName;
 
     /*
-     * The target Event Hub connection string (it will not be included in any
-     * response).
+     * The target Event Hub connection string (it will not be included in any response).
      */
     @JsonProperty(value = "connectionString")
     private String connectionString;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecommendationAction. */
+/** The recommendation action of the machine or rule. */
 public final class RecommendationAction extends ExpandableStringEnum<RecommendationAction> {
     /** Static value Recommended for RecommendationAction. */
     public static final RecommendationAction RECOMMENDED = fromString("Recommended");
@@ -30,7 +30,11 @@ public final class RecommendationAction extends ExpandableStringEnum<Recommendat
         return fromString(name, RecommendationAction.class);
     }
 
-    /** @return known RecommendationAction values. */
+    /**
+     * Gets known RecommendationAction values.
+     *
+     * @return known RecommendationAction values.
+     */
     public static Collection<RecommendationAction> values() {
         return values(RecommendationAction.class);
     }

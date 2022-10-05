@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.trafficmanager.fluent.HeatMapsClient;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HeatMapsClient. */
 public final class HeatMapsClientImpl implements HeatMapsClient {
-    private final ClientLogger logger = new ClientLogger(HeatMapsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HeatMapsService service;
 
@@ -85,7 +82,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HeatMapModelInner>> getWithResponseAsync(
@@ -112,9 +110,9 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
         final String heatMapType = "default";
         final String accept = "application/json";
         String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
         String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(botRight, CollectionFormat.CSV);
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
         return FluxUtil
             .withContext(
                 context ->
@@ -144,7 +142,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HeatMapModelInner>> getWithResponseAsync(
@@ -171,9 +170,9 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
         final String heatMapType = "default";
         final String accept = "application/json";
         String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
         String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(botRight, CollectionFormat.CSV);
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -194,25 +193,17 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
-     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
+     * @return latest heatmap for Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HeatMapModelInner> getAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight) {
+    public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
+        final List<Double> topLeft = null;
+        final List<Double> botRight = null;
         return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
-            .flatMap(
-                (Response<HeatMapModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -220,24 +211,18 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HeatMapModelInner> getAsync(String resourceGroupName, String profileName) {
-        final List<Double> topLeft = null;
-        final List<Double> botRight = null;
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight)
-            .flatMap(
-                (Response<HeatMapModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<HeatMapModelInner> getWithResponse(
+        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
+        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
     }
 
     /**
@@ -254,25 +239,6 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
     public HeatMapModelInner get(String resourceGroupName, String profileName) {
         final List<Double> topLeft = null;
         final List<Double> botRight = null;
-        return getAsync(resourceGroupName, profileName, topLeft, botRight).block();
-    }
-
-    /**
-     * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
-     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HeatMapModelInner> getWithResponse(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
+        return getWithResponse(resourceGroupName, profileName, topLeft, botRight, Context.NONE).getValue();
     }
 }

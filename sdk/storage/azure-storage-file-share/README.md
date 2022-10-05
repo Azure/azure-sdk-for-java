@@ -291,7 +291,7 @@ shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}`](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share-with-sastoken).
+Taking the shareClient initialized above, [`${shareClient}`](#share).
 
 ```java readme-sample-createDirectory
 String dirName = "testdir";

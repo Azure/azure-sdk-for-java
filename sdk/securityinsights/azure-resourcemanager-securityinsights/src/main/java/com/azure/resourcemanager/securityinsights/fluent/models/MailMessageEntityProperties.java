@@ -24,8 +24,8 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     private List<String> fileEntityIds;
 
     /*
-     * The recipient of this mail message. Note that in case of multiple
-     * recipients the mail message is forked and each copy has one recipient
+     * The recipient of this mail message. Note that in case of multiple recipients the mail message is forked and each
+     * copy has one recipient
      */
     @JsonProperty(value = "recipient", access = JsonProperty.Access.WRITE_ONLY)
     private String recipient;
@@ -157,8 +157,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     private AntispamMailDirection antispamDirection;
 
     /*
-     * The delivery action of this mail message like Delivered, Blocked,
-     * Replaced etc
+     * The delivery action of this mail message like Delivered, Blocked, Replaced etc
      */
     @JsonProperty(value = "deliveryAction")
     private DeliveryAction deliveryAction;

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Images GetByResourceGroup. */
 public final class ImagesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/imageExamples/Image_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Get.json
      */
     /**
      * Sample code: Get information about a virtual machine image.
