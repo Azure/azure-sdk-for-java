@@ -18,11 +18,14 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentField extends TypedDocumentField<Object> {
+    // Ignore custom getters in the class to prevent serialization and deserialization issues
+
     /**
      * Get the string value of the field.
      *
      * @return the value.
      */
+
     @JsonIgnore
     public String getValueAsString() {
         return (String) super.getValue();
