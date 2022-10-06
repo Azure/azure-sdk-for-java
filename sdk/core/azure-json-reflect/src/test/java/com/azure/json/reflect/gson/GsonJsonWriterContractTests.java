@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json.reflect;
+package com.azure.json.reflect.gson;
 
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
