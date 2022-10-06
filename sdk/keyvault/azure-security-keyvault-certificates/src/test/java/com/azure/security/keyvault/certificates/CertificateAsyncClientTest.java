@@ -18,12 +18,10 @@ import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -36,7 +34,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -589,18 +586,21 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listCertificatesRunner((certificatesToList) -> {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
-            StepVerifier.create(
-                    Flux.fromIterable(certificates)
-                        .map(certName -> certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                            .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
-                        .last().map(ignored -> certificateAsyncClient.listPropertiesOfCertificates()
+
+            for (String certName : certificates) {
+                StepVerifier.create(certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
+                    .assertNext(response -> assertNotNull(response.getValue()))
+                    .verifyComplete();
+            }
+            StepVerifier.create(certificateAsyncClient.listPropertiesOfCertificates()
                             .map(certificate -> {
                                 certificates.remove(certificate.getName());
                                 return Mono.empty();
-                            })))
+                            }).last())
                 .assertNext(ignore -> {
                     assertEquals(0, certificates.size());
-                });
+                }).verifyComplete();
         });
     }
 
@@ -613,18 +613,21 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listPropertiesOfCertificatesRunner((certificatesToList) -> {
             HashSet<String> certificates = new HashSet<>(certificatesToList);
 
-            StepVerifier.create(
-                    Flux.fromIterable(certificates)
-                        .map(certName -> certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                            .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
-                        .last().map(ignored -> certificateAsyncClient.listPropertiesOfCertificates(false)
+            for (String certName : certificates) {
+                StepVerifier.create(certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                        .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).last())
+                    .assertNext(response -> assertNotNull(response.getValue()))
+                    .verifyComplete();
+            }
+
+            StepVerifier.create(certificateAsyncClient.listPropertiesOfCertificates(false)
                             .map(certificate -> {
                                 certificates.remove(certificate.getName());
                                 return Mono.empty();
-                            })))
+                            }).last())
                 .assertNext(ignore -> {
                     assertEquals(0, certificates.size());
-                });
+                }).verifyComplete();
         });
     }
 
@@ -685,7 +688,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     }))
                 .assertNext(retrievedIssuer -> {
                     assertTrue(issuerCreatedCorrectly(certificateIssuer.get(), retrievedIssuer));
-                });
+                }).verifyComplete();
         });
     }
 
@@ -736,15 +739,24 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listCertificateIssuersRunner((certificateIssuers) -> {
             HashMap<String, CertificateIssuer> certificateIssuersToList = new HashMap<>(certificateIssuers);
 
-            List<IssuerProperties> output = new ArrayList<>();
 
-            StepVerifier.create(Flux.fromIterable(certificateIssuers.values())
-                    .flatMap(issuer -> certificateAsyncClient.createIssuerWithResponse(issuer)).last().map(ignored -> certificateAsyncClient.listPropertiesOfIssuers()
+            AtomicInteger count = new AtomicInteger(0);
+            for (CertificateIssuer issuer : certificateIssuers.values()) {
+                StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
+                    .assertNext(certificateIssuer -> {
+                        assertNotNull(certificateIssuer.getName());
+                    }).verifyComplete();
+            }
+
+            StepVerifier.create(certificateAsyncClient.listPropertiesOfIssuers()
                         .map(issuerProperties -> {
-                            output.add(issuerProperties);
+                            if (certificateIssuersToList.containsKey(issuerProperties.getName())) {
+                                count.incrementAndGet();
+                            }
                             return Mono.empty();
-                        })))
-                .assertNext(ignore -> assertEquals(certificateIssuersToList.size(), output.size()));
+                        }).last())
+                .assertNext(ignore -> assertEquals(certificateIssuersToList.size(), count.get()))
+                .verifyComplete();
         });
     }
 
@@ -957,7 +969,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .assertNext(importedCertificate -> {
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
                     assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
-                });
+                }).verifyComplete();
         });
     }
 }
