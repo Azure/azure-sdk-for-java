@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
@@ -47,7 +48,8 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -76,7 +78,8 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             ClientSecretCredential credential =
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                    .additionallyAllowedTenants("*").build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
                 .verify();
@@ -99,24 +102,73 @@ public class ClientSecretCredentialTest {
         })) {
             // test
             try {
-                new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
-                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
                 Assert.assertTrue(e.getMessage().contains("clientSecret"));
             }
             Assert.assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                .additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        String badSecret = "badsecret";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientSecretCredential credential =
+            new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                .additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
+            .verify();
     }
 }

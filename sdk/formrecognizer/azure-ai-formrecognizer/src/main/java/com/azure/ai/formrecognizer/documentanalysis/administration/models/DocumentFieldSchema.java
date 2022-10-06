@@ -5,12 +5,14 @@ package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldSchemaHelper;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Map;
 
 /**
  * Description of the field semantic schema using a JSON Schema style syntax.
  */
+@Immutable
 public final class DocumentFieldSchema {
     /*
      * Semantic data type of the field value.
@@ -52,7 +54,7 @@ public final class DocumentFieldSchema {
      * @param type the type value to set.
      * @return the DocumentFieldSchema object itself.
      */
-    void setType(DocumentFieldType type) {
+    private void setType(DocumentFieldType type) {
         this.type = type;
     }
 
@@ -71,7 +73,7 @@ public final class DocumentFieldSchema {
      * @param description the description value to set.
      * @return the DocumentFieldSchema object itself.
      */
-    void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
@@ -90,7 +92,7 @@ public final class DocumentFieldSchema {
      * @param example the example value to set.
      * @return the DocumentFieldSchema object itself.
      */
-    void setExample(String example) {
+    private void setExample(String example) {
         this.example = example;
     }
 
@@ -109,7 +111,7 @@ public final class DocumentFieldSchema {
      * @param items the items value to set.
      * @return the DocumentFieldSchema object itself.
      */
-    void setItems(DocumentFieldSchema items) {
+    private void setItems(DocumentFieldSchema items) {
         this.items = items;
     }
 
@@ -128,7 +130,7 @@ public final class DocumentFieldSchema {
      * @param properties the properties value to set.
      * @return the DocumentFieldSchema object itself.
      */
-    void setProperties(Map<String, DocumentFieldSchema> properties) {
+    private void setProperties(Map<String, DocumentFieldSchema> properties) {
         this.properties = properties;
     }
 

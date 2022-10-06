@@ -23,9 +23,9 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
     /**
      * Name of the Azure cloud to connect to.
      */
-    private AzureProfileOptionsProvider.CloudType cloudType = AzureProfileOptionsProvider.CloudType.AZURE;
+    private AzureProfileOptionsProvider.CloudType cloudType;
 
-    private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(AzureEnvironment.AZURE);
+    private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(null);
 
     @Override
     public AzureProfileOptionsProvider.CloudType getCloudType() {

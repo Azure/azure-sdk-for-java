@@ -13,32 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HttpDatasetTypeProperties {
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an
-     * HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The body for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The body for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1
+     * The headers for the HTTP Request. e.g. request-header-name-1:request-header-value-1
      * ...
-     * request-header-name-n:request-header-value-n Type: string (or Expression
-     * with resultType string).
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;

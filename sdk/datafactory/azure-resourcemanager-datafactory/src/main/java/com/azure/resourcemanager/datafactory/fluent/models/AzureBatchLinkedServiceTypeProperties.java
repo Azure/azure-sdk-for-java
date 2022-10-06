@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBatchLinkedServiceTypeProperties {
     /*
-     * The Azure Batch account name. Type: string (or Expression with
-     * resultType string).
+     * The Azure Batch account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accountName", required = true)
     private Object accountName;
@@ -28,15 +27,13 @@ public final class AzureBatchLinkedServiceTypeProperties {
     private SecretBase accessKey;
 
     /*
-     * The Azure Batch URI. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "batchUri", required = true)
     private Object batchUri;
 
     /*
-     * The Azure Batch pool name. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch pool name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "poolName", required = true)
     private Object poolName;
@@ -48,9 +45,8 @@ public final class AzureBatchLinkedServiceTypeProperties {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

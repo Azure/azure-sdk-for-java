@@ -40,14 +40,18 @@ public interface Snapshot {
     String location();
 
     /**
-     * Gets the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Gets the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
-     * Gets the created property: name The creation date of the snapshot.
+     * Gets the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */
@@ -162,7 +166,9 @@ public interface Snapshot {
     Snapshot refresh(Context context);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param body Restore payload supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +178,9 @@ public interface Snapshot {
     void restoreFiles(SnapshotRestoreFiles body);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param body Restore payload supplied in the body of the operation.
      * @param context The context to associate with this operation.

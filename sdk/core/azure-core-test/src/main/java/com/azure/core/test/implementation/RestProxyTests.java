@@ -684,15 +684,12 @@ public abstract class RestProxyTests {
      */
     @Test
     public void asyncPutRequestWithStreamBinaryDataBodyAndMoreThanContentLength() {
-        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
-            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
-        StepVerifier.create(
-                bodyMono.flatMap(body ->
-                    createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
+        StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 3L))
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }

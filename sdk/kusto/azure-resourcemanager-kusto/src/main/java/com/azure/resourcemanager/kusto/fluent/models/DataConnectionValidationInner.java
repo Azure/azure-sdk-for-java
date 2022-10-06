@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing an data connection validation. */
 @Fluent
 public final class DataConnectionValidationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectionValidationInner.class);
-
     /*
      * The name of the data connection.
      */

@@ -19,82 +19,73 @@ import java.util.Map;
 @Fluent
 public class SapOpenHubLinkedService extends LinkedService {
     /*
-     * Host name of the SAP BW instance where the open hub destination is
-     * located. Type: string (or Expression with resultType string).
+     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * System number of the BW system where the open hub destination is
-     * located. (Usually a two-digit decimal number represented as a string.)
-     * Type: string (or Expression with resultType string).
+     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number
+     * represented as a string.) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.systemNumber", required = true)
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system where the open hub destination
-     * is located. (Usually a three-digit decimal number represented as a
-     * string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit
+     * decimal number represented as a string) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
-     * Language of the BW system where the open hub destination is located. The
-     * default value is EN. Type: string (or Expression with resultType
-     * string).
+     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.language")
     private Object language;
 
     /*
-     * SystemID of the SAP system where the table is located. Type: string (or
-     * Expression with resultType string).
+     * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.systemId")
     private Object systemId;
 
     /*
-     * Username to access the SAP BW server where the open hub destination is
-     * located. Type: string (or Expression with resultType string).
+     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
-     * Password to access the SAP BW server where the open hub destination is
-     * located.
+     * Password to access the SAP BW server where the open hub destination is located.
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
+     * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.messageServer")
     private Object messageServer;
 
     /*
-     * The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
+     * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.messageServerService")
     private Object messageServerService;
 
     /*
-     * The Logon Group for the SAP System. Type: string (or Expression with
-     * resultType string).
+     * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.logonGroup")
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

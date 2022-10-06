@@ -13,11 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /** Pipeline resource type. */
 @JsonFlatten
 @Fluent
 public class PipelineResource extends SubResource {
+    private static final Pattern KEY_ESCAPER = Pattern.compile("\\.");;
+
     /*
      * The description of the pipeline.
      */
@@ -61,8 +64,7 @@ public class PipelineResource extends SubResource {
     private Map<String, Object> runDimensions;
 
     /*
-     * The folder that this Pipeline is in. If not specified, Pipeline will
-     * appear at the root level.
+     * The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      */
     @JsonProperty(value = "properties.folder")
     private PipelineFolder folder;
@@ -260,6 +262,6 @@ public class PipelineResource extends SubResource {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
-        additionalProperties.put(key.replace("\\.", "."), value);
+        additionalProperties.put(KEY_ESCAPER.matcher(key).replaceAll("."), value);
     }
 }

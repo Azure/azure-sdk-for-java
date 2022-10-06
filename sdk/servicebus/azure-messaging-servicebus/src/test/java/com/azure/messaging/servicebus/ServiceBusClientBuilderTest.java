@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
@@ -63,6 +64,18 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     ServiceBusClientBuilderTest() {
         super(new ClientLogger(ServiceBusClientBuilderTest.class));
+    }
+
+    @Test
+    void ensureIdentifierString() {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        final ServiceBusSenderAsyncClient client = builder
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .buildAsyncClient();
+
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
     }
 
     @Test

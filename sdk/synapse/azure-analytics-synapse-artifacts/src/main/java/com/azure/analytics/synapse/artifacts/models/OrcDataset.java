@@ -25,8 +25,7 @@ public class OrcDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The data orcCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * The data orcCompressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.orcCompressionCodec")
     private Object orcCompressionCodec;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicsDeploymentType. */
+/** All available dynamicsDeploymentType values. */
 public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsDeploymentType> {
     /** Static value Online for DynamicsDeploymentType. */
     public static final DynamicsDeploymentType ONLINE = fromString("Online");
@@ -27,7 +27,11 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
         return fromString(name, DynamicsDeploymentType.class);
     }
 
-    /** @return known DynamicsDeploymentType values. */
+    /**
+     * Gets known DynamicsDeploymentType values.
+     *
+     * @return known DynamicsDeploymentType values.
+     */
     public static Collection<DynamicsDeploymentType> values() {
         return values(DynamicsDeploymentType.class);
     }

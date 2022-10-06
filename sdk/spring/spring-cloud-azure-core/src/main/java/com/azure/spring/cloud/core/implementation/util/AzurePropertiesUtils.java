@@ -27,6 +27,8 @@ public final class AzurePropertiesUtils {
 
     /**
      * Copy common properties from source {@link AzureProperties} object to target {@link T} object.
+     * If a field x.y.z exists in both source and target object, the source value will override the target value.
+     *
      * @param source The source {@link AzureProperties} object.
      * @param target The target object.
      * @param <T> The type of the target that extends AzureProperties.
@@ -65,7 +67,7 @@ public final class AzurePropertiesUtils {
 
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
         copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
-        BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
+        copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
         if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {

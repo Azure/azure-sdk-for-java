@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActiveDirectoryStatus. */
+/** Status of the Active Directory. */
 public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDirectoryStatus> {
     /** Static value Created for ActiveDirectoryStatus. */
     public static final ActiveDirectoryStatus CREATED = fromString("Created");
