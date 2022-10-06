@@ -235,7 +235,7 @@ public class GsonJsonReader extends JsonReader {
         try {
             if (currentToken == JsonToken.NULL) {
                 return null;
-            } else {
+            } else { 
                 return (String) nextStringMethod.invoke(gsonReader);
             }
         } catch (Throwable e) {

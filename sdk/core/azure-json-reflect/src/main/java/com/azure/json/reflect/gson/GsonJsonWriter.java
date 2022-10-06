@@ -35,7 +35,6 @@ public class GsonJsonWriter extends JsonWriter {
 
     private final Object gsonWriter;
     private JsonWriteContext context = JsonWriteContext.ROOT;
-
     public static JsonWriter toStream(OutputStream stream) {
         return new GsonJsonWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
     }
