@@ -277,7 +277,7 @@ public class JacksonJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonReader bufferObject() {
+    public JsonReader bufferObject() throws IOException {
     	StringBuilder bufferedObject = new StringBuilder();
     	if (isStartArrayOrObject()) {
     		// If the current token is the beginning of an array or object, 
