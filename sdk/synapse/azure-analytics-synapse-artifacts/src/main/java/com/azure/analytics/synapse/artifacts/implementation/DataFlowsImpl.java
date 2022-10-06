@@ -189,14 +189,7 @@ public final class DataFlowsImpl {
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
         return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -213,14 +206,7 @@ public final class DataFlowsImpl {
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(String dataFlowName, DataFlowResource dataFlow) {
         final String ifMatch = null;
         return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,14 +226,7 @@ public final class DataFlowsImpl {
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
         return createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch, context)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -356,15 +335,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch) {
-        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -379,15 +350,7 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName) {
         final String ifNoneMatch = null;
-        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -405,14 +368,7 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch, Context context) {
         return getDataFlowWithResponseAsync(dataFlowName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<DataFlowResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -510,7 +466,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowAsync(String dataFlowName) {
-        return deleteDataFlowWithResponseAsync(dataFlowName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDataFlowWithResponseAsync(dataFlowName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -525,7 +481,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowAsync(String dataFlowName, Context context) {
-        return deleteDataFlowWithResponseAsync(dataFlowName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDataFlowWithResponseAsync(dataFlowName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -607,7 +563,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDataFlowAsync(String dataFlowName, ArtifactRenameRequest request) {
-        return renameDataFlowWithResponseAsync(dataFlowName, request).flatMap((Response<Void> res) -> Mono.empty());
+        return renameDataFlowWithResponseAsync(dataFlowName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -623,8 +579,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDataFlowAsync(String dataFlowName, ArtifactRenameRequest request, Context context) {
-        return renameDataFlowWithResponseAsync(dataFlowName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameDataFlowWithResponseAsync(dataFlowName, request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -767,7 +722,8 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -794,7 +750,8 @@ public final class DataFlowsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

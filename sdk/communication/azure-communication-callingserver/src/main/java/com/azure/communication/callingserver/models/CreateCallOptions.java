@@ -6,7 +6,6 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public class CreateCallOptions {
     /**
      * The call back URI.
      */
-    private final URI callbackUri;
+    private final String callbackUrl;
 
     /**
      * The source caller Id that's shown to the PSTN participant being invited.
@@ -41,16 +40,21 @@ public class CreateCallOptions {
     private String subject;
 
     /**
+     * Media Streaming Configuration.
+     */
+    private MediaStreamingConfiguration mediaStreamingConfiguration;
+
+    /**
      * Constructor
      *
      * @param source The source property.
      * @param targets The targets of the call.
-     * @param callbackUri The call back URI.
+     * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, URI callbackUri) {
+    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
         this.source = source;
         this.targets = targets;
-        this.callbackUri = callbackUri;
+        this.callbackUrl = callbackUrl;
     }
 
     /**
@@ -76,8 +80,8 @@ public class CreateCallOptions {
      *
      * @return the call back uri.
      */
-    public URI getCallbackUri() {
-        return callbackUri;
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 
     /**
@@ -96,6 +100,15 @@ public class CreateCallOptions {
      */
     public String getSourceCallerId() {
         return sourceCallerId;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
+        return mediaStreamingConfiguration;
     }
 
     /**
@@ -118,6 +131,17 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setSourceCallerId(String sourceCallerId) {
         this.sourceCallerId = sourceCallerId;
+        return this;
+    }
+
+    /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingConfiguration The media streaming configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingConfiguration mediaStreamingConfiguration) {
+        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
 }

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -99,7 +100,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
-        HttpHeader locationHeader = initialResponse.getHeaders().get(PollingConstants.LOCATION);
+        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
+            PollingConstants.LOCATION_LOWER_CASE);
         if (locationHeader != null) {
             try {
                 new URL(getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
@@ -115,7 +117,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
-        HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
+        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
+            PollingConstants.LOCATION_LOWER_CASE);
         if (locationHeader != null) {
             pollingContext.setData(PollingConstants.LOCATION,
                 getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
@@ -127,8 +130,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
-            Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
+            Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
                 .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
@@ -146,7 +148,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context)))
             .flatMap(response -> {
-                HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
+                HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
+                    PollingConstants.LOCATION_LOWER_CASE);
                 if (locationHeader != null) {
                     pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
                 }

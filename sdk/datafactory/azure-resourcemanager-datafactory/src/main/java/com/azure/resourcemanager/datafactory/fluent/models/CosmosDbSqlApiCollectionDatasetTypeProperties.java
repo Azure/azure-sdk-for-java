@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     /*
-     * CosmosDB (SQL API) collection name. Type: string (or Expression with
-     * resultType string).
+     * CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -16,12 +17,13 @@ import reactor.core.publisher.Mono;
 
 /**
  * Pipeline policy that adds "User-Agent" header to a request.
- *
+ * <p>
  * The format for the "User-Agent" string is outlined in
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String USER_AGENT = "User-Agent";
+    private static final String USER_AGENT_LOWER_CASE = "user-agent";
 
     /**
      * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
@@ -60,7 +62,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
                 userAgentValue = userAgent;
             }
 
-            context.getHttpRequest().getHeaders().set(USER_AGENT, userAgentValue);
+            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), USER_AGENT_LOWER_CASE, USER_AGENT,
+                userAgentValue);
         }
     };
 

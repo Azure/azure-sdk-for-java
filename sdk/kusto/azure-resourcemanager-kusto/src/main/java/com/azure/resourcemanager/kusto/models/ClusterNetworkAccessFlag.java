@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterNetworkAccessFlag. */
+/**
+ * Whether or not to restrict outbound network access. Value is optional but if passed in, must be 'Enabled' or
+ * 'Disabled'.
+ */
 public final class ClusterNetworkAccessFlag extends ExpandableStringEnum<ClusterNetworkAccessFlag> {
     /** Static value Enabled for ClusterNetworkAccessFlag. */
     public static final ClusterNetworkAccessFlag ENABLED = fromString("Enabled");
@@ -27,7 +30,11 @@ public final class ClusterNetworkAccessFlag extends ExpandableStringEnum<Cluster
         return fromString(name, ClusterNetworkAccessFlag.class);
     }
 
-    /** @return known ClusterNetworkAccessFlag values. */
+    /**
+     * Gets known ClusterNetworkAccessFlag values.
+     *
+     * @return known ClusterNetworkAccessFlag values.
+     */
     public static Collection<ClusterNetworkAccessFlag> values() {
         return values(ClusterNetworkAccessFlag.class);
     }

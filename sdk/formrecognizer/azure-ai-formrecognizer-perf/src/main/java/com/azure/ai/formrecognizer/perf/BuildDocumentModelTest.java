@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer.perf;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.perf.core.ServiceTest;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.perf.test.core.PerfStressOptions;
@@ -31,11 +31,11 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        SyncPoller<DocumentOperationResult, DocumentModelDetails>
+        SyncPoller<OperationResult, DocumentModelDetails>
             syncPoller = documentModelAdministrationAsyncClient
-            .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
+            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
                 DocumentModelBuildMode.TEMPLATE, null,
-                new BuildModelOptions().setDescription("perf-training-model"))
+                new BuildDocumentModelOptions().setDescription("perf-training-model"))
             .getSyncPoller();
         modelId = syncPoller.getFinalResult().getModelId();
         assert modelId != null;
@@ -44,9 +44,9 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return documentModelAdministrationAsyncClient
-            .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
+            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
                 DocumentModelBuildMode.TEMPLATE, null,
-                new BuildModelOptions().setDescription("perf-training-model"))
+                new BuildDocumentModelOptions().setDescription("perf-training-model"))
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {

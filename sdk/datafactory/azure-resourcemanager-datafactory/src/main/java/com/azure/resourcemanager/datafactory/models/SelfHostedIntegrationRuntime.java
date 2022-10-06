@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     /*
-     * When this property is not null, means this is a linked integration
-     * runtime. The property is used to access original integration runtime.
+     * When this property is not null, means this is a linked integration runtime. The property is used to access
+     * original integration runtime.
      */
     @JsonProperty(value = "typeProperties")
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;

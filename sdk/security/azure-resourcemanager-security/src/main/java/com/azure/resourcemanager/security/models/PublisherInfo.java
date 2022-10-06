@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the publisher information of a process/rule. */
 @Fluent
 public final class PublisherInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublisherInfo.class);
-
     /*
-     * The Subject field of the x.509 certificate used to sign the code, using
-     * the following fields -  O = Organization, L = Locality, S = State or
-     * Province, and C = Country
+     * The Subject field of the x.509 certificate used to sign the code, using the following fields -  O =
+     * Organization, L = Locality, S = State or Province, and C = Country
      */
     @JsonProperty(value = "publisherName")
     private String publisherName;

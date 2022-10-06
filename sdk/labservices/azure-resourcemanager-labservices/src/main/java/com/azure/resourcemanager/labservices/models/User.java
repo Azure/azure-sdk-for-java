@@ -98,6 +98,13 @@ public interface User {
     Duration additionalUsageQuota();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.labservices.fluent.models.UserInner object.
      *
      * @return the inner object.
@@ -122,7 +129,7 @@ public interface User {
              * Specifies resourceGroupName, labName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in
+             * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in
              *     resource URIs.
              * @return the next definition stage.
              */
@@ -226,7 +233,9 @@ public interface User {
     User refresh(Context context);
 
     /**
-     * Operation to invite a user to a lab.
+     * Invite a user to a lab.
+     *
+     * <p>Operation to invite a user to a lab.
      *
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +245,9 @@ public interface User {
     void invite(InviteBody body);
 
     /**
-     * Operation to invite a user to a lab.
+     * Invite a user to a lab.
+     *
+     * <p>Operation to invite a user to a lab.
      *
      * @param body The request body.
      * @param context The context to associate with this operation.

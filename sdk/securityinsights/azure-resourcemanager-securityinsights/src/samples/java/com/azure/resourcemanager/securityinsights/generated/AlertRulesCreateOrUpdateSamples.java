@@ -35,7 +35,7 @@ import java.util.Map;
 /** Samples for AlertRules CreateOrUpdate. */
 public final class AlertRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/CreateFusionAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Fusion alert rule.
@@ -258,7 +258,7 @@ public final class AlertRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateMicrosoftSecurityIncidentCreationAlertRule.json
      */
     /**
      * Sample code: Creates or updates a MicrosoftSecurityIncidentCreation rule.
@@ -282,7 +282,7 @@ public final class AlertRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/CreateScheduledAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateScheduledAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Scheduled alert rule.
@@ -355,7 +355,7 @@ public final class AlertRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
      */
     /**
      * Sample code: Creates or updates a Fusion alert rule with scenario exclusion pattern.
@@ -578,7 +578,7 @@ public final class AlertRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRules/CreateNrtAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRules/CreateNrtAlertRule.json
      */
     /**
      * Sample code: Creates or updates a Nrt alert rule.
@@ -616,7 +616,9 @@ public final class AlertRulesCreateOrUpdateSamples {
                                     .withLookbackDuration(Duration.parse("PT5H"))
                                     .withMatchingMethod(MatchingMethod.SELECTED)
                                     .withGroupByEntities(
-                                        Arrays.asList(EntityMappingType.HOST, EntityMappingType.ACCOUNT)))),
+                                        Arrays.asList(EntityMappingType.HOST, EntityMappingType.ACCOUNT))))
+                    .withEventGroupingSettings(
+                        new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.ALERT_PER_RESULT)),
                 Context.NONE);
     }
 

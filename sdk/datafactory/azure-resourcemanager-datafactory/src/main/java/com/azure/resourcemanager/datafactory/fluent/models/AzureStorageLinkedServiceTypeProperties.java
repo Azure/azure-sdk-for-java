@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureStorageLinkedServiceTypeProperties {
     /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -25,9 +25,8 @@ public final class AzureStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "sasUri")
     private Object sasUri;
@@ -39,9 +38,8 @@ public final class AzureStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

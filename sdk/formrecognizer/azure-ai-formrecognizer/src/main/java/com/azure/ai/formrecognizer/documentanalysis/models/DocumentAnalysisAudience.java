@@ -3,20 +3,22 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for DocumentAnalysisAudience. */
-public class DocumentAnalysisAudience extends ExpandableStringEnum<DocumentAnalysisAudience> {
+@Immutable
+public final class DocumentAnalysisAudience extends ExpandableStringEnum<DocumentAnalysisAudience> {
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for DocumentAnalysisAudience. */
-    public static final DocumentAnalysisAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://cognitiveservices.azure.cn");
+    public static final DocumentAnalysisAudience AZURE_CHINA = fromString("https://cognitiveservices.azure.cn");
 
     /** Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for DocumentAnalysisAudience. */
-    public static final DocumentAnalysisAudience AZURE_RESOURCE_MANAGER_US_GOVERNMENT = fromString("https://cognitiveservices.azure.us");
+    public static final DocumentAnalysisAudience AZURE_GOVERNMENT = fromString("https://cognitiveservices.azure.us");
 
     /** Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for DocumentAnalysisAudience. */
-    public static final DocumentAnalysisAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://cognitiveservices.azure.com");
+    public static final DocumentAnalysisAudience AZURE_PUBLIC_CLOUD = fromString("https://cognitiveservices.azure.com");
 
     /**
      * Creates or finds a DocumentAnalysisAudience from its string representation.

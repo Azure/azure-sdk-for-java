@@ -5,27 +5,23 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Schedule resource properties used for updates. */
 @Fluent
 public class ScheduleUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleUpdateProperties.class);
-
     /*
-     * When lab user virtual machines will be started. Timestamp offsets will
-     * be ignored and timeZoneId is used instead.
+     * When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used
+     * instead.
      */
     @JsonProperty(value = "startAt")
     private OffsetDateTime startAt;
 
     /*
-     * When lab user virtual machines will be stopped. Timestamp offsets will
-     * be ignored and timeZoneId is used instead.
+     * When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used
+     * instead.
      */
     @JsonProperty(value = "stopAt")
     private OffsetDateTime stopAt;

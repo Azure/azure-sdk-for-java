@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormPageRange;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
@@ -43,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -54,6 +54,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
+import static com.azure.ai.formrecognizer.TestUtils.getAudience;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -61,8 +62,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
-
-    private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final String EXPECTED_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
     private static final String EXPECTED_JPEG_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
@@ -132,12 +131,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     FormRecognizerClientBuilder getFormRecognizerClientBuilder(HttpClient httpClient,
                                                                FormRecognizerServiceVersion serviceVersion) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = getAudience(endpoint);
+
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -149,12 +152,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
                                                            FormRecognizerServiceVersion serviceVersion) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = getAudience(endpoint);
+
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
@@ -1069,9 +1077,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private void validatePngReceiptFields(Map<String, FormField> receiptPageFields) {
-        //  "123-456-7890" is not a valid US telephone number since no area code can start with 1, so the service
-        //  returns a null instead.
-        assertNull(receiptPageFields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
+
         assertNotNull(receiptPageFields.get("Subtotal").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Total").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Tax").getValue().asFloat());
@@ -1080,8 +1086,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         for (int i = 0; i < itemizedItems.size(); i++) {
             if (itemizedItems.get(i).getValue() != null) {
-                String[] itemizedNames = new String[] {"Surface Pro 6", "SurfacePen"};
-                Float[] itemizedTotalPrices = new Float[] {999f, 99.99f};
+                String[] itemizedNames = new String[] {"Surface Pro 6", "Surface Pen"};
+                Float[] itemizedTotalPrices = new Float[] {1998f, 299.97f};
 
                 Map<String, FormField> actualReceiptItems = itemizedItems.get(i).getValue().asMap();
                 int finalI = i;
@@ -1098,7 +1104,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         assertNotNull(formField.getValue());
                         if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
                             Float quantity = formField.getValue().asFloat();
-                            assertEquals(1.f, quantity);
+                            assertNotNull(quantity);
                         }
                     }
                     if ("Price".equals(key)) {

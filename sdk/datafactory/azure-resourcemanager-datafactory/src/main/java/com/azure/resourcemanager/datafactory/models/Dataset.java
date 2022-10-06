@@ -135,16 +135,15 @@ public class Dataset {
     private String description;
 
     /*
-     * Columns that define the structure of the dataset. Type: array (or
-     * Expression with resultType array), itemType: DatasetDataElement.
+     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
+     * DatasetDataElement.
      */
     @JsonProperty(value = "structure")
     private Object structure;
 
     /*
-     * Columns that define the physical type schema of the dataset. Type: array
-     * (or Expression with resultType array), itemType:
-     * DatasetSchemaDataElement.
+     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
+     * itemType: DatasetSchemaDataElement.
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -169,15 +168,14 @@ public class Dataset {
     private List<Object> annotations;
 
     /*
-     * The folder that this Dataset is in. If not specified, Dataset will
-     * appear at the root level.
+     * The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private DatasetFolder folder;
 
     /*
-     * The Azure Data Factory nested object which identifies data within
-     * different data stores, such as tables, files, folders, and documents.
+     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
+     * folders, and documents.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

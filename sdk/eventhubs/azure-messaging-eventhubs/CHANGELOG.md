@@ -4,11 +4,27 @@
 
 ### Features Added
 
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+- Fixed issue where FAIL_OVERFLOW when pushing events in EventHubBufferedProducerClient would result in a tight loop, so no more events would be published. ([30258](https://github.com/Azure/azure-sdk-for-java/issues/30258))
+
 ### Other Changes
+
+## 5.13.1 (2022-09-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-amqp` to `2.7.1`.
 
 ## 5.13.0 (2022-08-18)
 
@@ -22,6 +38,18 @@
 
 - Upgraded `azure-core` to `1.31.0`.
 - Upgraded `azure-core-amqp` to `2.7.0`.
+
+## 5.13.0-beta.1 (2022-08-01)
+
+### Features Added
+
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+
+### Bugs Fixed
+
+- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
 
 ## 5.12.2 (2022-07-07)
 

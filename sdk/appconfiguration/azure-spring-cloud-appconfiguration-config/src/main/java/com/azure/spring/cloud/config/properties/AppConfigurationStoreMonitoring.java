@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.util.Assert;
 
 /**
- * Properties for Monitoring an Azure App Configuratin Store.
+ * Properties for Monitoring an Azure App Configuration Store.
  */
 public final class AppConfigurationStoreMonitoring {
 
@@ -99,7 +99,7 @@ public final class AppConfigurationStoreMonitoring {
     }
 
     /**
-     * Validates refreshInterals are at least 1 second, and if enabled triggers are valid.
+     * Validates refreshIntervals are at least 1 second, and if enabled triggers are valid.
      */
     @PostConstruct
     public void validateAndInit() {
