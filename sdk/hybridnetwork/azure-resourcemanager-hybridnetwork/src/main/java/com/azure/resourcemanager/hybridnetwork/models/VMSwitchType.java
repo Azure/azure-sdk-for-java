@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMSwitchType. */
+/** The type of the VM switch. */
 public final class VMSwitchType extends ExpandableStringEnum<VMSwitchType> {
     /** Static value Unknown for VMSwitchType. */
     public static final VMSwitchType UNKNOWN = fromString("Unknown");
@@ -33,7 +33,11 @@ public final class VMSwitchType extends ExpandableStringEnum<VMSwitchType> {
         return fromString(name, VMSwitchType.class);
     }
 
-    /** @return known VMSwitchType values. */
+    /**
+     * Gets known VMSwitchType values.
+     *
+     * @return known VMSwitchType values.
+     */
     public static Collection<VMSwitchType> values() {
         return values(VMSwitchType.class);
     }

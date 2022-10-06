@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardeningInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListAdaptiveNetworkHardenings API service call. */
 @Fluent
 public final class AdaptiveNetworkHardeningsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveNetworkHardeningsList.class);
-
     /*
      * A list of Adaptive Network Hardenings resources
      */

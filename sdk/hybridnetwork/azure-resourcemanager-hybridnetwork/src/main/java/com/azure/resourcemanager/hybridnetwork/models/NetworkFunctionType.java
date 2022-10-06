@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkFunctionType. */
+/** The network function type. */
 public final class NetworkFunctionType extends ExpandableStringEnum<NetworkFunctionType> {
     /** Static value Unknown for NetworkFunctionType. */
     public static final NetworkFunctionType UNKNOWN = fromString("Unknown");
@@ -30,7 +30,11 @@ public final class NetworkFunctionType extends ExpandableStringEnum<NetworkFunct
         return fromString(name, NetworkFunctionType.class);
     }
 
-    /** @return known NetworkFunctionType values. */
+    /**
+     * Gets known NetworkFunctionType values.
+     *
+     * @return known NetworkFunctionType values.
+     */
     public static Collection<NetworkFunctionType> values() {
         return values(NetworkFunctionType.class);
     }

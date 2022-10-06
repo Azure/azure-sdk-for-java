@@ -25,9 +25,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFunctionName);
 
     /**
@@ -40,9 +40,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkFunctionName, Context context);
 
@@ -78,6 +78,21 @@ public interface NetworkFunctionsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFunctionName The name of the network function resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified network function resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkFunctionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String networkFunctionName, Context context);
+
+    /**
+     * Gets information about the specified network function resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,21 +102,6 @@ public interface NetworkFunctionsClient {
     NetworkFunctionInner getByResourceGroup(String resourceGroupName, String networkFunctionName);
 
     /**
-     * Gets information about the specified network function resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFunctionName The name of the network function resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFunctionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFunctionName, Context context);
-
-    /**
      * Creates or updates a network function resource. This operation can take up to 6 hours to complete. This is
      * expected service behavior.
      *
@@ -111,9 +111,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters);
 
@@ -128,9 +128,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context);
 
@@ -166,6 +166,22 @@ public interface NetworkFunctionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFunctionInner createOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context);
+
+    /**
+     * Updates the tags for the network function resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName Resource name for the network function resource.
+     * @param parameters Parameters supplied to the update network function tags operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network function resource response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkFunctionInner> updateTagsWithResponse(
+        String resourceGroupName, String networkFunctionName, TagsObject parameters, Context context);
 
     /**
      * Updates the tags for the network function resource.
@@ -182,27 +198,11 @@ public interface NetworkFunctionsClient {
     NetworkFunctionInner updateTags(String resourceGroupName, String networkFunctionName, TagsObject parameters);
 
     /**
-     * Updates the tags for the network function resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFunctionName Resource name for the network function resource.
-     * @param parameters Parameters supplied to the update network function tags operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFunctionInner> updateTagsWithResponse(
-        String resourceGroupName, String networkFunctionName, TagsObject parameters, Context context);
-
-    /**
      * Lists all the network functions in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> list();
@@ -214,7 +214,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> list(Context context);
@@ -226,7 +226,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName);
@@ -239,7 +239,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName, Context context);

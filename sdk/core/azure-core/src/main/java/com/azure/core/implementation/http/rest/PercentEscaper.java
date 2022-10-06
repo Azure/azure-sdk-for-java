@@ -6,8 +6,7 @@ package com.azure.core.implementation.http.rest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * An escaper that escapes URL data through percent encoding.
@@ -15,15 +14,20 @@ import java.util.Set;
 public final class PercentEscaper {
     private static final char[] HEX_CHARACTERS = "0123456789ABCDEF".toCharArray();
 
-    /*
-     * The characters in this string are always safe to use.
-     */
-    private static final String SAFE_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final boolean[] SAFE_CHARACTERS;
+
+    static {
+        // ASCII alphanumerics are always safe to use.
+        SAFE_CHARACTERS = new boolean[256];
+        Arrays.fill(SAFE_CHARACTERS, 'a', 'z' + 1, true);
+        Arrays.fill(SAFE_CHARACTERS, 'A', 'Z' + 1, true);
+        Arrays.fill(SAFE_CHARACTERS, '0', '9' + 1, true);
+    }
 
     private static final ClientLogger LOGGER = new ClientLogger(PercentEscaper.class);
 
     private final boolean usePlusForSpace;
-    private final Set<Integer> safeCharacterPoints;
+    private final boolean[] safeCharacterPoints;
 
     /**
      * Creates a percent escaper.
@@ -39,10 +43,9 @@ public final class PercentEscaper {
                 "' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration."));
         }
 
-        this.safeCharacterPoints = new HashSet<>();
-        SAFE_CHARACTERS.codePoints().forEach(safeCharacterPoints::add);
+        this.safeCharacterPoints = Arrays.copyOf(SAFE_CHARACTERS, 256); // 256 works as only ASCII characters are safe.
         if (!CoreUtils.isNullOrEmpty(safeCharacters)) {
-            safeCharacters.codePoints().forEach(safeCharacterPoints::add);
+            safeCharacters.codePoints().forEach(c -> safeCharacterPoints[c] = true);
         }
     }
 
@@ -58,9 +61,11 @@ public final class PercentEscaper {
             return original;
         }
 
-        StringBuilder escapedBuilder = new StringBuilder();
+        StringBuilder escapedBuilder = null;
+        int last = 0;
         int index = 0;
         int end = original.length();
+        char[] buffer = new char[12]; // largest possible buffer
 
         /*
          * When the UTF-8 character is more than one byte the bytes will be converted to hex in reverse order to allow
@@ -69,15 +74,28 @@ public final class PercentEscaper {
          */
         while (index < end) {
             int codePoint = getCodePoint(original, index, end);
+            int toIndex = index;
 
-            // Supplementary code points are comprised of two characters in the string.
-            index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
-
-            if (safeCharacterPoints.contains(codePoint)) {
+            if (codePoint < 256 && safeCharacterPoints[codePoint]) {
                 // This is a safe character, use it as is.
                 // All safe characters should be ASCII.
-                escapedBuilder.append((char) codePoint);
-            } else if (usePlusForSpace && codePoint == ' ') {
+                index++;
+                continue;
+            }
+
+            // Supplementary code points are comprised of two characters in the string.
+            // Check for supplementary code points after checking for safe characters as safe characters are always
+            // 1 index.
+            index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
+
+            if (escapedBuilder == null) {
+                escapedBuilder = new StringBuilder((int) Math.ceil(original.length() * 1.5));
+            }
+
+            escapedBuilder.append(original, last, toIndex);
+            last = index;
+
+            if (usePlusForSpace && codePoint == ' ') {
                 // Character is a space, and we are using '+' instead of "%20".
                 escapedBuilder.append('+');
             } else if (codePoint <= 0x7F) {
@@ -105,22 +123,21 @@ public final class PercentEscaper {
                  * 6. Shift right 4 times to move to the next hex quad bits.
                  * 7. Bitwise or with bits 1100 to get the leading hex character.
                  */
-                char[] chars = new char[6];
-                chars[0] = '%';
-                chars[3] = '%';
+                buffer[0] = '%';
+                buffer[3] = '%';
 
-                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[5] = HEX_CHARACTERS[codePoint & 0xF];
 
                 codePoint >>>= 4;
-                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+                buffer[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
 
                 codePoint >>>= 2;
-                chars[2] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[2] = HEX_CHARACTERS[codePoint & 0xF];
 
                 codePoint >>>= 4;
-                chars[1] = HEX_CHARACTERS[codePoint | 0xC];
+                buffer[1] = HEX_CHARACTERS[codePoint | 0xC];
 
-                escapedBuilder.append(chars);
+                escapedBuilder.append(buffer, 0, 6);
             } else if (codePoint <= 0xFFFF) {
                 /*
                  * Character is three bytes, use the format '%Ex%xx%xx'. Leading bits in the first byte are always
@@ -137,27 +154,26 @@ public final class PercentEscaper {
                  *
                  * Note: No work is needed for the leading hex character since it is always 'E'.
                  */
-                char[] chars = new char[9];
-                chars[0] = '%';
-                chars[1] = 'E';
-                chars[3] = '%';
-                chars[6] = '%';
+                buffer[0] = '%';
+                buffer[1] = 'E';
+                buffer[3] = '%';
+                buffer[6] = '%';
 
-                chars[8] = HEX_CHARACTERS[codePoint & 0xF];
-
-                codePoint >>>= 4;
-                chars[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
-
-                codePoint >>>= 2;
-                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[8] = HEX_CHARACTERS[codePoint & 0xF];
 
                 codePoint >>>= 4;
-                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+                buffer[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
 
                 codePoint >>>= 2;
-                chars[2] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[5] = HEX_CHARACTERS[codePoint & 0xF];
 
-                escapedBuilder.append(chars);
+                codePoint >>>= 4;
+                buffer[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                buffer[2] = HEX_CHARACTERS[codePoint & 0xF];
+
+                escapedBuilder.append(buffer, 0, 9);
             } else if (codePoint <= 0x10FFFF) {
                 /*
                  * Character is four bytes, use the format '%Fx%xx%xx%xx'. Leading bits in the first byte are always
@@ -174,35 +190,42 @@ public final class PercentEscaper {
                  *
                  * Note: No work is needed for the leading hex character since it is always 'F'.
                  */
-                char[] chars = new char[12];
-                chars[0] = '%';
-                chars[1] = 'F';
-                chars[3] = '%';
-                chars[6] = '%';
-                chars[9] = '%';
+                buffer[0] = '%';
+                buffer[1] = 'F';
+                buffer[3] = '%';
+                buffer[6] = '%';
+                buffer[9] = '%';
 
-                chars[11] = HEX_CHARACTERS[codePoint & 0xF];
-
-                codePoint >>>= 4;
-                chars[10] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
-
-                codePoint >>>= 2;
-                chars[8] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[11] = HEX_CHARACTERS[codePoint & 0xF];
 
                 codePoint >>>= 4;
-                chars[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+                buffer[10] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
 
                 codePoint >>>= 2;
-                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+                buffer[8] = HEX_CHARACTERS[codePoint & 0xF];
 
                 codePoint >>>= 4;
-                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+                buffer[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
 
                 codePoint >>>= 2;
-                chars[2] = HEX_CHARACTERS[codePoint & 0x7];
+                buffer[5] = HEX_CHARACTERS[codePoint & 0xF];
 
-                escapedBuilder.append(chars);
+                codePoint >>>= 4;
+                buffer[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                buffer[2] = HEX_CHARACTERS[codePoint & 0x7];
+
+                escapedBuilder.append(buffer);
             }
+        }
+
+        if (escapedBuilder == null) {
+            return original;
+        }
+
+        if (last < end) {
+            escapedBuilder.append(original, last, end);
         }
 
         return escapedBuilder.toString();

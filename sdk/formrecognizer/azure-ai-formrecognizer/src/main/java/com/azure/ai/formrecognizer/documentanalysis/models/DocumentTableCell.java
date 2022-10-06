@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTableCellHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * An object representing the location and content of a table cell.
  */
+@Immutable
 public final class DocumentTableCell {
     /*
      * Table cell kind.
@@ -66,7 +68,7 @@ public final class DocumentTableCell {
      * @param kind the kind value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setKind(DocumentTableCellKind kind) {
+    private void setKind(DocumentTableCellKind kind) {
         this.kind = kind;
     }
 
@@ -85,7 +87,7 @@ public final class DocumentTableCell {
      * @param rowIndex the rowIndex value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setRowIndex(int rowIndex) {
+    private void setRowIndex(int rowIndex) {
         this.rowIndex = rowIndex;
     }
 
@@ -104,7 +106,7 @@ public final class DocumentTableCell {
      * @param columnIndex the columnIndex value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setColumnIndex(int columnIndex) {
+    private void setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
     }
 
@@ -123,7 +125,7 @@ public final class DocumentTableCell {
      * @param rowSpan the rowSpan value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setRowSpan(Integer rowSpan) {
+    private void setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
     }
 
@@ -142,7 +144,7 @@ public final class DocumentTableCell {
      * @param columnSpan the columnSpan value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setColumnSpan(Integer columnSpan) {
+    private void setColumnSpan(Integer columnSpan) {
         this.columnSpan = columnSpan;
     }
 
@@ -161,7 +163,7 @@ public final class DocumentTableCell {
      * @param content the content value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -180,7 +182,7 @@ public final class DocumentTableCell {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -199,7 +201,7 @@ public final class DocumentTableCell {
      * @param spans the spans value to set.
      * @return the DocumentTableCell object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

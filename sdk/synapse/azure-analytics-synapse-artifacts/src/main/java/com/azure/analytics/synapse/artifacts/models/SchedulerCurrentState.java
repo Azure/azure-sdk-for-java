@@ -30,7 +30,11 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
         return fromString(name, SchedulerCurrentState.class);
     }
 
-    /** @return known SchedulerCurrentState values. */
+    /**
+     * Gets known SchedulerCurrentState values.
+     *
+     * @return known SchedulerCurrentState values.
+     */
     public static Collection<SchedulerCurrentState> values() {
         return values(SchedulerCurrentState.class);
     }

@@ -37,6 +37,10 @@ pr:
       - sdk/monitor/azure-monitor-query/pom.xml
 
 parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 - name: release_azuremonitoringestion
   displayName: 'azure-monitor-ingestion'
   type: boolean

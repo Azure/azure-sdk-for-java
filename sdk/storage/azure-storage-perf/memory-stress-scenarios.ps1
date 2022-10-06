@@ -55,5 +55,5 @@ Run-Scenario "7g" "uploadfiledatalake7g" "uploadfiledatalake --warmup 0 --durati
 
 # Shares
 $env:STORAGE_CONNECTION_STRING=$env:PRIMARY_STORAGE_CONNECTION_STRING
-Run-Scenario "100m" "uploadfileshare100msync" "uploadfileshare --warmup 0 --duration 1 --size 1048576000 --sync"
+Run-Scenario "150m" "uploadfileshare150msync" "uploadfileshare --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "200m" "uploadfileshare200m" "uploadfileshare --warmup 0 --duration 1 --size 1048576000"

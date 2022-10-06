@@ -12,15 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SsisPropertyOverride {
     /*
-     * SSIS package property override value. Type: string (or Expression with
-     * resultType string).
+     * SSIS package property override value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
 
     /*
-     * Whether SSIS package property override value is sensitive data. Value
-     * will be encrypted in SSISDB if it is true
+     * Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
      */
     @JsonProperty(value = "isSensitive")
     private Boolean isSensitive;

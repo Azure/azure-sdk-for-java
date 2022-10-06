@@ -5,40 +5,30 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.EffectiveNetworkSecurityGroups;
 import com.azure.resourcemanager.security.models.Rule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The resource whose properties describes the Adaptive Network Hardening settings for some Azure resource. */
-@JsonFlatten
 @Fluent
-public class AdaptiveNetworkHardeningInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveNetworkHardeningInner.class);
-
+public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     /*
-     * The security rules which are recommended to be effective on the VM
+     * Properties of the Adaptive Network Hardening resource
      */
-    @JsonProperty(value = "properties.rules")
-    private List<Rule> rules;
+    @JsonProperty(value = "properties")
+    private AdaptiveNetworkHardeningProperties innerProperties;
 
-    /*
-     * The UTC time on which the rules were calculated
+    /**
+     * Get the innerProperties property: Properties of the Adaptive Network Hardening resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.rulesCalculationTime")
-    private OffsetDateTime rulesCalculationTime;
-
-    /*
-     * The Network Security Groups effective on the network interfaces of the
-     * protected resource
-     */
-    @JsonProperty(value = "properties.effectiveNetworkSecurityGroups")
-    private List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups;
+    private AdaptiveNetworkHardeningProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the rules property: The security rules which are recommended to be effective on the VM.
@@ -46,7 +36,7 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @return the rules value.
      */
     public List<Rule> rules() {
-        return this.rules;
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
     }
 
     /**
@@ -56,7 +46,10 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @return the AdaptiveNetworkHardeningInner object itself.
      */
     public AdaptiveNetworkHardeningInner withRules(List<Rule> rules) {
-        this.rules = rules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveNetworkHardeningProperties();
+        }
+        this.innerProperties().withRules(rules);
         return this;
     }
 
@@ -66,7 +59,7 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @return the rulesCalculationTime value.
      */
     public OffsetDateTime rulesCalculationTime() {
-        return this.rulesCalculationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().rulesCalculationTime();
     }
 
     /**
@@ -76,7 +69,10 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @return the AdaptiveNetworkHardeningInner object itself.
      */
     public AdaptiveNetworkHardeningInner withRulesCalculationTime(OffsetDateTime rulesCalculationTime) {
-        this.rulesCalculationTime = rulesCalculationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveNetworkHardeningProperties();
+        }
+        this.innerProperties().withRulesCalculationTime(rulesCalculationTime);
         return this;
     }
 
@@ -87,7 +83,7 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @return the effectiveNetworkSecurityGroups value.
      */
     public List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups() {
-        return this.effectiveNetworkSecurityGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveNetworkSecurityGroups();
     }
 
     /**
@@ -99,7 +95,10 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      */
     public AdaptiveNetworkHardeningInner withEffectiveNetworkSecurityGroups(
         List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups) {
-        this.effectiveNetworkSecurityGroups = effectiveNetworkSecurityGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveNetworkHardeningProperties();
+        }
+        this.innerProperties().withEffectiveNetworkSecurityGroups(effectiveNetworkSecurityGroups);
         return this;
     }
 
@@ -109,11 +108,8 @@ public class AdaptiveNetworkHardeningInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
-        }
-        if (effectiveNetworkSecurityGroups() != null) {
-            effectiveNetworkSecurityGroups().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

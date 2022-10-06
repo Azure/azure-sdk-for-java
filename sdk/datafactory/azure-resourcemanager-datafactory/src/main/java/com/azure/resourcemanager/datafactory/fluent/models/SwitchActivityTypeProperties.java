@@ -16,24 +16,22 @@ import java.util.List;
 @Fluent
 public final class SwitchActivityTypeProperties {
     /*
-     * An expression that would evaluate to a string or integer. This is used
-     * to determine the block of activities in cases that will be executed.
+     * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
+     * cases that will be executed.
      */
     @JsonProperty(value = "on", required = true)
     private Expression on;
 
     /*
-     * List of cases that correspond to expected values of the 'on' property.
-     * This is an optional property and if not provided, the activity will
-     * execute activities provided in defaultActivities.
+     * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
+     * provided, the activity will execute activities provided in defaultActivities.
      */
     @JsonProperty(value = "cases")
     private List<SwitchCase> cases;
 
     /*
-     * List of activities to execute if no case condition is satisfied. This is
-     * an optional property and if not provided, the activity will exit without
-     * any action.
+     * List of activities to execute if no case condition is satisfied. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     @JsonProperty(value = "defaultActivities")
     private List<Activity> defaultActivities;

@@ -62,22 +62,28 @@ public interface CapacityPool {
     SystemData systemData();
 
     /**
-     * Gets the poolId property: poolId UUID v4 used to identify the Pool.
+     * Gets the poolId property: poolId
+     *
+     * <p>UUID v4 used to identify the Pool.
      *
      * @return the poolId value.
      */
     String poolId();
 
     /**
-     * Gets the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Gets the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @return the size value.
      */
     long size();
 
     /**
-     * Gets the serviceLevel property: serviceLevel The service level of the file system.
+     * Gets the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -119,8 +125,10 @@ public interface CapacityPool {
     Boolean coolAccess();
 
     /**
-     * Gets the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Gets the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @return the encryptionType value.
      */
@@ -200,11 +208,14 @@ public interface CapacityPool {
         /** The stage of the CapacityPool definition allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
-             * chunks (value must be multiply of 4398046511104)..
+             * Specifies the size property: size
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
-             *     be multiply of 4398046511104).
+             * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+             * 4398046511104)..
+             *
+             * @param size size
+             *     <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply
+             *     of 4398046511104).
              * @return the next definition stage.
              */
             WithServiceLevel withSize(long size);
@@ -212,9 +223,12 @@ public interface CapacityPool {
         /** The stage of the CapacityPool definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel
              *
-             * @param serviceLevel serviceLevel The service level of the file system.
+             * <p>The service level of the file system.
+             *
+             * @param serviceLevel serviceLevel
+             *     <p>The service level of the file system.
              * @return the next definition stage.
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
@@ -276,12 +290,14 @@ public interface CapacityPool {
         /** The stage of the CapacityPool definition allowing to specify encryptionType. */
         interface WithEncryptionType {
             /**
-             * Specifies the encryptionType property: encryptionType Encryption type of the capacity pool, set
-             * encryption type for data at rest for this pool and all volumes in it. This value can only be set when
-             * creating new pool..
+             * Specifies the encryptionType property: encryptionType
              *
-             * @param encryptionType encryptionType Encryption type of the capacity pool, set encryption type for data
-             *     at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+             * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all
+             * volumes in it. This value can only be set when creating new pool..
+             *
+             * @param encryptionType encryptionType
+             *     <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all
+             *     volumes in it. This value can only be set when creating new pool.
              * @return the next definition stage.
              */
             WithCreate withEncryptionType(EncryptionType encryptionType);
@@ -327,11 +343,14 @@ public interface CapacityPool {
         /** The stage of the CapacityPool update allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
-             * chunks (value must be multiply of 4398046511104)..
+             * Specifies the size property: size
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
-             *     be multiply of 4398046511104).
+             * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+             * 4398046511104)..
+             *
+             * @param size size
+             *     <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply
+             *     of 4398046511104).
              * @return the next definition stage.
              */
             Update withSize(Long size);

@@ -1106,6 +1106,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.USER_DEFINED_TYPES_PATH_SEGMENT:
                         this.getUserDefinedTypeName().setValue(fragments[3]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
 
@@ -1135,6 +1139,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.SCHEMAS_PATH_SEGMENT:
                         this.getSchemaName().setValue(fragments[5]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
 
@@ -1143,6 +1151,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.ATTACHMENTS_PATH_SEGMENT:
                         this.getAttachmentName().setValue(fragments[7]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
         }

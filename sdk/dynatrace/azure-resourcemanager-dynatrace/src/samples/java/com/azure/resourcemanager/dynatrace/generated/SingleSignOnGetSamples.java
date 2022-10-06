@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SingleSignOn Get. */
 public final class SingleSignOnGetSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/SingleSignOn_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/SingleSignOn_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: SingleSignOn_Get_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class SingleSignOnGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/SingleSignOn_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/SingleSignOn_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: SingleSignOn_Get_MaximumSet_Gen.

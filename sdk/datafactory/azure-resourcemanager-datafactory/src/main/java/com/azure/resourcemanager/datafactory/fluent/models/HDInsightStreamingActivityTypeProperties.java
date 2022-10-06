@@ -35,15 +35,13 @@ public final class HDInsightStreamingActivityTypeProperties {
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
-     * Mapper executable name. Type: string (or Expression with resultType
-     * string).
+     * Mapper executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mapper", required = true)
     private Object mapper;
 
     /*
-     * Reducer executable name. Type: string (or Expression with resultType
-     * string).
+     * Reducer executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "reducer", required = true)
     private Object reducer;
@@ -73,8 +71,7 @@ public final class HDInsightStreamingActivityTypeProperties {
     private LinkedServiceReference fileLinkedService;
 
     /*
-     * Combiner executable name. Type: string (or Expression with resultType
-     * string).
+     * Combiner executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "combiner")
     private Object combiner;

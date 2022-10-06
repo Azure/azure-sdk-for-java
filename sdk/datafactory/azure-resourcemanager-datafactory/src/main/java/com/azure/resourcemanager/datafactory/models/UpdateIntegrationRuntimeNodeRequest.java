@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UpdateIntegrationRuntimeNodeRequest {
     /*
-     * The number of concurrent jobs permitted to run on the integration
-     * runtime node. Values between 1 and maxConcurrentJobs(inclusive) are
-     * allowed.
+     * The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and
+     * maxConcurrentJobs(inclusive) are allowed.
      */
     @JsonProperty(value = "concurrentJobsLimit")
     private Integer concurrentJobsLimit;

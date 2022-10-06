@@ -38,8 +38,8 @@ public final class CopyActivityTypeProperties {
     private Object translator;
 
     /*
-     * Specifies whether to copy data via an interim staging. Default value is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "enableStaging")
     private Object enableStaging;
@@ -51,38 +51,33 @@ public final class CopyActivityTypeProperties {
     private StagingSettings stagingSettings;
 
     /*
-     * Maximum number of concurrent sessions opened on the source or sink to
-     * avoid overloading the data store. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "parallelCopies")
     private Object parallelCopies;
 
     /*
-     * Maximum number of data integration units that can be used to perform
-     * this data movement. Type: integer (or Expression with resultType
-     * integer), minimum: 0.
+     * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or
+     * Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "dataIntegrationUnits")
     private Object dataIntegrationUnits;
 
     /*
-     * Whether to skip incompatible row. Default value is false. Type: boolean
-     * (or Expression with resultType boolean).
+     * Whether to skip incompatible row. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableSkipIncompatibleRow")
     private Object enableSkipIncompatibleRow;
 
     /*
-     * Redirect incompatible row settings when EnableSkipIncompatibleRow is
-     * true.
+     * Redirect incompatible row settings when EnableSkipIncompatibleRow is true.
      */
     @JsonProperty(value = "redirectIncompatibleRowSettings")
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /*
-     * (Deprecated. Please use LogSettings) Log storage settings customer need
-     * to provide when enabling session log.
+     * (Deprecated. Please use LogSettings) Log storage settings customer need to provide when enabling session log.
      */
     @JsonProperty(value = "logStorageSettings")
     private LogStorageSettings logStorageSettings;
@@ -106,8 +101,7 @@ public final class CopyActivityTypeProperties {
     private List<Object> preserve;
 
     /*
-     * Whether to enable Data Consistency validation. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether to enable Data Consistency validation. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "validateDataConsistency")
     private Object validateDataConsistency;

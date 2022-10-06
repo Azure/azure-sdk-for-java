@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,8 +14,6 @@ import java.time.Duration;
 @JsonTypeName("AmqpC2DRejectedMessagesNotInAllowedRange")
 @Fluent
 public final class AmqpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmqpC2DRejectedMessagesNotInAllowedRange.class);
-
     /** {@inheritDoc} */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

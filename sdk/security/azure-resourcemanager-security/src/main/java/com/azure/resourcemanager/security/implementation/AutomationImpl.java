@@ -90,6 +90,10 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AutomationInner innerModel() {
         return this.innerObject;
     }

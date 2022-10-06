@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,20 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where Feature Flags didn't NormalizeNull on refresh checks, causing `(No Label)`/empty label feature flags to not cause refreshes when their value changed.
+
 ### Other Changes
+
+## 2.9.0 (2022-09-22)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Features Added
+- Added Geo-Replication support, only supported using endpoints.
+- Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables listing of multiple endpoints. See MSDocs or README for more details.
+
+### Dependency Upgrades
+- Upgrade azure-sdk's version to latest released version.
 
 ## 2.8.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
@@ -53,26 +66,26 @@ This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ## 2.2.0 (2021-11-25)
 
-* Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
+- Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
 
 ## 2.1.1 (2021-09-28)
 
 ### Bugs Fixed
 
-* Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
-* Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
+- Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
+- Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
 
 ### Other Changes
 
-* Updated Tracing to check for Key Vault and Dev usage.
+- Updated Tracing to check for Key Vault and Dev usage.
 
 ## 2.1.0 (2021-09-05)
 
-* Update to JUnit 5 from JUnit 4
+- Update to JUnit 5 from JUnit 4
 
 ## 2.0.0 (2021-07-20)
 
-* GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.
+- GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.
 
 ## 2.0.0-beta.2 (2021-06-21)
 - Changed package path to `com.azure.spring.cloud.config`

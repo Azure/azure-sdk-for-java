@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Reason. */
+/** Message providing the reason why the given name is invalid. */
 public final class Reason extends ExpandableStringEnum<Reason> {
     /** Static value Invalid for Reason. */
     public static final Reason INVALID = fromString("Invalid");
@@ -27,7 +27,11 @@ public final class Reason extends ExpandableStringEnum<Reason> {
         return fromString(name, Reason.class);
     }
 
-    /** @return known Reason values. */
+    /**
+     * Gets known Reason values.
+     *
+     * @return known Reason values.
+     */
     public static Collection<Reason> values() {
         return values(Reason.class);
     }

@@ -19,48 +19,42 @@ public final class ResponsysLinkedServiceTypeProperties {
     private Object endpoint;
 
     /*
-     * The client ID associated with the Responsys application. Type: string
-     * (or Expression with resultType string).
+     * The client ID associated with the Responsys application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId", required = true)
     private Object clientId;
 
     /*
-     * The client secret associated with the Responsys application. Type:
-     * string (or Expression with resultType string).
+     * The client secret associated with the Responsys application. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

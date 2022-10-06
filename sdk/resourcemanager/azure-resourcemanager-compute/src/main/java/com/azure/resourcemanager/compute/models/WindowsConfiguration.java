@@ -54,6 +54,12 @@ public final class WindowsConfiguration {
     @JsonProperty(value = "winRM")
     private WinRMConfiguration winRM;
 
+    /*
+     * Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
+     */
+    @JsonProperty(value = "enableVMAgentPlatformUpdates")
+    private Boolean enableVMAgentPlatformUpdates;
+
     /**
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
      * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
@@ -194,6 +200,28 @@ public final class WindowsConfiguration {
      */
     public WindowsConfiguration withWinRM(WinRMConfiguration winRM) {
         this.winRM = winRM;
+        return this;
+    }
+
+    /**
+     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Windows virtual machine. Default value is false.
+     *
+     * @return the enableVMAgentPlatformUpdates value.
+     */
+    public Boolean enableVMAgentPlatformUpdates() {
+        return this.enableVMAgentPlatformUpdates;
+    }
+
+    /**
+     * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Windows virtual machine. Default value is false.
+     *
+     * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
+     * @return the WindowsConfiguration object itself.
+     */
+    public WindowsConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
+        this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
         return this;
     }
 
