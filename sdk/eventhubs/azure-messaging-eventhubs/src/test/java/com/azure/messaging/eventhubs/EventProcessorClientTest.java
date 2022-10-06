@@ -331,9 +331,12 @@ public class EventProcessorClientTest {
 
         //
         CountDownLatch latch = new CountDownLatch(1);
-        when(tracer1.makeSpanCurrent(any())).thenReturn(() -> {
+        when(tracer1.makeSpanCurrent(any())).thenReturn(() -> { });
+
+        doAnswer(invocation -> {
             latch.countDown();
-        });
+            return null;
+        }).when(tracer1).end(eq("success"), isNull(), any());
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
