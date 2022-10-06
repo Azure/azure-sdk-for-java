@@ -15,10 +15,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceRegistrationK
 import com.azure.resourcemanager.hybridnetwork.models.Device;
 import com.azure.resourcemanager.hybridnetwork.models.DeviceRegistrationKey;
 import com.azure.resourcemanager.hybridnetwork.models.Devices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DevicesImpl implements Devices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DevicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevicesImpl.class);
 
     private final DevicesClient innerClient;
 
@@ -38,15 +37,6 @@ public final class DevicesImpl implements Devices {
         this.serviceClient().delete(resourceGroupName, deviceName, context);
     }
 
-    public Device getByResourceGroup(String resourceGroupName, String deviceName) {
-        DeviceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deviceName);
-        if (inner != null) {
-            return new DeviceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Device> getByResourceGroupWithResponse(
         String resourceGroupName, String deviceName, Context context) {
         Response<DeviceInner> inner =
@@ -57,6 +47,15 @@ public final class DevicesImpl implements Devices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeviceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Device getByResourceGroup(String resourceGroupName, String deviceName) {
+        DeviceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deviceName);
+        if (inner != null) {
+            return new DeviceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,15 +81,6 @@ public final class DevicesImpl implements Devices {
         return Utils.mapPage(inner, inner1 -> new DeviceImpl(inner1, this.manager()));
     }
 
-    public DeviceRegistrationKey listRegistrationKey(String resourceGroupName, String deviceName) {
-        DeviceRegistrationKeyInner inner = this.serviceClient().listRegistrationKey(resourceGroupName, deviceName);
-        if (inner != null) {
-            return new DeviceRegistrationKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(
         String resourceGroupName, String deviceName, Context context) {
         Response<DeviceRegistrationKeyInner> inner =
@@ -106,10 +96,19 @@ public final class DevicesImpl implements Devices {
         }
     }
 
+    public DeviceRegistrationKey listRegistrationKey(String resourceGroupName, String deviceName) {
+        DeviceRegistrationKeyInner inner = this.serviceClient().listRegistrationKey(resourceGroupName, deviceName);
+        if (inner != null) {
+            return new DeviceRegistrationKeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Device getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -128,7 +127,7 @@ public final class DevicesImpl implements Devices {
     public Response<Device> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -147,7 +146,7 @@ public final class DevicesImpl implements Devices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -166,7 +165,7 @@ public final class DevicesImpl implements Devices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));

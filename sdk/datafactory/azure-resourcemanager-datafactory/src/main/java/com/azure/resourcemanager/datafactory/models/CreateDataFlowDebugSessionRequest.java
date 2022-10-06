@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreateDataFlowDebugSessionRequest {
     /*
-     * Compute type of the cluster. The value will be overwritten by the same
-     * setting in integration runtime if provided.
+     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
+     * provided.
      */
     @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
-     * Core count of the cluster. The value will be overwritten by the same
-     * setting in integration runtime if provided.
+     * Core count of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
     @JsonProperty(value = "coreCount")
     private Integer coreCount;

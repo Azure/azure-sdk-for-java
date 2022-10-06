@@ -19,7 +19,9 @@ import com.azure.resourcemanager.netapp.models.BackupPatch;
 /** An instance of this class provides access to all the operations defined in BackupsClient. */
 public interface BackupsClient {
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -34,7 +36,9 @@ public interface BackupsClient {
     BackupStatusInner getStatus(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -51,7 +55,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -67,7 +73,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -84,7 +92,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -99,7 +109,9 @@ public interface BackupsClient {
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -116,7 +128,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -133,7 +147,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -156,7 +172,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -179,7 +197,9 @@ public interface BackupsClient {
         BackupInner body);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -204,7 +224,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -227,7 +249,9 @@ public interface BackupsClient {
         BackupInner body);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -252,7 +276,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -275,7 +301,9 @@ public interface BackupsClient {
         BackupPatch body);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -300,7 +328,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -323,7 +353,9 @@ public interface BackupsClient {
         BackupPatch body);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -340,7 +372,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -365,7 +399,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -382,7 +418,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -405,7 +443,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -420,7 +460,9 @@ public interface BackupsClient {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

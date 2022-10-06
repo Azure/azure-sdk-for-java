@@ -74,7 +74,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new KeyVaultCredentialPolicy(credential, false));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

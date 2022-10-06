@@ -42,7 +42,9 @@ import java.util.List;
     @JsonSubTypes.Type(name = "DatabricksSparkPython", value = DatabricksSparkPythonActivity.class),
     @JsonSubTypes.Type(name = "AzureFunctionActivity", value = AzureFunctionActivity.class),
     @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class),
-    @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class)
+    @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class),
+    @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
+    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class)
 })
 @Fluent
 public class ExecutionActivity extends Activity {

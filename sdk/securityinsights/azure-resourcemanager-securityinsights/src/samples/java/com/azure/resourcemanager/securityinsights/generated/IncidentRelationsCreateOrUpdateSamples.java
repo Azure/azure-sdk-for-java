@@ -10,7 +10,7 @@ import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 /** Samples for IncidentRelations CreateOrUpdate. */
 public final class IncidentRelationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/relations/CreateIncidentRelation.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/relations/CreateIncidentRelation.json
      */
     /**
      * Sample code: Creates or updates an incident relation.

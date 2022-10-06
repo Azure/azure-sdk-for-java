@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class FileServerLinkedService extends LinkedService {
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
+     * User ID to logon the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userId")
     private Object userId;
@@ -39,9 +37,8 @@ public class FileServerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

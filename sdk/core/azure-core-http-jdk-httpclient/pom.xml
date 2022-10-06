@@ -52,9 +52,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.http.jdk.httpclient/com.azure.core.http.jdk.httpclient=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <additionalSurefireArgLine>
-      -Djdk.httpclient.allowRestrictedHeaders=Content-Length
-    </additionalSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
@@ -98,7 +95,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

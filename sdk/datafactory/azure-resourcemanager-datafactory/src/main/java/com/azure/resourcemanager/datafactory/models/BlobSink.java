@@ -16,22 +16,19 @@ import java.util.List;
 @Fluent
 public final class BlobSink extends CopySink {
     /*
-     * Blob writer overwrite files. Type: boolean (or Expression with
-     * resultType boolean).
+     * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterOverwriteFiles")
     private Object blobWriterOverwriteFiles;
 
     /*
-     * Blob writer date time format. Type: string (or Expression with
-     * resultType string).
+     * Blob writer date time format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "blobWriterDateTimeFormat")
     private Object blobWriterDateTimeFormat;
 
     /*
-     * Blob writer add header. Type: boolean (or Expression with resultType
-     * boolean).
+     * Blob writer add header. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterAddHeader")
     private Object blobWriterAddHeader;
@@ -43,8 +40,8 @@ public final class BlobSink extends CopySink {
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;

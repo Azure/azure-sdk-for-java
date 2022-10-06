@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.fluent.models.ReadOnlyFollowingDatabaseProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.time.Duration;
 @JsonTypeName("ReadOnlyFollowing")
 @Fluent
 public final class ReadOnlyFollowingDatabase extends DatabaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadOnlyFollowingDatabase.class);
-
     /*
      * The database properties.
      */
@@ -119,6 +115,34 @@ public final class ReadOnlyFollowingDatabase extends DatabaseInner {
      */
     public PrincipalsModificationKind principalsModificationKind() {
         return this.innerProperties() == null ? null : this.innerProperties().principalsModificationKind();
+    }
+
+    /**
+     * Get the tableLevelSharingProperties property: Table level sharing specifications.
+     *
+     * @return the tableLevelSharingProperties value.
+     */
+    public TableLevelSharingProperties tableLevelSharingProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().tableLevelSharingProperties();
+    }
+
+    /**
+     * Get the originalDatabaseName property: The original database name, before databaseNameOverride or
+     * databaseNamePrefix where applied.
+     *
+     * @return the originalDatabaseName value.
+     */
+    public String originalDatabaseName() {
+        return this.innerProperties() == null ? null : this.innerProperties().originalDatabaseName();
+    }
+
+    /**
+     * Get the databaseShareOrigin property: The origin of the following setup.
+     *
+     * @return the databaseShareOrigin value.
+     */
+    public DatabaseShareOrigin databaseShareOrigin() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseShareOrigin();
     }
 
     /**

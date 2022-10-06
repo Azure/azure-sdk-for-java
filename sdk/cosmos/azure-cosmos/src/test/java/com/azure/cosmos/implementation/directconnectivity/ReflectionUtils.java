@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -49,6 +49,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -185,8 +186,8 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
-    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
-        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
+    public static CosmosClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(CosmosClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
     }
 
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
@@ -395,5 +396,10 @@ public class ReflectionUtils {
     @SuppressWarnings("unchecked")
     public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
         return get(AtomicReference.class, uri, "healthStatus");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
+        return get(Set.class, gatewayAddressCache, "replicaValidationScopes");
     }
 }

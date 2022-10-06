@@ -13,10 +13,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachinesClie
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachine;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlVirtualMachinesImpl.class);
 
     private final SqlVirtualMachinesClient innerClient;
 
@@ -51,6 +50,14 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public PagedIterable<SqlVirtualMachine> list(Context context) {
         PagedIterable<SqlVirtualMachineInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName) {
+        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName);
+    }
+
+    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName, Context context) {
+        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName, context);
     }
 
     public void redeploy(String resourceGroupName, String sqlVirtualMachineName) {
@@ -107,18 +114,10 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
-    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName) {
-        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName);
-    }
-
-    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName, Context context) {
-        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName, context);
-    }
-
     public SqlVirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public Response<SqlVirtualMachine> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,7 +191,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

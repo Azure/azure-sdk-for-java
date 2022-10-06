@@ -31,53 +31,39 @@ public final class DefaultJsonReader extends JsonReader {
     private JsonToken currentToken;
 
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from a {@code byte[]}.
+     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
      *
      * @param json JSON {@code byte[]}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
-     * {@code byte[]}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@code byte[]}.
      */
-    public static JsonReader fromBytes(byte[] json, JsonOptions options) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, json, null, options);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), true, json, null, options);
     }
 
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from a String.
+     * Constructs an instance of {@link JsonReader} from a String.
      *
      * @param json JSON String.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON String.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON String.
      */
-    public static JsonReader fromString(String json, JsonOptions options) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, options);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromString(String json, JsonOptions options) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, options);
     }
 
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from an {@link InputStream}.
+     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
      *
      * @param json JSON {@link InputStream}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
-     * {@link InputStream}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@link InputStream}.
      */
-    public static JsonReader fromStream(InputStream json, JsonOptions options) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), json.markSupported(), null, null, options);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromStream(InputStream json, JsonOptions options) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), json.markSupported(), null, null, options);
     }
 
     /**
@@ -86,15 +72,10 @@ public final class DefaultJsonReader extends JsonReader {
      * @param reader JSON {@link Reader}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
-     * {@link Reader}.
+     * @throws IOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON {@link Reader}.
      */
-    public static JsonReader fromReader(Reader reader, JsonOptions options) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null, options);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromReader(Reader reader, JsonOptions options) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null, options);
     }
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
@@ -118,102 +99,62 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonToken nextToken() {
-        try {
-            currentToken = mapToken(parser.nextToken(), currentToken);
-            return currentToken;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public JsonToken nextToken() throws IOException {
+        currentToken = mapToken(parser.nextToken(), currentToken);
+        return currentToken;
     }
 
     @Override
-    public byte[] getBinary() {
+    public byte[] getBinary() throws IOException {
         if (currentToken() == JsonToken.NULL) {
             return null;
         } else {
-            try {
-                return parser.getBinaryValue();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            return parser.getBinaryValue();
         }
     }
 
     @Override
-    public boolean getBoolean() {
-        try {
-            return parser.getBooleanValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public boolean getBoolean() throws IOException {
+        return parser.getBooleanValue();
     }
 
     @Override
-    public double getDouble() {
-        try {
-            return parser.getDoubleValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public double getDouble() throws IOException {
+        return parser.getDoubleValue();
     }
 
     @Override
-    public float getFloat() {
-        try {
-            return parser.getFloatValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public float getFloat() throws IOException {
+        return parser.getFloatValue();
     }
 
     @Override
-    public int getInt() {
-        try {
-            return parser.getIntValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public int getInt() throws IOException {
+        return parser.getIntValue();
     }
 
     @Override
-    public long getLong() {
-        try {
-            return parser.getLongValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public long getLong() throws IOException {
+        return parser.getLongValue();
     }
 
     @Override
-    public String getString() {
-        try {
-            return parser.getValueAsString();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String getString() throws IOException {
+        return parser.getValueAsString();
     }
 
     @Override
-    public String getFieldName() {
-        try {
-            return parser.currentName();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String getFieldName() throws IOException {
+        return parser.currentName();
     }
 
     @Override
-    public void skipChildren() {
-        try {
-            parser.skipChildren();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public void skipChildren() throws IOException {
+        parser.skipChildren();
     }
 
     @Override
-    public JsonReader bufferObject() {
+    public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT
             || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
@@ -237,7 +178,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonReader reset() {
+    public JsonReader reset() throws IOException {
         if (!resetSupported) {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }
@@ -276,14 +217,20 @@ public final class DefaultJsonReader extends JsonReader {
         }
 
         switch (nextToken) {
-            case START_OBJECT: return JsonToken.START_OBJECT;
-            case END_OBJECT: return JsonToken.END_OBJECT;
+            case START_OBJECT:
+                return JsonToken.START_OBJECT;
+            case END_OBJECT:
+                return JsonToken.END_OBJECT;
 
-            case START_ARRAY: return JsonToken.START_ARRAY;
-            case END_ARRAY: return JsonToken.END_ARRAY;
+            case START_ARRAY:
+                return JsonToken.START_ARRAY;
+            case END_ARRAY:
+                return JsonToken.END_ARRAY;
 
-            case FIELD_NAME: return JsonToken.FIELD_NAME;
-            case VALUE_STRING: return JsonToken.STRING;
+            case FIELD_NAME:
+                return JsonToken.FIELD_NAME;
+            case VALUE_STRING:
+                return JsonToken.STRING;
 
             case VALUE_NUMBER_INT:
             case VALUE_NUMBER_FLOAT:
@@ -293,7 +240,8 @@ public final class DefaultJsonReader extends JsonReader {
             case VALUE_FALSE:
                 return JsonToken.BOOLEAN;
 
-            case VALUE_NULL: return JsonToken.NULL;
+            case VALUE_NULL:
+                return JsonToken.NULL;
 
             default:
                 throw new IllegalStateException("Unsupported token type: '" + nextToken + "'.");

@@ -538,7 +538,22 @@ class CosmosConfigSpec extends UnitSpec {
     config.maxItemCountPerTrigger.get shouldEqual 54
   }
 
-  it should "parse change feed config with PIT start mode" in {
+  it should "parse change feed config for all versions and deletes with incorrect casing" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.mode" -> "AllVersionsANDDELETES",
+      "spark.cosmos.changeFeed.STARTfrom" -> "NOW",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+
+    config.changeFeedMode shouldEqual ChangeFeedModes.AllVersionsAndDeletes
+    config.startFrom shouldEqual ChangeFeedStartFromModes.Now
+    config.startFromPointInTime shouldEqual None
+    config.maxItemCountPerTrigger.get shouldEqual 54
+  }
+
+  it should "parse change feed config (incremental) with PIT start mode" in {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
@@ -548,6 +563,24 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
 
     config.changeFeedMode shouldEqual ChangeFeedModes.Incremental
+    config.startFrom shouldEqual ChangeFeedStartFromModes.PointInTime
+    Instant.from(config.startFromPointInTime.get) shouldEqual
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        .parse("2019-12-31T10:45:10Z")
+        .toInstant
+    config.maxItemCountPerTrigger.get shouldEqual 54
+  }
+
+  it should "parse change feed config (latestversion) with PIT start mode" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.mode" -> "latestversion",
+      "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+
+    config.changeFeedMode shouldEqual ChangeFeedModes.LatestVersion
     config.startFrom shouldEqual ChangeFeedStartFromModes.PointInTime
     Instant.from(config.startFromPointInTime.get) shouldEqual
       new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -569,7 +602,7 @@ class CosmosConfigSpec extends UnitSpec {
     } catch {
       case e: Exception => e.getMessage shouldEqual
         "invalid configuration for spark.cosmos.changeFeed.mode:Whatever. Config description: " +
-          "ChangeFeed mode (Incremental or FullFidelity)"
+          "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)"
     }
   }
 

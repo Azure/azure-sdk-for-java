@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInform
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
@@ -40,6 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.DEFAULT_AUTHORITY_SET;
 
 /**
@@ -64,9 +67,10 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      * Creates a new instance of {@link AadOAuth2UserService}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadOAuth2UserService(AadAuthenticationProperties properties) {
-        this(properties, new GraphClient(properties));
+    public AadOAuth2UserService(AadAuthenticationProperties properties, RestTemplateBuilder restTemplateBuilder) {
+        this(properties, new GraphClient(properties, restTemplateBuilder), restTemplateBuilder);
     }
 
     /**
@@ -74,8 +78,11 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      *
      * @param properties the AAD authentication properties
      * @param graphClient the graph client
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadOAuth2UserService(AadAuthenticationProperties properties, GraphClient graphClient) {
+    public AadOAuth2UserService(AadAuthenticationProperties properties,
+                                GraphClient graphClient,
+                                RestTemplateBuilder restTemplateBuilder) {
         allowedGroupNames = Optional.ofNullable(properties)
                                     .map(AadAuthenticationProperties::getUserGroup)
                                     .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
@@ -84,7 +91,10 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                   .map(AadAuthenticationProperties::getUserGroup)
                                   .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                                   .orElseGet(Collections::emptySet);
+        DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
+        oAuth2UserService.setRestOperations(createOAuth2ErrorResponseHandledRestTemplate(restTemplateBuilder));
         this.oidcUserService = new OidcUserService();
+        this.oidcUserService.setOauth2UserService(oAuth2UserService);
         this.graphClient = graphClient;
     }
 

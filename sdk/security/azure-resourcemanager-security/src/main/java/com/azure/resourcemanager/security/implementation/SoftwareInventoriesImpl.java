@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SoftwareInventoriesClient;
 import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 import com.azure.resourcemanager.security.models.Software;
 import com.azure.resourcemanager.security.models.SoftwareInventories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SoftwareInventoriesImpl implements SoftwareInventories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareInventoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareInventoriesImpl.class);
 
     private final SoftwareInventoriesClient innerClient;
 

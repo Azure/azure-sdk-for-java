@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExternalSecuritySolutionsImpl implements ExternalSecuritySolutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExternalSecuritySolutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExternalSecuritySolutionsImpl.class);
 
     private final ExternalSecuritySolutionsClient innerClient;
 

@@ -19,8 +19,7 @@ public final class EntityEdges {
     private String targetEntityId;
 
     /*
-     * A bag of custom fields that should be part of the entity and will be
-     * presented to the user.
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
     @JsonProperty(value = "additionalData")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

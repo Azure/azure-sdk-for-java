@@ -18,7 +18,9 @@ import com.azure.resourcemanager.netapp.models.SubvolumePatchRequest;
 /** An instance of this class provides access to all the operations defined in SubvolumesClient. */
 public interface SubvolumesClient {
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -34,7 +36,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -51,7 +55,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -68,7 +74,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -91,7 +99,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -114,7 +124,9 @@ public interface SubvolumesClient {
         SubvolumeInfoInner body);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -139,7 +151,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -162,7 +176,9 @@ public interface SubvolumesClient {
         SubvolumeInfoInner body);
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -187,7 +203,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -210,7 +228,9 @@ public interface SubvolumesClient {
         SubvolumePatchRequest body);
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -235,7 +255,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -258,7 +280,9 @@ public interface SubvolumesClient {
         SubvolumePatchRequest body);
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -283,7 +307,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -300,7 +326,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -323,7 +351,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -338,7 +368,9 @@ public interface SubvolumesClient {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -360,7 +392,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -377,7 +411,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -400,7 +436,9 @@ public interface SubvolumesClient {
         Context context);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -417,7 +455,9 @@ public interface SubvolumesClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

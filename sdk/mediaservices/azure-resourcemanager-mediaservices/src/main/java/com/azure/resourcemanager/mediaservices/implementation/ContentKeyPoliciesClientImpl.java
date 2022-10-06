@@ -174,7 +174,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -210,6 +212,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -220,7 +223,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             top,
                             orderby,
@@ -239,7 +242,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -276,6 +281,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -284,7 +290,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 top,
                 orderby,
@@ -302,7 +308,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -324,7 +332,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -344,7 +354,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -367,7 +379,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -385,7 +399,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Lists the Content Key Policies in the account.
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -406,7 +422,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -443,6 +461,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -454,14 +473,16 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -499,6 +520,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -508,13 +530,15 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -533,7 +557,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -549,7 +575,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get the details of a Content Key Policy in the Media Services account.
+     * Get a Content Key Policy
+     *
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -567,7 +595,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -609,6 +639,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -620,7 +651,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -628,7 +659,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -675,6 +708,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -684,14 +718,16 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -710,7 +746,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -728,7 +766,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Create or update a Content Key Policy in the Media Services account.
+     * Create or update an Content Key Policy
+     *
+     * <p>Create or update a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -753,7 +793,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -789,6 +831,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -800,14 +843,16 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -844,6 +889,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -853,13 +899,15 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -876,7 +924,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -891,7 +941,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Deletes a Content Key Policy in the Media Services account.
+     * Delete a Content Key Policy
+     *
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -909,7 +961,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -951,6 +1005,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -962,7 +1017,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -970,7 +1025,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1017,6 +1074,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1026,14 +1084,16 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1052,7 +1112,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1070,7 +1132,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Updates an existing Content Key Policy in the Media Services account.
+     * Update a Content Key Policy
+     *
+     * <p>Updates an existing Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1094,7 +1158,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1131,6 +1197,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1142,14 +1209,16 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                             resourceGroupName,
                             accountName,
                             contentKeyPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1187,6 +1256,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter contentKeyPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1196,13 +1266,15 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
                 resourceGroupName,
                 accountName,
                 contentKeyPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1220,7 +1292,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1237,7 +1311,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     }
 
     /**
-     * Get a Content Key Policy including secret values.
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1259,7 +1335,8 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1295,7 +1372,8 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

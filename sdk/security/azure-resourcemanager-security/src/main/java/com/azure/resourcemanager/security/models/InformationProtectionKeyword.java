@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information type keyword. */
 @Fluent
 public final class InformationProtectionKeyword {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationProtectionKeyword.class);
-
     /*
      * The keyword pattern.
      */

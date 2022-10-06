@@ -7,6 +7,8 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
+
 public class BlobName implements XmlSerializable<BlobName> {
     /*
      * Indicates if the blob name is encoded.
@@ -59,7 +61,7 @@ public class BlobName implements XmlSerializable<BlobName> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("Name");
         xmlWriter.writeBooleanAttribute("Encoded", encoded);
 
@@ -68,7 +70,7 @@ public class BlobName implements XmlSerializable<BlobName> {
         return xmlWriter.writeEndElement();
     }
 
-    public static BlobName fromXml(XmlReader xmlReader) {
+    public static BlobName fromXml(XmlReader xmlReader) throws XMLStreamException {
         return xmlReader.readObject("Name", reader -> {
             BlobName result = new BlobName();
             result.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);

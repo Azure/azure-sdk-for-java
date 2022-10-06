@@ -4,12 +4,15 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -19,9 +22,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -67,9 +67,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
-    private final int FEED_COLLECTION_THROUGHPUT_MAX = 20000;
-    private final int FEED_COLLECTION_THROUGHPUT = 10100;
-    private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 400;
+    private final int FEED_COLLECTION_THROUGHPUT = 400;
+    private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
 
     private CosmosAsyncClient client;
@@ -751,7 +750,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() throws InterruptedException {
-        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
+        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
 
@@ -818,7 +817,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                 .readThroughput().subscribeOn(Schedulers.boundedElastic())
                                 .flatMap(currentThroughput ->
                                     createdFeedCollectionForSplit
-                                        .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT))
+                                        .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT))
                                         .subscribeOn(Schedulers.boundedElastic())
                                 )
                                 .then()
@@ -936,7 +935,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = 20 * TIMEOUT)
     public void inactiveOwnersRecovery() throws InterruptedException {
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT_MAX);
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {

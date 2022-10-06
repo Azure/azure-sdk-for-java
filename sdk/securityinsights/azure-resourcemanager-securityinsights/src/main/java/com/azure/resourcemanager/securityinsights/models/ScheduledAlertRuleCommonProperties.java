@@ -57,8 +57,7 @@ public class ScheduledAlertRuleCommonProperties {
     private EventGroupingSettings eventGroupingSettings;
 
     /*
-     * Dictionary of string key-value pairs of columns to be attached to the
-     * alert
+     * Dictionary of string key-value pairs of columns to be attached to the alert
      */
     @JsonProperty(value = "customDetails")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

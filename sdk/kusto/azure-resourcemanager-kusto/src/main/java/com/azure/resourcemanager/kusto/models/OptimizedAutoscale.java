@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that contains the optimized auto scale definition. */
 @Fluent
 public final class OptimizedAutoscale {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptimizedAutoscale.class);
-
     /*
      * The version of the template defined, for instance 1.
      */
@@ -21,8 +17,7 @@ public final class OptimizedAutoscale {
     private int version;
 
     /*
-     * A boolean value that indicate if the optimized autoscale feature is
-     * enabled or not.
+     * A boolean value that indicate if the optimized autoscale feature is enabled or not.
      */
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;

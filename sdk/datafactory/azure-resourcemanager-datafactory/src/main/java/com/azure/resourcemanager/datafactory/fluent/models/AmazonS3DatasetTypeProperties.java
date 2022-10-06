@@ -14,43 +14,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonS3DatasetTypeProperties {
     /*
-     * The name of the Amazon S3 bucket. Type: string (or Expression with
-     * resultType string).
+     * The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "bucketName", required = true)
     private Object bucketName;
 
     /*
-     * The key of the Amazon S3 object. Type: string (or Expression with
-     * resultType string).
+     * The key of the Amazon S3 object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "key")
     private Object key;
 
     /*
-     * The prefix filter for the S3 object name. Type: string (or Expression
-     * with resultType string).
+     * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
-     * The version for the S3 object. Type: string (or Expression with
-     * resultType string).
+     * The version for the S3 object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "version")
     private Object version;
 
     /*
-     * The start of S3 object's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of S3 object's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
