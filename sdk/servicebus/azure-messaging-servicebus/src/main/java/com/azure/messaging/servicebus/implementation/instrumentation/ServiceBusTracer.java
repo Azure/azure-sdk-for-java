@@ -200,21 +200,21 @@ public class ServiceBusTracer {
             AtomicLong startTime = new AtomicLong();
             AtomicReference<ServiceBusReceivedMessage> message = new AtomicReference<>();
             return publisher.doOnEach(signal -> {
-                    if (signal.hasValue()) {
-                        message.set(signal.get());
-                    }
+                if (signal.hasValue()) {
+                    message.set(signal.get());
+                }
 
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        ServiceBusReceivedMessage msg = message.get();
-                        Context messageContext = msg == null ? null : getMessageContext.apply(msg);
+                if (signal.isOnComplete() || signal.isOnError()) {
+                    ServiceBusReceivedMessage msg = message.get();
+                    Context messageContext = msg == null ? null : getMessageContext.apply(msg);
 
-                        Context span = startSpanWithLink(spanName, msg, messageContext, new Context(START_TIME_KEY, startTime.get()));
-                        endSpan(null, span, null);
-                    }
-                })
-                .doOnSubscribe(s -> {
-                    startTime.set(Instant.now().toEpochMilli());
-                });
+                    Context span = startSpanWithLink(spanName, msg, messageContext, new Context(START_TIME_KEY, startTime.get()));
+                    endSpan(null, span, null);
+                }
+            })
+            .doOnSubscribe(s -> {
+                startTime.set(Instant.now().toEpochMilli());
+            });
         }
         return publisher;
     }

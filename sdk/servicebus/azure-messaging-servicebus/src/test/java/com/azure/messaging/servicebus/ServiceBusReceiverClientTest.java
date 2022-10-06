@@ -3,23 +3,14 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.test.utils.metrics.TestGauge;
-import com.azure.core.test.utils.metrics.TestHistogram;
-import com.azure.core.test.utils.metrics.TestMeasurement;
-import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
@@ -48,12 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;

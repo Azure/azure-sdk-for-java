@@ -8,6 +8,7 @@ import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -40,7 +41,7 @@ public class ServiceBusReceiverInstrumentation {
 
     /**
      * Instruments even processing. For Processor traces processMessage callback, for async receiver
-     * traces subscriber call. Does not trace anything for sync receiver - use {@link ServiceBusReceiverInstrumentation::instrumentReceive}
+     * traces subscriber call. Does not trace anything for sync receiver - use {@link ServiceBusTracer#traceSyncReceive(String, Flux)}
      * for sync receiver.
      * Reports consumer lag metric.
      */
@@ -49,8 +50,7 @@ public class ServiceBusReceiverInstrumentation {
             return parent;
         }
 
-        Context span = (tracer.isEnabled() && !isSync) ?
-            tracer.startProcessSpan(name, message, parent) : parent;
+        Context span = (tracer.isEnabled() && !isSync) ? tracer.startProcessSpan(name, message, parent) : parent;
         meter.reportConsumerLag(message.getEnqueuedTime(), span);
 
         return span;

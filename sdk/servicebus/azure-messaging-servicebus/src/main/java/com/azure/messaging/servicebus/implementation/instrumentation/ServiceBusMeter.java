@@ -154,8 +154,8 @@ public class ServiceBusMeter {
     public void reportSettlement(long start, long seqNo, DispositionStatus status, Throwable throwable, Context context) {
         if (isEnabled) {
             if (settleMessageDuration.isEnabled()) {
-                TelemetryAttributes attributes = throwable == null ? settleSuccessAttributes[status.ordinal()] :
-                    settleFailureAttributes[status.ordinal()];
+                TelemetryAttributes attributes = throwable == null ? settleSuccessAttributes[status.ordinal()]
+                    : settleFailureAttributes[status.ordinal()];
 
                 settleMessageDuration.record(Instant.now().toEpochMilli() - start, attributes, context);
             }
@@ -188,7 +188,7 @@ public class ServiceBusMeter {
         private final AutoCloseable[] subscriptionsFailure = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
         private final Object lock = new Object();
 
-        public CompositeSubscription() {
+        CompositeSubscription() {
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
                 lastSeqNoSuccess[i] = new AtomicLong();
                 lastSeqNoFailure[i] = new AtomicLong();
@@ -201,7 +201,7 @@ public class ServiceBusMeter {
 
         @Override
         public void close() {
-            for (int i = 0; i < subscriptionsSuccess.length; i ++) {
+            for (int i = 0; i < subscriptionsSuccess.length; i++) {
                 if (subscriptionsSuccess[i] != null) {
                     try {
                         subscriptionsSuccess[i].close();

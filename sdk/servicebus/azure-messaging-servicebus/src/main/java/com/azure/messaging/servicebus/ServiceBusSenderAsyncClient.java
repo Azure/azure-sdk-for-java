@@ -790,8 +790,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     final CreateMessageBatchOptions batchOptions = new CreateMessageBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracer, messageSerializer, entityName,
-                        link.getHostname()));
+                        link::getErrorContext, tracer, messageSerializer));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
                 .onErrorMap(this::mapError);
@@ -832,14 +831,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         private final ErrorContextProvider contextProvider;
         private final ServiceBusTracer tracer;
         private final MessageSerializer serializer;
-        private final String entityPath;
-        private final String hostname;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
         AmqpMessageCollector(CreateMessageBatchOptions options, Integer maxNumberOfBatches,
-            ErrorContextProvider contextProvider, ServiceBusTracer tracer, MessageSerializer serializer,
-            String entityPath, String hostname) {
+            ErrorContextProvider contextProvider, ServiceBusTracer tracer, MessageSerializer serializer) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -847,8 +843,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             this.contextProvider = contextProvider;
             this.tracer = tracer;
             this.serializer = serializer;
-            this.entityPath = entityPath;
-            this.hostname = hostname;
 
             currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracer, serializer);
         }

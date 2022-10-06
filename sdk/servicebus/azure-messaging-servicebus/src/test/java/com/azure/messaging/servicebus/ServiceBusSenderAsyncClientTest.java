@@ -56,8 +56,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +67,6 @@ import java.util.stream.IntStream;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -554,7 +551,7 @@ class ServiceBusSenderAsyncClientTest {
         assertEquals(2, measurement.getValue());
 
         assertEquals(3,  measurement.getAttributes().size());
-        assertCommonMetricAttributes( measurement.getAttributes(), true);
+        assertCommonMetricAttributes(measurement.getAttributes(), true);
     }
 
     @Test
