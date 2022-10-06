@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/softwareplan/ci.yml
+      - sdk/softwareplan/azure-resourcemanager-softwareplan/
+    exclude:
+      - sdk/softwareplan/pom.xml
+      - sdk/softwareplan/azure-resourcemanager-softwareplan/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/softwareplan/ci.yml
+      - sdk/softwareplan/azure-resourcemanager-softwareplan/
+    exclude:
+      - sdk/softwareplan/pom.xml
+      - sdk/softwareplan/azure-resourcemanager-softwareplan/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersoftwareplan
+    displayName: azure-resourcemanager-softwareplan
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: softwareplan
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-softwareplan
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersoftwareplan
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersoftwareplan }}

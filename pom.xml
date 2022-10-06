@@ -150,6 +150,7 @@
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
     <module>sdk/signalr</module>
+    <module>sdk/softwareplan</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/sqlvirtualmachine</module>
