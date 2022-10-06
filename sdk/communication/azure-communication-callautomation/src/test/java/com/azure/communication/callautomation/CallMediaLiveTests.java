@@ -119,13 +119,14 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
 
-            CreateCallResult callResponse = callClient.createCall(createCallOptions);
+            Response<CreateCallResult> callResponse = callClient.createCallWithResponse(createCallOptions, null);
             assertNotNull(callResponse);
-            assertNotNull(callResponse.getCallConnection());
-            assertNotNull(callResponse.getCallConnectionProperties());
+            CreateCallResult callResult = callResponse.getValue();
+            assertNotNull(callResult.getCallConnection());
+            assertNotNull(callResult.getCallConnectionProperties());
             waitForOperationCompletion(15000);
 
-            CallConnection callConnection = callClient.getCallConnection(callResponse.getCallConnectionProperties().getCallConnectionId());
+            CallConnection callConnection = callClient.getCallConnection(callResult.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -148,7 +149,7 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
             assertThrows(Exception.class, callConnection::getCallProperties);
 
         } catch (Exception ex) {
-            fail("Unexpeceted exception received", ex);
+            fail("Unexpected exception received", ex);
         }
     }
 }

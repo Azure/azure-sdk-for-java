@@ -88,7 +88,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
          * 2. create a call from source to a PSTN target.
          * 3. get updated call properties and check for the connected state.
          * 4. hang up the call.
-         * 5. once call is hung up, verify that call connection cannot be found.
+         * 5. once call is hung up, verify the call connection cannot be found.
          */
         CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
