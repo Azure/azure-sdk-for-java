@@ -8,7 +8,6 @@ import com.azure.communication.identity.models.CommunicationUserIdentifierAndTok
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,9 +16,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
-import java.util.Map;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
@@ -137,15 +136,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
-
-        if (getTestMode() == TestMode.LIVE) {
-            Map<String, Object> tokenExpirationDeviationData =
-                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
-                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
-            );
-        }
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
     }
 
     @ParameterizedTest(name = "{0}")
@@ -164,15 +155,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
-
-        if (getTestMode() == TestMode.LIVE) {
-            Map<String, Object> tokenExpirationDeviationData =
-                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
-                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
-            );
-        }
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
     }
 
     @ParameterizedTest(name = "{0}")
@@ -412,15 +395,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes, tokenExpiresIn);
         verifyTokenNotEmpty(issuedToken);
-
-        if (getTestMode() == TestMode.LIVE) {
-            Map<String, Object> tokenExpirationDeviationData =
-                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
-            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
-                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
-            );
-        }
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
     }
 
     @ParameterizedTest(name = "{0}")
@@ -456,15 +431,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, tokenExpiresIn, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
-
-        if (getTestMode() == TestMode.LIVE) {
-            Map<String, Object> tokenExpirationDeviationData =
-                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
-            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
-                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
-            );
-        }
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
     }
 
     @ParameterizedTest(name = "{0}")
