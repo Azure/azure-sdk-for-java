@@ -1583,15 +1583,15 @@ public final class TextAnalyticsClient {
     /**
      * a
      *
-     * @param documents
-     * @param language
-     * @param options
-     * @return
+     * @param documents a
+     * @param language a
+     * @param options a
+     * @return a
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicClassifyDocumentResultCollection analyzeDynamicClassificationBatch(Iterable<String> documents,
+    public DynamicClassifyDocumentResultCollection dynamicClassifyBatch(Iterable<String> documents,
         String language, DynamicClassificationOptions options) {
-        return client.analyzeDynamicClassificationBatch(documents, language, options).block();
+        return client.dynamicClassifyBatch(documents, language, options).block();
     }
 
     /**
@@ -1668,7 +1668,7 @@ public final class TextAnalyticsClient {
      *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynamicClassifyDocumentResultCollection> analyzeDynamicClassificationBatchWithResponse(
+    public Response<DynamicClassifyDocumentResultCollection> dynamicClassifyBatchWithResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
         return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
             documents, options, context).block();

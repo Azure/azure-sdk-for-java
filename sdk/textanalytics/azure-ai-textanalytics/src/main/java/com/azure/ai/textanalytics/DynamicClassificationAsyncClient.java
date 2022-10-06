@@ -41,7 +41,7 @@ class DynamicClassificationAsyncClient {
     }
 
 
-    public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatch(
+    Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassifyBatch(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
         try {
             return withContext(context -> getDynamicClassifyDocumentResultCollectionResponse(
@@ -77,8 +77,8 @@ class DynamicClassificationAsyncClient {
                 getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
 
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}", getDocumentCount(documents)))
-            .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
-            .doOnError(error -> logger.warning("Failed to analyze dynamic classification - {}", error))
+            .doOnSuccess(response -> logger.info("Dynamic classify for a batch of documents - {}", response))
+            .doOnError(error -> logger.warning("Failed to dynamic classify - {}", error))
             .map(Utility::toDynamicClassifyDocumentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }

@@ -1695,12 +1695,18 @@ public final class TextAnalyticsAsyncClient {
     }
 
 
-
+    /**
+     *
+     * @param documents
+     * @param language
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DynamicClassifyDocumentResultCollection> analyzeDynamicClassificationBatch(
+    public Mono<DynamicClassifyDocumentResultCollection> dynamicClassifyBatch(
         Iterable<String> documents, String language, DynamicClassificationOptions options) {
         try {
-            return analyzeDynamicClassificationBatchWithResponse(
+            return dynamicClassifyBatchWithResponse(
                 mapByIndex(documents, (index, value) -> {
                     final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                     textDocumentInput.setLanguage(language);
@@ -1711,10 +1717,17 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
+    /**
+     * a
+     *
+     * @param documents a
+     * @param options a
+     * @return a
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DynamicClassifyDocumentResultCollection>> analyzeDynamicClassificationBatchWithResponse(
+    public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassifyBatchWithResponse(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
-        return dynamicClassificationAsyncClient.dynamicClassificationBatch(documents, options);
+        return dynamicClassificationAsyncClient.dynamicClassifyBatch(documents, options);
     }
 
 
