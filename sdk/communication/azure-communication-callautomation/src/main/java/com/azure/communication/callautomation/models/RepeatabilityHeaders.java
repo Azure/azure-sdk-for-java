@@ -35,6 +35,8 @@ public final class RepeatabilityHeaders {
      * @param repeatabilityFirstSent The value should be the date and time at which the request was first created.
      */
     public RepeatabilityHeaders(UUID repeatabilityRequestId, Date repeatabilityFirstSent) {
+        // Defensive copy since Date is a mutable class.
+        repeatabilityFirstSent = new Date(repeatabilityFirstSent.getTime());
         this.repeatabilityRequestId = repeatabilityRequestId;
         this.repeatabilityFirstSent = repeatabilityFirstSent;
     }
@@ -64,6 +66,7 @@ public final class RepeatabilityHeaders {
      * @return the repeatabilityFirstSent.
      */
     public Date getRepeatabilityFirstSent() {
-        return repeatabilityFirstSent;
+        // Defensive copy
+        return new Date(repeatabilityFirstSent.getTime());
     }
 }
