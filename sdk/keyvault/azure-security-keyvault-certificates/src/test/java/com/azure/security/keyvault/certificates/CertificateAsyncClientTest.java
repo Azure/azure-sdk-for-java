@@ -434,7 +434,6 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             sleepInRecordMode(40000);
 
-
             StepVerifier.create(Mono.defer(() -> {
                 byte[] backupBytes = new byte[backup.get().length];
                 for (int i = 0; i < backup.get().length; i++) {
