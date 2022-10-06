@@ -4,12 +4,13 @@
 package com.azure.communication.callautomation;
 
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.RedirectCallOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -79,19 +80,16 @@ public final class CallAutomationClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back uri.
-     * @param mediaStreamingOptions The MediaStreamingConfiguration. Optional
+     * @param answerCallOptions The options of answering the call.
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUrl,
-                                                             MediaStreamingOptions mediaStreamingOptions,
+    public Response<AnswerCallResult> answerCallWithResponse(AnswerCallOptions answerCallOptions,
                                                              Context context) {
-        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingOptions, context).block();
+        return callAutomationAsyncClient.answerCallWithResponseInternal(answerCallOptions, context).block();
     }
 
     /**
@@ -111,46 +109,42 @@ public final class CallAutomationClient {
     /**
      * Redirect a call
      *
-     * @param incomingCallContext The incoming call context.
-     * @param target The target identity.
+     * @param redirectCallOptions options of redirecting a call
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
-        return callAutomationAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
+    public Response<Void> redirectCallWithResponse(RedirectCallOptions redirectCallOptions, Context context) {
+        return callAutomationAsyncClient.redirectCallWithResponseInternal(redirectCallOptions, context).block();
     }
 
     /**
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason why call is rejected. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void rejectCall(String incomingCallContext, CallRejectReason callRejectReason) {
-        return callAutomationAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
+    public Void rejectCall(String incomingCallContext) {
+        return callAutomationAsyncClient.rejectCall(incomingCallContext).block();
     }
 
     /**
      * Reject a call
      *
-     * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason why call is rejected. Optional
+     * @param rejectCallOptions The options of rejecting the call.
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason,
-                                                 Context context) {
-        return callAutomationAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
+    public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
+        return callAutomationAsyncClient.rejectCallWithResponseInternal(rejectCallOptions, context).block();
     }
     //endregion
 
