@@ -8,6 +8,7 @@ import com.azure.json.reflect.JsonFactory;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 public class GsonJsonFactory implements JsonFactory {
     public GsonJsonFactory() throws ReflectiveOperationException {
@@ -36,8 +37,13 @@ public class GsonJsonFactory implements JsonFactory {
     }
 
     @Override
-    public JsonWriter getJsonWriter(OutputStream stream) {
-        return GsonJsonWriter.toStream(stream);
+    public JsonWriter getJsonWriter(OutputStream stream, JsonOptions options) {
+        return GsonJsonWriter.toStream(stream, options);
+    }
+
+    @Override
+    public JsonWriter getJsonWriter(Writer writer, JsonOptions options) {
+        return GsonJsonWriter.toWriter(writer, options);
     }
 
     @Override

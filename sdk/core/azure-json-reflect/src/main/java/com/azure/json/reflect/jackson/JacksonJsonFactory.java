@@ -8,6 +8,7 @@ import com.azure.json.reflect.JsonFactory;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 public class JacksonJsonFactory implements JsonFactory {
     public JacksonJsonFactory() throws ReflectiveOperationException {
@@ -34,7 +35,12 @@ public class JacksonJsonFactory implements JsonFactory {
     }
 
     @Override
-    public JsonWriter getJsonWriter(OutputStream stream) {
+    public JsonWriter getJsonWriter(OutputStream stream, JsonOptions options) {
+        return null;
+    }
+
+    @Override
+    public JsonWriter getJsonWriter(Writer writer, JsonOptions options) {
         return null;
     }
 
