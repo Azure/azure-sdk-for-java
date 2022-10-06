@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json.reflect;
+package com.azure.json.reflect.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
 import com.azure.json.reflect.gson.GsonJsonReader;
@@ -13,6 +14,6 @@ import com.azure.json.reflect.gson.GsonJsonReader;
 public class GsonJsonReaderContractTests extends JsonReaderContractTests {
     @Override
     public JsonReader getJsonReader(String json) {
-        return GsonJsonReader.fromString(json);
+        return GsonJsonReader.fromString(json, new JsonOptions());
     }
 }
