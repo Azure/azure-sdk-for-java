@@ -5,43 +5,42 @@ import com.azure.json.JsonWriter;
 import com.azure.json.JsonReader;
 import com.azure.json.reflect.JsonFactory;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 public class JacksonJsonFactory implements JsonFactory {
     public JacksonJsonFactory() throws ReflectiveOperationException {
+        JacksonJsonReader.initialize();
+        JacksonJsonWriter.initialize();
     }
 
     @Override
-    public JsonReader getJsonReader(byte[] bytes, JsonOptions options) {
-        return null;
+    public JsonReader getJsonReader(byte[] bytes, JsonOptions options) throws IOException {
+        return JacksonJsonReader.fromBytes(bytes, options);
     }
 
     @Override
-    public JsonReader getJsonReader(String string, JsonOptions options) {
-        return null;
+    public JsonReader getJsonReader(String string, JsonOptions options) throws IOException {
+        return JacksonJsonReader.fromString(string, options);
     }
 
     @Override
-    public JsonReader getJsonReader(InputStream stream, JsonOptions options) {
-        return null;
+    public JsonReader getJsonReader(InputStream stream, JsonOptions options) throws IOException {
+        return JacksonJsonReader.fromStream(stream, options);
     }
 
     @Override
-    public JsonReader getJsonReader(Reader reader, JsonOptions options) {
-        return null;
+    public JsonReader getJsonReader(Reader reader, JsonOptions options) throws IOException {
+        return JacksonJsonReader.fromReader(reader, options);
     }
 
     @Override
-    public JsonWriter getJsonWriter(OutputStream stream, JsonOptions options) {
-        return null;
+    public JsonWriter getJsonWriter(OutputStream stream, JsonOptions options) throws IOException {
+        return JacksonJsonWriter.toStream(stream, options);
     }
 
     @Override
-    public JsonWriter getJsonWriter(Writer writer, JsonOptions options) {
-        return null;
+    public JsonWriter getJsonWriter(Writer writer, JsonOptions options) throws IOException {
+        return JacksonJsonWriter.toWriter(writer, options);
     }
 
     @Override
