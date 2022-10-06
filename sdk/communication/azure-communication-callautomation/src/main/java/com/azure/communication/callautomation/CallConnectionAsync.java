@@ -23,8 +23,11 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -39,7 +42,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -116,27 +121,36 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangUp(boolean isForEveryone) {
-        return hangUpWithResponse(isForEveryone).flatMap(FluxUtil::toMono);
+        HangUpOptions hangUpOptions = new HangUpOptions(isForEveryone);
+        return hangUpWithResponse(hangUpOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Hangup a call.
      *
-     * @param isForEveryone determine if the call is handed up for all participants.
+     * @param hangUpOptions options to hang up
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> hangUpWithResponse(boolean isForEveryone) {
-        return withContext(context -> hangUpWithResponseInternal(isForEveryone, context));
+    public Mono<Response<Void>> hangUpWithResponse(HangUpOptions hangUpOptions) {
+        return withContext(context -> hangUpWithResponseInternal(hangUpOptions, context));
     }
 
-    Mono<Response<Void>> hangUpWithResponseInternal(boolean isForEveryone, Context context) {
+    Mono<Response<Void>> hangUpWithResponseInternal(HangUpOptions hangUpOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, null, null, context)
+            if (hangUpOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                hangUpOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
+                hangUpOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                hangUpOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -259,7 +273,15 @@ public class CallConnectionAsync {
                 .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, null, null, context)
+            if (transferToParticipantCallOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                transferToParticipantCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
+                    transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
@@ -311,7 +333,15 @@ public class CallConnectionAsync {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, null, null, context)
+            if (addParticipantsOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                addParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
+                    addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -329,36 +359,41 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantsResult> removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
-        return removeParticipantsWithResponse(participantsToRemove, null).flatMap(FluxUtil::toMono);
+        return removeParticipantsWithResponse(new RemoveParticipantsOptions(participantsToRemove)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Remove a list of participants from the call.
      *
-     * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param operationContext The operation context. Optional
+     * @param removeParticipantsOptions The options for removing participants.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                                   String operationContext) {
-        return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context));
+    public Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(RemoveParticipantsOptions removeParticipantsOptions) {
+        return withContext(context -> removeParticipantsWithResponseInternal(removeParticipantsOptions, context));
     }
 
-    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponseInternal(List<CommunicationIdentifier> participantsToRemove,
-                                                                                    String operationContext, Context context) {
+    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponseInternal(RemoveParticipantsOptions removeParticipantsOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> participantModels = participantsToRemove
+            List<CommunicationIdentifierModel> participantModels = removeParticipantsOptions.getParticipants()
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+
+            if (removeParticipantsOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                removeParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
 
             RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
                 .setParticipantsToRemove(participantModels)
-                .setOperationContext(operationContext);
+                .setOperationContext(removeParticipantsOptions.getOperationContext());
 
-            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, null, null, context)
+            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request,
+                    removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {

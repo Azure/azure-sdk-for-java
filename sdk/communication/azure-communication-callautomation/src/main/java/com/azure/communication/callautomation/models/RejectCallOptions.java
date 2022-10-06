@@ -65,7 +65,7 @@ public class RejectCallOptions {
      * Set the callRejectReason
      *
      * @param callRejectReason The callRejectReason
-     * @return the CreateCallOptions object itself.
+     * @return the RejectCallOptions object itself.
      */
     public RejectCallOptions setCallRejectReason(CallRejectReason callRejectReason) {
         this.callRejectReason = callRejectReason;

@@ -60,6 +60,15 @@ public class AnswerCallOptions {
     }
 
     /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+    /**
      * Get the Repeatability headers configuration.
      *
      * @return the repeatabilityHeaders
@@ -72,20 +81,11 @@ public class AnswerCallOptions {
      * Set the repeatability headers
      *
      * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the CreateCallOptions object itself.
+     * @return the AnswerCallOptions object itself.
      */
     public AnswerCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
     }
 
     /**
