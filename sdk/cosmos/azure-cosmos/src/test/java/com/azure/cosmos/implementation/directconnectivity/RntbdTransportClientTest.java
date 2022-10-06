@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ConflictException;
@@ -97,6 +98,7 @@ public final class RntbdTransportClientTest {
     private static final String partitionKeyRangeId = "3";
     private static final Uri physicalAddress = new Uri("rntbd://host:10251/replica-path/");
     private static final Duration requestTimeout = Duration.ofSeconds(1000);
+    private static final int sslHandshakeTimeoutMinInMillis = 5000;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -719,6 +721,39 @@ public final class RntbdTransportClientTest {
             }
 
             this.validateFailure(responseMono, builder.build());
+        }
+    }
+
+    // TODO: add validations for other properties
+    @Test(groups = "unit")
+    public void transportClientDefaultOptionsTests() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        final UserAgentContainer userAgent = new UserAgentContainer();
+
+        RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy)
+                .userAgent(userAgent)
+                .build();
+
+        assertEquals(options.sslHandshakeTimeoutMinDuration().toMillis(), 5000);
+    }
+
+    // TODO: add validations for other properties
+    @Test(groups = "unit")
+    public void transportClientCustomizedOptionsTests() {
+        try {
+            System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"}");
+
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            final UserAgentContainer userAgent = new UserAgentContainer();
+
+            RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy)
+                    .userAgent(userAgent)
+                    .build();
+
+            assertEquals(options.sslHandshakeTimeoutMinDuration().toMillis(), Duration.ofSeconds(15).toMillis());
+
+        } finally {
+            System.clearProperty("azure.cosmos.directTcp.defaultOptions");
         }
     }
 
