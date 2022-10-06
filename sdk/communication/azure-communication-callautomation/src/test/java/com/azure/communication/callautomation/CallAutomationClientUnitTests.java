@@ -39,7 +39,9 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
         callOptions.setSubject(CALL_SUBJECT);
 
-        CreateCallResult createCallResult = callAutomationClient.createCall(callOptions);
+        Response<CreateCallResult> createCallResultResponse = callAutomationClient.createCallWithResponse(callOptions, null);
+        assertNotNull(createCallResultResponse);
+        CreateCallResult createCallResult = createCallResultResponse.getValue();
 
         assertNotNull(createCallResult);
     }

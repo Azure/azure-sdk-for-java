@@ -13,6 +13,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -57,13 +58,15 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            CreateCallResult result = callClient.createCall(createCallOptions);
-            assertNotNull(result);
-            assertNotNull(result.getCallConnection());
-            assertNotNull(result.getCallConnectionProperties());
+            Response<CreateCallResult> createCallResultResponse = callClient.createCallWithResponse(createCallOptions, null);
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnection());
+            assertNotNull(createCallResult.getCallConnectionProperties());
             waitForOperationCompletion(15000);
 
-            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            CallConnection callConnection = callClient.getCallConnection(createCallResult.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);

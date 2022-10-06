@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
@@ -14,6 +13,7 @@ import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,7 +65,9 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            CreateCallResult createCallResult = callAsyncClient.createCall(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
             assertNotNull(createCallResult.getCallConnectionProperties());
             String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
@@ -91,8 +93,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             // add another receiver to the call
             targets.clear();
             targets.add(anotherReceiver);
-            AddParticipantsOptions options = new AddParticipantsOptions(targets);
-            AddParticipantsResult addParticipantsResult = createCallResult.getCallConnectionAsync().addParticipants(options).block();
+            AddParticipantsResult addParticipantsResult = createCallResult.getCallConnectionAsync().addParticipants(targets).block();
             assertNotNull(addParticipantsResult);
 
             // wait for the incomingCallContext on another receiver
@@ -112,7 +113,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             if (eventStore.get(callerConnectionId) != null) {
                 eventStore.get(callerConnectionId).remove(CallConnectedEvent.class);
             }
-            
+
             // wait for callConnected
             CallConnectedEvent anotherCallConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);

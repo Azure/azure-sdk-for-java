@@ -173,11 +173,12 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        TransferCallResult transferCallResult = callConnection.transferToParticipantCall(
-            new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
-                .setOperationContext(CALL_OPERATION_CONTEXT)
-        );
+        TransferToParticipantCallOptions options = new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(options, null);
+        assertNotNull(transferCallResultResponse);
 
+        TransferCallResult transferCallResult = transferCallResultResponse.getValue();
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
     }
@@ -208,12 +209,15 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnection(CALL_CONNECTION_ID);
 
-        AddParticipantsResult addParticipantsResult = callConnection.addParticipants(
+        Response<AddParticipantsResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
             new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
                 new CommunicationUserIdentifier(CALL_TARGET_ID))))
-                .setOperationContext(CALL_OPERATION_CONTEXT)
+                .setOperationContext(CALL_OPERATION_CONTEXT),
+            null
         );
+        assertNotNull(addParticipantsResultResponse);
 
+        AddParticipantsResult addParticipantsResult = addParticipantsResultResponse.getValue();
         assertNotNull(addParticipantsResult);
         assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
             .getParticipants()

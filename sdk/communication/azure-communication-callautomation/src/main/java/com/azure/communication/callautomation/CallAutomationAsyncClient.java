@@ -92,20 +92,25 @@ public final class CallAutomationAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param createCallOptions Options bag for creating a new call.
+     * @param source The caller.
+     * @param targets The list of targets.
+     * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CreateCallOptions createCallOptions) {
+    public Mono<CreateCallResult> createCall(CommunicationIdentifier source,
+                                             List<CommunicationIdentifier> targets,
+                                             String callbackUrl) {
+        CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param createCallOptions Options bag for creating a new call.
+     * @param createCallOptions Options for creating a new call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
@@ -171,8 +176,7 @@ public final class CallAutomationAsyncClient {
     }
 
     private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingOptions mediaStreamingOptions
-    ) {
+        MediaStreamingOptions mediaStreamingOptions) {
         return new MediaStreamingConfigurationInternal()
             .setTransportUrl(mediaStreamingOptions.getTransportUrl())
             .setAudioChannelType(

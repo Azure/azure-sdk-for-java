@@ -18,6 +18,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import java.util.List;
+
 /**
  * Synchronous client that supports calling server operations.
  *
@@ -39,14 +41,18 @@ public final class CallAutomationClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param createCallOptions Options bag for creating a new call.
+     * @param source The caller.
+     * @param targets The list of targets.
+     * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CreateCallOptions createCallOptions) {
-        return callAutomationAsyncClient.createCall(createCallOptions).block();
+    public CreateCallResult createCall(CommunicationIdentifier source,
+                                       List<CommunicationIdentifier> targets,
+                                       String callbackUrl) {
+        return callAutomationAsyncClient.createCall(source, targets, callbackUrl).block();
     }
 
     /**

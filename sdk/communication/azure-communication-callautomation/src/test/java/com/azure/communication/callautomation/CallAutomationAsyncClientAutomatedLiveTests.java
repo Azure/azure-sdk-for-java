@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.models.events.ParticipantsUpdatedE
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -60,7 +61,9 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            CreateCallResult createCallResult = callAsyncClient.createCall(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
             assertNotNull(createCallResult.getCallConnectionProperties());
             String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();

@@ -36,7 +36,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
         callOptions.setSubject(CALL_SUBJECT);
 
-        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callOptions).block();
+        Response<CreateCallResult> createCallResultResponse = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
+        assertNotNull(createCallResultResponse);
+        CreateCallResult createCallResult = createCallResultResponse.getValue();
 
         assertNotNull(createCallResult);
     }

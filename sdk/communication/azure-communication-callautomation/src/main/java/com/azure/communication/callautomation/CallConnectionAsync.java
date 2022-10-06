@@ -237,15 +237,14 @@ public class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipantCall(
-        TransferToParticipantCallOptions transferToParticipantCallOptions) {
-        return transferToParticipantCallWithResponse(transferToParticipantCallOptions).flatMap(FluxUtil::toMono);
+    public Mono<TransferCallResult> transferToParticipantCall(CommunicationIdentifier targetParticipant) {
+        return transferToParticipantCallWithResponse(new TransferToParticipantCallOptions(targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -293,14 +292,14 @@ public class CallConnectionAsync {
     /**
      * Add a participant to the call.
      *
-     * @param addParticipantsOptions Options bag for addParticipants
+     * @param participants The list of participants to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddParticipantsResult> addParticipants(AddParticipantsOptions addParticipantsOptions) {
-        return addParticipantsWithResponse(addParticipantsOptions).flatMap(FluxUtil::toMono);
+    public Mono<AddParticipantsResult> addParticipants(List<CommunicationIdentifier> participants) {
+        return addParticipantsWithResponse(new AddParticipantsOptions(participants)).flatMap(FluxUtil::toMono);
     }
 
     /**
