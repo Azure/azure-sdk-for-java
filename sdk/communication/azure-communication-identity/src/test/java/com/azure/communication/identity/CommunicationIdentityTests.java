@@ -98,12 +98,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenSync");
 
         // Action & Assert
-        try {
-            client.createUserAndToken(null);
-        } catch (NullPointerException ex) {
-            return;
-        }
-        fail("An exception should have been thrown.");
+        assertThrows(NullPointerException.class, () -> client.createUserAndToken(null));
     }
 
     @Test
@@ -343,14 +338,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
         // Action & Assert
-        try {
-            client.getToken(null, scopes);
-        } catch (NullPointerException ex) {
-            return;
-        }
-        fail("An exception should have been thrown.");
+        assertThrows(NullPointerException.class, () -> client.getToken(null, scopes));
     }
 
     @Test
@@ -361,12 +350,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
 
         // Action & Assert
-        try {
-            client.getToken(communicationUser, null);
-        } catch (NullPointerException ex) {
-            return;
-        }
-        fail("An exception should have been thrown.");
+        assertThrows(NullPointerException.class, () -> client.getToken(communicationUser, null));
     }
 
     @Test
