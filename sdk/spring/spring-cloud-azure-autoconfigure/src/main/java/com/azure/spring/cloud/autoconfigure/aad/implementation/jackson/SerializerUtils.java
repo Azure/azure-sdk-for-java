@@ -10,14 +10,13 @@ import org.springframework.security.jackson2.CoreJackson2Module;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public final class SerializerUtils {
     private static final ObjectMapper OBJECT_MAPPER;
     private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE =
-        new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
-        };
+        new TypeReference<>() {};
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
@@ -45,7 +44,7 @@ public final class SerializerUtils {
 
     public static Map<String, OAuth2AuthorizedClient> deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
         if (authorizedClientsString == null) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
         Map<String, OAuth2AuthorizedClient> authorizedClients;
         try {

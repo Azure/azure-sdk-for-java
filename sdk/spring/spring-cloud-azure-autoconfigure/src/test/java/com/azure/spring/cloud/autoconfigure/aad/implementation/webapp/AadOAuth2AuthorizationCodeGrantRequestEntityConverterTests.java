@@ -97,7 +97,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
 
     private Object[] expectedHeaders(AadClientRegistrationRepository repository) {
         return new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes())
-            .getHttpHeaders()
+            .getHttpHeaders(null)
             .entrySet()
             .stream()
             .filter(entry -> !entry.getKey().equals("client-request-id"))
