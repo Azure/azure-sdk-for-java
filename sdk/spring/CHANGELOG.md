@@ -1,6 +1,9 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.5.0-beta.2 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
+
+## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
 
@@ -10,6 +13,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
+- Fix the invalid user agent for Apache Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/pull/30933).
 - Fix Kafka `OAuth2AuthenticateCallbackHandler` cannot work with Kafka refreshing login mechanism [#30719](https://github.com/Azure/azure-sdk-for-java/issues/30719).
 - Fix the cloud type cannot be configured for a consumer/producer/processor of Service Bus / Event Hubs bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 

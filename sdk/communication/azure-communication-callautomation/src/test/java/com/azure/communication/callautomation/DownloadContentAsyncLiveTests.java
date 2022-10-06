@@ -39,7 +39,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithConnectionStringAsyncClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithConnectionStringAsyncClient");
         downloadMetadata(conversationAsyncClient);
     }
@@ -51,7 +51,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithTokenCredentialAsyncClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingTokenCredential(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithTokenCredentialAsyncClient");
         downloadMetadata(conversationAsyncClient);
     }
@@ -73,7 +73,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataRetryingAsync");
 
         try {
@@ -91,7 +91,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideoAsync(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
 
         try {
@@ -116,7 +116,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileAsync(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
@@ -156,7 +156,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileRetryingAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
@@ -192,7 +192,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContent404Async(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
         StepVerifier.create(conversationAsyncClient
                 .getCallRecordingAsync()

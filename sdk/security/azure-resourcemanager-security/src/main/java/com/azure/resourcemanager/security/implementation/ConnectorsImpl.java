@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.ConnectorsClient;
 import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
 import com.azure.resourcemanager.security.models.ConnectorSetting;
 import com.azure.resourcemanager.security.models.Connectors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectorsImpl implements Connectors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorsImpl.class);
 
     private final ConnectorsClient innerClient;
 
@@ -71,7 +70,7 @@ public final class ConnectorsImpl implements Connectors {
     public ConnectorSetting getById(String id) {
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -82,7 +81,7 @@ public final class ConnectorsImpl implements Connectors {
     public Response<ConnectorSetting> getByIdWithResponse(String id, Context context) {
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -93,18 +92,18 @@ public final class ConnectorsImpl implements Connectors {
     public void deleteById(String id) {
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
         }
-        this.deleteWithResponse(connectorName, Context.NONE).getValue();
+        this.deleteWithResponse(connectorName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));

@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-xml</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
 
   <name>Microsoft Azure Java XML Library</name>
   <description>This package contains core types for XML.</description>

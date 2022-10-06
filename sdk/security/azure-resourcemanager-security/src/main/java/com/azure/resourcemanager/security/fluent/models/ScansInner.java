@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of vulnerability assessment scan records. */
 @Fluent
 public final class ScansInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScansInner.class);
-
     /*
      * List of vulnerability assessment scan records.
      */

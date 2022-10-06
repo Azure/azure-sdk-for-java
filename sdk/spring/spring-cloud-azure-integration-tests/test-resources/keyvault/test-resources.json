@@ -21,7 +21,9 @@
   "variables": {
     "azureKeyVaultName": "[parameters('baseName')]",
     "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), parameters('keyVaultEndpointSuffix'), '/')]",
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "azureKeyVaultSecretName": "kv-test-key",
+    "azureKeyVaultSecretValue": "kv-test-val"
   },
   "resources": [
     {
@@ -43,7 +45,8 @@
               "keys": [],
               "secrets": [
                 "Get",
-                "Set"
+                "Set",
+                "List"
               ],
               "certificates": []
             }
@@ -58,12 +61,32 @@
         "provisioningState": "Succeeded",
         "publicNetworkAccess": "Enabled"
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name":"[concat(variables('azureKeyVaultName'), '/', variables('azureKeyVaultSecretName'))]",
+      "apiVersion": "2022-07-01",
+      "properties":{
+        "contentType": "string",
+        "value": "[variables('azureKeyVaultSecretValue')]"
+      },
+      "dependsOn":[
+        "[resourceId('Microsoft.KeyVault/vaults', variables('azureKeyVaultName'))]"
+      ]
     }
   ],
   "outputs": {
     "AZURE_KEYVAULT_SECRET_ENDPOINT": {
       "type": "string",
       "value": "[variables('azureKeyVaultUri')]"
+    },
+    "AZURE_KEYVAULT_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultSecretName')]"
+    },
+    "AZURE_KEYVAULT_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultSecretValue')]"
     }
   }
 }
