@@ -9,7 +9,7 @@ import java.time.Duration;
 /** Samples for Users CreateOrUpdate. */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/putUser.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/putUser.json
      */
     /**
      * Sample code: putUser.
@@ -22,7 +22,7 @@ public final class UsersCreateOrUpdateSamples {
             .define("testuser")
             .withExistingLab("testrg123", "testlab")
             .withEmail("testuser@contoso.com")
-            .withAdditionalUsageQuota(Duration.parse("20:00"))
+            .withAdditionalUsageQuota(Duration.parse("PT10H"))
             .create();
     }
 }

@@ -6,15 +6,23 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.models.DtmfConfigurationsInternal;
 import com.azure.communication.callingserver.implementation.models.FileSourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.PlaySourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlaySourceTypeInternal;
+import com.azure.communication.callingserver.implementation.models.RecognizeConfigurationsInternal;
+import com.azure.communication.callingserver.implementation.models.RecognizeInputTypeInternal;
+import com.azure.communication.callingserver.implementation.models.RecognizeRequest;
+import com.azure.communication.callingserver.implementation.models.StopTonesInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.DtmfConfigurations;
 import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.callingserver.models.PlaySource;
+import com.azure.communication.callingserver.models.RecognizeConfigurations;
+import com.azure.communication.callingserver.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -104,6 +112,75 @@ public class CallMediaAsync {
     }
 
     /**
+     * Recognize operation.
+     * @param recognizeOptions Different attributes for recognize.
+     * @return Response for successful recognize request.
+     */
+    public Mono<Void> recognize(RecognizeOptions recognizeOptions) {
+        return recognizeWithResponse(recognizeOptions).then();
+    }
+
+    /**
+     * Recognize operation
+     * @param recognizeOptions Different attributes for recognize.
+     * @return Response for successful recognize request.
+     */
+    public Mono<Response<Void>> recognizeWithResponse(RecognizeOptions recognizeOptions) {
+        return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
+    }
+
+    Mono<Response<Void>> recognizeWithResponseInternal(RecognizeOptions recognizeOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            RecognizeConfigurations recognizeConfigurations = recognizeOptions.getRecognizeConfiguration();
+            DtmfConfigurationsInternal dtmfConfigurationsInternal = null;
+            if (recognizeConfigurations.getDtmfConfigurations() != null) {
+                DtmfConfigurations dtmfConfigurations = recognizeConfigurations.getDtmfConfigurations();
+                dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
+                    .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
+
+                if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
+                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
+                }
+                if (dtmfConfigurations.getStopTones() != null) {
+                    dtmfConfigurationsInternal
+                        .setStopTones(dtmfConfigurations.getStopTones().stream()
+                            .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
+                            .collect(Collectors.toList()));
+
+                }
+            }
+            RecognizeConfigurationsInternal recognizeConfigurationsInternal = new RecognizeConfigurationsInternal()
+                .setDtmfConfigurations(dtmfConfigurationsInternal)
+                .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
+            if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
+                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
+            }
+
+            PlaySourceInternal playSourceInternal = null;
+            if (recognizeOptions.getPlayPrompt() != null) {
+                PlaySource playSource = recognizeOptions.getPlayPrompt();
+                if (playSource instanceof FileSource) {
+                    playSourceInternal = getPlaySourceInternal((FileSource) playSource);
+                }
+            }
+            RecognizeRequest recognizeRequest = new RecognizeRequest()
+                .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
+                .setRecognizeConfiguration(recognizeConfigurationsInternal)
+                .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
+                .setPlayPrompt(playSourceInternal)
+                .setOperationContext(recognizeOptions.getOperationContext());
+
+            return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
      * Cancels all the queued media operations.
      * @return Void
      */
@@ -151,20 +228,15 @@ public class CallMediaAsync {
 
     PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo, PlayOptions options) {
         if (playSource instanceof FileSource) {
-            FileSource fileSource = (FileSource) playSource;
-            PlayRequest request = new PlayRequest();
-            FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(fileSource.getUri());
-            PlaySourceInternal playSourceInternal = new PlaySourceInternal()
-                .setSourceType(PlaySourceTypeInternal.FILE)
-                .setFileSource(fileSourceInternal)
-                .setPlaySourceId(fileSource.getPlaySourceId());
+            PlaySourceInternal playSourceInternal = getPlaySourceInternal((FileSource) playSource);
 
-            request.setPlaySourceInfo(playSourceInternal);
-            request.setPlayTo(
-                playTo
-                    .stream()
-                    .map(CommunicationIdentifierConverter::convert)
-                    .collect(Collectors.toList()));
+            PlayRequest request = new PlayRequest()
+                .setPlaySourceInfo(playSourceInternal)
+                .setPlayTo(
+                    playTo
+                        .stream()
+                        .map(CommunicationIdentifierConverter::convert)
+                        .collect(Collectors.toList()));
 
             if (options != null) {
                 request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
@@ -175,5 +247,14 @@ public class CallMediaAsync {
         }
 
         throw logger.logExceptionAsError(new IllegalArgumentException(playSource.getClass().getCanonicalName()));
+    }
+
+    private PlaySourceInternal getPlaySourceInternal(FileSource fileSource) {
+        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(fileSource.getUri());
+        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
+            .setSourceType(PlaySourceTypeInternal.FILE)
+            .setFileSource(fileSourceInternal)
+            .setPlaySourceId(fileSource.getPlaySourceId());
+        return playSourceInternal;
     }
 }

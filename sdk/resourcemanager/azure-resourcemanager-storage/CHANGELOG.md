@@ -1,11 +1,24 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
+
+### Features Added
 
 ### Breaking Changes
 
-- Renamed class `CorsRuleAllowedMethodsItem` to `AllowedMethods`.
-- Renamed class `ActiveDirectoryPropertiesAccountType` to `AccountType`.
+### Bugs Fixed
+
+### Other Changes
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
 
 ### Other Changes
 

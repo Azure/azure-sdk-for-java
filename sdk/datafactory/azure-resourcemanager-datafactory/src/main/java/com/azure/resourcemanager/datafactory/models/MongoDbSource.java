@@ -15,16 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class MongoDbSource extends CopySource {
     /*
-     * Database query. Should be a SQL-92 query expression. Type: string (or
-     * Expression with resultType string).
+     * Database query. Should be a SQL-92 query expression. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;

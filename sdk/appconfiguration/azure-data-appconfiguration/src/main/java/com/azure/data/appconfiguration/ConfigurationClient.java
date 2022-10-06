@@ -279,7 +279,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
-     * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response contains the {@link ConfigurationSetting} that was created or updated, or {@code null},
@@ -419,7 +419,7 @@ public final class ConfigurationClient {
      * @param setting The setting to retrieve.
      * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
      * then the current state of the configuration setting will be returned.
-     * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response contains the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
@@ -526,7 +526,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
-     * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
+     * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as an
      * IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
@@ -726,12 +726,12 @@ public final class ConfigurationClient {
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-     * provided, the {@link PagedIterable} contains all of the current settings in the service.
+     * provided, the {@link PagedIterable} contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(serviceClient.listConfigurationSettingsAsync(selector, context));
+        return serviceClient.listConfigurationSettings(selector, context);
     }
 
     /**
@@ -800,7 +800,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        return new PagedIterable<>(serviceClient.listRevisionsAsync(selector, context));
+        return serviceClient.listRevisions(selector, context);
     }
 
     /**

@@ -12,11 +12,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,15 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
-    public void createCall() throws URISyntaxException {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 201)
+    public void createCall() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
-        List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, new URI(CALL_CALLBACK_URI));
+        List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
         callOptions.setSubject(CALL_SUBJECT);
 
         CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callOptions).block();
@@ -41,16 +39,17 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
-    public void createCallWithResponse() throws URISyntaxException {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 201)
+    public void createCallWithResponse() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
-        List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, new URI(CALL_CALLBACK_URI));
+        List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
         callOptions.setSubject(CALL_SUBJECT);
+        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
 
@@ -60,28 +59,28 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
-    public void answerCall() throws URISyntaxException {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 200)
+    public void answerCall() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
             )));
 
-        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
+        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL).block();
 
         assertNotNull(answerCallResult);
     }
 
     @Test
-    public void answerCallWithResponse() throws URISyntaxException {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 200)
+    public void answerCallWithResponse() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
             )));
 
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
+            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL, MEDIA_STREAMING_CONFIGURATION).block();
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
@@ -90,9 +89,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
     @Test
     public void redirectCall() {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>("", 204)
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
         CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
@@ -102,9 +101,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
     @Test
     public void redirectCallWithResponse() {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>("", 204)
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
         CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
@@ -118,9 +117,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
     @Test
     public void rejectCall() {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>("", 204)
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
 
@@ -129,9 +128,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
     @Test
     public void rejectCallWithResponse() {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new AbstractMap.SimpleEntry<String, Integer>("", 204)
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
 

@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobFSDatasetTypeProperties {
     /*
-     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or
-     * Expression with resultType string).
+     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The name of the Azure Data Lake Storage Gen2. Type: string (or
-     * Expression with resultType string).
+     * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;

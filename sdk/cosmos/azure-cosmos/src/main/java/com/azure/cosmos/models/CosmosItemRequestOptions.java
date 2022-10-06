@@ -330,7 +330,6 @@ public class CosmosItemRequestOptions {
      *
      * @return the throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -340,7 +339,6 @@ public class CosmosItemRequestOptions {
      *
      * @param throughputControlGroupName the throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
     }

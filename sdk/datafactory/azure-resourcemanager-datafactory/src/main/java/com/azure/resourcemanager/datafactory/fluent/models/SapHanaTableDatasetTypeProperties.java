@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapHanaTableDatasetTypeProperties {
     /*
-     * The schema name of SAP HANA. Type: string (or Expression with resultType
-     * string).
+     * The schema name of SAP HANA. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
 
     /*
-     * The table name of SAP HANA. Type: string (or Expression with resultType
-     * string).
+     * The table name of SAP HANA. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;

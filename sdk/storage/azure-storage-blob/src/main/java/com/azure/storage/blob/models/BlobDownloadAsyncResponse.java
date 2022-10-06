@@ -8,8 +8,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -20,7 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -32,8 +31,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     static {
         BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
     }
-
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private static final Mono<ByteBuffer> EMPTY_BUFFER_MONO = Mono.just(ByteBuffer.allocate(0));
     private final StreamResponse sourceResponse;
@@ -94,7 +91,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 (throwable, position) -> onErrorResume.apply(throwable, position)
                     .flatMapMany(StreamResponse::getValue),
                 retryOptions.getMaxRetryRequests())
-            .switchIfEmpty(EMPTY_BUFFER_MONO).timeout(TIMEOUT_VALUE);
+            .switchIfEmpty(EMPTY_BUFFER_MONO);
     }
 
     /**

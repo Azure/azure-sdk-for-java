@@ -1537,51 +1537,26 @@ public final class BlobContainerAsyncClient {
             });
     }
 
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-//     *
-//     * @param destinationContainerName The new name of the container.
-//     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
 //        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
 //    }
-//
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-//     *
-//     * @param options {@link BlobContainerRenameOptions}
-//     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
 //        try {
 //            return withContext(context -> this.renameWithResponse(options, context));
 //        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
+//            return monoError(LOGGER, ex);
 //        }
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options, Context context) {
-//        // TODO (gapra) : Change this when we have migrated to new generator. There will be a cleaner way to do this by
-//        //  calling the container constructor directly instead of needing to do URI surgery
 //        BlobContainerAsyncClient destinationContainerClient = getServiceAsyncClient()
 //            .getBlobContainerAsyncClient(options.getDestinationContainerName());
 //        return destinationContainerClient.renameWithResponseHelper(this.getBlobContainerName(), options, context);
 //    }
-//
+
 //    Mono<Response<BlobContainerAsyncClient>> renameWithResponseHelper(String sourceContainerName,
 //        BlobContainerRenameOptions options, Context context) {
 //        StorageImplUtils.assertNotNull("options", options);
@@ -1591,7 +1566,7 @@ public final class BlobContainerAsyncClient {
 //
 //        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
 //            || requestConditions.getTagsConditions() != null) {
-//            throw logger.logExceptionAsError(new UnsupportedOperationException(
+//            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
 //                "Lease-Id is the only HTTP access condition supported for this API"));
 //        }
 //

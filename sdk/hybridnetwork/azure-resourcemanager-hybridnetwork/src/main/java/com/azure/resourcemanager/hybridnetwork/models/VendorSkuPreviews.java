@@ -18,7 +18,7 @@ public interface VendorSkuPreviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PreviewSubscription> list(String vendorName, String skuName);
 
@@ -31,9 +31,24 @@ public interface VendorSkuPreviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PreviewSubscription> list(String vendorName, String skuName, Context context);
+
+    /**
+     * Gets the preview information of a vendor sku.
+     *
+     * @param vendorName The name of the vendor.
+     * @param skuName The name of the vendor sku.
+     * @param previewSubscription Preview subscription ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the preview information of a vendor sku along with {@link Response}.
+     */
+    Response<PreviewSubscription> getWithResponse(
+        String vendorName, String skuName, String previewSubscription, Context context);
 
     /**
      * Gets the preview information of a vendor sku.
@@ -47,21 +62,6 @@ public interface VendorSkuPreviews {
      * @return the preview information of a vendor sku.
      */
     PreviewSubscription get(String vendorName, String skuName, String previewSubscription);
-
-    /**
-     * Gets the preview information of a vendor sku.
-     *
-     * @param vendorName The name of the vendor.
-     * @param skuName The name of the vendor sku.
-     * @param previewSubscription Preview subscription ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
-     */
-    Response<PreviewSubscription> getWithResponse(
-        String vendorName, String skuName, String previewSubscription, Context context);
 
     /**
      * Deletes the preview information of a vendor sku.
@@ -95,7 +95,7 @@ public interface VendorSkuPreviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku along with {@link Response}.
      */
     PreviewSubscription getById(String id);
 
@@ -107,7 +107,7 @@ public interface VendorSkuPreviews {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku along with {@link Response}.
      */
     Response<PreviewSubscription> getByIdWithResponse(String id, Context context);
 

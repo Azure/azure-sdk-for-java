@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MetadataItem {
     /*
-     * Metadata item key name. Type: string (or Expression with resultType
-     * string).
+     * Metadata item key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "name")
     private Object name;
 
     /*
-     * Metadata item value. Type: string (or Expression with resultType
-     * string).
+     * Metadata item value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;

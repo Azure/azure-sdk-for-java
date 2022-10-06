@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of MediaServicesOperationResults. */
 public interface MediaServicesOperationResults {
     /**
-     * Get media service operation result.
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
      *
      * @param locationName Location name.
      * @param operationId Operation Id.
@@ -22,7 +24,9 @@ public interface MediaServicesOperationResults {
     MediaService get(String locationName, String operationId);
 
     /**
-     * Get media service operation result.
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
      *
      * @param locationName Location name.
      * @param operationId Operation Id.

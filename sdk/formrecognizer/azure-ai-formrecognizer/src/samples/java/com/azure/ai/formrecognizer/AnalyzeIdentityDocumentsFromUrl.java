@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found ID document fields from a file source URL of an identity document.
- * See fields found on an identity document here: https://aka.ms/formrecognizer/iddocumentfields
+ * See fields found on an identity document <a href=https://aka.ms/formrecognizer/iddocumentfields>href</a>
  */
 public class AnalyzeIdentityDocumentsFromUrl {
 
@@ -39,7 +39,7 @@ public class AnalyzeIdentityDocumentsFromUrl {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                 + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller
+        SyncPoller<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", licenseDocumentUrl);
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();

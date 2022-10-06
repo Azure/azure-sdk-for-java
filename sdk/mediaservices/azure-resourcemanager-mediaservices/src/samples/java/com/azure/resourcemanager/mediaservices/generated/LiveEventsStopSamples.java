@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 /** Samples for LiveEvents Stop. */
 public final class LiveEventsStopSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveevent-stop.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-stop.json
      */
     /**
      * Sample code: Stop a LiveEvent.

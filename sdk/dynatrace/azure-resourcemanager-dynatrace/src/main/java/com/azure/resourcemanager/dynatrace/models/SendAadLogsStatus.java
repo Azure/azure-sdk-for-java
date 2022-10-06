@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SendAadLogsStatus. */
+/** Indicates whether AAD logs are being sent. */
 public final class SendAadLogsStatus extends ExpandableStringEnum<SendAadLogsStatus> {
     /** Static value Enabled for SendAadLogsStatus. */
     public static final SendAadLogsStatus ENABLED = fromString("Enabled");

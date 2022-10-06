@@ -19,16 +19,14 @@ import java.util.Map;
 @Fluent
 public class MongoDbV2LinkedService extends LinkedService {
     /*
-     * The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
+     * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;

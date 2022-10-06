@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionType. */
+/**
+ * encryptionType
+ *
+ * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+ * This value can only be set when creating new pool.
+ */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     /** Static value Single for EncryptionType. */
     public static final EncryptionType SINGLE = fromString("Single");

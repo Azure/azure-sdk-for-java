@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -2767,11 +2768,25 @@ class FileSystemAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    def "Rename sas"() {
 //        setup:
+//        def service = new AccountSasService()
+//            .setBlobAccess(true)
+//        def resourceType = new AccountSasResourceType()
+//            .setContainer(true)
+//            .setService(true)
+//            .setObject(true)
+//        def permissions = new AccountSasPermission()
+//            .setReadPermission(true)
+//            .setCreatePermission(true)
+//            .setWritePermission(true)
+//            .setDeletePermission(true)
+//        def expiryTime = namer.getUtcNow().plusDays(1)
+//
 //        def newName = generateFileSystemName()
-//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
 //        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
 //
 //        when:
@@ -2783,7 +2798,7 @@ class FileSystemAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC"() {
 //        setup:
@@ -2800,7 +2815,7 @@ class FileSystemAPITest extends APISpec {
 //        null            || _
 //        receivedLeaseID || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC fail"() {
 //        setup:
@@ -2812,13 +2827,13 @@ class FileSystemAPITest extends APISpec {
 //            null, null)
 //
 //        then:
-//        thrown(BlobStorageException)
+//        thrown(DataLakeStorageException)
 //
 //        where:
 //        leaseID         || _
 //        garbageLeaseID  || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC illegal"() {
 //        setup:
@@ -2837,9 +2852,8 @@ class FileSystemAPITest extends APISpec {
 //        null     | newDate    | null         | null
 //        null     | null       | receivedEtag | null
 //        null     | null       | null         | garbageEtag
-//        null     | null       | null         | null
 //    }
-//
+
 //    def "Rename error"() {
 //        setup:
 //        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -2849,7 +2863,7 @@ class FileSystemAPITest extends APISpec {
 //        fsc.rename(newName)
 //
 //        then:
-//        thrown(BlobStorageException)
+//        thrown(DataLakeStorageException)
 //    }
 
 }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.security.fluent.SecuritySolutionsReferenceDatas
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataListInner;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDataList;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecuritySolutionsReferenceDatasImpl implements SecuritySolutionsReferenceDatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceDatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsReferenceDatasImpl.class);
 
     private final SecuritySolutionsReferenceDatasClient innerClient;
 

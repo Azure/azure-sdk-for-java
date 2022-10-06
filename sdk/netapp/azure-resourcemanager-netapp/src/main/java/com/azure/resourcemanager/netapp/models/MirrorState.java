@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MirrorState. */
+/** The status of the replication. */
 public final class MirrorState extends ExpandableStringEnum<MirrorState> {
     /** Static value Uninitialized for MirrorState. */
     public static final MirrorState UNINITIALIZED = fromString("Uninitialized");

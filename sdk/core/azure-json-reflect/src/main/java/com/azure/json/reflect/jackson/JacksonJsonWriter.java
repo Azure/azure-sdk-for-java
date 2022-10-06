@@ -136,7 +136,6 @@ public class JacksonJsonWriter extends JsonWriter {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -181,7 +180,6 @@ public class JacksonJsonWriter extends JsonWriter {
 
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
-
     }
 
     @Override
@@ -295,7 +293,6 @@ public class JacksonJsonWriter extends JsonWriter {
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
-
     }
 
     @Override

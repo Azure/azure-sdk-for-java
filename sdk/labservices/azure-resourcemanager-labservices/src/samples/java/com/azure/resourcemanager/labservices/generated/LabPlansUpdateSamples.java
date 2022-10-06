@@ -12,7 +12,7 @@ import com.azure.resourcemanager.labservices.models.LabPlan;
 /** Samples for LabPlans Update. */
 public final class LabPlansUpdateSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/patchLabPlan.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/patchLabPlan.json
      */
     /**
      * Sample code: patchLabPlan.

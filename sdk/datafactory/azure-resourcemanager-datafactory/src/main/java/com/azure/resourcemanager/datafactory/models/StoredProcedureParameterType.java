@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StoredProcedureParameterType. */
+/** Stored procedure parameter type. */
 public final class StoredProcedureParameterType extends ExpandableStringEnum<StoredProcedureParameterType> {
     /** Static value String for StoredProcedureParameterType. */
     public static final StoredProcedureParameterType STRING = fromString("String");

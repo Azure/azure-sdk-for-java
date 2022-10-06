@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class SwitchCase {
     /*
-     * Expected value that satisfies the expression result of the 'on'
-     * property.
+     * Expected value that satisfies the expression result of the 'on' property.
      */
     @JsonProperty(value = "value")
     private String value;

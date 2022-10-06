@@ -41,14 +41,18 @@ public interface Backup {
     String location();
 
     /**
-     * Gets the backupId property: backupId UUID v4 used to identify the Backup.
+     * Gets the backupId property: backupId
+     *
+     * <p>UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
     String backupId();
 
     /**
-     * Gets the creationDate property: creationDate The creation date of the backup.
+     * Gets the creationDate property: creationDate
+     *
+     * <p>The creation date of the backup.
      *
      * @return the creationDate value.
      */
@@ -76,7 +80,9 @@ public interface Backup {
     String label();
 
     /**
-     * Gets the backupType property: backupType Type of backup Manual or Scheduled.
+     * Gets the backupType property: backupType
+     *
+     * <p>Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */

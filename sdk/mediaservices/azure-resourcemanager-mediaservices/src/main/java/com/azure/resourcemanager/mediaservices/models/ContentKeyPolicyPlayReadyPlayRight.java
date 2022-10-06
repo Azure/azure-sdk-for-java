@@ -13,50 +13,44 @@ import java.time.Duration;
 @Fluent
 public final class ContentKeyPolicyPlayReadyPlayRight {
     /*
-     * The amount of time that the license is valid after the license is first
-     * used to play content.
+     * The amount of time that the license is valid after the license is first used to play content.
      */
     @JsonProperty(value = "firstPlayExpiration")
     private Duration firstPlayExpiration;
 
     /*
-     * Configures the Serial Copy Management System (SCMS) in the license. Must
-     * be between 0 and 3 inclusive.
+     * Configures the Serial Copy Management System (SCMS) in the license. Must be between 0 and 3 inclusive.
      */
     @JsonProperty(value = "scmsRestriction")
     private Integer scmsRestriction;
 
     /*
-     * Configures Automatic Gain Control (AGC) and Color Stripe in the license.
-     * Must be between 0 and 3 inclusive.
+     * Configures Automatic Gain Control (AGC) and Color Stripe in the license. Must be between 0 and 3 inclusive.
      */
     @JsonProperty(value = "agcAndColorStripeRestriction")
     private Integer agcAndColorStripeRestriction;
 
     /*
-     * Configures the Explicit Analog Television Output Restriction in the
-     * license. Configuration data must be between 0 and 3 inclusive.
+     * Configures the Explicit Analog Television Output Restriction in the license. Configuration data must be between
+     * 0 and 3 inclusive.
      */
     @JsonProperty(value = "explicitAnalogTelevisionOutputRestriction")
     private ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction explicitAnalogTelevisionOutputRestriction;
 
     /*
-     * Enables the Image Constraint For Analog Component Video Restriction in
-     * the license.
+     * Enables the Image Constraint For Analog Component Video Restriction in the license.
      */
     @JsonProperty(value = "digitalVideoOnlyContentRestriction", required = true)
     private boolean digitalVideoOnlyContentRestriction;
 
     /*
-     * Enables the Image Constraint For Analog Component Video Restriction in
-     * the license.
+     * Enables the Image Constraint For Analog Component Video Restriction in the license.
      */
     @JsonProperty(value = "imageConstraintForAnalogComponentVideoRestriction", required = true)
     private boolean imageConstraintForAnalogComponentVideoRestriction;
 
     /*
-     * Enables the Image Constraint For Analog Component Video Restriction in
-     * the license.
+     * Enables the Image Constraint For Analog Component Video Restriction in the license.
      */
     @JsonProperty(value = "imageConstraintForAnalogComputerMonitorRestriction", required = true)
     private boolean imageConstraintForAnalogComputerMonitorRestriction;

@@ -13,36 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobDatasetTypeProperties {
     /*
-     * The path of the Azure Blob storage. Type: string (or Expression with
-     * resultType string).
+     * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The root of blob path. Type: string (or Expression with resultType
-     * string).
+     * The root of blob path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableRootLocation")
     private Object tableRootLocation;
 
     /*
-     * The name of the Azure Blob. Type: string (or Expression with resultType
-     * string).
+     * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
-     * The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;

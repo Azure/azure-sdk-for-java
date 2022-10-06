@@ -5,64 +5,29 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.RuleState;
 import com.azure.resourcemanager.security.models.SuppressionAlertsScope;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the suppression rule. */
-@JsonFlatten
 @Fluent
-public class AlertsSuppressionRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsSuppressionRuleInner.class);
-
+public final class AlertsSuppressionRuleInner extends ProxyResource {
     /*
-     * Type of the alert to automatically suppress. For all alert types, use
-     * '*'
+     * describes AlertsSuppressionRule properties
      */
-    @JsonProperty(value = "properties.alertType")
-    private String alertType;
+    @JsonProperty(value = "properties")
+    private AlertsSuppressionRuleProperties innerProperties;
 
-    /*
-     * The last time this rule was modified
+    /**
+     * Get the innerProperties property: describes AlertsSuppressionRule properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedUtc;
-
-    /*
-     * Expiration date of the rule, if value is not provided or provided as
-     * null this field will default to the maximum allowed expiration date.
-     */
-    @JsonProperty(value = "properties.expirationDateUtc")
-    private OffsetDateTime expirationDateUtc;
-
-    /*
-     * The reason for dismissing the alert
-     */
-    @JsonProperty(value = "properties.reason")
-    private String reason;
-
-    /*
-     * Possible states of the rule
-     */
-    @JsonProperty(value = "properties.state")
-    private RuleState state;
-
-    /*
-     * Any comment regarding the rule
-     */
-    @JsonProperty(value = "properties.comment")
-    private String comment;
-
-    /*
-     * The suppression conditions
-     */
-    @JsonProperty(value = "properties.suppressionAlertsScope")
-    private SuppressionAlertsScope suppressionAlertsScope;
+    private AlertsSuppressionRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the alertType property: Type of the alert to automatically suppress. For all alert types, use '*'.
@@ -70,7 +35,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the alertType value.
      */
     public String alertType() {
-        return this.alertType;
+        return this.innerProperties() == null ? null : this.innerProperties().alertType();
     }
 
     /**
@@ -80,7 +45,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withAlertType(String alertType) {
-        this.alertType = alertType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withAlertType(alertType);
         return this;
     }
 
@@ -90,7 +58,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
-        return this.lastModifiedUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedUtc();
     }
 
     /**
@@ -100,7 +68,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the expirationDateUtc value.
      */
     public OffsetDateTime expirationDateUtc() {
-        return this.expirationDateUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDateUtc();
     }
 
     /**
@@ -111,7 +79,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withExpirationDateUtc(OffsetDateTime expirationDateUtc) {
-        this.expirationDateUtc = expirationDateUtc;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withExpirationDateUtc(expirationDateUtc);
         return this;
     }
 
@@ -121,7 +92,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the reason value.
      */
     public String reason() {
-        return this.reason;
+        return this.innerProperties() == null ? null : this.innerProperties().reason();
     }
 
     /**
@@ -131,7 +102,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withReason(String reason) {
-        this.reason = reason;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withReason(reason);
         return this;
     }
 
@@ -141,7 +115,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the state value.
      */
     public RuleState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -151,7 +125,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withState(RuleState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -161,7 +138,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the comment value.
      */
     public String comment() {
-        return this.comment;
+        return this.innerProperties() == null ? null : this.innerProperties().comment();
     }
 
     /**
@@ -171,7 +148,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withComment(String comment) {
-        this.comment = comment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withComment(comment);
         return this;
     }
 
@@ -181,7 +161,7 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the suppressionAlertsScope value.
      */
     public SuppressionAlertsScope suppressionAlertsScope() {
-        return this.suppressionAlertsScope;
+        return this.innerProperties() == null ? null : this.innerProperties().suppressionAlertsScope();
     }
 
     /**
@@ -191,7 +171,10 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @return the AlertsSuppressionRuleInner object itself.
      */
     public AlertsSuppressionRuleInner withSuppressionAlertsScope(SuppressionAlertsScope suppressionAlertsScope) {
-        this.suppressionAlertsScope = suppressionAlertsScope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertsSuppressionRuleProperties();
+        }
+        this.innerProperties().withSuppressionAlertsScope(suppressionAlertsScope);
         return this;
     }
 
@@ -201,8 +184,8 @@ public class AlertsSuppressionRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (suppressionAlertsScope() != null) {
-            suppressionAlertsScope().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

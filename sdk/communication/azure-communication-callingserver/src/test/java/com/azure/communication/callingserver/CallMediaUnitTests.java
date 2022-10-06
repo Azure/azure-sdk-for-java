@@ -5,6 +5,9 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.callingserver.models.PlayOptions;
+import com.azure.communication.callingserver.models.RecognizeConfigurations;
+import com.azure.communication.callingserver.models.RecognizeInputType;
+import com.azure.communication.callingserver.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -21,7 +24,6 @@ public class CallMediaUnitTests {
 
     private CallMedia callMedia;
     private FileSource playSource;
-
     private PlayOptions playOptions;
 
     @BeforeEach
@@ -57,6 +59,13 @@ public class CallMediaUnitTests {
     @Test
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void recognizeWithResponseTest() {
+        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
+        Response<Void> response = callMedia.recognizeWithResponse(recognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 }

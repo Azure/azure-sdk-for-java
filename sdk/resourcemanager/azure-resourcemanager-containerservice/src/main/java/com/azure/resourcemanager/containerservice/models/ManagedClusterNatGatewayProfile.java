@@ -24,8 +24,8 @@ public final class ManagedClusterNatGatewayProfile {
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
-     * Desired outbound flow idle timeout in minutes. Allowed values are in the
-     * range of 4 to 120 (inclusive). The default value is 4 minutes.
+     * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
+     * default value is 4 minutes.
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;

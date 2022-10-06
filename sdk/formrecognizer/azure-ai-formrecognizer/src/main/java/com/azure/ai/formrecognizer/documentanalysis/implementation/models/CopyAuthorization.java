@@ -8,30 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Authorization to copy a model to the specified target resource and modelId. */
+/** Authorization to copy a document model to the specified target resource and modelId. */
 @Fluent
 public final class CopyAuthorization {
     /*
-     * ID of the target Azure resource where the model should be copied to.
+     * ID of the target Azure resource where the document model should be
+     * copied to.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
-     * Location of the target Azure resource where the model should be copied
-     * to.
+     * Location of the target Azure resource where the document model should be
+     * copied to.
      */
     @JsonProperty(value = "targetResourceRegion", required = true)
     private String targetResourceRegion;
 
     /*
-     * Identifier of the target model.
+     * Identifier of the target document model.
      */
     @JsonProperty(value = "targetModelId", required = true)
     private String targetModelId;
 
     /*
-     * URL of the copied model in the target account.
+     * URL of the copied document model in the target account.
      */
     @JsonProperty(value = "targetModelLocation", required = true)
     private String targetModelLocation;
@@ -49,7 +50,7 @@ public final class CopyAuthorization {
     private OffsetDateTime expirationDateTime;
 
     /**
-     * Get the targetResourceId property: ID of the target Azure resource where the model should be copied to.
+     * Get the targetResourceId property: ID of the target Azure resource where the document model should be copied to.
      *
      * @return the targetResourceId value.
      */
@@ -58,7 +59,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetResourceId property: ID of the target Azure resource where the model should be copied to.
+     * Set the targetResourceId property: ID of the target Azure resource where the document model should be copied to.
      *
      * @param targetResourceId the targetResourceId value to set.
      * @return the CopyAuthorization object itself.
@@ -69,7 +70,8 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the targetResourceRegion property: Location of the target Azure resource where the model should be copied to.
+     * Get the targetResourceRegion property: Location of the target Azure resource where the document model should be
+     * copied to.
      *
      * @return the targetResourceRegion value.
      */
@@ -78,7 +80,8 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetResourceRegion property: Location of the target Azure resource where the model should be copied to.
+     * Set the targetResourceRegion property: Location of the target Azure resource where the document model should be
+     * copied to.
      *
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @return the CopyAuthorization object itself.
@@ -89,7 +92,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the targetModelId property: Identifier of the target model.
+     * Get the targetModelId property: Identifier of the target document model.
      *
      * @return the targetModelId value.
      */
@@ -98,7 +101,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetModelId property: Identifier of the target model.
+     * Set the targetModelId property: Identifier of the target document model.
      *
      * @param targetModelId the targetModelId value to set.
      * @return the CopyAuthorization object itself.
@@ -109,7 +112,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the targetModelLocation property: URL of the copied model in the target account.
+     * Get the targetModelLocation property: URL of the copied document model in the target account.
      *
      * @return the targetModelLocation value.
      */
@@ -118,7 +121,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetModelLocation property: URL of the copied model in the target account.
+     * Set the targetModelLocation property: URL of the copied document model in the target account.
      *
      * @param targetModelLocation the targetModelLocation value to set.
      * @return the CopyAuthorization object itself.
