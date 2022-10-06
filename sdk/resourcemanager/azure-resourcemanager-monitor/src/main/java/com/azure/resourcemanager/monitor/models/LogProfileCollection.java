@@ -7,15 +7,12 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a collection of log profiles. */
 @Fluent
 public final class LogProfileCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogProfileCollection.class);
-
     /*
      * the values of the log profiles.
      */
@@ -49,11 +46,13 @@ public final class LogProfileCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model LogProfileCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogProfileCollection.class);
 }

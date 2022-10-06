@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServiceRoleInstances Rebuild. */
 public final class CloudServiceRoleInstancesRebuildSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Rebuild.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Rebuild.json
      */
     /**
      * Sample code: Rebuild Cloud Service Role Instance.

@@ -16,17 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RedshiftUnloadSettings {
     /*
-     * The name of the Amazon S3 linked service which will be used for the
-     * unload operation when copying from the Amazon Redshift source.
+     * The name of the Amazon S3 linked service which will be used for the unload operation when copying from the
+     * Amazon Redshift source.
      */
     @JsonProperty(value = "s3LinkedServiceName", required = true)
     private LinkedServiceReference s3LinkedServiceName;
 
     /*
-     * The bucket of the interim Amazon S3 which will be used to store the
-     * unloaded data from Amazon Redshift source. The bucket must be in the
-     * same region as the Amazon Redshift source. Type: string (or Expression
-     * with resultType string).
+     * The bucket of the interim Amazon S3 which will be used to store the unloaded data from Amazon Redshift source.
+     * The bucket must be in the same region as the Amazon Redshift source. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "bucketName", required = true)
     private Object bucketName;

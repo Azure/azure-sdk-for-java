@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The WatchlistsCreateOrUpdateHeaders model. */
@@ -15,6 +16,16 @@ public final class WatchlistsCreateOrUpdateHeaders {
      */
     @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of WatchlistsCreateOrUpdateHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public WatchlistsCreateOrUpdateHeaders(HttpHeaders rawHeaders) {
+        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
+    }
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.

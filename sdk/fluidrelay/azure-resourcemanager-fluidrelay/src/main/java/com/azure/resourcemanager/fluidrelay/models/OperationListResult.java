@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class OperationListResult {
     /*
-     * List of FluidRelay operations supported by the Microsoft.FluidRelay
-     * provider.
+     * List of FluidRelay operations supported by the Microsoft.FluidRelay provider.
      */
     @JsonProperty(value = "value")
     private List<OperationResultInner> value;

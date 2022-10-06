@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AdaptiveNetworkHardeningEnforceRequest model. */
 @Fluent
 public final class AdaptiveNetworkHardeningEnforceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveNetworkHardeningEnforceRequest.class);
-
     /*
      * The rules to enforce
      */
@@ -22,9 +19,8 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
     private List<Rule> rules;
 
     /*
-     * The Azure resource IDs of the effective network security groups that
-     * will be updated with the created security rules from the Adaptive
-     * Network Hardening rules
+     * The Azure resource IDs of the effective network security groups that will be updated with the created security
+     * rules from the Adaptive Network Hardening rules
      */
     @JsonProperty(value = "networkSecurityGroups", required = true)
     private List<String> networkSecurityGroups;
@@ -78,7 +74,7 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
      */
     public void validate() {
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rules in model AdaptiveNetworkHardeningEnforceRequest"));
@@ -86,11 +82,13 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
             rules().forEach(e -> e.validate());
         }
         if (networkSecurityGroups() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property networkSecurityGroups in model"
                             + " AdaptiveNetworkHardeningEnforceRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveNetworkHardeningEnforceRequest.class);
 }

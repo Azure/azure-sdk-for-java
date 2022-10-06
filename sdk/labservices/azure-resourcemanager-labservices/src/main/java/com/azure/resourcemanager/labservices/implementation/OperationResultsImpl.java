@@ -12,10 +12,9 @@ import com.azure.resourcemanager.labservices.fluent.OperationResultsClient;
 import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.labservices.models.OperationResult;
 import com.azure.resourcemanager.labservices.models.OperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationResultsImpl implements OperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationResultsImpl.class);
 
     private final OperationResultsClient innerClient;
 

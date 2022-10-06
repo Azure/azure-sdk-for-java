@@ -1,6 +1,6 @@
 # Release History
 
-## 5.2.0-beta.4 (Unreleased)
+## 5.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,55 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.2.0 (2022-09-08)
+
+### Features Added
+- This version of the client library marks a stable release and defaults to the service API version `2022-05-01`.
+- Added overload methods to take only required input parameter for all existing long-running operations:
+  - `beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions)`
+  - `beginAnalyzeHealthcareEntities(Iterable<String> documents)`
+  - `beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+- Added `displayName` property which is the name of long-running operation, to the following classes to 
+  set the optional display name:
+    - `AnalyzeHealthcareEntitiesOptions`
+    - `MultiLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOptions`
+    - `SingleLabelClassifyOptions`
+- Added `displayName` property to the following operations to read the optional display name set on options classes above:
+    - `AnalyzeHealthcareEntitiesOperationDetail` from `AnalyzeHealthcareEntitiesOptions`
+    - `ClassifyDocumentOperationDetail` from `MultiLabelClassifyOptions` and `SingleLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOperationDetail` from `RecognizeCustomEntitiesOptions`
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 5.2.0-beta.4 (2022-08-12)
+### Features Added
+- We are now targeting the service's `2022-05-01` API as the default.
+- Added bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
+  such as, `beginRecognizeCustomEntities()`, `beginSingleLabelClassify()` and `beginMultiLabelClassify()`.
+
+### Breaking Changes
+- Removed support for `Healthcare FHIR`, and `Extractive Summarization` features.
+- Renamed
+  `SingleCategoryClassifyAction` to `SingleLabelClassifyAction`,
+  `MultiCategoryClassifyAction` to `MultiLabelClassifyAction`.
+- Merged
+  `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
+  `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
+
+## 5.1.12 (2022-08-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
 
 ## 5.1.11 (2022-07-07)
 ### Other Changes

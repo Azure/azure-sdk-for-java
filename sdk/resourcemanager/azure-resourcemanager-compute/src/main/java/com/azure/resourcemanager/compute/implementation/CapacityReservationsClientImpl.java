@@ -217,7 +217,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -290,7 +290,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -575,7 +575,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -647,7 +647,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -914,7 +914,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -979,7 +979,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1223,7 +1223,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1292,7 +1292,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1329,14 +1329,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationName,
         CapacityReservationInstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1355,14 +1348,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         final CapacityReservationInstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1447,7 +1433,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1511,7 +1497,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1614,7 +1600,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1653,7 +1640,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

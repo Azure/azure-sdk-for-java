@@ -10,7 +10,11 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoutePorts Location Properties Properties specific to ExpressRoutePorts peering location resources. */
+/**
+ * ExpressRoutePorts Location Properties
+ *
+ * <p>Properties specific to ExpressRoutePorts peering location resources.
+ */
 @Fluent
 public final class ExpressRoutePortsLocationPropertiesFormat {
     /*

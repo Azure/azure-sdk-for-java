@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyResourceState. */
+/** Resource status of the policy. */
 public final class PolicyResourceState extends ExpandableStringEnum<PolicyResourceState> {
     /** Static value Creating for PolicyResourceState. */
     public static final PolicyResourceState CREATING = fromString("Creating");
@@ -39,7 +39,11 @@ public final class PolicyResourceState extends ExpandableStringEnum<PolicyResour
         return fromString(name, PolicyResourceState.class);
     }
 
-    /** @return known PolicyResourceState values. */
+    /**
+     * Gets known PolicyResourceState values.
+     *
+     * @return known PolicyResourceState values.
+     */
     public static Collection<PolicyResourceState> values() {
         return values(PolicyResourceState.class);
     }

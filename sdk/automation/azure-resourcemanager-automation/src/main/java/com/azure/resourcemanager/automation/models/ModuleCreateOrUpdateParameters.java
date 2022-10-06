@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ModuleCreateOrUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update module operation. */
-@JsonFlatten
 @Fluent
-public class ModuleCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModuleCreateOrUpdateParameters.class);
+public final class ModuleCreateOrUpdateParameters {
+    /*
+     * Gets or sets the module create properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private ModuleCreateOrUpdateProperties innerProperties = new ModuleCreateOrUpdateProperties();
 
     /*
      * Gets or sets name of the resource.
@@ -33,13 +36,17 @@ public class ModuleCreateOrUpdateParameters {
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets the module content link.
+    /**
+     * Get the innerProperties property: Gets or sets the module create properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.contentLink", required = true)
-    private ContentLink contentLink;
+    private ModuleCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets name of the resource.
@@ -107,7 +114,7 @@ public class ModuleCreateOrUpdateParameters {
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
-        return this.contentLink;
+        return this.innerProperties() == null ? null : this.innerProperties().contentLink();
     }
 
     /**
@@ -117,7 +124,10 @@ public class ModuleCreateOrUpdateParameters {
      * @return the ModuleCreateOrUpdateParameters object itself.
      */
     public ModuleCreateOrUpdateParameters withContentLink(ContentLink contentLink) {
-        this.contentLink = contentLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ModuleCreateOrUpdateProperties();
+        }
+        this.innerProperties().withContentLink(contentLink);
         return this;
     }
 
@@ -127,13 +137,15 @@ public class ModuleCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (contentLink() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property contentLink in model ModuleCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model ModuleCreateOrUpdateParameters"));
         } else {
-            contentLink().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ModuleCreateOrUpdateParameters.class);
 }

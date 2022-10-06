@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SettingKind. */
+/** the kind of the settings string. */
 public final class SettingKind extends ExpandableStringEnum<SettingKind> {
     /** Static value DataExportSettings for SettingKind. */
     public static final SettingKind DATA_EXPORT_SETTINGS = fromString("DataExportSettings");
@@ -30,7 +30,11 @@ public final class SettingKind extends ExpandableStringEnum<SettingKind> {
         return fromString(name, SettingKind.class);
     }
 
-    /** @return known SettingKind values. */
+    /**
+     * Gets known SettingKind values.
+     *
+     * @return known SettingKind values.
+     */
     public static Collection<SettingKind> values() {
         return values(SettingKind.class);
     }

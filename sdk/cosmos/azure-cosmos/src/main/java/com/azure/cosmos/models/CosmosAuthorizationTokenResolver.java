@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 import java.util.Map;
 
 /**
@@ -15,7 +13,6 @@ import java.util.Map;
  * request at client side which enables creation of one CosmosAsyncClient per application shared across various users
  * with different resource permissions.
  */
-@Beta(value = Beta.SinceVersion.V4_24_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface CosmosAuthorizationTokenResolver {
 
     /**

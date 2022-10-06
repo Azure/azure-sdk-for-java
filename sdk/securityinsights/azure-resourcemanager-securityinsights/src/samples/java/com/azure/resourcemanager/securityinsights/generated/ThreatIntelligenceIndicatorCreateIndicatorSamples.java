@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ThreatIntelligenceIndicator CreateIndicator. */
 public final class ThreatIntelligenceIndicatorCreateIndicatorSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/threatintelligence/CreateThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/CreateThreatIntelligence.json
      */
     /**
      * Sample code: Create a new Threat Intelligence.

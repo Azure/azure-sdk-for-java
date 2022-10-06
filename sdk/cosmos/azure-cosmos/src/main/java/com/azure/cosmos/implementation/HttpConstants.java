@@ -210,6 +210,7 @@ public class HttpConstants {
         // ChangeFeed
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
+        public static final String CHANGE_FEED_WIRE_FORMAT_VERSION = "x-ms-cosmos-changefeed-wire-format-version";
 
         // These properties were added to support RNTBD and they've been added here to
         // reduce merge conflicts
@@ -278,7 +279,7 @@ public class HttpConstants {
 
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
-        public static final String FullFidelityFeed = "Full-Fidelity Feed";
+        public static final String FULL_FIDELITY_FEED = "Full-Fidelity Feed";
     }
 
     public static class Versions {
@@ -321,6 +322,10 @@ public class HttpConstants {
                 return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.get();
             }
         }
+    }
+
+    public static class ChangeFeedWireFormatVersions {
+        public static final String SEPARATE_METADATA_WITH_CRTS = "2021-09-15";
     }
 
     public static class StatusCodes {

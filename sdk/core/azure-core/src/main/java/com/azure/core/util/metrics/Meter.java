@@ -139,13 +139,51 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.upDownCounter -->
      *
-     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongCounter}
      * @throws NullPointerException if name or description is null.
      */
     LongCounter createLongUpDownCounter(String name, String description, String unit);
+
+    /**
+     * Creates {@link LongGauge} instrument that is used to asynchronously record current value of metric.
+     *
+     * See https://opentelemetry.io/docs/reference/specification/metrics/api/#asynchronous-gauge for more details.
+     *
+     * <!-- src_embed com.azure.core.util.metrics.Meter.longGauge -->
+     * <pre>
+     * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
+     *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     *         put&#40;&quot;container&quot;, &quot;my-container&quot;&#41;;
+     *     &#125;&#125;&#41;;
+     *
+     * LongGauge latestSequenceNumber = defaultMeter.createLongGauge&#40;&quot;az.eventhubs.consumer.sequence_number&quot;,
+     *     &quot;Sequence number of the latest event received from the broker.&quot;, null&#41;;
+     *
+     * AutoCloseable subscription = latestSequenceNumber.registerCallback&#40;sequenceNumber::get, attributes&#41;;
+     *
+     * &#47;&#47; update value when event is received
+     * sequenceNumber.set&#40;getSequenceNumber&#40;&#41;&#41;;
+     *
+     * try &#123;
+     *     subscription.close&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.util.metrics.Meter.longGauge -->
+     *
+     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param description free-form text describing the counter
+     * @param unit optional unit of measurement.
+     * @return new instance of {@link LongGauge}
+     * @throws NullPointerException if name or description is null.
+     */
+    default LongGauge createLongGauge(String name, String description, String unit) {
+        return DefaultMeterProvider.NOOP_GAUGE;
+    }
 
     /**
      * Creates and returns attribute collection implementation specific to the meter implementation.
@@ -185,6 +223,13 @@ public interface Meter extends AutoCloseable {
      * @return an instance of {@code AttributesBuilder}
      */
     TelemetryAttributes createAttributes(Map<String, Object> attributeMap);
+
+    /**
+     * Checks if Meter implementation was found, and it's enabled.
+     *
+     * @return true if Meter is enabled, false otherwise.
+     */
+    boolean isEnabled();
 
     /**
      * {@inheritDoc}

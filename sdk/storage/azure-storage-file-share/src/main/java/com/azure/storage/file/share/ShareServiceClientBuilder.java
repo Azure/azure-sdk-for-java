@@ -184,13 +184,15 @@ public final class ShareServiceClientBuilder implements
             storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 
+        AzureSasCredential azureSasCredentialFromSasToken = sasToken != null ? new AzureSasCredential(sasToken) : null;
+
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (azureSasCredential != null) {
                 return new AzureSasCredentialPolicy(azureSasCredential, false);
             } else if (sasToken != null) {
-                return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
+                return new AzureSasCredentialPolicy(azureSasCredentialFromSasToken, false);
             } else {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
@@ -204,7 +206,8 @@ public final class ShareServiceClientBuilder implements
             .version(serviceVersion.getVersion())
             .buildClient();
 
-        return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
+        return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion,
+            azureSasCredentialFromSasToken != null ? azureSasCredentialFromSasToken : azureSasCredential);
     }
 
     /**

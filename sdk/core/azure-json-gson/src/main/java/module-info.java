@@ -7,4 +7,6 @@ module com.azure.json.gson {
     requires com.google.gson;
 
     exports com.azure.json.gson;
+
+    provides com.azure.json.JsonProvider with com.azure.json.gson.GsonJsonProvider;
 }

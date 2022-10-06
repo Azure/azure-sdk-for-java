@@ -714,7 +714,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getNoCHangesFromFeedResponse(FeedResponse<?> response) {
+    public static boolean getNoChangesFromFeedResponse(FeedResponse<?> response) {
         return response.getNoChanges();
     }
 
@@ -779,13 +779,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -969,5 +962,6 @@ public final class ModelBridgeInternal {
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();
+        CosmosClientTelemetryConfig.initialize();
     }
 }

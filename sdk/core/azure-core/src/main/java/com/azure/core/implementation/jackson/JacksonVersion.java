@@ -39,14 +39,19 @@ final class JacksonVersion {
     private final String helpString;
 
     private JacksonVersion() {
-        coreVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.core.json.PackageVersion().version().toString());
-        databindVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.databind.cfg.PackageVersion().version().toString());
-        xmlVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.dataformat.xml.PackageVersion().version().toString());
-        jsr310Version = SemanticVersion.parse(
-            new com.fasterxml.jackson.datatype.jsr310.PackageVersion().version().toString());
+        coreVersion = SemanticVersion.parse(com.fasterxml.jackson.core.json.PackageVersion.VERSION.toString());
+        databindVersion = SemanticVersion.parse(com.fasterxml.jackson.databind.cfg.PackageVersion.VERSION.toString());
+        jsr310Version = SemanticVersion.parse(com.fasterxml.jackson.datatype.jsr310.PackageVersion.VERSION.toString());
+
+        SemanticVersion xmlVersion1;
+        try {
+            Class<?> xmlPackageVersion = Class.forName("com.fasterxml.jackson.dataformat.xml.PackageVersion");
+            xmlVersion1 = SemanticVersion.parse(xmlPackageVersion.getDeclaredField("VERSION").get(null).toString());
+        } catch (ReflectiveOperationException e) {
+            xmlVersion1 = SemanticVersion.createInvalid();
+        }
+        xmlVersion = xmlVersion1;
+
         checkVersion(coreVersion, CORE_PACKAGE_NAME);
         checkVersion(databindVersion, DATABIND_PACKAGE_NAME);
         checkVersion(xmlVersion, XML_PACKAGE_NAME);
@@ -85,12 +90,17 @@ final class JacksonVersion {
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`)"
-                + ", please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
+            LOGGER.warning("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`)."
+                + " It may result in runtime exceptions during serialization. Please consider updating Jackson to one of the supported versions {}",
+                version.getVersionString(),
+                packageName,
+                MIN_SUPPORTED_VERSION,
+                TROUBLESHOOTING_DOCS_LINK);
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
-            LOGGER.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
+            LOGGER.warning("Major version '{}' of package '{}' is newer than latest supported version - '{}'."
+                + " It may result in runtime exceptions during serialization.",
                 version.getVersionString(),
                 packageName,
                 MAX_SUPPORTED_MAJOR_VERSION);

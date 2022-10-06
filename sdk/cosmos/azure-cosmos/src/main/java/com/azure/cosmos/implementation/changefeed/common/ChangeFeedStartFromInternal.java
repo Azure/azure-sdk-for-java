@@ -66,7 +66,7 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
 
     public abstract boolean supportsFullFidelityRetention();
 
-    public abstract void populateRequest(RxDocumentServiceRequest request);
+    public abstract void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode);
 
     private static final class InstanceHolder {
         static final ChangeFeedStartFromBeginningImpl FROM_BEGINNING_SINGLETON =

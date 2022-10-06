@@ -8,10 +8,8 @@ import com.azure.core.util.CoreUtils;
  * Common communication identifier for Communication Services
  */
 public abstract class CommunicationIdentifier {
-    /**
-     * encoded format for identifiers to store in databases or as stable keys in general.
-     */
-    protected String rawId;
+
+    private String rawId;
 
     /**
      * When storing rawIds, use this function to restore the identifier that was encoded in the rawId.
@@ -26,7 +24,7 @@ public abstract class CommunicationIdentifier {
         }
 
         if (rawId.startsWith("4:")) {
-            return new PhoneNumberIdentifier("+" + rawId.substring("4:".length()));
+            return new PhoneNumberIdentifier(rawId.substring("4:".length()));
         }
         final String[] segments = rawId.split(":");
         if (segments.length < 3) {
@@ -59,6 +57,18 @@ public abstract class CommunicationIdentifier {
      */
     public String getRawId() {
         return rawId;
+    }
+
+    /**
+     * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
+     *
+     * @param rawId full id of the identifier
+     * @return CommunicationIdentifier object itself
+     */
+    protected CommunicationIdentifier setRawId(String rawId) {
+        this.rawId = rawId;
+        return this;
     }
 
     @Override

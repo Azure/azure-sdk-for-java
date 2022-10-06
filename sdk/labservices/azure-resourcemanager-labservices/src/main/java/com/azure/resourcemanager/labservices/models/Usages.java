@@ -10,18 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Usages. */
 public interface Usages {
     /**
-     * Returns list of usage per SKU family for the specified subscription in the specified region.
+     * Gets the list of usages.
+     *
+     * <p>Returns list of usage per SKU family for the specified subscription in the specified region.
      *
      * @param location The location name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Core Usages.
+     * @return list of Core Usages as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> listByLocation(String location);
 
     /**
-     * Returns list of usage per SKU family for the specified subscription in the specified region.
+     * Gets the list of usages.
+     *
+     * <p>Returns list of usage per SKU family for the specified subscription in the specified region.
      *
      * @param location The location name.
      * @param filter The filter to apply to the operation.
@@ -29,7 +33,7 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Core Usages.
+     * @return list of Core Usages as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> listByLocation(String location, String filter, Context context);
 }

@@ -6,10 +6,8 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterProperties;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Class representing an update to a Kusto cluster. */
 @Fluent
 public final class ClusterUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdate.class);
-
     /*
      * Resource tags.
      */

@@ -19,8 +19,8 @@ public final class RunCommandInput {
     private String commandId;
 
     /*
-     * Optional. The script to be executed.  When this value is given, the
-     * given script will override the default script of the command.
+     * Optional. The script to be executed.  When this value is given, the given script will override the default
+     * script of the command.
      */
     @JsonProperty(value = "script")
     private List<String> script;

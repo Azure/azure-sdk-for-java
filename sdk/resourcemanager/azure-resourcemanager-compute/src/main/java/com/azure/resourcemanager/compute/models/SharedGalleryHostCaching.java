@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharedGalleryHostCaching. */
+/** The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. */
 public final class SharedGalleryHostCaching extends ExpandableStringEnum<SharedGalleryHostCaching> {
     /** Static value None for SharedGalleryHostCaching. */
     public static final SharedGalleryHostCaching NONE = fromString("None");

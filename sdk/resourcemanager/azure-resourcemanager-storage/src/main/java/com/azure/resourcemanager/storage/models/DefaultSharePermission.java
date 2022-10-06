@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultSharePermission. */
+/** Default share permission for users using Kerberos authentication if RBAC role is not assigned. */
 public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSharePermission> {
     /** Static value None for DefaultSharePermission. */
     public static final DefaultSharePermission NONE = fromString("None");

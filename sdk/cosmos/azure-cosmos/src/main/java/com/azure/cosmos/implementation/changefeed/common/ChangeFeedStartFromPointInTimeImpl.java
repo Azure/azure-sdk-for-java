@@ -63,7 +63,7 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request) {
+    public void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode) {
         checkNotNull(request, "Argument 'request' must not be null.");
 
         // Our current public contract for ChangeFeedProcessor uses DateTime.MinValue.ToUniversalTime as beginning.

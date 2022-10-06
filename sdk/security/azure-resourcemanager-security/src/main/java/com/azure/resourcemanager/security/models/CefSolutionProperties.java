@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The external security solution properties for CEF solutions. */
 @Fluent
 public final class CefSolutionProperties extends ExternalSecuritySolutionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CefSolutionProperties.class);
-
     /*
      * The hostname property.
      */

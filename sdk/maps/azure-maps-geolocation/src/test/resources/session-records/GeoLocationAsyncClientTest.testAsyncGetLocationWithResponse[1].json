@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/geolocation/ip/json?api-version=1.0&ip=131.107.0.89",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaGeolocationSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "61",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: E7534FD0E4CF4342B90233CFE3EF9B23 Ref B: BY3EDGE0408 Ref C: 2022-09-29T21:42:06Z",
+      "Body" : "{\"countryRegion\":{\"isoCode\":\"US\"},\"ipAddress\":\"131.107.0.89\"}",
+      "Date" : "Thu, 29 Sep 2022 21:42:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

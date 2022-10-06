@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quota metrics properties. */
 @Immutable
 public final class IotHubQuotaMetricInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubQuotaMetricInfoInner.class);
-
     /*
      * The name of the quota metric.
      */

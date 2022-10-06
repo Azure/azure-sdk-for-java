@@ -30,15 +30,14 @@ public final class JobError {
     private JobErrorCategory category;
 
     /*
-     * Indicates that it may be possible to retry the Job. If retry is
-     * unsuccessful, please contact Azure support via Azure Portal.
+     * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
+     * Azure Portal.
      */
     @JsonProperty(value = "retry", access = JsonProperty.Access.WRITE_ONLY)
     private JobRetry retry;
 
     /*
-     * An array of details about specific errors that led to this reported
-     * error.
+     * An array of details about specific errors that led to this reported error.
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobErrorDetail> details;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtocolType. */
+/** Defines the TLS extension protocol that is used for secure delivery. */
 public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
     /** Static value ServerNameIndication for ProtocolType. */
     public static final ProtocolType SERVER_NAME_INDICATION = fromString("ServerNameIndication");
@@ -27,7 +27,11 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
         return fromString(name, ProtocolType.class);
     }
 
-    /** @return known ProtocolType values. */
+    /**
+     * Gets known ProtocolType values.
+     *
+     * @return known ProtocolType values.
+     */
     public static Collection<ProtocolType> values() {
         return values(ProtocolType.class);
     }

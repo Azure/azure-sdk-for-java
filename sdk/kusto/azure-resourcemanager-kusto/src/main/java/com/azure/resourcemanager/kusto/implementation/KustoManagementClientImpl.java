@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -41,15 +42,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the KustoManagementClientImpl type. */
 @ServiceClient(builder = KustoManagementClientBuilder.class)
 public final class KustoManagementClientImpl implements KustoManagementClient {
-    private final ClientLogger logger = new ClientLogger(KustoManagementClientImpl.class);
-
     /**
      * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
@@ -305,7 +303,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-02-01";
+        this.apiVersion = "2022-07-07";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -337,10 +335,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -404,7 +399,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -463,4 +458,6 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KustoManagementClientImpl.class);
 }

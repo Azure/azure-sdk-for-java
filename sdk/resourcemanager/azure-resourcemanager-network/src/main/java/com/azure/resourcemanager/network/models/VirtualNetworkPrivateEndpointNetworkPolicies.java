@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkPrivateEndpointNetworkPolicies. */
+/** Enable or Disable apply network policies on private end point in the subnet. */
 public final class VirtualNetworkPrivateEndpointNetworkPolicies
     extends ExpandableStringEnum<VirtualNetworkPrivateEndpointNetworkPolicies> {
     /** Static value Enabled for VirtualNetworkPrivateEndpointNetworkPolicies. */

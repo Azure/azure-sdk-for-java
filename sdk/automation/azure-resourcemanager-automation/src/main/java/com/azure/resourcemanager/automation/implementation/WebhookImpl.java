@@ -80,6 +80,10 @@ public final class WebhookImpl implements Webhook, Webhook.Definition, Webhook.U
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WebhookInner innerModel() {
         return this.innerObject;
     }

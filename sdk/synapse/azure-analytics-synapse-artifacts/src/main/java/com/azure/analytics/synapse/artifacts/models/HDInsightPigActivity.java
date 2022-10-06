@@ -25,8 +25,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
-     * User specified arguments to HDInsightActivity. Type: array (or
-     * Expression with resultType array).
+     * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
     @JsonProperty(value = "typeProperties.arguments")
     private Object arguments;
