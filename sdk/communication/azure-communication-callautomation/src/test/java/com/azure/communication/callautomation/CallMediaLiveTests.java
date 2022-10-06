@@ -5,8 +5,10 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +44,7 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
          * 4. terminate the call.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("playMediaInACall", next))
             .buildClient();
 
@@ -78,6 +81,71 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
             assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void recognizeDtmfInACall(HttpClient httpClient) {
+        /* Test case: ACS to ACS call
+         * 1. create a CallAutomationClient.
+         * 2. create a call from source to one ACS target.
+         * 3. get updated call properties and check for the connected state.
+         * 4. prompt and recognize dtmf tones from target participant.
+         * 5. hang up the call.
+         */
+
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("recognizeDtmfInACall", next))
+            .buildClient();
+
+        CommunicationIdentityClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("recognizeDtmfInACall", next))
+            .buildClient();
+
+        try {
+            String callbackUrl = "https://localhost";
+            CommunicationIdentifier source = identityClient.createUser();
+            PhoneNumberIdentifier targetUser = new PhoneNumberIdentifier(PHONE_USER_1);
+            List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(targetUser));
+
+            CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
+                .setSourceCallerId(ACS_RESOURCE_PHONE);
+
+            CreateCallResult callResponse = callClient.createCall(createCallOptions);
+            assertNotNull(callResponse);
+            assertNotNull(callResponse.getCallConnection());
+            assertNotNull(callResponse.getCallConnectionProperties());
+            waitForOperationCompletion(15000);
+
+            CallConnection callConnection = callClient.getCallConnection(callResponse.getCallConnectionProperties().getCallConnectionId());
+            assertNotNull(callConnection);
+            CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
+            assertNotNull(callConnectionProperties);
+            assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
+
+            CallMedia callMedia = callConnection.getCallMedia();
+
+            List<DtmfTone> stopTones = new ArrayList<>();
+            stopTones.add(DtmfTone.POUND);
+            CallMediaRecognizeDtmfOptions callMediaRecognizeDtmfOptions = new CallMediaRecognizeDtmfOptions(targetUser, 5)
+                .setStopTones(stopTones)
+                .setInterToneTimeout(Duration.ofSeconds(5));
+            callMediaRecognizeDtmfOptions.setInitialSilenceTimeout(Duration.ofSeconds(15));
+            callMediaRecognizeDtmfOptions.setPlayPrompt(new FileSource().setUri(MEDIA_SOURCE));
+
+            callMedia.startRecognizing(new CallMediaRecognizeDtmfOptions(targetUser, 5));
+
+            callConnection.hangUp(true);
+            waitForOperationCompletion(5000);
+            assertThrows(Exception.class, callConnection::getCallProperties);
+
+        } catch (Exception ex) {
+            fail("Unexpeceted exception received", ex);
         }
     }
 }
