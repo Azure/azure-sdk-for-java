@@ -19,6 +19,9 @@ public class GsonJsonReader extends JsonReader {
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> gsonTokenEnum = null;
 
+    private final Object gsonReader;
+    private JsonToken currentToken;
+
     private static MethodHandle gsonReaderConstructor;
     private static MethodHandle setLenientMethod;
     private static MethodHandle peekMethod;
@@ -41,8 +44,6 @@ public class GsonJsonReader extends JsonReader {
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
 
-    private final Object gsonReader;
-    private JsonToken currentToken;
     private boolean consumed = false;
     private boolean complete = false;
 
@@ -304,7 +305,7 @@ public class GsonJsonReader extends JsonReader {
         try {
             if (currentToken == JsonToken.NULL) {
                 return null;
-            } else { 
+            } else {
                 return (String) nextStringMethod.invoke(gsonReader);
             }
         } catch (Throwable e) {

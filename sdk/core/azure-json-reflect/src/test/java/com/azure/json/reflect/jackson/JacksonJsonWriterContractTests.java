@@ -1,4 +1,4 @@
-package com.azure.json.reflect;
+package com.azure.json.reflect.jackson;
 
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
