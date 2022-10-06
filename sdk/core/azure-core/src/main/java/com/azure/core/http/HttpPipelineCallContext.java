@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -24,8 +25,8 @@ public final class HttpPipelineCallContext {
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest) {
-        this(httpRequest, Context.NONE);
+    HttpPipelineCallContext(HttpRequest httpRequest, Tracer tracer) {
+        this(httpRequest, tracer, Context.NONE);
     }
 
     /**
@@ -38,12 +39,12 @@ public final class HttpPipelineCallContext {
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
+    HttpPipelineCallContext(HttpRequest httpRequest, Tracer tracer, Context data) {
         Objects.requireNonNull(httpRequest, "'httpRequest' cannot be null.");
         Objects.requireNonNull(data, "'data' cannot be null.");
         //
         this.httpRequest = httpRequest;
-        this.data = data;
+        this.data = data.addData("tracer", tracer);
     }
 
     /**

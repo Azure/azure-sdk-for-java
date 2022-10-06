@@ -70,7 +70,7 @@ public class HttpPipelineTests {
                 }
             }).build();
 
-        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
+        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")), null);
         assertNotNull(context);
         assertNotNull(pipeline.getHttpClient());
     }

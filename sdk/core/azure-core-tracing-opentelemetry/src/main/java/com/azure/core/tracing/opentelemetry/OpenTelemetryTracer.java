@@ -8,18 +8,18 @@ import com.azure.core.tracing.opentelemetry.implementation.AmqpTraceUtil;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
 
 import java.time.Instant;
@@ -40,24 +40,52 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final String SPAN_KIND_KEY = "span-kind";
     private static final String START_TIME_KEY = "span-start-time";
     private final Tracer tracer;
+    private final boolean isEnabled;
+
+    private final String azNamespace;
+
+    private final OpenTelemetrySchemaVersion schemaVersion;
 
     /**
      * Creates new {@link OpenTelemetryTracer} using default global tracer -
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
+    @Deprecated
     public OpenTelemetryTracer() {
-        this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
+        this("azure-core", null, null, null);
     }
 
     /**
-     * Creates new {@link OpenTelemetryTracer} that wraps {@link io.opentelemetry.api.trace.Tracer}.
-     * Use it for tests.
+     * Creates new {@link OpenTelemetryTracer} using default global tracer -
+     * {@link GlobalOpenTelemetry#getTracer(String)}
      *
-     * @param tracer {@link io.opentelemetry.api.trace.Tracer} instance.
      */
-    OpenTelemetryTracer(Tracer tracer) {
-        this.tracer = tracer;
+    OpenTelemetryTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+        TracerProvider otelProvider = null;
+        OpenTelemetrySchemaVersion otelSchemaVersion = null;
+
+        if (options != null && options.isEnabled() && options instanceof OpenTelemetryTracingOptions) {
+            OpenTelemetryTracingOptions otelOptions = (OpenTelemetryTracingOptions) options;
+            otelProvider = otelOptions.getProvider();
+            otelSchemaVersion = otelOptions.getSchemaVersion();
+        }
+
+        if (otelProvider == null) {
+            otelProvider = GlobalOpenTelemetry.getTracerProvider();
+        }
+
+        if (otelSchemaVersion == null) {
+            otelSchemaVersion = OpenTelemetrySchemaVersion.getLatest();
+        }
+
+        this.isEnabled = (options == null || options.isEnabled()) && otelProvider != TracerProvider.noop();
+        this.azNamespace = azNamespace;
+        this.schemaVersion = otelSchemaVersion;
+        this.tracer = otelProvider.tracerBuilder(libraryName)
+            .setInstrumentationVersion(libraryVersion)
+            .setSchemaUrl("https://https://opentelemetry.io/schemas/" + otelSchemaVersion.toString())
+            .build();
     }
 
     static final String AZ_NAMESPACE_KEY = "az.namespace";
@@ -88,14 +116,20 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
+        if (!isEnabled) {
+            return context;
+        }
+
         SpanKind spanKind = convertToOtelKind(options.getSpanKind());
         if (shouldSuppress(spanKind, context)) {
             return startSuppressedSpan(context);
         }
 
+        // TODO: optimize and cache when possible
+        Attributes attributes = new OpenTelemetryAttributes(options.getAttributes(), schemaVersion).get();
         context = unsuppress(context);
         SpanBuilder spanBuilder = createSpanBuilder(spanName, null, spanKind,
-            options.getAttributes(), context);
+            attributes, context);
 
         return startSpanInternal(spanBuilder, isClientCall(spanKind), null, context);
     }
@@ -108,6 +142,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(processKind, "'processKind' cannot be null.");
+
+        if (!isEnabled) {
+            return context;
+        }
 
         SpanBuilder spanBuilder;
         if (shouldSuppress(processKindToSpanKind(processKind), context)) {
@@ -164,6 +202,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void end(int responseCode, Throwable throwable, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
 
+        if (!isEnabled) {
+            return;
+        }
+
         final Span span = getSpanOrNull(context);
         if (span == null) {
             return;
@@ -187,6 +229,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
+        if (!isEnabled) {
+            return;
+        }
+
         final Span span = getSpanOrNull(context);
         if (span == null) {
             return;
@@ -202,6 +248,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context setSpanName(String spanName, Context context) {
+        if (!isEnabled) {
+            return context;
+        }
+
         return context.addData(USER_SPAN_NAME_KEY, spanName);
     }
 
@@ -210,6 +260,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void end(String statusMessage, Throwable throwable, Context context) {
+        if (!isEnabled) {
+            return;
+        }
+
         Span span = getSpanOrNull(context);
         if (span == null) {
             return;
@@ -227,6 +281,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     @Override
     public void addLink(Context context) {
+        if (!isEnabled) {
+            return;
+        }
+
         final SpanBuilder spanBuilder = getOrNull(context, SPAN_BUILDER_KEY, SpanBuilder.class);
         if (spanBuilder == null) {
             return;
@@ -251,6 +309,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context extractContext(String diagnosticId, Context context) {
+        if (!isEnabled) {
+            return context;
+        }
+
         return AmqpPropagationFormatUtil.extractContext(diagnosticId, context);
     }
 
@@ -259,6 +321,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
+<<<<<<< HEAD
         com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
         if (spanKind == null) {
             spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
@@ -271,6 +334,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         return context.addData(SPAN_BUILDER_KEY, builder);
+=======
+        if (!isEnabled) {
+            return context;
+        }
+
+        // this is used to create messaging send spanBuilder, and it's a CLIENT span
+        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SHARED_SPAN_BUILDER_KIND, null, context));
+>>>>>>> 3e2485044a1 (tracing v2 proto)
     }
 
     /**
@@ -278,7 +349,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public AutoCloseable makeSpanCurrent(Context context) {
-        if (getBoolean(SUPPRESSED_SPAN_FLAG, context)) {
+        if (!isEnabled || getBoolean(SUPPRESSED_SPAN_FLAG, context)) {
             return NOOP_CLOSEABLE;
         }
 
@@ -304,6 +375,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp, Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
+        if (!isEnabled) {
+            return;
+        }
+
         Span currentSpan = getSpanOrNull(context);
 
         if (currentSpan == null) {
@@ -314,14 +389,26 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (timestamp == null) {
             currentSpan.addEvent(
                 eventName,
-                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes));
+                traceEventAttributes == null ? Attributes.empty() : new OpenTelemetryAttributes(traceEventAttributes, schemaVersion).get());
         } else {
             currentSpan.addEvent(
                 eventName,
-                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes),
-                timestamp.toInstant()
-            );
+                traceEventAttributes == null ? Attributes.empty() : new OpenTelemetryAttributes(traceEventAttributes,schemaVersion).get(),
+                timestamp.toInstant());
         }
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    Tracer getOpenTelemetryTracer() {
+        return tracer;
+    }
+
+    String getAzNamespace() {
+        return azNamespace;
     }
 
     /**
@@ -343,7 +430,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span.isRecording()) {
             // If span is sampled in, add additional attributes
 
-            String tracingNamespace = getOrNull(context, AZ_TRACING_NAMESPACE_KEY, String.class);
+            String tracingNamespace = getAzNamespace(context);
             if (tracingNamespace != null) {
                 span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
             }
@@ -361,6 +448,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             .addData(PARENT_TRACE_CONTEXT_KEY, getTraceContextOrDefault(context, io.opentelemetry.context.Context.current()).with(span));
     }
 
+    private String getAzNamespace(Context context) {
+        return azNamespace != null ? azNamespace : getOrNull(context, AZ_TRACING_NAMESPACE_KEY, String.class);
+    }
+
     /**
      * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the designated
      * {@link Span}.
@@ -376,7 +467,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private SpanBuilder createSpanBuilder(String spanName,
         SpanContext remoteParentContext,
         SpanKind spanKind,
-        Map<String, Object> beforeSamplingAttributes,
+        Attributes beforeSamplingAttributes,
         Context context) {
         String spanNameKey = getOrNull(context, USER_SPAN_NAME_KEY, String.class);
 
@@ -387,20 +478,16 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         SpanBuilder spanBuilder = tracer.spanBuilder(spanNameKey)
             .setSpanKind(spanKind);
 
-        io.opentelemetry.context.Context parentContext = getTraceContextOrDefault(context, io.opentelemetry.context.Context.current());
+        io.opentelemetry.context.Context parentContext = getTraceContextOrDefault(context, null);
         // if remote parent is provided, it has higher priority
         if (remoteParentContext != null) {
             spanBuilder.setParent(parentContext.with(Span.wrap(remoteParentContext)));
-        } else {
+        } else if (parentContext != null) {
             spanBuilder.setParent(parentContext);
         }
 
         // if some attributes are provided, set them
-        if (!CoreUtils.isNullOrEmpty(beforeSamplingAttributes)) {
-            Attributes otelAttributes = convertToOtelAttributes(beforeSamplingAttributes);
-            otelAttributes.forEach(
-                (key, value) -> spanBuilder.setAttribute((AttributeKey<Object>) key, value));
-        }
+        spanBuilder.setAllAttributes(beforeSamplingAttributes);
 
         return spanBuilder;
     }
@@ -437,38 +524,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             default:
                 return SpanKind.INTERNAL;
         }
-    }
-
-    /**
-     * Maps span/event properties to OpenTelemetry attributes.
-     *
-     * @param attributes the attributes provided by the client SDK's.
-     * @return the OpenTelemetry typed {@link Attributes}.
-     */
-    private Attributes convertToOtelAttributes(Map<String, Object> attributes) {
-        AttributesBuilder attributesBuilder = Attributes.builder();
-        attributes.forEach((key, value) -> {
-            if (value instanceof Boolean) {
-                attributesBuilder.put(key, (boolean) value);
-            } else if (value instanceof String) {
-                attributesBuilder.put(key, String.valueOf(value));
-            } else if (value instanceof Double) {
-                attributesBuilder.put(key, (Double) value);
-            } else if (value instanceof Long) {
-                attributesBuilder.put(key, (Long) value);
-            } else if (value instanceof String[]) {
-                attributesBuilder.put(key, (String[]) value);
-            } else if (value instanceof long[]) {
-                attributesBuilder.put(key, (long[]) value);
-            } else if (value instanceof double[]) {
-                attributesBuilder.put(key, (double[]) value);
-            } else if (value instanceof boolean[]) {
-                attributesBuilder.put(key, (boolean[]) value);
-            } else {
-                LOGGER.warning("Could not populate attribute with key '{}', type is not supported.");
-            }
-        });
-        return attributesBuilder.build();
     }
 
     /**

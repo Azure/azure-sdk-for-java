@@ -59,16 +59,20 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String X_MS_REQUEST_ID_2 = "response id 2";
     private static final int RESPONSE_STATUS_CODE = 201;
     private InMemorySpanExporter exporter;
+    private SdkTracerProvider tracerProvider;
     private Tracer tracer;
+    private com.azure.core.util.tracing.Tracer azTracer;
     private static final String SPAN_NAME = "foo";
 
     @BeforeEach
     public void setUp(TestInfo testInfo) {
         exporter = InMemorySpanExporter.create();
-        SdkTracerProvider otelProvider = SdkTracerProvider.builder()
+        tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(otelProvider).build().getTracer(testInfo.getDisplayName());
+        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions()
+            .setProvider(tracerProvider));
+        tracer = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build().getTracer(testInfo.getDisplayName());
     }
 
     @Test
@@ -94,7 +98,7 @@ public class OpenTelemetryHttpPolicyTests {
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://httpbin.org/hello?there#otel");
         request.setHeader("User-Agent", "user-agent");
-        HttpResponse response =  createHttpPipeline(tracer).send(request, tracingContext).block();
+        HttpResponse response =  createHttpPipeline(azTracer).send(request, tracingContext).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -147,15 +151,15 @@ public class OpenTelemetryHttpPolicyTests {
             })
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build().getTracer("presampling-test");
+        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions()
+            .setProvider(providerWithSampler));
 
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer).send(request).block();
+        HttpResponse response =  createHttpPipeline(azTracer).send(request).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
-        // rest proxy span is not exported as global otel is not configured
         assertEquals(0, exportedSpans.size());
         assertTrue(samplerCalled.get());
     }
@@ -163,7 +167,7 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void clientRequestIdIsStamped() {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block();
+        HttpResponse response =  createHttpPipeline(azTracer, new RequestIdPolicy()).send(request).block();
 
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -192,7 +196,8 @@ public class OpenTelemetryHttpPolicyTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
-            .policies(new OpenTelemetryHttpPolicy(tracer))
+            .policies(new OpenTelemetryHttpPolicy())
+            .tracer(azTracer)
             .httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
 
@@ -256,11 +261,12 @@ public class OpenTelemetryHttpPolicyTests {
         return attributes;
     }
 
-    private static HttpPipeline createHttpPipeline(Tracer tracer, HttpPipelinePolicy... beforeRetryPolicies) {
+    private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer, HttpPipelinePolicy... beforeRetryPolicies) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .policies(beforeRetryPolicies)
-            .policies(new OpenTelemetryHttpPolicy(tracer))
+            .policies(new OpenTelemetryHttpPolicy())
             .httpClient(new SimpleMockHttpClient())
+            .tracer(azTracer)
             .build();
         return httpPipeline;
     }

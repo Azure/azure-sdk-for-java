@@ -431,4 +431,12 @@ public interface Tracer {
     default AutoCloseable makeSpanCurrent(Context context) {
         return TracerProxy.NOOP_AUTOCLOSEABLE;
     }
+
+    /**
+     * Checks if tracer is enabled.
+     * @return true if tracer is enabled, false otherwise.
+     */
+    default boolean isEnabled() {
+        return true;
+    }
 }

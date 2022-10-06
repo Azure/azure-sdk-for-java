@@ -6,9 +6,9 @@ package com.azure.core.util;
 /**
  * Metrics configuration options for clients.
  */
-public class MetricsOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
-        .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
+public class TracingOptions {
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("tracing.disabled")
+        .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
         .shared(true)
         .defaultValue(false)
         .build();
@@ -16,25 +16,27 @@ public class MetricsOptions {
     private boolean isEnabled;
 
     /**
-     * Creates new instance of {@link MetricsOptions}
+     * Creates new instance of {@link TracingOptions}
      */
-    public MetricsOptions() {
+    public TracingOptions() {
         isEnabled = !Configuration.getGlobalConfiguration().get(IS_DISABLED_PROPERTY);
     }
+
     /**
-     * Loads tracing options from the configuration.
+     * Loads metrics options from the configuration.
+     *
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
      * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
-     * @return A {@link MetricsOptions} reflecting a metrics loaded from configuration, if no options are found, default
-     * (enabled) options will be returned.
+     * @return A {@link TracingOptions} reflecting a tracing options loaded from the configuration,
+     * if no tracing options are found, default (enabled) tracing options will be returned.
      */
-    public static MetricsOptions fromConfiguration(Configuration configuration) {
+    public static TracingOptions fromConfiguration(Configuration configuration) {
         if (configuration.contains(IS_DISABLED_PROPERTY)) {
-            return new MetricsOptions().setEnabled(!configuration.get(IS_DISABLED_PROPERTY));
+            return new TracingOptions().setEnabled(!configuration.get(IS_DISABLED_PROPERTY));
         }
 
-        return new MetricsOptions();
+        return new TracingOptions();
     }
 
     /**
@@ -49,9 +51,9 @@ public class MetricsOptions {
      * Enables or disables metrics. By default, metrics are enabled if and only if metrics implementation is detected.
      *
      * @param enabled pass {@code true} to enable metrics.
-     * @return the updated {@code MetricsOptions} object.
+     * @return the updated {@code TracingOptions} object.
      */
-    public MetricsOptions setEnabled(boolean enabled) {
+    public TracingOptions setEnabled(boolean enabled) {
         this.isEnabled = enabled;
         return this;
     }

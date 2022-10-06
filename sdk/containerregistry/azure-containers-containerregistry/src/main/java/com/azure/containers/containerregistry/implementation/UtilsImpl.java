@@ -36,9 +36,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
@@ -147,6 +149,8 @@ public final class UtilsImpl {
             audience = ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
             audience,
@@ -155,6 +159,7 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions))
                 .build(),
             JacksonAdapter.createDefaultSerializerAdapter());
 

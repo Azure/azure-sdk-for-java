@@ -19,7 +19,6 @@ import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -88,9 +87,8 @@ public class OpenTelemetryTracerTest {
         SPAN_ID_OFFSET + SPAN_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
     private OpenTelemetryTracer openTelemetryTracer;
     private static final SpanContext TEST_CONTEXT = SpanContext.create("0123456789abcdef0123456789abcdef", "0123456789abcdef", TraceFlags.getSampled(), TraceState.getDefault());
-
-    private InMemorySpanExporter testExporter;
     private Tracer tracer;
+    private InMemorySpanExporter testExporter;
     private SpanProcessor spanProcessor;
     private Context tracingContext;
     private Span parentSpan;
@@ -107,12 +105,11 @@ public class OpenTelemetryTracerTest {
     public void setUp() {
         testExporter = InMemorySpanExporter.create();
         spanProcessor = SimpleSpanProcessor.create(testExporter);
-        tracer = OpenTelemetrySdk.builder()
-            .setTracerProvider(SdkTracerProvider.builder()
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
                 .addSpanProcessor(spanProcessor)
-                .build())
-            .build().getTracer("TracerSdkTest");
+                .build();
 
+        tracer = tracerProvider.get("test");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(METHOD_NAME)
             .setSpanKind(SpanKind.SERVER)
@@ -120,7 +117,8 @@ public class OpenTelemetryTracerTest {
 
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
-        openTelemetryTracer = new OpenTelemetryTracer(tracer);
+        openTelemetryTracer = new OpenTelemetryTracer("test", null, null,
+            new OpenTelemetryTracingOptions().setProvider(tracerProvider));
     }
 
     @AfterEach
@@ -850,6 +848,7 @@ public class OpenTelemetryTracerTest {
         final Attributes expectedAttributes = Attributes.builder()
             .put("S", "foo")
             .put("L", 10L)
+            .put("I", 1)
             .put("D", 0.1d)
             .put("B", true)
             .put("S[]",  new String[]{"foo"})

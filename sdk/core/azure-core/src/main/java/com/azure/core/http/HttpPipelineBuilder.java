@@ -6,6 +6,9 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +48,7 @@ public class HttpPipelineBuilder {
     private HttpClient httpClient;
     private List<HttpPipelinePolicy> pipelinePolicies;
     private ClientOptions clientOptions;
+    private Tracer tracer;
 
     /**
      * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
@@ -73,7 +77,12 @@ public class HttpPipelineBuilder {
             client = HttpClient.createDefault();
         }
 
-        return new HttpPipeline(client, policies);
+        if (tracer == null) {
+            TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+            tracer = TracerProvider.getDefaultProvider().createTracer("azure-core", null, null, tracingOptions);
+        }
+
+        return new HttpPipeline(client, policies, tracer);
     }
 
     /**
@@ -111,6 +120,17 @@ public class HttpPipelineBuilder {
      */
     public HttpPipelineBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Sets the Tracer to trace logical and HTTP calls.
+     *
+     * @param tracer The Tracer instance.
+     * @return The updated HttpPipelineBuilder object.
+     */
+    public HttpPipelineBuilder tracer(Tracer tracer) {
+        this.tracer = tracer;
         return this;
     }
 }
