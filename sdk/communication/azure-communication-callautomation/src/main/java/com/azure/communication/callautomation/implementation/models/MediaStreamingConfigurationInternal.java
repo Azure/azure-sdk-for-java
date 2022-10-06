@@ -17,7 +17,7 @@ public final class MediaStreamingConfigurationInternal {
     private String transportUrl;
 
     /*
-     * The type of tranport to be used for media streaming, eg. Websocket
+     * The type of transport to be used for media streaming, eg. Websocket
      */
     @JsonProperty(value = "transportType", required = true)
     private MediaStreamingTransportTypeInternal transportType;
@@ -55,7 +55,7 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Get the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
+     * Get the transportType property: The type of transport to be used for media streaming, eg. Websocket.
      *
      * @return the transportType value.
      */
@@ -64,7 +64,7 @@ public final class MediaStreamingConfigurationInternal {
     }
 
     /**
-     * Set the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
+     * Set the transportType property: The type of transport to be used for media streaming, eg. Websocket.
      *
      * @param transportType the transportType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.

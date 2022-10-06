@@ -28,7 +28,7 @@ import com.azure.communication.callautomation.implementation.models.CallRejectRe
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingConfiguration;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -116,7 +116,7 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
-            return serverCallingInternal.createCallWithResponseAsync(request, context)
+            return serverCallingInternal.createCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -159,19 +159,19 @@ public final class CallAutomationAsyncClient {
     }
 
     private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingConfiguration mediaStreamingConfiguration
+        MediaStreamingOptions mediaStreamingOptions
     ) {
         return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingConfiguration.getTransportUrl())
+            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
             .setAudioChannelType(
                 MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingConfiguration.getAudioChannelType().toString()))
+                    mediaStreamingOptions.getAudioChannelType().toString()))
             .setContentType(
                 MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingConfiguration.getContentType().toString()))
+                    mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
                 MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingConfiguration.getTransportType().toString()));
+                    mediaStreamingOptions.getTransportType().toString()));
     }
 
     /**
@@ -193,19 +193,19 @@ public final class CallAutomationAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUrl The call back url.
-     * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
+     * @param mediaStreamingOptions The MediaStreamingConfiguration. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
-                                                                   String callbackUrl, MediaStreamingConfiguration mediaStreamingConfiguration) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context));
+                                                                   String callbackUrl, MediaStreamingOptions mediaStreamingOptions) {
+        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingOptions, context));
     }
 
     Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUrl,
-                                                                    MediaStreamingConfiguration mediaStreamingConfiguration,
+                                                                    MediaStreamingOptions mediaStreamingOptions,
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
@@ -214,15 +214,15 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setCallbackUri(callbackUrl);
 
-            if (mediaStreamingConfiguration != null) {
+            if (mediaStreamingOptions != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(mediaStreamingConfiguration);
+                    getMediaStreamingConfigurationInternal(mediaStreamingOptions);
 
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
 
-            return serverCallingInternal.answerCallWithResponseAsync(request, context)
+            return serverCallingInternal.answerCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -276,7 +276,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setTarget(CommunicationIdentifierConverter.convert(target));
 
-            return serverCallingInternal.redirectCallWithResponseAsync(request, context)
+            return serverCallingInternal.redirectCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -320,7 +320,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
 
-            return serverCallingInternal.rejectCallWithResponseAsync(request, context)
+            return serverCallingInternal.rejectCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

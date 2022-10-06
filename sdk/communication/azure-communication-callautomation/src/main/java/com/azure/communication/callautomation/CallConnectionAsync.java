@@ -136,7 +136,7 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, null, null, context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -259,7 +259,7 @@ public class CallConnectionAsync {
                 .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
@@ -311,7 +311,7 @@ public class CallConnectionAsync {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -323,15 +323,13 @@ public class CallConnectionAsync {
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param operationContext The operation context. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantsResult> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                             String operationContext) {
-        return removeParticipantsWithResponse(participantsToRemove, operationContext).flatMap(FluxUtil::toMono);
+    public Mono<RemoveParticipantsResult> removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
+        return removeParticipantsWithResponse(participantsToRemove, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -360,7 +358,7 @@ public class CallConnectionAsync {
                 .setParticipantsToRemove(participantModels)
                 .setOperationContext(operationContext);
 
-            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {

@@ -40,10 +40,10 @@
   ],
   "reactor_2022":
   [
-    { "io.projectreactor.netty:reactor-netty": "1.1.0-M5" },
-    { "io.projectreactor.netty:reactor-netty-http": "1.1.0-M5" },
-    { "io.projectreactor:reactor-core": "3.5.0-M5" },
-    { "io.projectreactor:reactor-test": "3.5.0-M5" }
+    { "io.projectreactor.netty:reactor-netty": "1.1.0-M6" },
+    { "io.projectreactor.netty:reactor-netty-http": "1.1.0-M6" },
+    { "io.projectreactor:reactor-core": "3.5.0-M6" },
+    { "io.projectreactor:reactor-test": "3.5.0-M6" }
   ],
   "reactor_2020":
   [

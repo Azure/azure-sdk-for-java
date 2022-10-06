@@ -25,8 +25,7 @@ public final class MonitoredResourceInner {
     private SendingMetricsStatus sendingMetrics;
 
     /*
-     * Reason for why the resource is sending metrics (or why it is not
-     * sending).
+     * Reason for why the resource is sending metrics (or why it is not sending).
      */
     @JsonProperty(value = "reasonForMetricsStatus")
     private String reasonForMetricsStatus;

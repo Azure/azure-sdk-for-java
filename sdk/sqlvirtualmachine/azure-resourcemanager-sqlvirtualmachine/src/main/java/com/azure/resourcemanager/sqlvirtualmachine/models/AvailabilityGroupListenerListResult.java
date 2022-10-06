@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of availability group listeners. */
 @Immutable
 public final class AvailabilityGroupListenerListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenerListResult.class);
-
     /*
      * Array of results.
      */

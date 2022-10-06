@@ -169,6 +169,15 @@ public final class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
+     * Gets the identifier of the instance of {@link ServiceBusSenderClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSenderClient}.
+     */
+    public String getIdentifier() {
+        return asyncClient.getIdentifier();
+    }
+
+    /**
      * Sends a message to a Service Bus queue or topic.
      *
      * @param message Message to be sent to Service Bus queue or topic.

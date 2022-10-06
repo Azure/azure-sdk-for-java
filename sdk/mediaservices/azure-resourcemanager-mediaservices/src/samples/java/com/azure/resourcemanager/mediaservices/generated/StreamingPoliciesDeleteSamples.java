@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StreamingPolicies Delete. */
 public final class StreamingPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-policies-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-policies-delete.json
      */
     /**
      * Sample code: Delete a Streaming Policy.

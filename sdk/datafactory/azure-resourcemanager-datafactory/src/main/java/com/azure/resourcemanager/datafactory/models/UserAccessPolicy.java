@@ -11,36 +11,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserAccessPolicy {
     /*
-     * The string with permissions for Data Plane access. Currently only 'r' is
-     * supported which grants read only access.
+     * The string with permissions for Data Plane access. Currently only 'r' is supported which grants read only
+     * access.
      */
     @JsonProperty(value = "permissions")
     private String permissions;
 
     /*
-     * The resource path to get access relative to factory. Currently only
-     * empty string is supported which corresponds to the factory resource.
+     * The resource path to get access relative to factory. Currently only empty string is supported which corresponds
+     * to the factory resource.
      */
     @JsonProperty(value = "accessResourcePath")
     private String accessResourcePath;
 
     /*
-     * The name of the profile. Currently only the default is supported. The
-     * default value is DefaultProfile.
+     * The name of the profile. Currently only the default is supported. The default value is DefaultProfile.
      */
     @JsonProperty(value = "profileName")
     private String profileName;
 
     /*
-     * Start time for the token. If not specified the current time will be
-     * used.
+     * Start time for the token. If not specified the current time will be used.
      */
     @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
-     * Expiration time for the token. Maximum duration for the token is eight
-     * hours and by default the token will expire in eight hours.
+     * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will
+     * expire in eight hours.
      */
     @JsonProperty(value = "expireTime")
     private String expireTime;

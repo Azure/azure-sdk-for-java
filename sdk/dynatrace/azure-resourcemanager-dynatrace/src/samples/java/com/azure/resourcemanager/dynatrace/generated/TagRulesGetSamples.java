@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TagRules Get. */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/TagRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class TagRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/TagRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MaximumSet_Gen.

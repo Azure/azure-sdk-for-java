@@ -15,10 +15,9 @@ import com.azure.resourcemanager.security.fluent.models.AutomationValidationStat
 import com.azure.resourcemanager.security.models.Automation;
 import com.azure.resourcemanager.security.models.AutomationValidationStatus;
 import com.azure.resourcemanager.security.models.Automations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AutomationsImpl implements Automations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AutomationsImpl.class);
 
     private final AutomationsClient innerClient;
 
@@ -111,7 +110,7 @@ public final class AutomationsImpl implements Automations {
     public Automation getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class AutomationsImpl implements Automations {
         }
         String automationName = Utils.getValueFromIdByName(id, "automations");
         if (automationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));
@@ -130,7 +129,7 @@ public final class AutomationsImpl implements Automations {
     public Response<Automation> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class AutomationsImpl implements Automations {
         }
         String automationName = Utils.getValueFromIdByName(id, "automations");
         if (automationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));
@@ -149,7 +148,7 @@ public final class AutomationsImpl implements Automations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,18 +156,18 @@ public final class AutomationsImpl implements Automations {
         }
         String automationName = Utils.getValueFromIdByName(id, "automations");
         if (automationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class AutomationsImpl implements Automations {
         }
         String automationName = Utils.getValueFromIdByName(id, "automations");
         if (automationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'automations'.", id)));

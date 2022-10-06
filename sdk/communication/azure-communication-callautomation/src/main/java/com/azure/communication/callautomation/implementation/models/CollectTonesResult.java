@@ -4,36 +4,25 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CollectTonesResult model. */
-@Fluent
+@Immutable
 public final class CollectTonesResult {
     /*
      * The tones property.
      */
-    @JsonProperty(value = "tones")
-    private List<String> tones;
+    @JsonProperty(value = "tones", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DtmfTone> tones;
 
     /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
      */
-    public List<String> getTones() {
+    public List<DtmfTone> getTones() {
         return this.tones;
-    }
-
-    /**
-     * Set the tones property: The tones property.
-     *
-     * @param tones the tones value to set.
-     * @return the CollectTonesResult object itself.
-     */
-    public CollectTonesResult setTones(List<String> tones) {
-        this.tones = tones;
-        return this;
     }
 }

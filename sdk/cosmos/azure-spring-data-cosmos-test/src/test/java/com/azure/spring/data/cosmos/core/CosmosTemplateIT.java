@@ -55,7 +55,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +81,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -447,195 +445,6 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-    }
-
-    @Test
-    public void testFindAllPageableMultiPagesMultiPartition() {
-        cosmosTemplate.insert(TEST_PERSON_2,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
-        cosmosTemplate.insert(TEST_PERSON_3,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
-        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
-
-        for (int i=4; i<=10; i++) {
-            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
-                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-            insertPerson(temp);
-            expected.add(temp);
-        }
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-
-        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 100, null);
-        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
-
-        final List<Person> resultPage1 = TestUtils.toList(page1);
-        assertThat(resultPage1.size()).isEqualTo(expected.size());
-        assertThat(resultPage1).containsAll(expected);
-        PageTestUtils.validateLastPage(page1, 100);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-    }
-
-    @Test
-    public void testFindAllPageableMultiPagesMultiPartition2() {
-        cosmosTemplate.insert(TEST_PERSON_2,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
-        cosmosTemplate.insert(TEST_PERSON_3,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
-        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
-
-        for (int i=4; i<=10; i++) {
-            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
-                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-            insertPerson(temp);
-            expected.add(temp);
-        }
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-
-        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 7, null);
-        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
-
-        final List<Person> resultPage1 = TestUtils.toList(page1);
-        assertThat(resultPage1.size()).isEqualTo(7);
-        PageTestUtils.validateNonLastPage(page1, 7);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
-
-        final List<Person> resultPage2 = TestUtils.toList(page2);
-        assertThat(resultPage2.size()).isEqualTo(3);
-        PageTestUtils.validateLastPage(page2, 7);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final List<Person> allResults = new ArrayList<>();
-        allResults.addAll(resultPage1);
-        allResults.addAll(resultPage2);
-        assertThat(allResults).containsAll(expected);
-    }
-
-    @Test
-    public void testFindAllPageableMultiPagesMultiPartition3() {
-        cosmosTemplate.insert(TEST_PERSON_2,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
-        cosmosTemplate.insert(TEST_PERSON_3,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
-        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
-
-        for (int i=4; i<=10; i++) {
-            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
-                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-            insertPerson(temp);
-            expected.add(temp);
-        }
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-
-        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 3, null);
-        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
-
-        final List<Person> resultPage1 = TestUtils.toList(page1);
-        assertThat(resultPage1.size()).isEqualTo(3);
-        PageTestUtils.validateNonLastPage(page1, 3);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
-
-        final List<Person> resultPage2 = TestUtils.toList(page2);
-        assertThat(resultPage2.size()).isEqualTo(3);
-        PageTestUtils.validateNonLastPage(page2, 3);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final Page<Person> page3 = cosmosTemplate.findAll(page2.nextPageable(), Person.class, containerName);
-
-        final List<Person> resultPage3 = TestUtils.toList(page3);
-        assertThat(resultPage3.size()).isEqualTo(3);
-        PageTestUtils.validateNonLastPage(page3, 3);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final Page<Person> page4 = cosmosTemplate.findAll(page3.nextPageable(), Person.class, containerName);
-
-        final List<Person> resultPage4 = TestUtils.toList(page4);
-        assertThat(resultPage4.size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(page4, 3);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final List<Person> allResults = new ArrayList<>();
-        allResults.addAll(resultPage1);
-        allResults.addAll(resultPage2);
-        allResults.addAll(resultPage3);
-        allResults.addAll(resultPage4);
-        assertThat(allResults).containsAll(expected);
-    }
-
-    @Test
-    public void testFindAllPageableMultiPagesMultiPartitionWithOffset() {
-        cosmosTemplate.insert(TEST_PERSON_2,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
-        cosmosTemplate.insert(TEST_PERSON_3,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
-        final List<Person> expected = Lists.newArrayList(TEST_PERSON_2, TEST_PERSON_3);
-
-        for (int i=4; i<=10; i++) {
-            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
-                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-            insertPerson(temp);
-            expected.add(temp);
-        }
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-
-        final CosmosPageRequest pageRequest = CosmosPageRequest.of(1, 0, 7,
-            null, Sort.by(ASC, "id"));
-        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
-
-        final List<Person> resultPage1 = TestUtils.toList(page1);
-        assertThat(resultPage1.size()).isEqualTo(7);
-        PageTestUtils.validateNonLastPage(page1, 7);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
-
-        final List<Person> resultPage2 = TestUtils.toList(page2);
-        assertThat(resultPage2.size()).isEqualTo(2);
-        PageTestUtils.validateLastPage(page2, 7);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-
-        final List<Person> allResults = new ArrayList<>();
-        allResults.addAll(resultPage1);
-        allResults.addAll(resultPage2);
-        assertThat(allResults).containsAll(expected);
     }
 
     @Test
@@ -1113,6 +922,40 @@ public class CosmosTemplateIT {
         final long count = maxDegreeOfParallelismCosmosTemplate.count(query, containerName);
 
         assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
+    }
+
+    @Test
+    public void queryWithMaxBufferedItemCount() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .maxBufferedItemCount(500)
+            .build();
+        final CosmosTemplate maxBufferedItemCountCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = maxBufferedItemCountCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
+    }
+
+    @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final CosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = responseContinuationTokenLimitInKbCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
     }
 
     @Test

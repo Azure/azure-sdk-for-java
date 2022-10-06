@@ -68,8 +68,7 @@ public final class SubmissionMailEntityProperties extends EntityCommonProperties
     private String subject;
 
     /*
-     * The submission type for the given instance. This maps to Junk, Phish,
-     * Malware or NotJunk.
+     * The submission type for the given instance. This maps to Junk, Phish, Malware or NotJunk.
      */
     @JsonProperty(value = "reportType", access = JsonProperty.Access.WRITE_ONLY)
     private String reportType;

@@ -9,6 +9,5 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class CallDisconnectedEvent extends CallAutomationEventBase {
     private CallDisconnectedEvent() {
-        super();
     }
 }

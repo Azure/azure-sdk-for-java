@@ -25,23 +25,26 @@ public class ExcelDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The sheet of excel file. Type: string (or Expression with resultType
-     * string).
+     * The sheet name of excel file. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.sheetName")
     private Object sheetName;
 
     /*
-     * The partial data of one sheet. Type: string (or Expression with
-     * resultType string).
+     * The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
+     */
+    @JsonProperty(value = "typeProperties.sheetIndex")
+    private Object sheetIndex;
+
+    /*
+     * The partial data of one sheet. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.range")
     private Object range;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "typeProperties.firstRowAsHeader")
@@ -54,8 +57,7 @@ public class ExcelDataset extends Dataset {
     private DatasetCompression compression;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;
@@ -81,7 +83,7 @@ public class ExcelDataset extends Dataset {
     }
 
     /**
-     * Get the sheetName property: The sheet of excel file. Type: string (or Expression with resultType string).
+     * Get the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
      *
      * @return the sheetName value.
      */
@@ -90,13 +92,35 @@ public class ExcelDataset extends Dataset {
     }
 
     /**
-     * Set the sheetName property: The sheet of excel file. Type: string (or Expression with resultType string).
+     * Set the sheetName property: The sheet name of excel file. Type: string (or Expression with resultType string).
      *
      * @param sheetName the sheetName value to set.
      * @return the ExcelDataset object itself.
      */
     public ExcelDataset setSheetName(Object sheetName) {
         this.sheetName = sheetName;
+        return this;
+    }
+
+    /**
+     * Get the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
+     * with resultType integer).
+     *
+     * @return the sheetIndex value.
+     */
+    public Object getSheetIndex() {
+        return this.sheetIndex;
+    }
+
+    /**
+     * Set the sheetIndex property: The sheet index of excel file and default value is 0. Type: integer (or Expression
+     * with resultType integer).
+     *
+     * @param sheetIndex the sheetIndex value to set.
+     * @return the ExcelDataset object itself.
+     */
+    public ExcelDataset setSheetIndex(Object sheetIndex) {
+        this.sheetIndex = sheetIndex;
         return this;
     }
 

@@ -21,22 +21,19 @@ public final class Filters {
     private Deinterlace deinterlace;
 
     /*
-     * The rotation, if any, to be applied to the input video, before it is
-     * encoded. Default is Auto
+     * The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto
      */
     @JsonProperty(value = "rotation")
     private Rotation rotation;
 
     /*
-     * The parameters for the rectangular window with which to crop the input
-     * video.
+     * The parameters for the rectangular window with which to crop the input video.
      */
     @JsonProperty(value = "crop")
     private Rectangle crop;
 
     /*
-     * The properties of overlays to be applied to the input video. These could
-     * be audio, image or video overlays.
+     * The properties of overlays to be applied to the input video. These could be audio, image or video overlays.
      */
     @JsonProperty(value = "overlays")
     private List<Overlay> overlays;

@@ -32,6 +32,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallConnections. */
@@ -86,6 +87,8 @@ public final class CallConnectionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:transferToParticipant")
@@ -95,6 +98,8 @@ public final class CallConnectionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") TransferToParticipantRequestInternal transferToParticipantRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -116,6 +121,8 @@ public final class CallConnectionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") AddParticipantsRequestInternal addParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -127,6 +134,8 @@ public final class CallConnectionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") RemoveParticipantsRequestInternal removeParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -350,23 +359,45 @@ public final class CallConnectionsImpl {
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateCallWithResponseAsync(String callConnectionId) {
+    public Mono<Response<Void>> terminateCallWithResponseAsync(
+            String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent) {
         return FluxUtil.withContext(
                 context ->
                         service.terminateCall(
-                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
+                                context));
     }
 
     /**
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -374,28 +405,53 @@ public final class CallConnectionsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateCallWithResponseAsync(String callConnectionId, Context context) {
-        return service.terminateCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context);
+    public Mono<Response<Void>> terminateCallWithResponseAsync(
+            String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent, Context context) {
+        return service.terminateCall(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                context);
     }
 
     /**
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateCallAsync(String callConnectionId) {
-        return terminateCallWithResponseAsync(callConnectionId).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> terminateCallAsync(
+            String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent) {
+        return terminateCallWithResponseAsync(callConnectionId, repeatabilityRequestID, repeatabilityFirstSent)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -403,27 +459,45 @@ public final class CallConnectionsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateCallAsync(String callConnectionId, Context context) {
-        return terminateCallWithResponseAsync(callConnectionId, context).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> terminateCallAsync(
+            String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent, Context context) {
+        return terminateCallWithResponseAsync(callConnectionId, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateCall(String callConnectionId) {
-        terminateCallAsync(callConnectionId).block();
+    public void terminateCall(String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent) {
+        terminateCallAsync(callConnectionId, repeatabilityRequestID, repeatabilityFirstSent).block();
     }
 
     /**
      * Terminate a call using CallConnectionId.
      *
      * @param callConnectionId The terminate call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -431,8 +505,10 @@ public final class CallConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateCallWithResponse(String callConnectionId, Context context) {
-        return terminateCallWithResponseAsync(callConnectionId, context).block();
+    public Response<Void> terminateCallWithResponse(
+            String callConnectionId, UUID repeatabilityRequestID, String repeatabilityFirstSent, Context context) {
+        return terminateCallWithResponseAsync(callConnectionId, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
     }
 
     /**
@@ -440,6 +516,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -447,7 +531,10 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
+            String callConnectionId,
+            TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -455,6 +542,8 @@ public final class CallConnectionsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
                                 transferToParticipantRequest,
                                 accept,
                                 context));
@@ -465,6 +554,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -475,12 +572,16 @@ public final class CallConnectionsImpl {
     public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(
             String callConnectionId,
             TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
             Context context) {
         final String accept = "application/json";
         return service.transferToParticipant(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
                 transferToParticipantRequest,
                 accept,
                 context);
@@ -491,6 +592,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -498,8 +607,12 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransferCallResponseInternal> transferToParticipantAsync(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
-        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest)
+            String callConnectionId,
+            TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return transferToParticipantWithResponseAsync(
+                        callConnectionId, transferToParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<TransferCallResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -515,6 +628,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -525,8 +646,15 @@ public final class CallConnectionsImpl {
     public Mono<TransferCallResponseInternal> transferToParticipantAsync(
             String callConnectionId,
             TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
             Context context) {
-        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context)
+        return transferToParticipantWithResponseAsync(
+                        callConnectionId,
+                        transferToParticipantRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
                 .flatMap(
                         (Response<TransferCallResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -542,6 +670,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -549,8 +685,13 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransferCallResponseInternal transferToParticipant(
-            String callConnectionId, TransferToParticipantRequestInternal transferToParticipantRequest) {
-        return transferToParticipantAsync(callConnectionId, transferToParticipantRequest).block();
+            String callConnectionId,
+            TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return transferToParticipantAsync(
+                        callConnectionId, transferToParticipantRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
     }
 
     /**
@@ -558,6 +699,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param transferToParticipantRequest The transfer to participant request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -568,8 +717,16 @@ public final class CallConnectionsImpl {
     public Response<TransferCallResponseInternal> transferToParticipantWithResponse(
             String callConnectionId,
             TransferToParticipantRequestInternal transferToParticipantRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
             Context context) {
-        return transferToParticipantWithResponseAsync(callConnectionId, transferToParticipantRequest, context).block();
+        return transferToParticipantWithResponseAsync(
+                        callConnectionId,
+                        transferToParticipantRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
     }
 
     /**
@@ -692,6 +849,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -699,7 +864,10 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -707,6 +875,8 @@ public final class CallConnectionsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
                                 addParticipantsRequest,
                                 accept,
                                 context));
@@ -717,6 +887,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -725,12 +903,18 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantsResponseInternal>> addParticipantWithResponseAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
         final String accept = "application/json";
         return service.addParticipant(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
                 addParticipantsRequest,
                 accept,
                 context);
@@ -741,6 +925,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,8 +940,12 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantsResponseInternal> addParticipantAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
-        return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest)
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return addParticipantWithResponseAsync(
+                        callConnectionId, addParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<AddParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -765,6 +961,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -773,8 +977,17 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantsResponseInternal> addParticipantAsync(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
-        return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest, context)
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return addParticipantWithResponseAsync(
+                        callConnectionId,
+                        addParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
                 .flatMap(
                         (Response<AddParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -790,6 +1003,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -797,8 +1018,13 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddParticipantsResponseInternal addParticipant(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest) {
-        return addParticipantAsync(callConnectionId, addParticipantsRequest).block();
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return addParticipantAsync(
+                        callConnectionId, addParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
     }
 
     /**
@@ -806,6 +1032,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantsRequest The add participants request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -814,8 +1048,18 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantsResponseInternal> addParticipantWithResponse(
-            String callConnectionId, AddParticipantsRequestInternal addParticipantsRequest, Context context) {
-        return addParticipantWithResponseAsync(callConnectionId, addParticipantsRequest, context).block();
+            String callConnectionId,
+            AddParticipantsRequestInternal addParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return addParticipantWithResponseAsync(
+                        callConnectionId,
+                        addParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
     }
 
     /**
@@ -823,6 +1067,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -830,7 +1082,10 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantsResponseInternal>> removeParticipantsWithResponseAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -838,6 +1093,8 @@ public final class CallConnectionsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
                                 removeParticipantsRequest,
                                 accept,
                                 context));
@@ -848,6 +1105,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -856,12 +1121,18 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantsResponseInternal>> removeParticipantsWithResponseAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
         final String accept = "application/json";
         return service.removeParticipants(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
                 removeParticipantsRequest,
                 accept,
                 context);
@@ -872,6 +1143,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -879,8 +1158,12 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
-        return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest)
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return removeParticipantsWithResponseAsync(
+                        callConnectionId, removeParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<RemoveParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -896,6 +1179,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -904,8 +1195,17 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantsResponseInternal> removeParticipantsAsync(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
-        return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest, context)
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return removeParticipantsWithResponseAsync(
+                        callConnectionId,
+                        removeParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
                 .flatMap(
                         (Response<RemoveParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -921,6 +1221,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -928,8 +1236,13 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveParticipantsResponseInternal removeParticipants(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest) {
-        return removeParticipantsAsync(callConnectionId, removeParticipantsRequest).block();
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return removeParticipantsAsync(
+                        callConnectionId, removeParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
     }
 
     /**
@@ -937,6 +1250,14 @@ public final class CallConnectionsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -945,8 +1266,18 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveParticipantsResponseInternal> removeParticipantsWithResponse(
-            String callConnectionId, RemoveParticipantsRequestInternal removeParticipantsRequest, Context context) {
-        return removeParticipantsWithResponseAsync(callConnectionId, removeParticipantsRequest, context).block();
+            String callConnectionId,
+            RemoveParticipantsRequestInternal removeParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return removeParticipantsWithResponseAsync(
+                        callConnectionId,
+                        removeParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
     }
 
     /**
