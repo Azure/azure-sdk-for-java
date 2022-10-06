@@ -1,6 +1,6 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (2022-10-06)
 
 - Added Geo-Replication support, only supported using endpoints.
 - Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables listing of multiple endpoints. See MSDocs or README for more details.

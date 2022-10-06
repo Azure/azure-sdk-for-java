@@ -1,14 +1,10 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (2022-10-06)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Updated support spring support for beta.
+- Geo-replication beta
+- Dynamic Feature beta
 
 ## 2.9.0 (2022-09-22)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
