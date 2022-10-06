@@ -371,6 +371,7 @@ com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-agrifood;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-devhub;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-securitydevops;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 

@@ -145,6 +145,7 @@
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
     <module>sdk/security</module>
+    <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
