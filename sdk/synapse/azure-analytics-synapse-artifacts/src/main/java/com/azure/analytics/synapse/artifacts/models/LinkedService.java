@@ -74,6 +74,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SapCloudForCustomer", value = SapCloudForCustomerLinkedService.class),
     @JsonSubTypes.Type(name = "SapEcc", value = SapEccLinkedService.class),
     @JsonSubTypes.Type(name = "SapOpenHub", value = SapOpenHubLinkedService.class),
+    @JsonSubTypes.Type(name = "SapOdp", value = SapOdpLinkedService.class),
     @JsonSubTypes.Type(name = "RestService", value = RestServiceLinkedService.class),
     @JsonSubTypes.Type(name = "TeamDesk", value = TeamDeskLinkedService.class),
     @JsonSubTypes.Type(name = "Quickbase", value = QuickbaseLinkedService.class),
@@ -83,6 +84,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AppFigures", value = AppFiguresLinkedService.class),
     @JsonSubTypes.Type(name = "Asana", value = AsanaLinkedService.class),
     @JsonSubTypes.Type(name = "Twilio", value = TwilioLinkedService.class),
+    @JsonSubTypes.Type(name = "GoogleSheets", value = GoogleSheetsLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonS3", value = AmazonS3LinkedService.class),
     @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
     @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
@@ -134,7 +136,8 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class)
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class)
 })
 @Fluent
 public class LinkedService {
@@ -163,9 +166,8 @@ public class LinkedService {
     private List<Object> annotations;
 
     /*
-     * The Azure Synapse nested object which contains the information and
-     * credential which can be used to connect with related store or compute
-     * resource.
+     * The Azure Synapse nested object which contains the information and credential which can be used to connect with
+     * related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

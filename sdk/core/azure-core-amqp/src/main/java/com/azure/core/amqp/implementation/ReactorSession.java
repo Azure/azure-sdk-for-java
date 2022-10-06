@@ -416,8 +416,9 @@ public class ReactorSession implements AmqpSession {
      */
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
         return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher(), retryOptions);
+            reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
     }
 
     /**
@@ -548,7 +549,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options, timeoutScheduler);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler, handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {

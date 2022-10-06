@@ -23,16 +23,14 @@ public final class SqlMISource extends TabularSource {
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a Azure SQL Managed Instance source.
-     * This cannot be used at the same time as SqlReaderQuery. Type: string (or
-     * Expression with resultType string).
+     * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as
+     * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -45,9 +43,8 @@ public final class SqlMISource extends TabularSource {
     private Object produceAdditionalTypes;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;

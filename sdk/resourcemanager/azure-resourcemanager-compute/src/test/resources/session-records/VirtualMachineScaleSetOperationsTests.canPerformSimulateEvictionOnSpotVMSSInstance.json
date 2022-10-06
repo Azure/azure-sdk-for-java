@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "044deffb-e644-4640-9ebd-24ece430ac02",
@@ -203,7 +203,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cc1447c7-8e74-4814-9dca-522eec3a157d"
@@ -231,7 +231,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4eadd540-c50d-4c76-b8be-ce22f9a52e0c",
@@ -261,7 +261,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0/simulateEviction?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0/simulateEviction?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "38c19433-c9e3-4fd0-8466-65e678a71d37",
@@ -286,7 +286,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2/simulateEviction?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2/simulateEviction?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "656cd0e1-a8ea-46c1-87f5-1df90d2b809f",
@@ -311,7 +311,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e58223fa-6122-4177-8130-a792bb5a073f",
@@ -341,7 +341,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0?$expand=instanceView&api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0?$expand=instanceView&api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ba6e61a0-d218-4fae-b111-78c665e4c371",
@@ -371,7 +371,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2?$expand=instanceView&api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2?$expand=instanceView&api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b15116db-6fa3-4b54-beba-37607311da23",
@@ -401,7 +401,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines?api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "df7f26fb-a4cb-4241-b8bf-e0dce01e6a8a",
@@ -431,7 +431,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0?$expand=instanceView&api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/0?$expand=instanceView&api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5111ab67-8aac-4920-92ed-3b976e6f1149",
@@ -461,7 +461,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2?$expand=instanceView&api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg96673/providers/Microsoft.Compute/virtualMachineScaleSets/vmss60513/virtualMachines/2?$expand=instanceView&api-version=2022-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fbbf7404-4ef5-4a5d-a5c0-7781b03cb1aa",

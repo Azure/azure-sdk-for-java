@@ -26,15 +26,13 @@ public final class ServiceNowLinkedServiceTypeProperties {
     private ServiceNowAuthenticationType authenticationType;
 
     /*
-     * The user name used to connect to the ServiceNow server for Basic and
-     * OAuth2 authentication.
+     * The user name used to connect to the ServiceNow server for Basic and OAuth2 authentication.
      */
     @JsonProperty(value = "username")
     private Object username;
 
     /*
-     * The password corresponding to the user name for Basic and OAuth2
-     * authentication.
+     * The password corresponding to the user name for Basic and OAuth2 authentication.
      */
     @JsonProperty(value = "password")
     private SecretBase password;
@@ -52,31 +50,27 @@ public final class ServiceNowLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

@@ -13,17 +13,15 @@ import java.util.List;
 @Fluent
 public final class CustomEventsTriggerTypeProperties {
     /*
-     * The event subject must begin with the pattern provided for trigger to
-     * fire. At least one of these must be provided: subjectBeginsWith,
-     * subjectEndsWith.
+     * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
+     * provided: subjectBeginsWith, subjectEndsWith.
      */
     @JsonProperty(value = "subjectBeginsWith")
     private String subjectBeginsWith;
 
     /*
-     * The event subject must end with the pattern provided for trigger to
-     * fire. At least one of these must be provided: subjectBeginsWith,
-     * subjectEndsWith.
+     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be
+     * provided: subjectBeginsWith, subjectEndsWith.
      */
     @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;

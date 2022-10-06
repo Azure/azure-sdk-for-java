@@ -121,7 +121,7 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-Options-Context -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * TrainingFileFilter trainingFileFilter = new TrainingFileFilter&#40;&#41;.setSubfoldersIncluded&#40;false&#41;.setPrefix&#40;&quot;Invoice&quot;&#41;;
@@ -141,7 +141,7 @@ public final class FormTrainingClient {
      *             System.out.printf&#40;&quot;Form Type: %s Field Text: %s Field Accuracy: %f%n&quot;,
      *                 key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-Options-Context -->
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
@@ -586,7 +586,7 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-Options-Context -->
      * <pre>
      * String labeledModelId1 = &quot;5f21ab8d-71a6-42d8-9856-ef5985c486a8&quot;;
      * String labeledModelId2 = &quot;d7b0904c-841f-46f9-a9f4-3f2273eef7c9&quot;;
@@ -608,7 +608,7 @@ public final class FormTrainingClient {
      *             System.out.printf&#40;&quot;Form type: %s Field Text: %s Field Accuracy: %f%n&quot;,
      *                 key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-Options-Context -->
      *
      * @param modelIds The list of models Ids to form the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when

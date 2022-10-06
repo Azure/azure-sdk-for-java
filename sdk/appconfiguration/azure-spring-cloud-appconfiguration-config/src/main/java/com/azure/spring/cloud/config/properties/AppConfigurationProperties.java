@@ -4,7 +4,9 @@ package com.azure.spring.cloud.config.properties;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
@@ -31,7 +33,7 @@ public final class AppConfigurationProperties {
      * Prefix for client configurations for connecting to configuration stores.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
-
+    
     /**
      * Separator for multiple labels.
      */
@@ -171,7 +173,8 @@ public final class AppConfigurationProperties {
     }
 
     /**
-     * Validates at least one store is configured for use and they are valid.
+     * Validates at least one store is configured for use, and they are valid.
+     * @throws IllegalArgumentException when duplicate endpoints are configured
      */
     @PostConstruct
     public void validateAndInit() {
@@ -179,13 +182,30 @@ public final class AppConfigurationProperties {
 
         this.stores.forEach(store -> {
             Assert.isTrue(
-                StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString()),
+                StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
+                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         });
 
-        int uniqueStoreSize = (int) this.stores.stream().map(ConfigStore::getEndpoint).distinct().count();
-        Assert.isTrue(this.stores.size() == uniqueStoreSize, "Duplicate store name exists.");
+        Map<String, Boolean> existingEndpoints = new HashMap<>();
+
+        for (ConfigStore store : this.stores) {
+
+            if (store.getEndpoints().size() > 0) {
+                for (String endpoint : store.getEndpoints()) {
+                    if (existingEndpoints.containsKey(endpoint)) {
+                        throw new IllegalArgumentException("Duplicate store name exists.");
+                    }
+                    existingEndpoints.put(endpoint, true);
+                }
+            } else if (StringUtils.hasText(store.getEndpoint())) {
+                if (existingEndpoints.containsKey(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate store name exists.");
+                }
+                existingEndpoints.put(store.getEndpoint(), true);
+            }
+        }
         if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
         }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The device registration key. */
 @Immutable
 public final class DeviceRegistrationKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceRegistrationKeyInner.class);
-
     /*
      * The registration key for the device.
      */
     @JsonProperty(value = "registrationKey", access = JsonProperty.Access.WRITE_ONLY)
     private String registrationKey;
+
+    /** Creates an instance of DeviceRegistrationKeyInner class. */
+    public DeviceRegistrationKeyInner() {
+    }
 
     /**
      * Get the registrationKey property: The registration key for the device.

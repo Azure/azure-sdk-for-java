@@ -114,6 +114,10 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NetworkFunctionInner innerModel() {
         return this.innerObject;
     }

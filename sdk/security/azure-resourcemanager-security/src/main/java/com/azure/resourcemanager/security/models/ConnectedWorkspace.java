@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an OMS workspace to which the solution is connected. */
 @Fluent
 public final class ConnectedWorkspace {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedWorkspace.class);
-
     /*
      * Azure resource ID of the connected OMS workspace
      */

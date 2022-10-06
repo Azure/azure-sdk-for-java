@@ -13,7 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VaultInner;
 /** An instance of this class provides access to all the operations defined in VaultsClient. */
 public interface VaultsClient {
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -26,7 +28,9 @@ public interface VaultsClient {
     PagedIterable<VaultInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
