@@ -505,7 +505,7 @@
         {
           "regex": true,
           "code": "java.annotation.added",
-          "new": "class com.azure.ai.formrecognizer.documentanalysis.models.DocumentField",
+          "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
           "justification": "Skip customized getters on class when serialization and deserialization."
         }
       ]
