@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkPlugin. */
+/** Network plugin used for building the Kubernetes network. */
 public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
     /** Static value azure for NetworkPlugin. */
     public static final NetworkPlugin AZURE = fromString("azure");

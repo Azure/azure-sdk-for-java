@@ -7,8 +7,8 @@ package com.azure.resourcemanager.storage.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.AccountImmutabilityPolicyState;
-import com.azure.resourcemanager.storage.models.AccountType;
 import com.azure.resourcemanager.storage.models.ActiveDirectoryProperties;
+import com.azure.resourcemanager.storage.models.ActiveDirectoryPropertiesAccountType;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.DefaultAction;
@@ -151,7 +151,7 @@ public final class StorageAccountsUpdateSamples {
                                     .withDomainSid("S-1-5-21-2400535526-2334094090-2402026252")
                                     .withAzureStorageSid("S-1-5-21-2400535526-2334094090-2402026252-0012")
                                     .withSamAccountName("sam12498")
-                                    .withAccountType(AccountType.USER))),
+                                    .withAccountType(ActiveDirectoryPropertiesAccountType.USER))),
                 Context.NONE);
     }
 

@@ -19,32 +19,28 @@ import java.util.Map;
 @Fluent
 public class HttpDataset extends Dataset {
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an
-     * HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.requestMethod")
     private Object requestMethod;
 
     /*
-     * The body for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The body for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.requestBody")
     private Object requestBody;
 
     /*
-     * The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1
+     * The headers for the HTTP Request. e.g. request-header-name-1:request-header-value-1
      * ...
-     * request-header-name-n:request-header-value-n Type: string (or Expression
-     * with resultType string).
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.additionalHeaders")
     private Object additionalHeaders;

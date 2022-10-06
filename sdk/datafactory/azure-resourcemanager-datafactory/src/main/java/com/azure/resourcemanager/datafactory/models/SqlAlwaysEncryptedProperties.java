@@ -12,23 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlAlwaysEncryptedProperties {
     /*
-     * Sql always encrypted AKV authentication type. Type: string (or
-     * Expression with resultType string).
+     * Sql always encrypted AKV authentication type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "alwaysEncryptedAkvAuthType", required = true)
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for
-     * Azure Key Vault authentication. Type: string (or Expression with
-     * resultType string).
+     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against Azure Key
-     * Vault.
+     * The key of the service principal used to authenticate against Azure Key Vault.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;

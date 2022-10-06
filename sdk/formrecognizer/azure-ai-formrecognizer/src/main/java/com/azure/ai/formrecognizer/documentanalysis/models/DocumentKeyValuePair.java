@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValuePairHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * An object representing a form field with distinct field label (key) and field value (may be empty).
  */
+@Immutable
 public final class DocumentKeyValuePair {
     /*
      * Field label of the key-value pair.
@@ -39,7 +41,7 @@ public final class DocumentKeyValuePair {
      * @param key the key value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    void setKey(DocumentKeyValueElement key) {
+    private void setKey(DocumentKeyValueElement key) {
         this.key = key;
     }
 
@@ -58,7 +60,7 @@ public final class DocumentKeyValuePair {
      * @param value the value value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    void setValue(DocumentKeyValueElement value) {
+    private void setValue(DocumentKeyValueElement value) {
         this.value = value;
     }
 
@@ -77,7 +79,7 @@ public final class DocumentKeyValuePair {
      * @param confidence the confidence value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

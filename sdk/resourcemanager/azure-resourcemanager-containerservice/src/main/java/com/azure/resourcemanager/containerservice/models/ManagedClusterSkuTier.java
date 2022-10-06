@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedClusterSkuTier. */
+/**
+ * The tier of a managed cluster SKU.
+ *
+ * <p>If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
+ * more details.
+ */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {
     /** Static value Paid for ManagedClusterSkuTier. */
     public static final ManagedClusterSkuTier PAID = fromString("Paid");

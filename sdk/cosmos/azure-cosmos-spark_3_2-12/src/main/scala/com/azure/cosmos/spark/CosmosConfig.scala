@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.Strings
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
@@ -48,6 +48,7 @@ private[spark] object CosmosConfigNames {
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
   val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
@@ -98,6 +99,9 @@ private[spark] object CosmosConfigNames {
     "spark.cosmos.serialization.inclusionMode"
   val SerializationDateTimeConversionMode =
     "spark.cosmos.serialization.dateTimeConversionMode"
+  val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
+  val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
+  val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -111,6 +115,7 @@ private[spark] object CosmosConfigNames {
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
+    AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
@@ -156,7 +161,10 @@ private[spark] object CosmosConfigNames {
     ThroughputControlGlobalControlRenewalIntervalInMS,
     ThroughputControlGlobalControlExpireIntervalInMS,
     SerializationInclusionMode,
-    SerializationDateTimeConversionMode
+    SerializationDateTimeConversionMode,
+    MetricsEnabledForSlf4j,
+    MetricsIntervalInSeconds,
+    MetricsAzureMonitorConnectionString
   )
 
   def validateConfigName(name: String): Unit = {
@@ -286,6 +294,13 @@ private object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Name")
 
+  private val AllowInvalidJsonWithDuplicateJsonProperties =
+    CosmosConfigEntry[Boolean](key = CosmosConfigNames.AllowInvalidJsonWithDuplicateJsonProperties,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = allowDuplicateJsonProperties => allowDuplicateJsonProperties.toBoolean,
+    helpMessage = "Flag indicating whether invalid json (with duplicate properties) should be allowed. Once set in any "
+    + " config to true it allows duplicate properties for all read operations during the lifecycle of the process.")
 
   private val PreferredRegionRegex = "^[a-z0-9\\d]+(?: [a-z0-9\\d]+)*$".r
   private val PreferredRegionsList = CosmosConfigEntry[Array[String]](key = CosmosConfigNames.PreferredRegionsList,
@@ -343,6 +358,11 @@ private object CosmosAccountConfig {
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
+    val allowDuplicateJsonPropertiesOverride = CosmosConfigEntry.parse(cfg, AllowInvalidJsonWithDuplicateJsonProperties)
+
+    if (allowDuplicateJsonPropertiesOverride.isDefined && allowDuplicateJsonPropertiesOverride.get) {
+      SparkBridgeImplementationInternal.configureSimpleObjectMapper(true)
+    }
 
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
@@ -1058,6 +1078,8 @@ private object ChangeFeedModes extends Enumeration {
 
   val Incremental: ChangeFeedModes.Value = Value("Incremental")
   val FullFidelity: ChangeFeedModes.Value = Value("FullFidelity")
+  val LatestVersion: ChangeFeedModes.Value = Value("LatestVersion")
+  val AllVersionsAndDeletes: ChangeFeedModes.Value = Value("AllVersionsAndDeletes")
 }
 
 private object ChangeFeedStartFromModes extends Enumeration {
@@ -1088,8 +1110,8 @@ private case class CosmosChangeFeedConfig
     }
 
     this.changeFeedMode match {
-      case ChangeFeedModes.Incremental => options
-      case ChangeFeedModes.FullFidelity => options.fullFidelity()
+      case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion => options
+      case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes => options.allVersionsAndDeletes()
     }
   }
 
@@ -1128,7 +1150,7 @@ private object CosmosChangeFeedConfig {
     mandatory = false,
     defaultValue = Some(ChangeFeedModes.Incremental),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
-    helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
+    helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,

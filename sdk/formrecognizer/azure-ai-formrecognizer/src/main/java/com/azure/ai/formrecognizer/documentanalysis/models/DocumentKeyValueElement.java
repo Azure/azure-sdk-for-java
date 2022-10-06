@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValueElementHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * An object representing the field key or value in a key-value pair.
  */
+@Immutable
 public final class DocumentKeyValueElement {
     /*
      * Concatenated content of the key-value element in reading order.
@@ -42,7 +44,7 @@ public final class DocumentKeyValueElement {
      * @param content the content value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -61,7 +63,7 @@ public final class DocumentKeyValueElement {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -80,7 +82,7 @@ public final class DocumentKeyValueElement {
      * @param spans the spans value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

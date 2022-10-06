@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceObjectDatasetTypeProperties {
     /*
-     * The Salesforce object API name. Type: string (or Expression with
-     * resultType string).
+     * The Salesforce object API name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "objectApiName")
     private Object objectApiName;

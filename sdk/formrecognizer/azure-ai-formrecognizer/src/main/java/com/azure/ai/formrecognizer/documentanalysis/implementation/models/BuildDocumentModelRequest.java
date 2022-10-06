@@ -8,23 +8,23 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Request body to build a new custom model. */
+/** Request body to build a new custom document model. */
 @Fluent
 public final class BuildDocumentModelRequest {
     /*
-     * Unique model name.
+     * Unique document model name.
      */
     @JsonProperty(value = "modelId", required = true)
     private String modelId;
 
     /*
-     * Model description.
+     * Document model description.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Custom model build mode.
+     * Custom document model build mode.
      */
     @JsonProperty(value = "buildMode", required = true)
     private DocumentBuildMode buildMode;
@@ -36,13 +36,13 @@ public final class BuildDocumentModelRequest {
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * List of key-value tag attributes associated with the model.
+     * List of key-value tag attributes associated with the document model.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
-     * Get the modelId property: Unique model name.
+     * Get the modelId property: Unique document model name.
      *
      * @return the modelId value.
      */
@@ -51,7 +51,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the modelId property: Unique model name.
+     * Set the modelId property: Unique document model name.
      *
      * @param modelId the modelId value to set.
      * @return the BuildDocumentModelRequest object itself.
@@ -62,7 +62,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the description property: Model description.
+     * Get the description property: Document model description.
      *
      * @return the description value.
      */
@@ -71,7 +71,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the description property: Model description.
+     * Set the description property: Document model description.
      *
      * @param description the description value to set.
      * @return the BuildDocumentModelRequest object itself.
@@ -82,7 +82,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the buildMode property: Custom model build mode.
+     * Get the buildMode property: Custom document model build mode.
      *
      * @return the buildMode value.
      */
@@ -91,7 +91,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the buildMode property: Custom model build mode.
+     * Set the buildMode property: Custom document model build mode.
      *
      * @param buildMode the buildMode value to set.
      * @return the BuildDocumentModelRequest object itself.
@@ -122,7 +122,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the tags property: List of key-value tag attributes associated with the model.
+     * Get the tags property: List of key-value tag attributes associated with the document model.
      *
      * @return the tags value.
      */
@@ -131,7 +131,7 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the tags property: List of key-value tag attributes associated with the model.
+     * Set the tags property: List of key-value tag attributes associated with the document model.
      *
      * @param tags the tags value to set.
      * @return the BuildDocumentModelRequest object itself.

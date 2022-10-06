@@ -13,88 +13,81 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GoogleAdWordsLinkedServiceTypeProperties {
     /*
-     * Properties used to connect to GoogleAds. It is mutually exclusive with
-     * any other properties in the linked service. Type: object.
+     * Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the linked
+     * service. Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch
-     * report data for.
+     * The Client customer ID of the AdWords account that you want to fetch report data for.
      */
     @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
 
     /*
-     * The developer token associated with the manager account that you use to
-     * grant access to the AdWords API.
+     * The developer token associated with the manager account that you use to grant access to the AdWords API.
      */
     @JsonProperty(value = "developerToken")
     private SecretBase developerToken;
 
     /*
-     * The OAuth 2.0 authentication mechanism used for authentication.
-     * ServiceAuthentication can only be used on self-hosted IR.
+     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
+     * self-hosted IR.
      */
     @JsonProperty(value = "authenticationType")
     private GoogleAdWordsAuthenticationType authenticationType;
 
     /*
-     * The refresh token obtained from Google for authorizing access to AdWords
-     * for UserAuthentication.
+     * The refresh token obtained from Google for authorizing access to AdWords for UserAuthentication.
      */
     @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
-     * The client id of the google application used to acquire the refresh
-     * token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
-     * The client secret of the google application used to acquire the refresh
-     * token.
+     * The client secret of the google application used to acquire the refresh token.
      */
     @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and
-     * can only be used on self-hosted IR.
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR.
+     * The full path to the .p12 key file that is used to authenticate the service account email address and can only
+     * be used on self-hosted IR.
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

@@ -34,6 +34,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -158,6 +160,9 @@ public class EventHubClientBuilder implements
     // So, limit the prefetch to just 1 by default.
     static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
 
+    static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
+        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -174,11 +179,12 @@ public class EventHubClientBuilder implements
     private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
+
+    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_VERSION;
     private static final String UNKNOWN = "UNKNOWN";
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
-        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);
@@ -198,6 +204,12 @@ public class EventHubClientBuilder implements
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
     private URL customEndpointAddress;
+
+    static {
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        LIBRARY_NAME = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        LIBRARY_VERSION = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+    }
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -794,13 +806,15 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
+        final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer);
+                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer, meter);
                 }
             }
 
@@ -809,7 +823,7 @@ public class EventHubClientBuilder implements
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = buildConnectionProcessor(messageSerializer);
+            processor = buildConnectionProcessor(messageSerializer, meter);
         }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
@@ -823,8 +837,7 @@ public class EventHubClientBuilder implements
         }
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose,
-            identifier);
+            isSharedConnection.get(), this::onClientClose, identifier, meter);
     }
 
     /**
@@ -884,7 +897,7 @@ public class EventHubClientBuilder implements
         }
     }
 
-    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
+    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
             sink.onRequest(request -> {
@@ -906,7 +919,7 @@ public class EventHubClientBuilder implements
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, getEventHubName(), provider, handlerProvider, tokenManagerProvider,
@@ -959,18 +972,15 @@ public class EventHubClientBuilder implements
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
-        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
-        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         if (customEndpointAddress == null) {
             return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, product, clientVersion);
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
         } else {
             return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
         }
     }

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IdentityType. */
+/**
+ * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory
+ * principal for the resource.
+ */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /** Static value None for IdentityType. */
     public static final IdentityType NONE = fromString("None");
@@ -27,7 +30,11 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
         return fromString(name, IdentityType.class);
     }
 
-    /** @return known IdentityType values. */
+    /**
+     * Gets known IdentityType values.
+     *
+     * @return known IdentityType values.
+     */
     public static Collection<IdentityType> values() {
         return values(IdentityType.class);
     }

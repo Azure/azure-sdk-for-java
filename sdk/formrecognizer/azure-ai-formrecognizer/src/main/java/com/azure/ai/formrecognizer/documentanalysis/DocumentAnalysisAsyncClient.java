@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -61,7 +61,7 @@ public final class DocumentAnalysisAsyncClient {
 
     /**
      * Create a {@link DocumentAnalysisAsyncClient} that sends requests to the Form recognizer service's endpoint. Each
-     * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline}.
+     * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
@@ -110,7 +110,7 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String modelId, String documentUrl) {
         return beginAnalyzeDocumentFromUrl(modelId, documentUrl, null);
     }
@@ -123,7 +123,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document using the URL of the document with configurable options. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options -->
      * <pre>
      * String documentUrl = &quot;&#123;document_url&#125;&quot;;
      * &#47;&#47; analyze a receipt using prebuilt model
@@ -147,7 +147,7 @@ public final class DocumentAnalysisAsyncClient {
      *     &#125;&#41;;
      *
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
@@ -161,13 +161,13 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String modelId, String documentUrl,
                                    AnalyzeDocumentOptions analyzeDocumentOptions) {
         return beginAnalyzeDocumentFromUrl(documentUrl, modelId, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, AnalyzeResult>
+    PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String documentUrl, String modelId,
                                    AnalyzeDocumentOptions analyzeDocumentOptions,
                                    Context context) {
@@ -226,14 +226,14 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
-     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer, document.length&#40;&#41;&#41;
+     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
@@ -247,23 +247,20 @@ public final class DocumentAnalysisAsyncClient {
      *                         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
      *                     &#125;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
-     * @param length The exact length of the data.
-     *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}.
+     * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
-        beginAnalyzeDocument(String modelId, BinaryData document, long length) {
-        return beginAnalyzeDocument(modelId, document, length, null);
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document) {
+        return beginAnalyzeDocument(modelId, document, null);
     }
 
     /**
@@ -277,7 +274,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options. . </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
@@ -285,7 +282,7 @@ public final class DocumentAnalysisAsyncClient {
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
-     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer, document.length&#40;&#41;,
+     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer,
      *         new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
@@ -302,30 +299,27 @@ public final class DocumentAnalysisAsyncClient {
      *                     &#125;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
-     * @param length The exact length of the data.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options} that may be
      * passed when analyzing documents.
-     *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}.
+     * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
-        beginAnalyzeDocument(String modelId, BinaryData document, long length,
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document,
                              AnalyzeDocumentOptions analyzeDocumentOptions) {
-        return beginAnalyzeDocument(modelId, document, length, analyzeDocumentOptions, Context.NONE);
+        return beginAnalyzeDocument(modelId, document, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, AnalyzeResult>
-        beginAnalyzeDocument(String modelId, BinaryData document, long length,
+    PollerFlux<OperationResult, AnalyzeResult>
+        beginAnalyzeDocument(String modelId, BinaryData document,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
             Objects.requireNonNull(document, "'document' is required and cannot be null.");
@@ -348,7 +342,7 @@ public final class DocumentAnalysisAsyncClient {
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
                             document,
-                            length,
+                            document.getLength(),
                             context)
                         .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
                             analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
@@ -371,14 +365,14 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's POLLING operation.
      */
-    private Function<PollingContext<DocumentOperationResult>, Mono<PollResponse<DocumentOperationResult>>>
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         pollingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<DocumentOperationResult> operationResultPollResponse
+                final PollResponse<OperationResult> operationResultPollResponse
                     = pollingContext.getLatestResponse();
-                final String resultId = operationResultPollResponse.getValue().getResultId();
+                final String resultId = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(resultId)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse, operationResultPollResponse))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
@@ -391,12 +385,12 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's FETCHING operation.
      */
-    private Function<PollingContext<DocumentOperationResult>, Mono<Response<AnalyzeResultOperation>>>
+    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>>
         fetchingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> fetchingFunction) {
         return pollingContext -> {
             try {
-                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return fetchingFunction.apply(resultId);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -404,9 +398,9 @@ public final class DocumentAnalysisAsyncClient {
         };
     }
 
-    private Mono<PollResponse<DocumentOperationResult>> processAnalyzeModelResponse(
+    private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
         Response<AnalyzeResultOperation> analyzeResultOperationResponse,
-        PollResponse<DocumentOperationResult> operationResultPollResponse) {
+        PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
         switch (analyzeResultOperationResponse.getValue().getStatus()) {
             case NOT_STARTED:

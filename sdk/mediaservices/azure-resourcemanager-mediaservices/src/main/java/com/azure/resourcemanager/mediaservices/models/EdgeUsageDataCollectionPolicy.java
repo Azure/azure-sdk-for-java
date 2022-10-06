@@ -11,22 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EdgeUsageDataCollectionPolicy {
     /*
-     * Usage data collection frequency in ISO 8601 duration format e.g. PT10M ,
-     * PT5H.
+     * Usage data collection frequency in ISO 8601 duration format e.g. PT10M , PT5H.
      */
     @JsonProperty(value = "dataCollectionFrequency")
     private String dataCollectionFrequency;
 
     /*
-     * Usage data reporting frequency in ISO 8601 duration format e.g. PT10M ,
-     * PT5H.
+     * Usage data reporting frequency in ISO 8601 duration format e.g. PT10M , PT5H.
      */
     @JsonProperty(value = "dataReportingFrequency")
     private String dataReportingFrequency;
 
     /*
-     * Maximum time for which the functionality of the device will not be
-     * hampered for not reporting the usage data.
+     * Maximum time for which the functionality of the device will not be hampered for not reporting the usage data.
      */
     @JsonProperty(value = "maxAllowedUnreportedUsageDuration")
     private String maxAllowedUnreportedUsageDuration;

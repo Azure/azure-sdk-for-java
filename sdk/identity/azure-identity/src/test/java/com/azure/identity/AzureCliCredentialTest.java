@@ -4,8 +4,10 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -103,4 +105,48 @@ public class AzureCliCredentialTest {
         }
     }
 
+    @Test
+    public void testAdditionalTenantNoImpact() {
+        // setup
+        String username = "testuser";
+        String password = "P@ssw0rd";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AzureCliCredential credential =
+            new AzureCliCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof CredentialUnavailableException)
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AzureCliCredential credential =
+            new AzureCliCredentialBuilder().tenantId("tenant").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() {
+        // setup
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        AzureCliCredential credential =
+            new AzureCliCredentialBuilder().tenantId("tenant")
+                .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
+
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e  instanceof CredentialUnavailableException)
+            .verify();
+    }
 }

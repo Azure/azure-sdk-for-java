@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.InvitationState;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RegistrationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 /** User resource properties. */
 @Fluent
 public final class UserProperties extends UserUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserProperties.class);
-
     /*
      * Current provisioning state of the user resource.
      */
@@ -151,9 +148,11 @@ public final class UserProperties extends UserUpdateProperties {
     public void validate() {
         super.validate();
         if (email() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property email in model UserProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserProperties.class);
 }

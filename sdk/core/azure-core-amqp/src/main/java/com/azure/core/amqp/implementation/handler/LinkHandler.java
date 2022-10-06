@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -27,6 +28,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
  */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
+    private final AmqpMetricsProvider metricsProvider;
 
     /**
      * Creates an instance with the parameters.
@@ -40,9 +42,10 @@ abstract class LinkHandler extends Handler {
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath) {
+    LinkHandler(String connectionId, String hostname, String entityPath, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.metricsProvider = metricsProvider;
     }
 
     @Override
@@ -113,6 +116,7 @@ abstract class LinkHandler extends Handler {
         }
 
         if (condition != null && condition.getCondition() != null) {
+            metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK, condition);
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 condition.getDescription(), getErrorContext(link));
 

@@ -7,12 +7,15 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark pool auto-pausing properties Auto-pausing properties of a Big Data pool powered by Apache Spark. */
+/**
+ * Spark pool auto-pausing properties
+ *
+ * <p>Auto-pausing properties of a Big Data pool powered by Apache Spark.
+ */
 @Fluent
 public final class AutoPauseProperties {
     /*
-     * Number of minutes of idle time before the Big Data pool is automatically
-     * paused.
+     * Number of minutes of idle time before the Big Data pool is automatically paused.
      */
     @JsonProperty(value = "delayInMinutes")
     private Integer delayInMinutes;

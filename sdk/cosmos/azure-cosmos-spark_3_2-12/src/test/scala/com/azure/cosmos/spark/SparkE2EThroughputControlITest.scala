@@ -112,7 +112,7 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
     try {
       // create few items ahead of time
       val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-      for (sequenceNumber <- 1 to 50) {
+      for (sequenceNumber <- 1 to 10) {
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
         objectNode.put("name", "Shrodigner's cat")
         objectNode.put("type", "cat")
@@ -150,7 +150,7 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
 
       val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
       val rowsArray = df.collect()
-      rowsArray should have size 50
+      rowsArray should have size 10
     } finally {
       if (throughputControlClient != null) {
         throughputControlDatabase.delete().block()

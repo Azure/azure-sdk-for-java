@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class ResourceIdentity {
     /*
-     * The user assigned managed identity's ARM ID to use when accessing a
-     * resource.
+     * The user assigned managed identity's ARM ID to use when accessing a resource.
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /*
-     * Indicates whether to use System Assigned Managed Identity. Mutual
-     * exclusive with User Assigned Managed Identity.
+     * Indicates whether to use System Assigned Managed Identity. Mutual exclusive with User Assigned Managed Identity.
      */
     @JsonProperty(value = "useSystemAssignedIdentity", required = true)
     private boolean useSystemAssignedIdentity;
