@@ -2,6 +2,7 @@
 
 ## 7.12.0-beta.1 (Unreleased)
 - Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
+- Enabled metrics to track number of sent messages, receiver lag, settlement calls ([#31283](https://github.com/Azure/azure-sdk-for-java/pull/31283))
 ### Features Added
 
 ### Breaking Changes
