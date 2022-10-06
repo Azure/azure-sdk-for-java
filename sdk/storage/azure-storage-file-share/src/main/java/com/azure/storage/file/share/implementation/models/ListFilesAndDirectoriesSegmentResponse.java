@@ -32,10 +32,16 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     private String shareSnapshot;
 
     /*
+     * The Encoded property.
+     */
+    @JacksonXmlProperty(localName = "Encoded", isAttribute = true)
+    private Boolean encoded;
+
+    /*
      * The DirectoryPath property.
      */
-    @JsonProperty(value = "DirectoryPath", required = true)
-    private StringEncoded directoryPath;
+    @JacksonXmlProperty(localName = "DirectoryPath", isAttribute = true)
+    private String directoryPath;
 
     /*
      * The Prefix property.
@@ -134,11 +140,31 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
+     * Get the encoded property: The Encoded property.
+     *
+     * @return the encoded value.
+     */
+    public Boolean isEncoded() {
+        return this.encoded;
+    }
+
+    /**
+     * Set the encoded property: The Encoded property.
+     *
+     * @param encoded the encoded value to set.
+     * @return the ListFilesAndDirectoriesSegmentResponse object itself.
+     */
+    public ListFilesAndDirectoriesSegmentResponse setEncoded(Boolean encoded) {
+        this.encoded = encoded;
+        return this;
+    }
+
+    /**
      * Get the directoryPath property: The DirectoryPath property.
      *
      * @return the directoryPath value.
      */
-    public StringEncoded getDirectoryPath() {
+    public String getDirectoryPath() {
         return this.directoryPath;
     }
 
@@ -148,7 +174,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param directoryPath the directoryPath value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(StringEncoded directoryPath) {
+    public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(String directoryPath) {
         this.directoryPath = directoryPath;
         return this;
     }
