@@ -65,7 +65,7 @@ public class GsonJsonWriter extends JsonWriter {
      * @return An instance of {@link GsonJsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      */
-    static JsonWriter toWriter(Writer json, JsonOptions options) {
+    public static JsonWriter toWriter(Writer json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonWriter(json, options);
     }

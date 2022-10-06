@@ -4,7 +4,6 @@ package com.azure.json.reflect.jackson;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.json.implementation.DefaultJsonReader;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
@@ -46,55 +44,59 @@ public class JacksonJsonReader extends JsonReader {
 	private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
 
-	/**
-	 * Constructs an instance of {@link JacksonJsonReader from a {@code byte[]}
-	 *
-	 * @param json JSON {@code byte[]}
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-	 * @return An instance of {@link JacksonJsonReader}
-	 */
-	static JsonReader fromBytes(byte[] json, JsonOptions options) {
+    /**
+     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
+     *
+     * @param json JSON {@code byte[]}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@code byte[]}.
+     */
+	static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
 		return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true, json, null, options);
 	}
 
-	/**
-	 * Constructs an instance of {@link JacksonJsonReader} from a String
-	 *
-	 * @param json JSON String
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-	 * @return An instance of {@link JacksonJsonReader}
-	 */
-	static JsonReader fromString(String json, JsonOptions options) {
+    /**
+     * Constructs an instance of {@link JsonReader} from a String.
+     *
+     * @param json JSON String.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON String.
+     */
+	static JsonReader fromString(String json, JsonOptions options) throws IOException {
 		return new JacksonJsonReader(new StringReader(json), true, null, json, options);
 	}
 
-	/**
-	 * Constructs an instance of {@link JacksonJsonReader} from an {@link InputStream}
-	 *
-	 * @param json JSON {@link InputStream}
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-	 * @return An instance of {@link JacksonJsonReader}
-	 */
-	static JsonReader fromStream(InputStream json, JsonOptions options) {
+    /**
+     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
+     *
+     * @param json JSON {@link InputStream}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@link InputStream}.
+     */
+	static JsonReader fromStream(InputStream json, JsonOptions options) throws IOException {
 		return new JacksonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), false, null, null, options);
 	}
 
     /**
-     * Constructs an instance of {@link JacksonJsonReader} from a {@link Reader}.
+     * Constructs an instance of {@link DefaultJsonReader} from a {@link Reader}.
      *
      * @param reader JSON {@link Reader}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link DefaultJsonReader}.
+     * @throws IOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON {@link Reader}.
      */
-    static JsonReader fromReader(Reader reader, JsonOptions options) {
+    static JsonReader fromReader(Reader reader, JsonOptions options) throws IOException {
         return new JacksonJsonReader(reader, reader.markSupported(), null, null, options);
     }
 
-    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, JsonOptions options) {
+    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, JsonOptions options) throws IOException {
         this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
     }
 
-    public JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
+    private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) throws IOException {
     	try {
             if (!initialized) {
                 initialize();
@@ -102,11 +104,13 @@ public class JacksonJsonReader extends JsonReader {
     		jacksonParser = createParserMethod.invoke(jsonFactory, reader);
             // Configure parser to allow non-numeric numbers
     	} catch (Throwable e) {
-    		if (e instanceof RuntimeException) {
-    			throw (RuntimeException) e.getCause();
-    		} else {
-    			throw new IllegalStateException("Incorrect library present.");
-    		}
+            if (e instanceof IOException) {
+                throw (IOException) e.getCause();
+            } else if (e instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            } else {
+                throw new IllegalStateException("Incorrect Library Present");
+            }
     	}
 
     	this.resetSupported = resetSupported;
@@ -116,7 +120,7 @@ public class JacksonJsonReader extends JsonReader {
 
     }
 
-    private static void initialize() throws ReflectiveOperationException {
+    static void initialize() throws ReflectiveOperationException {
         jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
 
 		// The jacksonJsonParser is made via the JsonFactory
@@ -310,7 +314,7 @@ public class JacksonJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonReader reset() {
+    public JsonReader reset() throws IOException {
         if (!resetSupported) {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }

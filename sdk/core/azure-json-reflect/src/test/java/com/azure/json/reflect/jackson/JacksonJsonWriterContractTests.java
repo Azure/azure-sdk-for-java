@@ -1,11 +1,13 @@
 package com.azure.json.reflect.jackson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
 import com.azure.json.reflect.jackson.JacksonJsonWriter;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
@@ -17,9 +19,9 @@ public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
     private JsonWriter writer;
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = JacksonJsonWriter.toStream(outputStream);
+        this.writer = JacksonJsonWriter.toStream(outputStream, new JsonOptions());
     }
 
     @Override
@@ -30,8 +32,9 @@ public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
     @Override
     public String getJsonWriterContents() {
         try {
+            writer.flush();
             return outputStream.toString(StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
