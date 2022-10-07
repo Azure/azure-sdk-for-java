@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added SslHandshakeTimeout minimum duration config - See [PR 31298](https://github.com/Azure/azure-sdk-for-java/pull/31298)
 
 ### 4.37.0 (2022-09-30)
 
