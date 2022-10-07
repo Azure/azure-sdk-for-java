@@ -10,7 +10,6 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import org.mockito.Mockito
 import spock.lang.Unroll
 
-import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.FileAttribute
