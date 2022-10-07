@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ThreatIntelligenceIndicator Delete. */
 public final class ThreatIntelligenceIndicatorDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/threatintelligence/DeleteThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/DeleteThreatIntelligence.json
      */
     /**
      * Sample code: Delete a threat intelligence indicator.

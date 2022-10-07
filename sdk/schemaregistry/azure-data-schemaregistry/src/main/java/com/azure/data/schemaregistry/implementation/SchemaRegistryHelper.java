@@ -4,6 +4,8 @@ package com.azure.data.schemaregistry.implementation;
 
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
@@ -23,7 +25,8 @@ public final class SchemaRegistryHelper {
      * Accessor interface.
      */
     public interface SchemaRegistryModelsAccessor {
-        SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name);
+        SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name,
+            int version);
     }
 
     /**
@@ -39,21 +42,29 @@ public final class SchemaRegistryHelper {
         final SchemasRegisterHeaders headers = response.getDeserializedHeaders();
 
         return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName());
+            headers.getSchemaName(), headers.getSchemaVersion());
     }
 
     public static SchemaProperties getSchemaProperties(SchemasGetByIdResponse response) {
         final SchemasGetByIdHeaders headers = response.getDeserializedHeaders();
 
         return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName());
+            headers.getSchemaName(), headers.getSchemaVersion());
     }
 
     public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentResponse response) {
         final SchemasQueryIdByContentHeaders headers = response.getDeserializedHeaders();
 
         return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
-            headers.getSchemaName());
+            headers.getSchemaName(), headers.getSchemaVersion());
     }
+
+    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
+        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
 }
 

@@ -17,6 +17,7 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
+
     // Enum Singleton Pattern
     private enum GlobalNettyHttpClient {
         HTTP_CLIENT(new NettyAsyncHttpClientBuilder().build());
@@ -33,8 +34,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
-     * 'final' modifier.
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
+     * modifier.
      */
     public NettyAsyncHttpClientProvider() {
         enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
@@ -60,10 +61,11 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
 
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
-                      .configuration(clientOptions.getConfiguration())
-                      .writeTimeout(clientOptions.getWriteTimeout())
-                      .responseTimeout(clientOptions.getResponseTimeout())
-                      .readTimeout(clientOptions.getReadTimeout());
+            .configuration(clientOptions.getConfiguration())
+            .connectTimeout(clientOptions.getConnectTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout())
+            .readTimeout(clientOptions.getReadTimeout());
 
         ConnectionProvider.Builder connectionProviderBuilder = ConnectionProvider.builder("azure-sdk");
         connectionProviderBuilder.maxIdleTime(clientOptions.getConnectionIdleTimeout());
@@ -83,7 +85,7 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
             // applications run and can lead to issues like this - https://github.com/Azure/azure-sdk-for-java/issues/26027
 
             // So, we need to unfortunately hardcode the maxConnections to 500 (when user doesn't set it) to have
-            // consistent configuration whether or not HttpClientOptions is set.
+            // consistent configuration whether HttpClientOptions is set.
             connectionProviderBuilder.maxConnections(DEFAULT_MAX_CONNECTIONS);
         }
 

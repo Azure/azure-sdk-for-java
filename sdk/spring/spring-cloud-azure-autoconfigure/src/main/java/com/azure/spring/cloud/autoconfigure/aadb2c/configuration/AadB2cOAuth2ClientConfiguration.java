@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
@@ -10,10 +9,10 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -34,14 +33,13 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.web.client.RestOperations;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -49,25 +47,23 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2C
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AadB2cConditions.ClientRegistrationCondition.class)
-@Import({AadB2cPropertiesConfiguration.class, AadOauth2ClientRestOperationConfiguration.class})
+@Import(AadB2cPropertiesConfiguration.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AadB2cOAuth2ClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadB2cOAuth2ClientConfiguration.class);
     private final AadB2cProperties properties;
-    private final RestOperations restOperations;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadB2cOAuth2ClientConfiguration}.
      *
      * @param properties the AAD B2C properties
-     * @param restOperations the RestOperations
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadB2cOAuth2ClientConfiguration(
-            AadB2cProperties properties,
-            @Qualifier(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+    public AadB2cOAuth2ClientConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.restOperations = restOperations;
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
     /**
@@ -98,7 +94,7 @@ public class AadB2cOAuth2ClientConfiguration {
      * @return ClientRegistration
      */
     private ClientRegistration buildUserFlowClientRegistration(Map.Entry<String, String> client) {
-        return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration Id.
+        return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration ID.
                                  .clientName(client.getKey())
                                  .clientId(properties.getCredential().getClientId())
                                  .clientSecret(properties.getCredential().getClientSecret())
@@ -162,7 +158,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider() {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRestOperations(restOperations);
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
@@ -170,7 +166,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
-        responseClient.setRestOperations(restOperations);
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
@@ -178,7 +174,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider() {
         PasswordOAuth2AuthorizedClientProvider provider = new PasswordOAuth2AuthorizedClientProvider();
         DefaultPasswordTokenResponseClient responseClient = new DefaultPasswordTokenResponseClient();
-        responseClient.setRestOperations(restOperations);
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }

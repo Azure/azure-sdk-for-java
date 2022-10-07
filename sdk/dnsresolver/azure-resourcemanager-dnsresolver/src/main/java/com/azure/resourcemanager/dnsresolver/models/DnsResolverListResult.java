@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to an enumeration operation on DNS resolvers. */
 @Fluent
 public final class DnsResolverListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsResolverListResult.class);
-
     /*
      * Enumeration of the DNS resolvers.
      */

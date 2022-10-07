@@ -15,45 +15,40 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class JsonFormat extends DatasetStorageFormat {
     /*
-     * File pattern of JSON. To be more specific, the way of separating a
-     * collection of JSON objects. The default value is 'setOfObjects'. It is
-     * case-sensitive.
+     * File pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value
+     * is 'setOfObjects'. It is case-sensitive.
      */
     @JsonProperty(value = "filePattern")
     private Object filePattern;
 
     /*
-     * The character used to separate nesting levels. Default value is '.'
-     * (dot). Type: string (or Expression with resultType string).
+     * The character used to separate nesting levels. Default value is '.' (dot). Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "nestingSeparator")
     private Object nestingSeparator;
 
     /*
-     * The code page name of the preferred encoding. If not provided, the
-     * default value is 'utf-8', unless the byte order mark (BOM) denotes
-     * another Unicode encoding. The full list of supported values can be found
-     * in the 'Name' column of the table of encodings in the following
-     * reference: https://go.microsoft.com/fwlink/?linkid=861078. Type: string
-     * (or Expression with resultType string).
+     * The code page name of the preferred encoding. If not provided, the default value is 'utf-8', unless the byte
+     * order mark (BOM) denotes another Unicode encoding. The full list of supported values can be found in the 'Name'
+     * column of the table of encodings in the following reference: https://go.microsoft.com/fwlink/?linkid=861078.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encodingName")
     private Object encodingName;
 
     /*
-     * The JSONPath of the JSON array element to be flattened. Example:
-     * "$.ArrayPath". Type: string (or Expression with resultType string).
+     * The JSONPath of the JSON array element to be flattened. Example: "$.ArrayPath". Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "jsonNodeReference")
     private Object jsonNodeReference;
 
     /*
-     * The JSONPath definition for each column mapping with a customized column
-     * name to extract data from JSON file. For fields under root object, start
-     * with "$"; for fields inside the array chosen by jsonNodeReference
-     * property, start from the array element. Example: {"Column1":
-     * "$.Column1Path", "Column2": "Column2PathInArray"}. Type: object (or
-     * Expression with resultType object).
+     * The JSONPath definition for each column mapping with a customized column name to extract data from JSON file.
+     * For fields under root object, start with "$"; for fields inside the array chosen by jsonNodeReference property,
+     * start from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}. Type:
+     * object (or Expression with resultType object).
      */
     @JsonProperty(value = "jsonPathDefinition")
     private Object jsonPathDefinition;

@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class StreamingPolicyContentKey {
     /*
-     * Label can be used to specify Content Key when creating a Streaming
-     * Locator
+     * Label can be used to specify Content Key when creating a Streaming Locator
      */
     @JsonProperty(value = "label")
     private String label;

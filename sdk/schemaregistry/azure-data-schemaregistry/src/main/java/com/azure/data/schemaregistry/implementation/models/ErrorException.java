@@ -30,6 +30,7 @@ public final class ErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public Error getValue() {
         return (Error) super.getValue();

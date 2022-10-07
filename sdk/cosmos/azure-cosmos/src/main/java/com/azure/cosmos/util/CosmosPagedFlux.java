@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.FeedResponse;
@@ -41,6 +42,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -95,11 +97,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      */
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
         if (this.feedResponseConsumer != null) {
-            return new CosmosPagedFlux<T>(
+            return new CosmosPagedFlux<>(
                 this.optionsFluxFunction,
                 this.feedResponseConsumer.andThen(newFeedResponseConsumer));
         } else {
-            return new CosmosPagedFlux<T>(this.optionsFluxFunction, newFeedResponseConsumer);
+            return new CosmosPagedFlux<>(this.optionsFluxFunction, newFeedResponseConsumer);
         }
     }
 
@@ -150,7 +152,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
-        return new CosmosPagedFlux<T>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
+        return new CosmosPagedFlux<>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
     }
 
     private CosmosPagedFluxOptions createCosmosPagedFluxOptions() {
@@ -165,7 +167,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private <T> Flux<T> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<T> publisher, Context context) {
         TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
-        if (!isTracerEnabled(pagedFluxOptions)) {
+        if (tracerProvider == null ||
+            !tracerProvider.isEnabled()) {
+
             return publisher;
         }
 
@@ -174,51 +178,118 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
+        AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions), context)
-            .doOnSubscribe(ignoredValue -> startTime.set(Instant.now()))
+            .doOnSubscribe(ignoredValue -> {
+                startTime.set(Instant.now());
+                feedResponseConsumerLatencyInNanos.set(0);
+            })
             .doOnEach(signal -> {
+
+                CosmosAsyncClient client = pagedFluxOptions.getCosmosAsyncClient();
+
+                boolean clientTelemetryEnabled = false;
+                boolean clientMetricsEnabled = false;
+                ConsistencyLevel consistencyLevel = ConsistencyLevel.EVENTUAL;
+
+                if (client != null) {
+                    ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+                        ImplementationBridgeHelpers
+                        .CosmosAsyncClientHelper
+                        .getCosmosAsyncClientAccessor();
+                    clientTelemetryEnabled = clientAccessor.isSendClientTelemetryToServiceEnabled(client);
+                    clientMetricsEnabled = clientAccessor.isClientTelemetryMetricsEnabled(client);
+                    consistencyLevel =
+                        BridgeInternal
+                            .getContextClient(pagedFluxOptions.getCosmosAsyncClient())
+                            .getConsistencyLevel();
+                }
+
+                TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
-                        if (isTracerEnabled(pagedFluxOptions)) {
-                            pagedFluxOptions.getTracerProvider().endSpan(signal, HttpConstants.StatusCodes.OK);
+
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.endSpan(signal, HttpConstants.StatusCodes.OK);
                         }
                         break;
                     case ON_ERROR:
                         Throwable throwable = signal.getThrowable();
-                        if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()) &&
+                        if ((clientTelemetryEnabled || clientMetricsEnabled) &&
                             throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
+
+                            CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                            float requestCharge = (float) cosmosException.getRequestCharge();
+                            Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
                             // not adding diagnostics on trace event for exception as this information is already there as
                             // part of exception message
-                            if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
-                                fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
-                                    pagedFluxOptions.getDatabaseId(),
-                                    pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
-                                    BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                                    (float) cosmosException.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
+                            if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(diagnostics).compareAndSet(false, true)) {
+
+                                if (clientTelemetryEnabled) {
+                                    fillClientTelemetry(
+                                        client,
+                                        cosmosException.getStatusCode(),
+                                        pagedFluxOptions.getContainerId(),
+                                        pagedFluxOptions.getDatabaseId(),
+                                        pagedFluxOptions.getOperationType(),
+                                        pagedFluxOptions.getResourceType(),
+                                        consistencyLevel,
+                                        requestCharge,
+                                        effectiveLatency);
+                                }
+
+                                if (clientMetricsEnabled) {
+                                    ClientTelemetryMetrics
+                                        .recordOperation(
+                                            client,
+                                            diagnostics,
+                                            cosmosException.getStatusCode(),
+                                            //cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
+                                            pagedFluxOptions.getMaxItemCount() != null ?
+                                                pagedFluxOptions.getMaxItemCount() :
+                                                Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
+                                            0,
+                                            pagedFluxOptions.getContainerId(),
+                                            pagedFluxOptions.getDatabaseId(),
+                                            pagedFluxOptions.getOperationType(),
+                                            pagedFluxOptions.getResourceType(),
+                                            consistencyLevel,
+                                            pagedFluxOptions.getOperationId(),
+                                            requestCharge,
+                                            effectiveLatency);
+                                }
+
+                                startTime.set(Instant.now());
+                                feedResponseConsumerLatencyInNanos.set(0);
                             }
                         }
 
-                        if (isTracerEnabled(pagedFluxOptions)) {
-                            pagedFluxOptions.getTracerProvider().endSpan(signal, TracerProvider.ERROR_CODE);
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.endSpan(signal, TracerProvider.ERROR_CODE);
                         }
-                        startTime.set(Instant.now());
+
                         break;
                     case ON_NEXT:
                         FeedResponse<T> feedResponse = signal.get();
-                        if (isTracerEnabled(pagedFluxOptions) &&
+                        boolean diagnosticsCapturedInPagedFluxByTracer = false;
+                        if (isTracerEnabled(tracerProvider) &&
                             this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
+
+                            diagnosticsCapturedInPagedFluxByTracer = true;
                             try {
                                 Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
                                 if (threshold == null) {
-                                    threshold = pagedFluxOptions.getTracerProvider().QUERY_THRESHOLD_FOR_DIAGNOSTICS;
+                                    threshold = tracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS;
                                 }
 
                                 if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
-                                    addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                                    addDiagnosticsOnTracerEvent(
+                                        tracerProvider,
                                         feedResponse.getCosmosDiagnostics(),
                                         TracerProvider.getContextFromReactorOrNull(signal.getContextView()));
                                 }
@@ -226,31 +297,77 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
                             }
                         }
+
                         //  If the user has passed feedResponseConsumer, then call it with each feedResponse
                         if (feedResponseConsumer != null) {
+                            // NOTE this call is happening in a span counted against client telemetry / metric latency
+                            // So, the latency of the user's callback is accumulated here to correct the latency
+                            // reported to client telemetry and client metrics
+                            Instant feedResponseConsumerStart = Instant.now();
                             feedResponseConsumer.accept(feedResponse);
+                            feedResponseConsumerLatencyInNanos.addAndGet(
+                                Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
                         }
 
-                        if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) {
-                            if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
-                                fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
-                                    pagedFluxOptions.getContainerId(),
-                                    pagedFluxOptions.getDatabaseId(),
-                                    pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
-                                    BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                                    (float) feedResponse.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
+                        CosmosDiagnostics diagnostics = feedResponse != null ?
+                            feedResponse.getCosmosDiagnostics() : null;
+
+                        if (clientTelemetryEnabled || clientMetricsEnabled) {
+                            if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
+                                    .isDiagnosticsCapturedInPagedFlux(diagnostics)
+                                    .compareAndSet(false, true)) {
+
+                                float requestCharge = (float) feedResponse.getRequestCharge();
+                                Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
+                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                                if (clientTelemetryEnabled) {
+                                    fillClientTelemetry(
+                                        client,
+                                        HttpConstants.StatusCodes.OK,
+                                        pagedFluxOptions.getContainerId(),
+                                        pagedFluxOptions.getDatabaseId(),
+                                        pagedFluxOptions.getOperationType(),
+                                        pagedFluxOptions.getResourceType(),
+                                        consistencyLevel,
+                                        requestCharge,
+                                        effectiveLatency);
+                                }
+
+                                if (clientMetricsEnabled) {
+                                    ClientTelemetryMetrics
+                                        .recordOperation(
+                                            client,
+                                            diagnostics,
+                                            HttpConstants.StatusCodes.OK,
+                                            //cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
+                                            pagedFluxOptions.getMaxItemCount() != null ?
+                                                pagedFluxOptions.getMaxItemCount() :
+                                                Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
+                                            feedResponse.getResults().size(),
+                                            pagedFluxOptions.getContainerId(),
+                                            pagedFluxOptions.getDatabaseId(),
+                                            pagedFluxOptions.getOperationType(),
+                                            pagedFluxOptions.getResourceType(),
+                                            consistencyLevel,
+                                            pagedFluxOptions.getOperationId(),
+                                            requestCharge,
+                                            effectiveLatency);
+                                }
+
                                 startTime.set(Instant.now());
-                            };
+                                feedResponseConsumerLatencyInNanos.set(0);
+                            }
                         }
                         break;
                     default:
                         break;
             }});
 
-        if (isTracerEnabled(pagedFluxOptions)) {
+        if (isTracerEnabled(pagedFluxOptions.getTracerProvider())) {
             return result.contextWrite(TracerProvider.setContextInReactor(
-                pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                pagedFluxOptions.getTracerProvider().startSpan(
+                    pagedFluxOptions.getTracerSpanName(),
                     pagedFluxOptions.getDatabaseId(),
                     pagedFluxOptions.getServiceEndpoint(),
                     context)));
@@ -449,7 +566,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         }
     }
 
-    private boolean isTracerEnabled(CosmosPagedFluxOptions pagedFluxOptions) {
-        return pagedFluxOptions.getTracerProvider() != null && pagedFluxOptions.getTracerProvider().isEnabled();
+    private boolean isTracerEnabled(TracerProvider tracerProvider) {
+        return tracerProvider != null &&
+            tracerProvider.isEnabled() &&
+            !tracerProvider.isNoOpTracer();
     }
 }

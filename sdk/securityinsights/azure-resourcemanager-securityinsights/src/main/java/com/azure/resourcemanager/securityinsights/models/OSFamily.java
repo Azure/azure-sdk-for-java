@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OSFamily. */
+/** The operating system type. */
 public enum OSFamily {
     /** Enum value Linux. */
     LINUX("Linux"),
@@ -39,6 +39,9 @@ public enum OSFamily {
      */
     @JsonCreator
     public static OSFamily fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OSFamily[] items = OSFamily.values();
         for (OSFamily item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum OSFamily {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

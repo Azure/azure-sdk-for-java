@@ -5,67 +5,27 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Regulatory compliance assessment details and state. */
-@JsonFlatten
 @Fluent
-public class RegulatoryComplianceAssessmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceAssessmentInner.class);
-
+public final class RegulatoryComplianceAssessmentInner extends ProxyResource {
     /*
-     * The description of the regulatory compliance assessment
+     * Regulatory compliance assessment data
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private RegulatoryComplianceAssessmentProperties innerProperties;
 
-    /*
-     * The expected type of assessment contained in the AssessmentDetailsLink
+    /**
+     * Get the innerProperties property: Regulatory compliance assessment data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.assessmentType", access = JsonProperty.Access.WRITE_ONLY)
-    private String assessmentType;
-
-    /*
-     * Link to more detailed assessment results data. The response type will be
-     * according to the assessmentType field
-     */
-    @JsonProperty(value = "properties.assessmentDetailsLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String assessmentDetailsLink;
-
-    /*
-     * Aggregative state based on the assessment's scanned resources states
-     */
-    @JsonProperty(value = "properties.state")
-    private State state;
-
-    /*
-     * The given assessment's related resources count with passed state.
-     */
-    @JsonProperty(value = "properties.passedResources", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer passedResources;
-
-    /*
-     * The given assessment's related resources count with failed state.
-     */
-    @JsonProperty(value = "properties.failedResources", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer failedResources;
-
-    /*
-     * The given assessment's related resources count with skipped state.
-     */
-    @JsonProperty(value = "properties.skippedResources", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer skippedResources;
-
-    /*
-     * The given assessment's related resources count with unsupported state.
-     */
-    @JsonProperty(value = "properties.unsupportedResources", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer unsupportedResources;
+    private RegulatoryComplianceAssessmentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: The description of the regulatory compliance assessment.
@@ -73,7 +33,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -82,7 +42,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the assessmentType value.
      */
     public String assessmentType() {
-        return this.assessmentType;
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentType();
     }
 
     /**
@@ -92,7 +52,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the assessmentDetailsLink value.
      */
     public String assessmentDetailsLink() {
-        return this.assessmentDetailsLink;
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentDetailsLink();
     }
 
     /**
@@ -101,7 +61,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the state value.
      */
     public State state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -111,7 +71,10 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the RegulatoryComplianceAssessmentInner object itself.
      */
     public RegulatoryComplianceAssessmentInner withState(State state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegulatoryComplianceAssessmentProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -121,7 +84,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the passedResources value.
      */
     public Integer passedResources() {
-        return this.passedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().passedResources();
     }
 
     /**
@@ -130,7 +93,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the failedResources value.
      */
     public Integer failedResources() {
-        return this.failedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().failedResources();
     }
 
     /**
@@ -139,7 +102,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the skippedResources value.
      */
     public Integer skippedResources() {
-        return this.skippedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().skippedResources();
     }
 
     /**
@@ -148,7 +111,7 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @return the unsupportedResources value.
      */
     public Integer unsupportedResources() {
-        return this.unsupportedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().unsupportedResources();
     }
 
     /**
@@ -157,5 +120,8 @@ public class RegulatoryComplianceAssessmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

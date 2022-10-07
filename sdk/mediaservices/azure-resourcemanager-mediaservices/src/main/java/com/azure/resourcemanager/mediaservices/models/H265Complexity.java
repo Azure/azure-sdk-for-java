@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H265Complexity. */
+/**
+ * Tells the encoder how to choose its encoding settings. Quality will provide for a higher compression ratio but at a
+ * higher cost and longer compute time. Speed will produce a relatively larger file but is faster and more economical.
+ * The default value is Balanced.
+ */
 public final class H265Complexity extends ExpandableStringEnum<H265Complexity> {
     /** Static value Speed for H265Complexity. */
     public static final H265Complexity SPEED = fromString("Speed");

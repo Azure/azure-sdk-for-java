@@ -3,7 +3,7 @@
 
 package com.azure.json.contract;
 
-import com.azure.json.IOExceptionFunction;
+import com.azure.json.ReadValueCallback;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -54,11 +54,11 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
     public <T> void basicOperations(String json, T expectedValue,
-        IOExceptionFunction<JsonReader, T> function) throws IOException {
+        ReadValueCallback<JsonReader, T> function) throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
-            T actualValue = assertDoesNotThrow(() -> function.apply(reader));
+            T actualValue = assertDoesNotThrow(() -> function.read(reader));
 
             assertEquals(expectedValue, actualValue);
         }
@@ -108,11 +108,11 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
     public void binaryOperations(String json, byte[] expectedValue,
-        IOExceptionFunction<JsonReader, byte[]> function) throws IOException {
+        ReadValueCallback<JsonReader, byte[]> function) throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
-            byte[] actualValue = assertDoesNotThrow(() -> function.apply(reader));
+            byte[] actualValue = assertDoesNotThrow(() -> function.read(reader));
 
             assertArrayEquals(expectedValue, actualValue);
         }
@@ -621,8 +621,8 @@ public abstract class JsonReaderContractTests {
         assertEquals(expectedInitialToken, reader.currentToken());
     }
 
-    private static <T> IOExceptionFunction<JsonReader, T> createJsonConsumer(
-        IOExceptionFunction<JsonReader, T> func) {
+    private static <T> ReadValueCallback<JsonReader, T> createJsonConsumer(
+        ReadValueCallback<JsonReader, T> func) {
         return func;
     }
 
