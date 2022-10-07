@@ -89,10 +89,6 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTracingContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateQueueName;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateRuleName;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateSubscriptionName;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateTopicName;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
@@ -1416,27 +1412,28 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<QueueProperties>> createQueueWithResponse(String queueName, CreateQueueOptions createQueueOptions,
         Context context) {
+        if (CoreUtils.isNullOrEmpty(queueName)) {
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be empty."));
+        }
+        if (createQueueOptions == null) {
+            return monoError(LOGGER, new NullPointerException("'createQueueOptions' cannot be null."));
+        }
+        context = context == null ? Context.NONE : context;
+        final Context contextWithHeaders
+            = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+
+        final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
+        if (forwardTo != null) {
+            createQueueOptions.setForwardTo(forwardTo);
+        }
+        final String forwardDlq
+            = getForwardDlqEntity(createQueueOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        if (forwardDlq != null) {
+            createQueueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
+        final CreateQueueBody createEntity =
+            getCreateQueueBody(EntityHelper.getQueueDescription(createQueueOptions));
         try {
-            validateQueueName(queueName);
-            if (createQueueOptions == null) {
-                throw LOGGER.logExceptionAsError(new NullPointerException("'createQueueOptions' cannot be null."));
-            }
-            context = context == null ? Context.NONE : context;
-            final Context contextWithHeaders
-                = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
-
-            final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
-            if (forwardTo != null) {
-                createQueueOptions.setForwardTo(forwardTo);
-            }
-            final String forwardDlq
-                = getForwardDlqEntity(createQueueOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-            if (forwardDlq != null) {
-                createQueueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
-            }
-            final CreateQueueBody createEntity =
-                getCreateQueueBody(EntityHelper.getQueueDescription(createQueueOptions));
-
             return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeQueue);
@@ -1456,15 +1453,23 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<RuleProperties>> createRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         CreateRuleOptions ruleOptions, Context context) {
-        try {
-            validateTopicName(topicName);
-            validateSubscriptionName(subscriptionName);
-            validateRuleName(ruleName);
-            if (ruleOptions == null) {
-                throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
-            }
-            final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
 
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+        }
+
+        if (CoreUtils.isNullOrEmpty(ruleName)) {
+            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null or empty."));
+        }
+
+        if (ruleOptions == null) {
+            return monoError(LOGGER, new NullPointerException("'ruleOptions' cannot be null."));
+        }
+        final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
+        try {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
                 null, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
@@ -1485,29 +1490,34 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions, Context context) {
-        try {
-            validateTopicName(topicName);
-            validateSubscriptionName(subscriptionName);
-            if (subscriptionOptions == null) {
-                throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
-            }
-            context = context == null ? Context.NONE : context;
-            final Context contextWithHeaders
-                = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
 
-            final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
-            if (forwardTo != null) {
-                subscriptionOptions.setForwardTo(forwardTo);
-            }
-            final String forwardDlq
-                = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
-            if (forwardDlq != null) {
-                subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
-            }
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+        }
 
-            final CreateSubscriptionBody createEntity =
+        if (subscriptionOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
+        }
+        context = context == null ? Context.NONE : context;
+        final Context contextWithHeaders
+            = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+
+        final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
+        if (forwardTo != null) {
+            subscriptionOptions.setForwardTo(forwardTo);
+        }
+        final String forwardDlq
+            = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        if (forwardDlq != null) {
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
+        }
+
+        final CreateSubscriptionBody createEntity =
                 getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
-
+        try {
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
                 null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
@@ -1527,13 +1537,14 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<TopicProperties>> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
         Context context) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
+        if (topicOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
+        }
+        final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
         try {
-            validateTopicName(topicName);
-            if (topicOptions == null) {
-                throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
-            }
-            final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
-
             return entityClient.putWithResponseAsync(topicName, createEntity, null, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
@@ -1551,9 +1562,10 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes when the queue is deleted.
      */
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
+        if (CoreUtils.isNullOrEmpty(queueName)) {
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be null or empty."));
+        }
         try {
-            validateQueueName(queueName);
-
             return entityClient.deleteWithResponseAsync(queueName, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1575,10 +1587,18 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         Context context) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
+
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+        }
+
+        if (CoreUtils.isNullOrEmpty(ruleName)) {
+            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null or empty."));
+        }
         try {
-            validateTopicName(topicName);
-            validateSubscriptionName(subscriptionName);
-            validateRuleName(ruleName);
 
             return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
@@ -1599,9 +1619,16 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
     Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
+
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+        }
+
         try {
-            validateSubscriptionName(subscriptionName);
-            validateTopicName(topicName);
+
             return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
                 getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
@@ -1621,8 +1648,10 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with the created {@link TopicProperties}.
      */
     Mono<Response<Void>> deleteTopicWithResponse(String topicName, Context context) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
         try {
-            validateTopicName(topicName);
             return entityClient.deleteWithResponseAsync(topicName, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1667,9 +1696,10 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     <T> Mono<Response<T>> getQueueWithResponse(String queueName, Context context,
         Function<QueueProperties, T> mapper) {
+        if (CoreUtils.isNullOrEmpty(queueName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
         try {
-            validateQueueName(queueName);
-
             return entityClient.getWithResponseAsync(queueName, true, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
@@ -1714,9 +1744,15 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
         Function<SubscriptionProperties, T> mapper) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
+
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+        }
         try {
-            validateTopicName(topicName);
-            validateSubscriptionName(subscriptionName);
+
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
                     getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
@@ -1774,8 +1810,10 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     <T> Mono<Response<T>> getTopicWithResponse(String topicName, Context context,
         Function<TopicProperties, T> mapper) {
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+        }
         try {
-            validateTopicName(topicName);
 
             return entityClient.getWithResponseAsync(topicName, true, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
