@@ -16,9 +16,10 @@ public class ElevationCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.elevation.models");
+        PackageCustomization implementationModels = customization.getPackage("com.azure.maps.elevation.implementation.models");
         
         // customize elevation
-        customizeElevation(models);
+        customizeElevation(implementationModels);
 
         // customize elevation result
         customizeElevationResult(models);
@@ -26,24 +27,8 @@ public class ElevationCustomization extends Customization {
     }
 
     // Customizes the Elevation class
-    private void customizeElevation(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("Elevation");
-        classCustomization.removeMethod("getCoordinate");
-        // get coordinate
-        classCustomization.addMethod(
-            "public GeoPosition getCoordinate() {\n" +
-            "       return new GeoPosition(this.coordinate.getLongitude(), this.coordinate.getLatitude());\n" +
-            "}")
-            .getJavadoc()
-            .setDescription("Return the coordinate.")
-            .setReturn("Returns a {@link GeoPosition} coordinate.");
-        classCustomization.addImports("com.azure.core.models.GeoPosition");
-        classCustomization.removeMethod("setCoordinate");
-        classCustomization.addConstructor(
-            "private Elevation() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default Elevation constructor to private");
+    private void customizeElevation(PackageCustomization implementationModels) {
+        ClassCustomization classCustomization = implementationModels.getClass("Elevation");
         MethodCustomization methodCustomization = classCustomization.getMethod("getElevationInMeter");
         methodCustomization.rename("getElevationInMeters");
     }
@@ -56,5 +41,19 @@ public class ElevationCustomization extends Customization {
             "}")
             .getJavadoc()
             .setDescription("Set default ElevationResult constructor to private");
+        classCustomization.removeMethod("getElevations");
+        classCustomization.addMethod(
+            "public List<GeoPosition> getElevations() {\n" +
+            "   List<GeoPosition> toreturn = new ArrayList<>();\n" +
+            "   for (Elevation e : this.elevations) {\n" +
+            "       toreturn.add(new GeoPosition(e.getCoordinate().getLatitude(), e.getCoordinate().getLongitude(), (double) e.getElevationInMeters()));\n" +
+            "   }\n" +
+            "   return toreturn;\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Get the elevations property: The response for point/points elevation API. The result will be in same sequence of points listed in request.")
+            .setReturn("the elevations value");
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
+        classCustomization.addImports("java.util.ArrayList");
     }
 }

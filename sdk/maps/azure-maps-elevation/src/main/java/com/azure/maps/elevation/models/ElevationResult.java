@@ -5,7 +5,10 @@
 package com.azure.maps.elevation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoPosition;
+import com.azure.maps.elevation.implementation.models.Elevation;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The response from a successful Get Data for Bounding Box API. */
@@ -25,9 +28,17 @@ public final class ElevationResult {
      * Get the elevations property: The response for point/points elevation API. The result will be in same sequence of
      * points listed in request.
      *
-     * @return the elevations value.
+     * @return the elevations value
      */
-    public List<Elevation> getElevations() {
-        return this.elevations;
+    public List<GeoPosition> getElevations() {
+        List<GeoPosition> toreturn = new ArrayList<>();
+        for (Elevation e : this.elevations) {
+            toreturn.add(
+                    new GeoPosition(
+                            e.getCoordinate().getLatitude(),
+                            e.getCoordinate().getLongitude(),
+                            (double) e.getElevationInMeters()));
+        }
+        return toreturn;
     }
 }
