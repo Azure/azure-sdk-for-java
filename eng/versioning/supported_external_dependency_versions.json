@@ -38,6 +38,19 @@
     { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.12.0" },
     { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.12.0" }
   ],
+  "jackson_2.14":
+  [
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.core:jackson-core": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.core:jackson-databind": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-avro": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.14.0-rc1" },
+    { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.14.0-rc1" }
+  ],
   "reactor_2022":
   [
     { "io.projectreactor.netty:reactor-netty": "1.1.0-M6" },
