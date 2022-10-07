@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
@@ -18,11 +19,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -62,6 +66,12 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+            RepeatabilityHeaders repeatabilityHeaders = createCallOptions.getRepeatabilityHeaders();
+            assertNotNull(repeatabilityHeaders);
+            assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
+            assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
+            assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
+
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);

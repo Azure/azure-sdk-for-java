@@ -3,12 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -19,12 +21,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -93,8 +98,17 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             // add another receiver to the call
             targets.clear();
             targets.add(anotherReceiver);
-            AddParticipantsResult addParticipantsResult = createCallResult.getCallConnectionAsync().addParticipants(targets).block();
-            assertNotNull(addParticipantsResult);
+            AddParticipantsOptions addParticipantsOptions = new AddParticipantsOptions(targets);
+            Response<AddParticipantsResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantsWithResponse(addParticipantsOptions).block();
+            assertNotNull(addParticipantsResultResponse);
+
+            // check repeatabilityHeaders
+            RepeatabilityHeaders repeatabilityHeaders = addParticipantsOptions.getRepeatabilityHeaders();
+            assertNotNull(repeatabilityHeaders);
+            assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
+            assertInstanceOf(String.class, repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+            assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
+            assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
 
             // wait for the incomingCallContext on another receiver
             String anotherIncomingCallContext = waitForIncomingCallContext(anotherUniqueId, Duration.ofSeconds(10));

@@ -13,18 +13,21 @@ import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZonedDateTime;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -90,10 +93,17 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        Response<Void> hangUpResponse = callConnectionAsync.hangUpWithResponse(new HangUpOptions(true)).block();
+        HangUpOptions hangUpOptions = new HangUpOptions(true);
+        Response<Void> hangUpResponse = callConnectionAsync.hangUpWithResponse(hangUpOptions).block();
 
         assertNotNull(hangUpResponse);
         assertEquals(204, hangUpResponse.getStatusCode());
+
+        RepeatabilityHeaders repeatabilityHeaders = hangUpOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -171,12 +181,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        TransferToParticipantCallOptions options = new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
-            .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferToParticipantCallWithResponse(options).block();
-        assertNotNull(transferCallResultResponse);
-
-        TransferCallResult transferCallResult = transferCallResultResponse.getValue();
+        TransferCallResult transferCallResult = callConnectionAsync.transferToParticipantCall(new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
     }
@@ -190,13 +195,19 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferToParticipantCallWithResponse(
-            new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
-                .setOperationContext(CALL_OPERATION_CONTEXT)).block();
+        TransferToParticipantCallOptions transferToParticipantCallOptions = new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferToParticipantCallWithResponse(transferToParticipantCallOptions).block();
 
         assertNotNull(transferCallResultResponse);
         assertEquals(202, transferCallResultResponse.getStatusCode());
         assertNotNull(transferCallResultResponse.getValue());
+
+        RepeatabilityHeaders repeatabilityHeaders = transferToParticipantCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -207,14 +218,9 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        Response<AddParticipantsResult> addParticipantsResultResponse = callConnectionAsync.addParticipantsWithResponse(
-            new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
-                new CommunicationUserIdentifier(CALL_TARGET_ID))))
-                .setOperationContext(CALL_OPERATION_CONTEXT)
-        ).block();
-        assertNotNull(addParticipantsResultResponse);
+        AddParticipantsResult addParticipantsResult = callConnectionAsync.addParticipants(
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID)))).block();
 
-        AddParticipantsResult addParticipantsResult = addParticipantsResultResponse.getValue();
         assertNotNull(addParticipantsResult);
         assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
             .getParticipants()
@@ -231,14 +237,20 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        Response<AddParticipantsResult> addParticipantsResultResponse = callConnectionAsync.addParticipantsWithResponse(
-            new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
-                new CommunicationUserIdentifier(CALL_TARGET_ID))))
-                .setOperationContext(CALL_OPERATION_CONTEXT)).block();
+        AddParticipantsOptions addParticipantsOptions = new AddParticipantsOptions(new ArrayList<>(Arrays.asList(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<AddParticipantsResult> addParticipantsResultResponse = callConnectionAsync.addParticipantsWithResponse(addParticipantsOptions).block();
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
         assertNotNull(addParticipantsResultResponse.getValue());
+
+        RepeatabilityHeaders repeatabilityHeaders = addParticipantsOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -276,5 +288,11 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
+
+        RepeatabilityHeaders repeatabilityHeaders = removeParticipantsOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 }

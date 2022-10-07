@@ -32,6 +32,7 @@ public class RejectCallOptions {
      */
     public RejectCallOptions(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
+        callRejectReason = CallRejectReason.NONE;
     }
 
     /**

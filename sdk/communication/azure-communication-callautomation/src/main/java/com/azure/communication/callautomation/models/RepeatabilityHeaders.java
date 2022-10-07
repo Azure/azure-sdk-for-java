@@ -5,10 +5,12 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.UUID;
 
 /**
@@ -25,7 +27,7 @@ public final class RepeatabilityHeaders {
     /**
      * The value should be the date and time at which the request was first created.
      */
-    private final Date repeatabilityFirstSent;
+    private final ZonedDateTime repeatabilityFirstSent;
 
     /**
      * Constructor
@@ -34,11 +36,9 @@ public final class RepeatabilityHeaders {
      *                               It is a version 4 (random) UUID.
      * @param repeatabilityFirstSent The value should be the date and time at which the request was first created.
      */
-    public RepeatabilityHeaders(UUID repeatabilityRequestId, Date repeatabilityFirstSent) {
-        // Defensive copy since Date is a mutable class.
-        repeatabilityFirstSent = new Date(repeatabilityFirstSent.getTime());
+    public RepeatabilityHeaders(UUID repeatabilityRequestId, Instant repeatabilityFirstSent) {
         this.repeatabilityRequestId = repeatabilityRequestId;
-        this.repeatabilityFirstSent = repeatabilityFirstSent;
+        this.repeatabilityFirstSent = repeatabilityFirstSent.atZone(ZoneId.of("UTC"));
     }
 
     /**
@@ -55,18 +55,15 @@ public final class RepeatabilityHeaders {
      * @return the repeatabilityFirstSent in a string with IMF-fixdate form of HTTP-date format.
      */
     public String getRepeatabilityFirstSentInHttpDateFormat() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return dateFormat.format(repeatabilityFirstSent);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
+        return repeatabilityFirstSent.format(formatter);
     }
 
     /**
      * Get the repeatabilityFirstSent : The value should be the date and time at which the request was first created.
      * @return the repeatabilityFirstSent.
      */
-    public Date getRepeatabilityFirstSent() {
-        // Defensive copy
-        return new Date(repeatabilityFirstSent.getTime());
+    public ZonedDateTime getRepeatabilityFirstSent() {
+        return repeatabilityFirstSent;
     }
 }

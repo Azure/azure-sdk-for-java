@@ -42,7 +42,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -143,7 +143,7 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             if (hangUpOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 hangUpOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -273,7 +273,7 @@ public class CallConnectionAsync {
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             if (transferToParticipantCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 transferToParticipantCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -333,7 +333,7 @@ public class CallConnectionAsync {
             }
 
             if (addParticipantsOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 addParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -381,7 +381,7 @@ public class CallConnectionAsync {
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
             if (removeParticipantsOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 removeParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 

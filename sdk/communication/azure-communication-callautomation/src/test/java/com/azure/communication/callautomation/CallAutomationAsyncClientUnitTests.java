@@ -10,11 +10,13 @@ import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZonedDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -33,13 +36,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
-        callOptions.setSubject(CALL_SUBJECT);
 
-        Response<CreateCallResult> createCallResultResponse = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
-        assertNotNull(createCallResultResponse);
-        CreateCallResult createCallResult = createCallResultResponse.getValue();
-
+        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(caller, targets, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
     }
 
@@ -62,6 +60,12 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
         assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+
+        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -94,6 +98,12 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
         assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+
+        RepeatabilityHeaders repeatabilityHeaders = answerCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -121,6 +131,12 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(redirectCallResponse);
         assertEquals(204, redirectCallResponse.getStatusCode());
+
+        RepeatabilityHeaders repeatabilityHeaders = redirectCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -148,5 +164,11 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(rejectCallResponse);
         assertEquals(204, rejectCallResponse.getStatusCode());
+
+        RepeatabilityHeaders repeatabilityHeaders = rejectCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 }

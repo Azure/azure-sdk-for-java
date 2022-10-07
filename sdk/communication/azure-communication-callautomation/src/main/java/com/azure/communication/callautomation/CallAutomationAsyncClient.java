@@ -47,7 +47,7 @@ import reactor.core.publisher.Mono;
 
 
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -126,7 +126,7 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
             if (createCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 createCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -228,7 +228,7 @@ public final class CallAutomationAsyncClient {
                 .setCallbackUri(answerCallOptions.getCallbackUrl());
 
             if (answerCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 answerCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -297,7 +297,7 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget()));
 
             if (redirectCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 redirectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
@@ -349,7 +349,7 @@ public final class CallAutomationAsyncClient {
             }
 
             if (rejectCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), new Date());
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 rejectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
 
