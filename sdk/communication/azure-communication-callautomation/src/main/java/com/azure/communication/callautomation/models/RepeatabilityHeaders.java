@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
