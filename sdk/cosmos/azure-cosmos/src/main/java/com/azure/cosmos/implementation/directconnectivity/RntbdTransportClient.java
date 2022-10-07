@@ -769,12 +769,12 @@ public class RntbdTransportClient extends TransportClient {
                     }
                 } finally {
                     if (options == null) {
-                      //  logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
+                        logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
                         DEFAULT_OPTIONS = new Options(ConnectionPolicy.getDefaultPolicy());
                     } else {
-//                        logger.info("Updated default Direct TCP options from system property {}: {}",
-//                            DEFAULT_OPTIONS_PROPERTY_NAME,
-//                            options);
+                        logger.info("Updated default Direct TCP options from system property {}: {}",
+                            DEFAULT_OPTIONS_PROPERTY_NAME,
+                            options);
                         DEFAULT_OPTIONS = options;
                     }
                 }
