@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Specify action need to be taken when rule type is Alert. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName(
     "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources"
         + ".ScheduledQueryRules.AlertingAction")
-@JsonFlatten
 @Fluent
-public class AlertingAction extends Action {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertingAction.class);
-
+public final class AlertingAction extends Action {
     /*
      * Severity of the alert
      */
@@ -135,7 +130,7 @@ public class AlertingAction extends Action {
     public void validate() {
         super.validate();
         if (severity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property severity in model AlertingAction"));
         }
@@ -143,11 +138,13 @@ public class AlertingAction extends Action {
             aznsAction().validate();
         }
         if (trigger() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property trigger in model AlertingAction"));
         } else {
             trigger().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AlertingAction.class);
 }

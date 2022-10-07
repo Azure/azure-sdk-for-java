@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
@@ -22,8 +24,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Async sample for analyzing commonly found license fields from a local file input stream of an license identity
- * document. See fields found on an license here: https://aka.ms/formrecognizer/iddocumentfields
+ * Async sample for analyzing commonly found license fields from a local file input stream of a license identity
+ * document. See fields found on license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsAsync {
 
@@ -44,10 +46,10 @@ public class AnalyzeIdentityDocumentsAsync {
             + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller
+        PollerFlux<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
-            BinaryData.fromStream(new ByteArrayInputStream(fileContent)),
-            fileContent.length);
+            BinaryData.fromStream(new ByteArrayInputStream(fileContent))
+        );
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()

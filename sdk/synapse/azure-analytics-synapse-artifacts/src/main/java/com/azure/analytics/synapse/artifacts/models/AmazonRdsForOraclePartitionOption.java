@@ -31,7 +31,11 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
         return fromString(name, AmazonRdsForOraclePartitionOption.class);
     }
 
-    /** @return known AmazonRdsForOraclePartitionOption values. */
+    /**
+     * Gets known AmazonRdsForOraclePartitionOption values.
+     *
+     * @return known AmazonRdsForOraclePartitionOption values.
+     */
     public static Collection<AmazonRdsForOraclePartitionOption> values() {
         return values(AmazonRdsForOraclePartitionOption.class);
     }

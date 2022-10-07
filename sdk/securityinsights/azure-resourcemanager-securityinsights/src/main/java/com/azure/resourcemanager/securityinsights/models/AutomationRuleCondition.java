@@ -16,7 +16,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "conditionType",
     defaultImpl = AutomationRuleCondition.class)
 @JsonTypeName("AutomationRuleCondition")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Property", value = PropertyConditionProperties.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Boolean", value = BooleanConditionProperties.class),
+    @JsonSubTypes.Type(name = "PropertyArrayChanged", value = PropertyArrayChangedConditionProperties.class),
+    @JsonSubTypes.Type(name = "PropertyArray", value = PropertyArrayConditionProperties.class),
+    @JsonSubTypes.Type(name = "PropertyChanged", value = PropertyChangedConditionProperties.class),
+    @JsonSubTypes.Type(name = "Property", value = PropertyConditionProperties.class)
+})
 @Immutable
 public class AutomationRuleCondition {
     /**

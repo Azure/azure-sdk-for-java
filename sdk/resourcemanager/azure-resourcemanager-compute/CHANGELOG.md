@@ -1,6 +1,6 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Property `protectedSettingsFromKeyVault` in `VirtualMachineExtensionUpdate` changed from `Object` to `KeyVaultSecretReference`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-01`.
+
+## 2.18.0 (2022-08-26)
+
+### Bugs Fixed
+
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
 
 ## 2.17.0 (2022-07-25)
 

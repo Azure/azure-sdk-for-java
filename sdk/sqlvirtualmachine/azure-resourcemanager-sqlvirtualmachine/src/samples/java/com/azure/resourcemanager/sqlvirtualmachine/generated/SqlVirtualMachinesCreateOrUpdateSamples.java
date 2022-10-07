@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.resourcemanager.sqlvirtualmachine.models.AdditionalFeaturesServerConfigurations;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentDayOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupDaysOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.BackupScheduleType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ConnectivityType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DayOfWeek;
-import com.azure.resourcemanager.sqlvirtualmachine.models.DaysOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.FullBackupFrequencyType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.KeyVaultCredentialSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.LeastPrivilegeMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Schedule;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ServerConfigurationsManagementSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlConnectivityUpdateSettings;
@@ -35,7 +37,7 @@ import java.util.Arrays;
 /** Samples for SqlVirtualMachines CreateOrUpdate. */
 public final class SqlVirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationEXTEND.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationEXTEND.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Storage Configuration Settings to EXTEND Data, Log or
@@ -61,7 +63,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateVirtualMachineWithVMGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateVirtualMachineWithVMGroup.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine and joins it to a SQL virtual machine group.
@@ -82,11 +84,12 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withClusterBootstrapAccountPassword("<Password>")
                     .withClusterOperatorAccountPassword("<Password>")
                     .withSqlServiceAccountPassword("<Password>"))
+            .withWsfcStaticIp("10.0.0.7")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineAutomatedBackupWeekly.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineAutomatedBackupWeekly.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Automated Back up Settings with Weekly and Days of the
@@ -125,7 +128,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withBackupSystemDbs(true)
                     .withBackupScheduleType(BackupScheduleType.MANUAL)
                     .withFullBackupFrequency(FullBackupFrequencyType.WEEKLY)
-                    .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.FRIDAY))
+                    .withDaysOfWeek(Arrays.asList(AutoBackupDaysOfWeek.MONDAY, AutoBackupDaysOfWeek.FRIDAY))
                     .withFullBackupStartTime(6)
                     .withFullBackupWindowHours(11)
                     .withLogBackupFrequency(10))
@@ -151,7 +154,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationNEW.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationNEW.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Storage Configuration Settings to NEW Data, Log and
@@ -190,7 +193,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineMAX.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineMAX.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine with max parameters.
@@ -208,6 +211,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm")
             .withSqlServerLicenseType(SqlServerLicenseType.PAYG)
             .withSqlManagement(SqlManagementMode.FULL)
+            .withLeastPrivilegeMode(LeastPrivilegeMode.ENABLED)
             .withSqlImageSku(SqlImageSku.ENTERPRISE)
             .withAutoPatchingSettings(
                 new AutoPatchingSettings()
@@ -254,7 +258,9 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                             .withMaxDop(8)
                             .withIsOptimizeForAdHocWorkloadsEnabled(true)
                             .withMinServerMemoryMB(0)
-                            .withMaxServerMemoryMB(128)))
+                            .withMaxServerMemoryMB(128)
+                            .withIsLpimEnabled(true)
+                            .withIsIfiEnabled(true)))
             .withAssessmentSettings(
                 new AssessmentSettings()
                     .withEnable(true)
@@ -263,13 +269,14 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                         new Schedule()
                             .withEnable(true)
                             .withWeeklyInterval(1)
-                            .withDayOfWeek(DayOfWeek.SUNDAY)
+                            .withDayOfWeek(AssessmentDayOfWeek.SUNDAY)
                             .withStartTime("23:17")))
+            .withEnableAutomaticUpgrade(true)
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineMIN.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineMIN.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine with min parameters.

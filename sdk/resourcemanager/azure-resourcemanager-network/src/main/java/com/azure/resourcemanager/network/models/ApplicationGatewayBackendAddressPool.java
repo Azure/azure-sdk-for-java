@@ -21,8 +21,7 @@ public final class ApplicationGatewayBackendAddressPool extends SubResource {
     private ApplicationGatewayBackendAddressPoolPropertiesFormat innerProperties;
 
     /*
-     * Name of the backend address pool that is unique within an Application
-     * Gateway.
+     * Name of the backend address pool that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

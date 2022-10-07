@@ -12,45 +12,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapOdpLinkedServiceTypeProperties {
     /*
-     * Host name of the SAP instance where the table is located. Type: string
-     * (or Expression with resultType string).
+     * Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
 
     /*
-     * System number of the SAP system where the table is located. (Usually a
-     * two-digit decimal number represented as a string.) Type: string (or
-     * Expression with resultType string).
+     * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a
+     * string.) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "systemNumber")
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the SAP system where the table is located.
-     * (Usually a three-digit decimal number represented as a string) Type:
-     * string (or Expression with resultType string).
+     * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number
+     * represented as a string) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
-     * Language of the SAP system where the table is located. The default value
-     * is EN. Type: string (or Expression with resultType string).
+     * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "language")
     private Object language;
 
     /*
-     * SystemID of the SAP system where the table is located. Type: string (or
-     * Expression with resultType string).
+     * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "systemId")
     private Object systemId;
 
     /*
-     * Username to access the SAP server where the table is located. Type:
-     * string (or Expression with resultType string).
+     * Username to access the SAP server where the table is located. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -62,80 +58,73 @@ public final class SapOdpLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
+     * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "messageServer")
     private Object messageServer;
 
     /*
-     * The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
+     * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "messageServerService")
     private Object messageServerService;
 
     /*
-     * SNC activation indicator to access the SAP server where the table is
-     * located. Must be either 0 (off) or 1 (on). Type: string (or Expression
-     * with resultType string).
+     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncMode")
     private Object sncMode;
 
     /*
-     * Initiator's SNC name to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
+     * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "sncMyName")
     private Object sncMyName;
 
     /*
-     * Communication partner's SNC name to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
+     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "sncPartnerName")
     private Object sncPartnerName;
 
     /*
-     * External security product's library to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
+     * External security product's library to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "sncLibraryPath")
     private Object sncLibraryPath;
 
     /*
-     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type:
-     * string (or Expression with resultType string).
+     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "sncQop")
     private Object sncQop;
 
     /*
-     * SNC X509 certificate file path. Type: string (or Expression with
-     * resultType string).
+     * SNC X509 certificate file path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "x509CertificatePath")
     private Object x509CertificatePath;
 
     /*
-     * The Logon Group for the SAP System. Type: string (or Expression with
-     * resultType string).
+     * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logonGroup")
     private Object logonGroup;
 
     /*
-     * The subscriber name. Type: string (or Expression with resultType
-     * string).
+     * The subscriber name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "subscriberName")
     private Object subscriberName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

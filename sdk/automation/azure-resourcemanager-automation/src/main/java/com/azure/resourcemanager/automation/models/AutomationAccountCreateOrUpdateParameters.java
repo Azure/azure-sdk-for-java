@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.AutomationAccountCreateOrUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update automation account operation. */
-@JsonFlatten
 @Fluent
-public class AutomationAccountCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationAccountCreateOrUpdateParameters.class);
+public final class AutomationAccountCreateOrUpdateParameters {
+    /*
+     * Gets or sets account create or update properties.
+     */
+    @JsonProperty(value = "properties")
+    private AutomationAccountCreateOrUpdateProperties innerProperties;
 
     /*
      * Gets or sets name of the resource.
@@ -30,16 +32,26 @@ public class AutomationAccountCreateOrUpdateParameters {
     private String location;
 
     /*
+     * Sets the identity property for automation account
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /*
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets account SKU.
+    /**
+     * Get the innerProperties property: Gets or sets account create or update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sku")
-    private Sku sku;
+    private AutomationAccountCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets name of the resource.
@@ -82,6 +94,26 @@ public class AutomationAccountCreateOrUpdateParameters {
     }
 
     /**
+     * Get the identity property: Sets the identity property for automation account.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Sets the identity property for automation account.
+     *
+     * @param identity the identity value to set.
+     * @return the AutomationAccountCreateOrUpdateParameters object itself.
+     */
+    public AutomationAccountCreateOrUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the tags property: Gets or sets the tags attached to the resource.
      *
      * @return the tags value.
@@ -107,7 +139,7 @@ public class AutomationAccountCreateOrUpdateParameters {
      * @return the sku value.
      */
     public Sku sku() {
-        return this.sku;
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
     /**
@@ -117,7 +149,81 @@ public class AutomationAccountCreateOrUpdateParameters {
      * @return the AutomationAccountCreateOrUpdateParameters object itself.
      */
     public AutomationAccountCreateOrUpdateParameters withSku(Sku sku) {
-        this.sku = sku;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationAccountCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Set the encryption properties for the automation account.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Set the encryption properties for the automation account.
+     *
+     * @param encryption the encryption value to set.
+     * @return the AutomationAccountCreateOrUpdateParameters object itself.
+     */
+    public AutomationAccountCreateOrUpdateParameters withEncryption(EncryptionProperties encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationAccountCreateOrUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
+     * allowed from the public internet.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public Boolean publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
+     * allowed from the public internet.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the AutomationAccountCreateOrUpdateParameters object itself.
+     */
+    public AutomationAccountCreateOrUpdateParameters withPublicNetworkAccess(Boolean publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationAccountCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the AutomationAccountCreateOrUpdateParameters object itself.
+     */
+    public AutomationAccountCreateOrUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomationAccountCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -127,8 +233,11 @@ public class AutomationAccountCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

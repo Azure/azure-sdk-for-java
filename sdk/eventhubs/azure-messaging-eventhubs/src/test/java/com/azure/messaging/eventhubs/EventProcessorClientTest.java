@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -147,7 +147,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
                     .addData("scope", (AutoCloseable) () -> {
                     })
-                    .addData(PARENT_SPAN_KEY, "value2");
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -239,7 +239,7 @@ public class EventProcessorClientTest {
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -303,7 +303,7 @@ public class EventProcessorClientTest {
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -628,7 +628,7 @@ public class EventProcessorClientTest {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 

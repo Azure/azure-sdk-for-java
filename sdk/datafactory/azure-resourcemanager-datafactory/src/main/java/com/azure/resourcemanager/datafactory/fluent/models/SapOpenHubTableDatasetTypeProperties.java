@@ -12,24 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapOpenHubTableDatasetTypeProperties {
     /*
-     * The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
+     * The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "openHubDestinationName", required = true)
     private Object openHubDestinationName;
 
     /*
-     * Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "excludeLastRequest")
     private Object excludeLastRequest;
 
     /*
-     * The ID of request for delta loading. Once it is set, only data with
-     * requestId larger than the value of this property will be retrieved. The
-     * default value is 0. Type: integer (or Expression with resultType integer
-     * ).
+     * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
+     * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
     @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;

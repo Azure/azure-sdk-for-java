@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationProfileAssignments ListByResourceGroup. */
 public final class ConfigurationProfileAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsByResourceGroup.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByResourceGroup.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup.

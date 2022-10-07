@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SalesforceSourceReadBehavior. */
+/** The read behavior for the operation. Default is Query. */
 public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<SalesforceSourceReadBehavior> {
     /** Static value Query for SalesforceSourceReadBehavior. */
     public static final SalesforceSourceReadBehavior QUERY = fromString("Query");

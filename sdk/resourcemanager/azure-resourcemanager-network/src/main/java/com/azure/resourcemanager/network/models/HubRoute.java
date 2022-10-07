@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class HubRoute {
     /*
-     * The name of the Route that is unique within a RouteTable. This name can
-     * be used to access this route.
+     * The name of the Route that is unique within a RouteTable. This name can be used to access this route.
      */
     @JsonProperty(value = "name", required = true)
     private String name;

@@ -35,7 +35,7 @@ public interface EntityQueryTemplates {
      * @return all entity query templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EntityQueryTemplate> list(
-        String resourceGroupName, String workspaceName, Constant74 kind, Context context);
+        String resourceGroupName, String workspaceName, Constant88 kind, Context context);
 
     /**
      * Gets an entity query.

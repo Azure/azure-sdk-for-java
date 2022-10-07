@@ -782,13 +782,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForChangeFeedState(
         ChangeFeedState state) {
 
@@ -969,5 +962,6 @@ public final class ModelBridgeInternal {
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();
+        CosmosClientTelemetryConfig.initialize();
     }
 }

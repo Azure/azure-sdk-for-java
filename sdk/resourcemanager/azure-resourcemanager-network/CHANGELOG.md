@@ -1,6 +1,6 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Since `2.10.0` (`api-version`:`2021-05-01`), `PublicIpAddress` of `Basic` Sku no longer supported configuring with Availability Zone.
+
+## 2.18.0 (2022-08-26)
+
+### Features Added
+
+- Supported setting default `WebApplicationFirewall` when selected `ApplicationGatewayTier` is `ApplicationGatewayTier.WAF_v2`.
+
+### Breaking Changes
+
+- Rename class `ExplicitProxySettings` to `ExplicitProxy`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
 
 ## 2.17.0 (2022-07-25)
 

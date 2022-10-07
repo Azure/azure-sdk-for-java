@@ -97,15 +97,7 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync() {
-        return getWithResponseAsync()
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -119,15 +111,7 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync(Context context) {
-        return getWithResponseAsync(context)
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

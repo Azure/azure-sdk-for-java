@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpConfigurationProfilePropertiesFormatInner {
     /*
-     * The reference to the subnet resource to create a container network
-     * interface ip configuration.
+     * The reference to the subnet resource to create a container network interface ip configuration.
      */
     @JsonProperty(value = "subnet")
     private SubnetInner subnet;

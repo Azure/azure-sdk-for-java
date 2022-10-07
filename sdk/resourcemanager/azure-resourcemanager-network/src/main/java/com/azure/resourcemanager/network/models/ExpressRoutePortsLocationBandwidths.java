@@ -7,7 +7,11 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoutePorts Location Bandwidths Real-time inventory of available ExpressRoute port bandwidths. */
+/**
+ * ExpressRoutePorts Location Bandwidths
+ *
+ * <p>Real-time inventory of available ExpressRoute port bandwidths.
+ */
 @Immutable
 public final class ExpressRoutePortsLocationBandwidths {
     /*

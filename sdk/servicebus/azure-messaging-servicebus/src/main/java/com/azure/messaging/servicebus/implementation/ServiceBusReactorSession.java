@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.adjustServerTimeout;
@@ -90,26 +92,27 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode) {
+            MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
+            String clientIdentifier) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
-        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter, clientIdentifier);
     }
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
-        String sessionId) {
+        String clientIdentifier, String sessionId) {
 
         final Map<Symbol, Object> filter = new HashMap<>();
         filter.put(SESSION_FILTER, sessionId);
 
-        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter, clientIdentifier);
     }
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, String transferEntityPath) {
+        AmqpRetryPolicy retry, String transferEntityPath, String clientIdentifier) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
@@ -118,7 +121,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         Map<Symbol, Object> linkProperties = new HashMap<>();
 
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
-
+        linkProperties.put(CLIENT_IDENTIFIER, clientIdentifier);
         if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
 
@@ -169,7 +172,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
-        Map<Symbol, Object> filter) {
+        Map<Symbol, Object> filter, String clientIdentifier) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -179,6 +182,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final Duration serverTimeout = adjustServerTimeout(timeout);
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
+        linkProperties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
         if (entityType != null) {
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
         }

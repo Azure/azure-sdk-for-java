@@ -29,7 +29,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkGatewayConnections CreateOrUpdate. */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VirtualNetworkGatewayConnectionCreate.json
      */
     /**
      * Sample code: CreateVirtualNetworkGatewayConnection_S2S.

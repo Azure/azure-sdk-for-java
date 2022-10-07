@@ -15,8 +15,8 @@ import java.util.Map;
 @Fluent
 public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     /*
-     * Case-sensitive path to folder that contains the U-SQL script. Type:
-     * string (or Expression with resultType string).
+     * Case-sensitive path to folder that contains the U-SQL script. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "scriptPath", required = true)
     private Object scriptPath;
@@ -28,18 +28,15 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     private LinkedServiceReference scriptLinkedService;
 
     /*
-     * The maximum number of nodes simultaneously used to run the job. Default
-     * value is 1. Type: integer (or Expression with resultType integer),
-     * minimum: 1.
+     * The maximum number of nodes simultaneously used to run the job. Default value is 1. Type: integer (or Expression
+     * with resultType integer), minimum: 1.
      */
     @JsonProperty(value = "degreeOfParallelism")
     private Object degreeOfParallelism;
 
     /*
-     * Determines which jobs out of all that are queued should be selected to
-     * run first. The lower the number, the higher the priority. Default value
-     * is 1000. Type: integer (or Expression with resultType integer), minimum:
-     * 1.
+     * Determines which jobs out of all that are queued should be selected to run first. The lower the number, the
+     * higher the priority. Default value is 1000. Type: integer (or Expression with resultType integer), minimum: 1.
      */
     @JsonProperty(value = "priority")
     private Object priority;
@@ -52,15 +49,14 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     private Map<String, Object> parameters;
 
     /*
-     * Runtime version of the U-SQL engine to use. Type: string (or Expression
-     * with resultType string).
+     * Runtime version of the U-SQL engine to use. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "runtimeVersion")
     private Object runtimeVersion;
 
     /*
-     * Compilation mode of U-SQL. Must be one of these values : Semantic, Full
-     * and SingleBox. Type: string (or Expression with resultType string).
+     * Compilation mode of U-SQL. Must be one of these values : Semantic, Full and SingleBox. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "compilationMode")
     private Object compilationMode;

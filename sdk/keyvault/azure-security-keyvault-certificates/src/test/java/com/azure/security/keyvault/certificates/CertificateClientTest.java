@@ -166,7 +166,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createCertificateEmptyName(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
+        assertResponseException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
             HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
@@ -207,15 +207,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             validateMapResponse(updatedTags, returnedTags);
         });
-    }
-
-    private void validateMapResponse(Map<String, String> expected, Map<String, String> returned) {
-        for (String key : expected.keySet()) {
-            String val = returned.get(key);
-            String expectedVal = expected.get(key);
-
-            assertEquals(expectedVal, val);
-        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -285,7 +276,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.getCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.getCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -320,7 +311,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void deleteCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.beginDeleteCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.beginDeleteCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -355,7 +346,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getDeletedCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.getDeletedCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.getDeletedCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -396,7 +387,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void recoverDeletedCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.beginRecoverDeletedCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.beginRecoverDeletedCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -424,7 +415,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void backupCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.backupCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.backupCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -515,7 +506,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             CertificateOperation certificateOperation = certificateClient.deleteCertificateOperation(certificateName);
 
             assertEquals("completed", certificateOperation.getStatus());
-            assertRestException(() -> certificateClient.deleteCertificateOperation(certificateName),
+            assertResponseException(() -> certificateClient.deleteCertificateOperation(certificateName),
                 ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
@@ -566,7 +557,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         byte[] keyBackupBytes = "non-existing".getBytes();
 
-        assertRestException(() -> certificateClient.restoreCertificateBackup(keyBackupBytes),
+        assertResponseException(() -> certificateClient.restoreCertificateBackup(keyBackupBytes),
             ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
 
     }
@@ -639,7 +630,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createIssuerEmptyName(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
+        assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
             HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
@@ -648,7 +639,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createIssuerNullProvider(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
+        assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
             HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
@@ -678,7 +669,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getCertificateIssuerNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.backupCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.backupCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -700,7 +691,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void deleteCertificateIssuerNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.backupCertificate("non-existing"),
+        assertResponseException(() -> certificateClient.backupCertificate("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -794,7 +785,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getCertificateOperationNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.getCertificateOperation("non-existing").poll(),
+        assertResponseException(() -> certificateClient.getCertificateOperation("non-existing").poll(),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -803,7 +794,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void getCertificatePolicyNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() -> certificateClient.getCertificatePolicy("non-existing"),
+        assertResponseException(() -> certificateClient.getCertificatePolicy("non-existing"),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -920,7 +911,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertRestException(() ->
+        assertResponseException(() ->
                 certificateClient.mergeCertificate(
                     new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
                         Arrays.asList("test".getBytes()))),

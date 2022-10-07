@@ -12,17 +12,18 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
+import com.azure.cosmos.implementation.changefeed.common.StatusCodeErrorType;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -44,7 +45,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
-    private final ChangeFeedObserver observer;
+    private final ChangeFeedObserver<ChangeFeedProcessorItem> observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
     private final Lease lease;
@@ -53,7 +54,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile String lastServerContinuationToken;
     private volatile boolean isFirstQueryForChangeFeeds;
 
-    public PartitionProcessorImpl(ChangeFeedObserver observer,
+    public PartitionProcessorImpl(ChangeFeedObserver<ChangeFeedProcessorItem> observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
                                   PartitionCheckpointer checkpointer,
@@ -66,12 +67,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
-        this.options.setMaxItemCount(settings.getMaxItemCount());
+        this.options.setMaxItemCount(settings.getMaxItemCount()).allVersionsAndDeletes();
     }
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
+        logger.info("Partition {}: processing task started with owner {}.",
+            this.lease.getLeaseToken(), this.lease.getOwner());
         this.isFirstQueryForChangeFeeds = true;
         this.checkpointer.setCancellationToken(cancellationToken);
 
@@ -96,7 +98,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
             })
             .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
-                                                                                this.options)
+                                                                                this.options, ChangeFeedProcessorItem.class)
                 .limitRequest(1)
             )
             .flatMap(documentFeedResponse -> {
@@ -116,7 +118,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getToken();
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
-                    logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
+                    logger.info("Partition {}: processing {} feeds with owner {}.",
+                        this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.debug(
                             "Exception was thrown from thread {}",
@@ -124,14 +127,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         .doOnSuccess((Void) -> {
                             this.options =
                                 CosmosChangeFeedRequestOptions
-                                    .createForProcessingFromContinuation(continuationToken);
+                                    .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
                 this.options =
                     CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuationToken);
+                        .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());
@@ -154,7 +157,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                     CosmosException clientException = (CosmosException) throwable;
                     logger.warn("CosmosException: Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
+                        this.lease.getFeedRange(), this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
                     StatusCodeErrorType docDbError =
                         ExceptionClassifier.classifyClientException(clientException);
 
@@ -239,20 +242,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
             })
             .then()
             .doFinally( any -> {
-                logger.info("Partition {}: processing task exited with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
+                logger.info("Partition {}: processing task exited with owner {}.",
+                    this.lease.getLeaseToken(), this.lease.getOwner());
             });
-    }
-
-    private FeedRangePartitionKeyRangeImpl getPkRangeFeedRangeFromStartState() {
-        final FeedRangeInternal feedRange = this.settings.getStartState().getFeedRange();
-        checkNotNull(feedRange, "FeedRange must not be null here.");
-
-        // TODO fabianm - move observer to FeedRange and remove this constraint for merge support
-        checkArgument(
-            feedRange instanceof FeedRangePartitionKeyRangeImpl,
-            "FeedRange must be a PkRangeId FeedRange when using Lease V1 contract.");
-
-        return (FeedRangePartitionKeyRangeImpl)feedRange;
     }
 
     @Override
@@ -261,11 +253,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
     }
 
     private Mono<Void> dispatchChanges(
-        FeedResponse<JsonNode> response,
+        FeedResponse<ChangeFeedProcessorItem> response,
         ChangeFeedState continuationState) {
 
-        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
-            this.getPkRangeFeedRangeFromStartState().getPartitionKeyRangeId(),
+        ChangeFeedObserverContext<ChangeFeedProcessorItem> context = new ChangeFeedObserverContextImpl<>(
+            lease.getLeaseToken(),
             response,
             continuationState,
             this.checkpointer);

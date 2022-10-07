@@ -11,43 +11,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TypeConversionSettings {
     /*
-     * Whether to allow data truncation when converting the data. Type: boolean
-     * (or Expression with resultType boolean).
+     * Whether to allow data truncation when converting the data. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "allowDataTruncation")
     private Object allowDataTruncation;
 
     /*
-     * Whether to treat boolean values as numbers. Type: boolean (or Expression
-     * with resultType boolean).
+     * Whether to treat boolean values as numbers. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "treatBooleanAsNumber")
     private Object treatBooleanAsNumber;
 
     /*
-     * The format for DateTime values. Type: string (or Expression with
-     * resultType string).
+     * The format for DateTime values. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dateTimeFormat")
     private Object dateTimeFormat;
 
     /*
-     * The format for DateTimeOffset values. Type: string (or Expression with
-     * resultType string).
+     * The format for DateTimeOffset values. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dateTimeOffsetFormat")
     private Object dateTimeOffsetFormat;
 
     /*
-     * The format for TimeSpan values. Type: string (or Expression with
-     * resultType string).
+     * The format for TimeSpan values. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "timeSpanFormat")
     private Object timeSpanFormat;
 
     /*
-     * The culture used to convert data from/to string. Type: string (or
-     * Expression with resultType string).
+     * The culture used to convert data from/to string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "culture")
     private Object culture;

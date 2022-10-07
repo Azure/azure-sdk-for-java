@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HDInsightActivityDebugInfoOption. */
+/** The HDInsightActivityDebugInfoOption settings to use. */
 public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum<HDInsightActivityDebugInfoOption> {
     /** Static value None for HDInsightActivityDebugInfoOption. */
     public static final HDInsightActivityDebugInfoOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
         return fromString(name, HDInsightActivityDebugInfoOption.class);
     }
 
-    /** @return known HDInsightActivityDebugInfoOption values. */
+    /**
+     * Gets known HDInsightActivityDebugInfoOption values.
+     *
+     * @return known HDInsightActivityDebugInfoOption values.
+     */
     public static Collection<HDInsightActivityDebugInfoOption> values() {
         return values(HDInsightActivityDebugInfoOption.class);
     }

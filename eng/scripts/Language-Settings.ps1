@@ -282,6 +282,10 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
+  "azure-sdk-template" = "Depends on unreleased core.";
+  "azure-sdk-template-two" = "Depends on unreleased core.";
+  "azure-sdk-template-three" = "Depends on unreleased core.";
+  "azure-ai-personalizer" = "No java docs in this package.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -471,7 +475,7 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValida
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'latest' `
-    $FilteredMetadata`
+    $FilteredMetadata `
     $DocValidationImageId
 }
 

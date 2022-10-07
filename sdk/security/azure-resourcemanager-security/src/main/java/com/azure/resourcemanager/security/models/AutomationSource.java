@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class AutomationSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationSource.class);
-
     /*
      * A valid event source type.
      */
@@ -26,8 +22,8 @@ public final class AutomationSource {
     private EventSource eventSource;
 
     /*
-     * A set of rules which evaluate upon event interception. A logical
-     * disjunction is applied between defined rule sets (logical 'or').
+     * A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule
+     * sets (logical 'or').
      */
     @JsonProperty(value = "ruleSets")
     private List<AutomationRuleSet> ruleSets;

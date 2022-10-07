@@ -5,12 +5,14 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -22,6 +24,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -42,7 +45,7 @@ public class SpyClientUnderTestFactory {
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
-                ClientTelemetryConfig clientTelemetryConfig) {
+                CosmosClientTelemetryConfig clientTelemetryConfig) {
 
             super(
                     serviceEndpoint,
@@ -57,7 +60,9 @@ public class SpyClientUnderTestFactory {
                     contentResponseOnWriteEnabled,
                     null,
                     null,
-                    clientTelemetryConfig);
+                    clientTelemetryConfig,
+                    null,
+                    EnumSet.allOf(TagName.class));
         }
 
         public abstract List<T> getCapturedRequests();
@@ -87,7 +92,7 @@ public class SpyClientUnderTestFactory {
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
-                ClientTelemetryConfig clientTelemetryConfig) {
+                CosmosClientTelemetryConfig clientTelemetryConfig) {
             super(
                     serviceEndpoint,
                     masterKey,
@@ -176,7 +181,7 @@ public class SpyClientUnderTestFactory {
                 Configs configs,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
-                ClientTelemetryConfig clientTelemetryConfig) {
+                CosmosClientTelemetryConfig clientTelemetryConfig) {
             super(
                     serviceEndpoint,
                     masterKey,
@@ -264,7 +269,7 @@ public class SpyClientUnderTestFactory {
                 ConsistencyLevel consistencyLevel,
                 AzureKeyCredential credential,
                 boolean contentResponseOnWriteEnabled,
-                ClientTelemetryConfig clientTelemetryConfig) {
+                CosmosClientTelemetryConfig clientTelemetryConfig) {
             super(
                     serviceEndpoint,
                     masterKey,
@@ -336,7 +341,7 @@ public class SpyClientUnderTestFactory {
                                                                   Configs configs,
                                                                   AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled,
-                                                                  ClientTelemetryConfig clientTelemetryConfig) {
+                                                                  CosmosClientTelemetryConfig clientTelemetryConfig) {
         return new ClientWithGatewaySpy(
                 serviceEndpoint,
                 masterKey,
@@ -363,7 +368,7 @@ public class SpyClientUnderTestFactory {
                                                         Configs configs,
                                                         AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled,
-                                                        ClientTelemetryConfig clientTelemetryConfig) {
+                                                        CosmosClientTelemetryConfig clientTelemetryConfig) {
         return new ClientUnderTest(
                 serviceEndpoint,
                 masterKey,
@@ -382,7 +387,7 @@ public class SpyClientUnderTestFactory {
         ConsistencyLevel consistencyLevel,
         AzureKeyCredential credential,
         boolean contentResponseOnWriteEnabled,
-        ClientTelemetryConfig clientTelemetryConfig) {
+        CosmosClientTelemetryConfig clientTelemetryConfig) {
         return new DirectHttpsClientUnderTest(
                 serviceEndpoint,
                 masterKey,

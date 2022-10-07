@@ -291,7 +291,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <skip>${codesnippet.skip}</skip>
           <readmeGlob>**/*.md</readmeGlob>
@@ -1100,24 +1100,6 @@
                 </configuration>
               </execution>
 
-              <!-- then compile with Java 11 as the base version that supports module-info -->
-              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
-              when the Azure SDK policy is changed -->
-              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
-              <execution>
-                <id>base-modules-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
-                  <testIncludes>
-                    <testInclude>module-info.java</testInclude>
-                  </testIncludes>
-                </configuration>
-              </execution>
-
               <!-- then compile with Java 8 -->
               <execution>
                 <id>base-testCompile</id>
@@ -1191,7 +1173,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.1.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>generate-overview-from-readme</id>
@@ -1241,7 +1223,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.1.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>verify-readme-codesnippet</id>
@@ -1542,6 +1524,66 @@
                   <goal>test</goal>
                 </goals>
                 <phase>test</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>external-dependency-version-overrides</id>
+      <activation>
+        <property>
+          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>repository.spring.milestone</id>
+          <name>Spring Milestone Repository</name>
+          <url>https://repo.spring.io/milestone</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+
+    <profile>
+      <id>test-module-base-compile</id>
+      <activation>
+        <file>
+          <exists>${build.testSourceDirectory}/module-info.java</exists>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <testRelease>11</testRelease>
+                  <testIncludes>
+                    <testInclude>module-info.java</testInclude>
+                  </testIncludes>
+                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the content source. */
 @Fluent
 public final class ContentSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentSource.class);
-
     /*
      * Gets or sets the hash.
      */
@@ -27,8 +23,7 @@ public final class ContentSource {
     private ContentSourceType type;
 
     /*
-     * Gets or sets the value of the content. This is based on the content
-     * source type.
+     * Gets or sets the value of the content. This is based on the content source type.
      */
     @JsonProperty(value = "value")
     private String value;

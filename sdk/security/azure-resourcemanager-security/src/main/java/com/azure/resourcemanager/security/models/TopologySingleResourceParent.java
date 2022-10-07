@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TopologySingleResourceParent model. */
 @Immutable
 public final class TopologySingleResourceParent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologySingleResourceParent.class);
-
     /*
      * Azure resource id which serves as parent resource in topology view
      */

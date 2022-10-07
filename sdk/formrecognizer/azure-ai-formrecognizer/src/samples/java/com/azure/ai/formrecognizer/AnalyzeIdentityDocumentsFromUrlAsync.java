@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -18,8 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found identity document fields from a file source URL.
- * See fields found on a license here:
- * https://aka.ms/formrecognizer/iddocumentfields
+ * See fields found on a license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsFromUrlAsync {
 
@@ -38,7 +39,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                 + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
+        PollerFlux<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", licenseDocumentUrl);
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller

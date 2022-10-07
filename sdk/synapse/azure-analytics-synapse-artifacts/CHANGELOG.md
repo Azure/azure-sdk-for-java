@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.11 (2022-09-19)
+
+### Features Added
+
+- Updated LinkConnection for Synapse Link.
+- Added TargetSparkConfiguration property for SparkJobDefinition and Notebook.
+- Added GoogleSheets connector.
+- Added SAP ODP connector.
+- Added support OAuth2ClientCredential auth in RestSevice.
+- Added support rejected data linked service in dataflow sink.
+- Added Dataworld, AppFigures, Asana, Twilio connectors.
+- Added Fail Activity.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-http-netty` to `1.12.5`.
 
 ## 1.0.0-beta.10 (2022-04-13)
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SsoStatus. */
+/** Indicates whether SSO is enabled or not. */
 public final class SsoStatus extends ExpandableStringEnum<SsoStatus> {
     /** Static value Enabled for SsoStatus. */
     public static final SsoStatus ENABLED = fromString("Enabled");

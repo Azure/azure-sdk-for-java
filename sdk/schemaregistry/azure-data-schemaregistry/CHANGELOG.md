@@ -4,11 +4,37 @@
 
 ### Features Added
 
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.32.0`.
+- Update `azure-core-http-netty` dependency to `1.12.5`.
+
+## 1.2.3 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.31.0`.
+- Update `azure-core-http-netty` dependency to `1.12.4`.
 
 ## 1.2.2 (2022-07-12)
 

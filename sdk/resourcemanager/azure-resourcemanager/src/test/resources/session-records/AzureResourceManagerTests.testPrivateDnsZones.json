@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6e105625-29c2-44e5-8381-d4b2cfe35f4c",
@@ -29,7 +29,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "94a26eab-fa03-4a6e-be55-52d05fc54079",
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0889617b-311a-4af9-a3be-142e3e627c46",
@@ -138,7 +138,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6a541a42-a837-4392-867e-c882e3450a50"
@@ -165,7 +165,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "af6ffc1d-07cf-4821-a9af-1f717c68702f",
@@ -193,7 +193,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/41?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/41?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "092f5ecf-0348-4904-91cc-f9f860bcd6e8",
@@ -221,7 +221,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b0d6b35b-d588-429d-a95e-fa82c00fbff6",
@@ -249,7 +249,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e29381de-a14a-449a-8313-81f50cf7d20d",
@@ -277,7 +277,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/40?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/40?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "05abf15c-fcd1-46d7-bcc3-db8bb9dfff9a",
@@ -305,7 +305,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0eebc5d2-33df-4c0c-adcd-0dfcd245cf16",
@@ -333,7 +333,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/documents?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/documents?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6af1a448-d74e-4803-ad16-88153ed3021f",
@@ -361,7 +361,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "70acca33-b311-4a4a-b926-1b54c3d7ce73",
@@ -389,7 +389,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2f68b1a0-ef88-4504-9184-93f154240478",
@@ -417,7 +417,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "15fcfbf4-d96d-4d18-b788-91fc1a00f28a",
@@ -445,7 +445,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0d125e78-6413-437a-9272-2e2739646c52",
@@ -473,7 +473,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "754c5722-560b-40aa-b6b2-5a3bf87c082c",
@@ -501,7 +501,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1762f0a2-51a3-455d-b397-477ebe11147f",
@@ -529,7 +529,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2b71100a-01b3-413e-8dee-94bbfe89b7f4",
@@ -557,7 +557,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "456d5707-9b6e-4cea-aa56-a7cd5f9d6669",
@@ -585,7 +585,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d412d7d8-b3ec-407c-b6d7-9a1570cded56",
@@ -613,7 +613,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7385e751-31dd-43be-b58a-3726e309b823",
@@ -641,7 +641,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c6e9ea5d-6230-45b6-b4d2-7c629ace339d",
@@ -669,7 +669,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1802fd93-ca1b-44f1-9d0c-685e265edf02",
@@ -697,7 +697,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c7c00831-8057-448a-9f71-1561772e88b9",
@@ -725,7 +725,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1095540f-e059-40c7-999d-e445999377f9",
@@ -753,7 +753,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a69e7770-64fb-476d-aef3-6f55d8eda853",
@@ -781,7 +781,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/ALL?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/ALL?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4ccab667-88c5-4431-8fe9-a12d38bfdabb",
@@ -809,7 +809,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8f2f29af-1f57-4f8c-8d46-d86690eb961a",
@@ -837,7 +837,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "51f2dbd6-3cbb-415a-920e-f8d39571ca77",
@@ -865,7 +865,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ae49483e-8719-4bdc-acc0-6f6a3460f99c",
@@ -893,7 +893,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c4ac4f8e-d428-41cd-8fc2-f108f1d42313",
@@ -921,7 +921,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "624071bd-34b6-48ab-be82-0714555f8fa0",
@@ -949,7 +949,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ab65be32-a9ed-44ff-80e4-8fe6a8d592b8",
@@ -977,7 +977,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "da2c4a69-2217-412a-9bb5-6e160fed952a",
@@ -1005,7 +1005,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9b46c776-0e56-404f-9d7e-7658ec3210c7",
@@ -1033,7 +1033,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4e9422c0-93cd-4441-b312-56a7950985da",
@@ -1061,7 +1061,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "97df6661-1710-4f3f-9802-7f95b3f3b4c2",
@@ -1089,7 +1089,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4213ebeb-f878-43f5-9d89-57f25e21ccb0",
@@ -1117,7 +1117,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6e1dca18-e57a-4224-91dc-210314b49d95",
@@ -1145,7 +1145,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7e42e709-ad60-4112-9b20-9cce3d98c081",
@@ -1173,7 +1173,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5c7a3155-df58-45f8-b60b-1243d74c48b3",
@@ -1201,7 +1201,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d5b8030e-624d-4180-9373-93ec322de165",
@@ -1229,7 +1229,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4afdbf75-b34a-4922-be1e-84d9f32a8d87",
@@ -1257,7 +1257,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a2d16ed0-4648-4ca7-8aa6-900d38ba40b2",
@@ -1285,7 +1285,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6c31de76-808b-46a8-87af-629bac2ebca8",
@@ -1313,7 +1313,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "acf07113-de30-493b-8d38-bedecb1689bb",
@@ -1341,7 +1341,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2870f4d6-48ca-4ad6-ab23-8d8870eb0f0a",
@@ -1369,7 +1369,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6d40a932-b568-4d6f-87e1-4582dd2bd3e7",
@@ -1397,7 +1397,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "db7322f2-519d-4f07-b015-62f1ea8c5a12",
@@ -1425,7 +1425,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "674b4e2e-3d9c-426b-9dce-bbd71f422797",
@@ -1453,7 +1453,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0e566163-a1b7-4907-b2dd-8d50eea39113",
@@ -1478,7 +1478,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/help?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/help?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "577ccf39-42af-4719-9f25-2aea13b57371",
@@ -1506,7 +1506,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email-internal?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email-internal?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "601fe86a-440c-4c08-924d-ecac9a019adf",
@@ -1534,7 +1534,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "34f08b05-3263-46d6-954d-1f4513a160db",
@@ -1559,7 +1559,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "54a91392-46c2-457a-9417-ae0cb204f64b",
@@ -1587,7 +1587,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "59a504cc-76b1-4a18-8232-d3fcf33b02d9",
@@ -1615,7 +1615,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8a4732b2-ba6b-4b36-a1bb-36118261ed65",
@@ -1643,7 +1643,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9ae03949-405a-473f-b3dd-331d724e427b",
@@ -1671,7 +1671,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c3ffaa68-ac2b-46de-9f0b-c414e885569b",
@@ -1699,7 +1699,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "86be36d2-7a94-4155-902c-ec94b32d90fa",
@@ -1727,7 +1727,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "866fc788-b5f1-4631-8e19-bdb709c690ce",
@@ -1755,7 +1755,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0973e97b-b0f9-4685-b4d6-86efbf3d9abd",
@@ -1783,7 +1783,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "00dc7afa-dc6c-4f23-9073-25634cf1849b",
@@ -1811,7 +1811,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "84f68020-83a8-416d-abef-7bba2ffbe82d",
@@ -1839,7 +1839,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0e297c63-ea5d-4a94-98dd-ae0fe685b99f",
@@ -1867,7 +1867,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e0ab1723-9b8e-45fb-9567-b0e5f71116b4",
@@ -1895,7 +1895,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "377c671d-fd5c-4701-9c0d-02b4c3fafdb3",
@@ -1950,7 +1950,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c5d94f50-dc6a-4104-a52c-f00288b73e7a"
@@ -1977,7 +1977,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2025a117-a4e1-4b34-a794-66b9b1f4f176",
@@ -2005,7 +2005,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "64d57220-06a5-4cfc-a59e-6e74aad3cd60",
@@ -2033,7 +2033,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f5489559-d55d-48f8-bfb3-9d9c2d5d2abe",
@@ -2061,7 +2061,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3158cb81-70b0-42ac-9b5b-ba5e28645ff4",
@@ -2089,7 +2089,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3b2c6615-c5c2-46fc-a10d-d2c10f12d23b",
@@ -2117,7 +2117,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d6a0f618-66bb-43ef-bf2e-96a948495a62",
@@ -2145,7 +2145,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ea3055ae-fcee-47c6-b8c3-205af752b8eb",
@@ -2173,7 +2173,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "12a5cda6-cc92-4115-80ec-8074a9699d3b",
@@ -2201,7 +2201,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c2953b6e-04d4-4b8c-b40c-485ce0dc5018",
@@ -2229,7 +2229,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "274e2927-e85b-4d83-8953-a6e6905cfe86",
@@ -2257,7 +2257,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d6018890-44b0-4efa-97f0-cee725aa5f5e",
@@ -2285,7 +2285,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e6560082-da41-4f4f-beb9-6d6cfd509645",

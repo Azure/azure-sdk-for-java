@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkLinkState. */
+/**
+ * The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is
+ * a read-only property and any attempt to set this value will be ignored.
+ */
 public final class VirtualNetworkLinkState extends ExpandableStringEnum<VirtualNetworkLinkState> {
     /** Static value InProgress for VirtualNetworkLinkState. */
     public static final VirtualNetworkLinkState IN_PROGRESS = fromString("InProgress");
@@ -27,7 +30,11 @@ public final class VirtualNetworkLinkState extends ExpandableStringEnum<VirtualN
         return fromString(name, VirtualNetworkLinkState.class);
     }
 
-    /** @return known VirtualNetworkLinkState values. */
+    /**
+     * Gets known VirtualNetworkLinkState values.
+     *
+     * @return known VirtualNetworkLinkState values.
+     */
     public static Collection<VirtualNetworkLinkState> values() {
         return values(VirtualNetworkLinkState.class);
     }

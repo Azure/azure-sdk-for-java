@@ -25,8 +25,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     private String name;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType", required = true)
     private OSType osType;

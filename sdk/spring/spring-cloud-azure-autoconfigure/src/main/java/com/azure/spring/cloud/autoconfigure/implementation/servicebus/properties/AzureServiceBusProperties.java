@@ -27,6 +27,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
+    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProperties.class);
     /**
      * Whether to enable cross entity transaction on the connection to Service bus.
@@ -35,6 +36,10 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
+
+    public AzureServiceBusProperties() {
+        this.setDomainName(DEFAULT_DOMAIN_NAME);
+    }
 
     public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;
@@ -257,6 +262,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          */
         private Integer maxConcurrentSessions;
 
+        /**
+         * Whether to automatically start the processor after initialization.
+         */
+        private boolean autoStartup = true;
+
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
         }
@@ -271,6 +281,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
             this.maxConcurrentSessions = maxConcurrentSessions;
+        }
+
+        public boolean isAutoStartup() {
+            return autoStartup;
+        }
+
+        public void setAutoStartup(boolean autoStartup) {
+            this.autoStartup = autoStartup;
         }
     }
 

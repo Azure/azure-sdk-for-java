@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InterleaveOutput. */
+/**
+ * Sets the interleave mode of the output to control how audio and video are stored in the container format. Example:
+ * set InterleavedOutput as NonInterleavedOutput to produce audio-only and video-only outputs in separate MP4 files.
+ */
 public final class InterleaveOutput extends ExpandableStringEnum<InterleaveOutput> {
     /** Static value NonInterleavedOutput for InterleaveOutput. */
     public static final InterleaveOutput NON_INTERLEAVED_OUTPUT = fromString("NonInterleavedOutput");

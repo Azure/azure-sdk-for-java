@@ -241,7 +241,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @return the enableAcceleratedNetworking value.
      */
@@ -250,7 +251,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfaceInner object itself.

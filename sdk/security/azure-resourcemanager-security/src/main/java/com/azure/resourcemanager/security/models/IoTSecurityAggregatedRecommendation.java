@@ -31,6 +31,13 @@ public interface IoTSecurityAggregatedRecommendation {
     String type();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the recommendationName property: Name of the recommendation.
      *
      * @return the recommendationName value.
@@ -99,13 +106,6 @@ public interface IoTSecurityAggregatedRecommendation {
      * @return the logAnalyticsQuery value.
      */
     String logAnalyticsQuery();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner object.

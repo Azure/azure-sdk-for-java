@@ -13,18 +13,18 @@ import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
 /**
  * Implementation for {@link PartitionProcessorFactory}.
  */
-class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
+class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<ChangeFeedProcessorItem> {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
@@ -69,47 +69,37 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         FeedRangeInternal feedRange,
         ChangeFeedProcessorOptions processorOptions) {
 
-        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation()))
-        {
+        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
+            ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(processorOptions.getStartContinuation());
             return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
-                processorOptions.getStartContinuation(),
+                changeFeedState.getContinuation().getCurrentContinuationToken().getToken(),
                 feedRange);
         }
-
-        if (processorOptions.getStartTime() != null) {
-            return ChangeFeedStartFromInternal.createFromPointInTime(processorOptions.getStartTime());
-        }
-
-        if (processorOptions.isStartFromBeginning()) {
-            return ChangeFeedStartFromInternal.createFromBeginning();
-        }
-
         return ChangeFeedStartFromInternal.createFromNow();
     }
 
     @Override
-    public PartitionProcessor create(Lease lease, ChangeFeedObserver observer) {
+    public PartitionProcessor create(Lease lease, ChangeFeedObserver<ChangeFeedProcessorItem> observer) {
         if (observer == null) {
-            throw new IllegalArgumentException("observer");
+            throw new IllegalArgumentException("observer cannot be null");
         }
 
         if (lease == null) {
-            throw new IllegalArgumentException("lease");
+            throw new IllegalArgumentException("lease cannot be null");
         }
 
-        FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
         ChangeFeedState state;
         if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
-                new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
-                ChangeFeedMode.INCREMENTAL,
+                lease.getFeedRange(),
+                ChangeFeedMode.FULL_FIDELITY,
                 getStartFromSettings(
-                    feedRange,
+                    lease.getFeedRange(),
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getFullFidelityContinuationState(this.collectionResourceId, feedRange);
+            state = lease.getEpkRangeBasedContinuationState(this.collectionResourceId);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)

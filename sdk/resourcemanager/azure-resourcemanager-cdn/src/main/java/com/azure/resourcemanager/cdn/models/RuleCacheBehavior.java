@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RuleCacheBehavior. */
+/** Caching behavior for the requests. */
 public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehavior> {
     /** Static value HonorOrigin for RuleCacheBehavior. */
     public static final RuleCacheBehavior HONOR_ORIGIN = fromString("HonorOrigin");
@@ -30,7 +30,11 @@ public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehav
         return fromString(name, RuleCacheBehavior.class);
     }
 
-    /** @return known RuleCacheBehavior values. */
+    /**
+     * Gets known RuleCacheBehavior values.
+     *
+     * @return known RuleCacheBehavior values.
+     */
     public static Collection<RuleCacheBehavior> values() {
         return values(RuleCacheBehavior.class);
     }

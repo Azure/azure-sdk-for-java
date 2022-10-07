@@ -90,6 +90,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationBootstrapConfiguration",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -340,6 +341,13 @@
           "justification": "Fixes a bug."
         },
         {
+          "code": "java.annotation.added",
+          "old": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
+          "new": "class com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration",
+          "annotation": "@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(value = {\"spring.cloud.azure.eventhubs.kafka.enabled\"}, havingValue = \"true\", matchIfMissing = true)",
+          "justification": "To enable turn on/off the related auto-configurations manually."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
@@ -351,6 +359,54 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySource",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySourceLocator",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.stores\\.ClientStore",
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
         },
         {
           "code": "java.method.parameterTypeParameterChanged",
@@ -365,6 +421,86 @@
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
           "parameterIndex": "1",
           "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "new": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*",
+          "justification": "Proper support for fluent setters in subtypes."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean)",
+          "new": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean, java.lang.Integer)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
+          "justification": "Not a public api"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
         }
       ]
     }

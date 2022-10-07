@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptActivityParameterDirection. */
+/** The direction of the parameter. */
 public final class ScriptActivityParameterDirection extends ExpandableStringEnum<ScriptActivityParameterDirection> {
     /** Static value Input for ScriptActivityParameterDirection. */
     public static final ScriptActivityParameterDirection INPUT = fromString("Input");

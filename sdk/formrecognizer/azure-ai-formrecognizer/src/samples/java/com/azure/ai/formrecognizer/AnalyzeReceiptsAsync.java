@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
@@ -25,8 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found receipt fields from a local file input stream.
- * See fields found on a receipt here:
- * https://aka.ms/formrecognizer/receiptfields
+ * See fields found on a receipt <a href=https://aka.ms/formrecognizer/receiptfields>here</a>
  */
 public class AnalyzeReceiptsAsync {
 
@@ -47,11 +48,11 @@ public class AnalyzeReceiptsAsync {
             + "sample-forms/receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
 
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller;
+        PollerFlux<OperationResult, AnalyzeResult> analyzeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller
@@ -114,34 +115,34 @@ public class AnalyzeReceiptsAsync {
                         List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                         receiptItems.stream()
                             .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                            .map(formField -> formField.getValueAsMap())
-                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            .map(documentField -> documentField.getValueAsMap())
+                            .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 if ("Name".equals(key)) {
-                                    if (DocumentFieldType.STRING == formField.getType()) {
-                                        String name = formField.getValueAsString();
+                                    if (DocumentFieldType.STRING == documentField.getType()) {
+                                        String name = documentField.getValueAsString();
                                         System.out.printf("Name: %s, confidence: %.2fs%n",
-                                            name, formField.getConfidence());
+                                            name, documentField.getConfidence());
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float quantity = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double quantity = documentField.getValueAsDouble();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                            quantity, formField.getConfidence());
+                                            quantity, documentField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float price = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double price = documentField.getValueAsDouble();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
-                                            price, formField.getConfidence());
+                                            price, documentField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float totalPrice = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double totalPrice = documentField.getValueAsDouble();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                            totalPrice, formField.getConfidence());
+                                            totalPrice, documentField.getConfidence());
                                     }
                                 }
                             }));

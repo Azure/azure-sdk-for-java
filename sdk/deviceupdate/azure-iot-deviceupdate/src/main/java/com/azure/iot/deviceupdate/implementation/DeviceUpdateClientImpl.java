@@ -15,11 +15,11 @@ import com.azure.iot.deviceupdate.DeviceUpdateServiceVersion;
 
 /** Initializes a new instance of the DeviceUpdateClient type. */
 public final class DeviceUpdateClientImpl {
-    /** Account endpoint. */
+    /** The Device Update for IoT Hub account endpoint (hostname only, no protocol). */
     private final String endpoint;
 
     /**
-     * Gets Account endpoint.
+     * Gets The Device Update for IoT Hub account endpoint (hostname only, no protocol).
      *
      * @return the endpoint value.
      */
@@ -27,11 +27,11 @@ public final class DeviceUpdateClientImpl {
         return this.endpoint;
     }
 
-    /** Account instance identifier. */
+    /** The Device Update for IoT Hub account instance identifier. */
     private final String instanceId;
 
     /**
-     * Gets Account instance identifier.
+     * Gets The Device Update for IoT Hub account instance identifier.
      *
      * @return the instanceId value.
      */
@@ -102,8 +102,8 @@ public final class DeviceUpdateClientImpl {
     /**
      * Initializes an instance of DeviceUpdateClient client.
      *
-     * @param endpoint Account endpoint.
-     * @param instanceId Account instance identifier.
+     * @param endpoint The Device Update for IoT Hub account endpoint (hostname only, no protocol).
+     * @param instanceId The Device Update for IoT Hub account instance identifier.
      * @param serviceVersion Service version.
      */
     public DeviceUpdateClientImpl(String endpoint, String instanceId, DeviceUpdateServiceVersion serviceVersion) {
@@ -121,8 +121,8 @@ public final class DeviceUpdateClientImpl {
      * Initializes an instance of DeviceUpdateClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Account endpoint.
-     * @param instanceId Account instance identifier.
+     * @param endpoint The Device Update for IoT Hub account endpoint (hostname only, no protocol).
+     * @param instanceId The Device Update for IoT Hub account instance identifier.
      * @param serviceVersion Service version.
      */
     public DeviceUpdateClientImpl(
@@ -135,8 +135,8 @@ public final class DeviceUpdateClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Account endpoint.
-     * @param instanceId Account instance identifier.
+     * @param endpoint The Device Update for IoT Hub account endpoint (hostname only, no protocol).
+     * @param instanceId The Device Update for IoT Hub account instance identifier.
      * @param serviceVersion Service version.
      */
     public DeviceUpdateClientImpl(

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of rules results. */
 @Fluent
 public final class RulesResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RulesResultsInner.class);
-
     /*
      * List of rule results.
      */

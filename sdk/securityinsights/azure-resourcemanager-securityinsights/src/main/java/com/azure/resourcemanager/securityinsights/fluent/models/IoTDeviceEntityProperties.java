@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.securityinsights.models.DeviceImportance;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligence;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 /** IoTDevice entity property bag. */
-@Immutable
+@Fluent
 public final class IoTDeviceEntityProperties extends EntityCommonProperties {
     /*
      * The ID of the IoT Device in the IoT Hub
@@ -115,6 +116,72 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
      */
     @JsonProperty(value = "protocols", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> protocols;
+
+    /*
+     * A list of owners of the IoTDevice entity.
+     */
+    @JsonProperty(value = "owners", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> owners;
+
+    /*
+     * A list of Nic entity ids of the IoTDevice entity.
+     */
+    @JsonProperty(value = "nicEntityIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> nicEntityIds;
+
+    /*
+     * The site of the device
+     */
+    @JsonProperty(value = "site", access = JsonProperty.Access.WRITE_ONLY)
+    private String site;
+
+    /*
+     * The zone location of the device within a site
+     */
+    @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
+    private String zone;
+
+    /*
+     * The sensor the device is monitored by
+     */
+    @JsonProperty(value = "sensor", access = JsonProperty.Access.WRITE_ONLY)
+    private String sensor;
+
+    /*
+     * The subType of the device ('PLC', 'HMI', 'EWS', etc.)
+     */
+    @JsonProperty(value = "deviceSubType", access = JsonProperty.Access.WRITE_ONLY)
+    private String deviceSubType;
+
+    /*
+     * Device importance, determines if the device classified as 'crown jewel'
+     */
+    @JsonProperty(value = "importance")
+    private DeviceImportance importance;
+
+    /*
+     * The Purdue Layer of the device
+     */
+    @JsonProperty(value = "purdueLayer", access = JsonProperty.Access.WRITE_ONLY)
+    private String purdueLayer;
+
+    /*
+     * Determines whether the device classified as authorized device
+     */
+    @JsonProperty(value = "isAuthorized", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isAuthorized;
+
+    /*
+     * Determines whether the device classified as programming device
+     */
+    @JsonProperty(value = "isProgramming", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isProgramming;
+
+    /*
+     * Is the device classified as a scanner device
+     */
+    @JsonProperty(value = "isScanner", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isScanner;
 
     /**
      * Get the deviceId property: The ID of the IoT Device in the IoT Hub.
@@ -267,6 +334,116 @@ public final class IoTDeviceEntityProperties extends EntityCommonProperties {
      */
     public List<String> protocols() {
         return this.protocols;
+    }
+
+    /**
+     * Get the owners property: A list of owners of the IoTDevice entity.
+     *
+     * @return the owners value.
+     */
+    public List<String> owners() {
+        return this.owners;
+    }
+
+    /**
+     * Get the nicEntityIds property: A list of Nic entity ids of the IoTDevice entity.
+     *
+     * @return the nicEntityIds value.
+     */
+    public List<String> nicEntityIds() {
+        return this.nicEntityIds;
+    }
+
+    /**
+     * Get the site property: The site of the device.
+     *
+     * @return the site value.
+     */
+    public String site() {
+        return this.site;
+    }
+
+    /**
+     * Get the zone property: The zone location of the device within a site.
+     *
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
+    }
+
+    /**
+     * Get the sensor property: The sensor the device is monitored by.
+     *
+     * @return the sensor value.
+     */
+    public String sensor() {
+        return this.sensor;
+    }
+
+    /**
+     * Get the deviceSubType property: The subType of the device ('PLC', 'HMI', 'EWS', etc.).
+     *
+     * @return the deviceSubType value.
+     */
+    public String deviceSubType() {
+        return this.deviceSubType;
+    }
+
+    /**
+     * Get the importance property: Device importance, determines if the device classified as 'crown jewel'.
+     *
+     * @return the importance value.
+     */
+    public DeviceImportance importance() {
+        return this.importance;
+    }
+
+    /**
+     * Set the importance property: Device importance, determines if the device classified as 'crown jewel'.
+     *
+     * @param importance the importance value to set.
+     * @return the IoTDeviceEntityProperties object itself.
+     */
+    public IoTDeviceEntityProperties withImportance(DeviceImportance importance) {
+        this.importance = importance;
+        return this;
+    }
+
+    /**
+     * Get the purdueLayer property: The Purdue Layer of the device.
+     *
+     * @return the purdueLayer value.
+     */
+    public String purdueLayer() {
+        return this.purdueLayer;
+    }
+
+    /**
+     * Get the isAuthorized property: Determines whether the device classified as authorized device.
+     *
+     * @return the isAuthorized value.
+     */
+    public Boolean isAuthorized() {
+        return this.isAuthorized;
+    }
+
+    /**
+     * Get the isProgramming property: Determines whether the device classified as programming device.
+     *
+     * @return the isProgramming value.
+     */
+    public Boolean isProgramming() {
+        return this.isProgramming;
+    }
+
+    /**
+     * Get the isScanner property: Is the device classified as a scanner device.
+     *
+     * @return the isScanner value.
+     */
+    public Boolean isScanner() {
+        return this.isScanner;
     }
 
     /**
