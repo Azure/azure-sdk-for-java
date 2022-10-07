@@ -55,8 +55,10 @@ import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidParameterException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -2136,29 +2138,41 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(decodeName(directoryItem.getName()),
-                    true,
-                    directoryItem.getFileId(),
-                    ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                    directoryItem.getPermissionKey(),
-                    null)));
+                .forEach(directoryItem -> {
+                    try {
+                        shareFileItems.add(new ShareFileItem(decodeName(directoryItem.getName()),
+                            true,
+                            directoryItem.getFileId(),
+                            ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                            NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                            directoryItem.getPermissionKey(),
+                            null));
+                    } catch (UnsupportedEncodingException e) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+                    }
+                });
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(decodeName(fileItem.getName()),
-                    false,
-                    fileItem.getFileId(),
-                    ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
-                    fileItem.getPermissionKey(),
-                    fileItem.getProperties().getContentLength())));
+                .forEach(fileItem -> {
+                    try {
+                        shareFileItems.add(new ShareFileItem(decodeName(fileItem.getName()),
+                            false,
+                            fileItem.getFileId(),
+                            ModelHelper.transformFileProperty(fileItem.getProperties()),
+                            NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                            fileItem.getPermissionKey(),
+                            fileItem.getProperties().getContentLength()));
+                    } catch (UnsupportedEncodingException e) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+                    }
+                });
         }
 
         return new ArrayList<>(shareFileItems);
     }
 
-    private static String decodeName(StringEncoded stringEncoded) {
+    private static String decodeName(StringEncoded stringEncoded) throws UnsupportedEncodingException {
         if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
-            return URLDecoder.decode(stringEncoded.getContent());
+            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8);
         } else {
             return stringEncoded.getContent();
         }
