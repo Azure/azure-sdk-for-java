@@ -54,7 +54,7 @@ steps:
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-    continueOnError: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
+    continueOnError: ${{ eq(variables['LatestJdkVersion'], variables['JavaTestVersion']) }}
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -70,7 +70,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-    continueOnError: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
+    continueOnError: ${{ eq(variables['LatestJdkVersion'], variables['JavaTestVersion']) }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
