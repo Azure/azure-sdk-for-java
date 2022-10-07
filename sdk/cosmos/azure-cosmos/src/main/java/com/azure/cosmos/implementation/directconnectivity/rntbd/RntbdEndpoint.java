@@ -243,8 +243,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         public boolean preferTcpNative() { return this.options.preferTcpNative(); }
 
         @JsonProperty
-        public long sslHandshakeTimeoutMinInMillis() {
-            return this.options.sslHandshakeTimeoutMinDuration().toMillis();
+        public long sslHandshakeTimeoutInMillis() {
+            return this.options.sslHandshakeTimeoutInMillis();
         }
 
         @Override

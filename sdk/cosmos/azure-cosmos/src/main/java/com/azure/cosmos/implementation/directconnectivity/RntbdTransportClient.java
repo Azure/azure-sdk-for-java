@@ -642,8 +642,8 @@ public class RntbdTransportClient extends TransportClient {
 
         public boolean preferTcpNative() { return this.preferTcpNative; }
 
-        public Duration sslHandshakeTimeoutMinDuration() {
-            return this.sslHandshakeTimeoutMinDuration;
+        public long sslHandshakeTimeoutInMillis() {
+            return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
         }
 
         // endregion
@@ -769,12 +769,12 @@ public class RntbdTransportClient extends TransportClient {
                     }
                 } finally {
                     if (options == null) {
-                        logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
+                      //  logger.info("Using default Direct TCP options: {}", DEFAULT_OPTIONS_PROPERTY_NAME);
                         DEFAULT_OPTIONS = new Options(ConnectionPolicy.getDefaultPolicy());
                     } else {
-                        logger.info("Updated default Direct TCP options from system property {}: {}",
-                            DEFAULT_OPTIONS_PROPERTY_NAME,
-                            options);
+//                        logger.info("Updated default Direct TCP options from system property {}: {}",
+//                            DEFAULT_OPTIONS_PROPERTY_NAME,
+//                            options);
                         DEFAULT_OPTIONS = options;
                     }
                 }
