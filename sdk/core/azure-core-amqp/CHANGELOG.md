@@ -1,5 +1,15 @@
 # Release History
 
+## 2.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.7.2 (2022-10-07)
 
 ### Other Changes
