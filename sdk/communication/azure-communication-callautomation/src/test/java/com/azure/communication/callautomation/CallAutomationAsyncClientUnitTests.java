@@ -16,7 +16,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -65,7 +63,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -103,7 +100,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -136,7 +132,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 
     @Test
@@ -169,6 +164,5 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-        assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
     }
 }
