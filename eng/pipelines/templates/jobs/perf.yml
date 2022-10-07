@@ -1,4 +1,7 @@
 parameters:
+- name: ToolsRepoCommitish
+  type: string
+  default: 'main'
 - name: ServiceDirectory
   type: string
   default: ''
@@ -41,6 +44,7 @@ extends:
         java -version
         mvn --version
       displayName: Print Java Versions
+    ToolsRepoCommitish: ${{ parameters.ToolsRepoCommitish }}
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
     Services: ${{ parameters.Services }}
     PackageVersions: ${{ parameters.PackageVersions }}
