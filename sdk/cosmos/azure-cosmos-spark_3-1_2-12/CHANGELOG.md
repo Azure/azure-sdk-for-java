@@ -1,15 +1,10 @@
 ## Release History
 
-### 4.15.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
+### 4.14.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.14.1 and above.
 #### Bugs Fixed
 * Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
-
-#### Other Changes
 
 ### 4.14.0 (2022-09-30)
 
