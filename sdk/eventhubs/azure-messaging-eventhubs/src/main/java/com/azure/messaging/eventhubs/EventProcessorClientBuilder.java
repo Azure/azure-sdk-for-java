@@ -129,6 +129,7 @@ public class EventProcessorClientBuilder implements
     private Consumer<EventBatchContext> processEventBatch;
     private Consumer<ErrorContext> processError;
     private Consumer<InitializationContext> processPartitionInitialization;
+    private InitialPartitionEventPositionFallback initialPartitionEventPositionFallback = InitialPartitionEventPositionFallback.LATEST;
     private Consumer<CloseContext> processPartitionClose;
     private boolean trackLastEnqueuedEventProperties;
     private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
@@ -703,6 +704,21 @@ public class EventProcessorClientBuilder implements
     }
 
     /**
+     * Sets the initialPartitionEventPositionFallback value. This value descides if eraliest or latest event will be
+     * fetcht from the Eventhub when there is no checkpoint present and the partition is not found in the
+     * initialPartitionEventPosition map
+     *
+     * @param initialPartitionEventPositionFallback the fallback when there is no checkpoint for the partition present
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     */
+    public EventProcessorClientBuilder initialPartitionEventPositionFallback(
+            InitialPartitionEventPositionFallback initialPartitionEventPositionFallback) {
+        this.initialPartitionEventPositionFallback = Objects.requireNonNull(initialPartitionEventPositionFallback,
+            "'initialPartitionEventPositionFallback' cannot be null.");
+        return this;
+    }
+
+    /**
      * This will create a new {@link EventProcessorClient} configured with the options set in this builder. Each call to
      * this method will return a new instance of {@link EventProcessorClient}.
      *
@@ -744,8 +760,9 @@ public class EventProcessorClientBuilder implements
 
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
-            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
+            processError, initialPartitionEventPosition, initialPartitionEventPositionFallback, maxBatchSize,
+            maxWaitTime, processEventBatch != null, loadBalancingUpdateInterval,
+            partitionOwnershipExpirationInterval, loadBalancingStrategy);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

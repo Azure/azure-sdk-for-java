@@ -71,6 +71,7 @@ class PartitionPumpManager {
     private final int schedulerSize = Runtime.getRuntime().availableProcessors() * 4;
     private final CheckpointStore checkpointStore;
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
+    private final InitialPartitionEventPositionFallback initialPartitionEventPositionFallback;
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final TracerProvider tracerProvider;
@@ -101,14 +102,16 @@ class PartitionPumpManager {
     PartitionPumpManager(CheckpointStore checkpointStore,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider,
-        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode) {
+        Map<String, EventPosition> initialPartitionEventPosition, InitialPartitionEventPositionFallback initialPartitionEventPositionFallback,
+        int maxBatchSize, Duration maxWaitTime, boolean batchReceiveMode) {
+
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         this.tracerProvider = tracerProvider;
         this.initialPartitionEventPosition = initialPartitionEventPosition;
+        this.initialPartitionEventPositionFallback = initialPartitionEventPositionFallback;
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
         this.batchReceiveMode = batchReceiveMode;
@@ -202,7 +205,7 @@ class PartitionPumpManager {
             // A checkpoint indicates the last known successfully processed event.
             // So, the event position to start a new partition processing should be exclusive of the
             // offset/sequence number in the checkpoint. If no checkpoint is available, start from
-            // the position in set in the InitializationContext (either the earliest event in the partition or
+            // the position set in the InitializationContext (either the earliest event in the partition or
             // the user provided initial position)
             if (checkpoint != null && checkpoint.getOffset() != null) {
                 startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset());
@@ -210,6 +213,8 @@ class PartitionPumpManager {
                 startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
             } else if (initialPartitionEventPosition.containsKey(claimedOwnership.getPartitionId())) {
                 startFromEventPosition = initialPartitionEventPosition.get(claimedOwnership.getPartitionId());
+            } else if (initialPartitionEventPositionFallback == InitialPartitionEventPositionFallback.EARLIEST) {
+                startFromEventPosition = EventPosition.earliest();
             } else {
                 startFromEventPosition = EventPosition.latest();
             }

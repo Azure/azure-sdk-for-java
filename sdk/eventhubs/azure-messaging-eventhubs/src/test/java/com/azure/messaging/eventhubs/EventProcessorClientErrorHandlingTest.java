@@ -77,7 +77,7 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
             Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+        }, new HashMap<>(), InitialPartitionEventPositionFallback.LATEST, 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -98,7 +98,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> {
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+        }, new HashMap<>(), InitialPartitionEventPositionFallback.LATEST, 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
             LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
@@ -115,7 +115,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> {
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+        }, new HashMap<>(), InitialPartitionEventPositionFallback.LATEST, 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
             LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
@@ -133,7 +133,7 @@ public class EventProcessorClientErrorHandlingTest {
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
             null, errorContext -> {
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+        }, new HashMap<>(), InitialPartitionEventPositionFallback.LATEST, 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
             LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);

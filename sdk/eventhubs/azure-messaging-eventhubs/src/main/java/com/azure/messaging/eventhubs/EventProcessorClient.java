@@ -78,9 +78,9 @@ public class EventProcessorClient {
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
-        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy) {
+        Map<String, EventPosition> initialPartitionEventPosition, InitialPartitionEventPositionFallback initialPartitionEventPositionFallback,
+        int maxBatchSize, Duration maxWaitTime, boolean batchReceiveMode, Duration loadBalancerUpdateInterval,
+        Duration partitionOwnershipExpirationInterval, LoadBalancingStrategy loadBalancingStrategy) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -102,7 +102,7 @@ public class EventProcessorClient {
 
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition,
-            maxBatchSize, maxWaitTime, batchReceiveMode);
+            initialPartitionEventPositionFallback, maxBatchSize, maxWaitTime, batchReceiveMode);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,

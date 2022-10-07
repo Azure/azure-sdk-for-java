@@ -168,8 +168,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, maxBatchSize,
-            maxWaitTime, batchReceiveMode);
+            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, InitialPartitionEventPositionFallback.LATEST,
+            maxBatchSize, maxWaitTime, batchReceiveMode);
 
         try {
             // Act
@@ -223,8 +223,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition, maxBatchSize,
-            maxWaitTime, batchReceiveMode);
+                trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, InitialPartitionEventPositionFallback.LATEST,
+                maxBatchSize, maxWaitTime, batchReceiveMode);
 
         checkpoint.setOffset(1L).setSequenceNumber(10L);
         partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
@@ -256,8 +256,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, maxBatchSize,
-            maxWaitTime, batchReceiveMode);
+                trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, InitialPartitionEventPositionFallback.LATEST,
+                maxBatchSize, maxWaitTime, batchReceiveMode);
 
         final Exception testException = new IllegalStateException("Dummy exception.");
         when(consumerAsyncClient.receiveFromPartition(
@@ -296,8 +296,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition, maxBatchSize,
-            maxWaitTime, batchReceiveMode);
+                trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, InitialPartitionEventPositionFallback.LATEST,
+                maxBatchSize, maxWaitTime, batchReceiveMode);
 
         final String partition1 = "01";
         final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
@@ -339,8 +339,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition, maxBatchSize,
-            maxWaitTime, batchReceiveMode);
+                trackLastEnqueuedEventProperties, tracerProvider, initialPartitionPositions, InitialPartitionEventPositionFallback.LATEST,
+                maxBatchSize, maxWaitTime, batchReceiveMode);
 
         // Mock events to add.
         final Instant retrievalTime = Instant.now();
