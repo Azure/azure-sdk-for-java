@@ -166,6 +166,7 @@ com.azure:azure-verticals-agrifood-farming;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-xml;1.0.0-beta.1;1.0.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-developer-loadtesting;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.8.0;2.9.0-beta.1
