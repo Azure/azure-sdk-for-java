@@ -156,7 +156,6 @@ steps:
 
   - pwsh: |
       Write-Host "Job failed using the latest JDK, failing with warning as latest JDK is only to ensure there is no major blockers in the future."
-      Write-Host "##vso[task.setvariable variable=AGENT_JOBSTATUS;]SucceededWithIssues"
-      Write-Host "##vso[task.setvariable variable=Agent.JobStatus;]SucceededWithIssues"
+      Write-Host "##vso[task.complete result=SucceededWithIssues;]"
     displayName: 'Warn on Failure in Latest JDK'
     condition: and(failed(), eq('1.19', variables['JavaTestVersion']))
