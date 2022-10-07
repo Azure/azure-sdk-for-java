@@ -3,14 +3,17 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import javax.net.ssl.SSLHandshakeException;
 import java.net.SocketException;
@@ -22,6 +25,19 @@ import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientCon
 
 public class ClientRetryPolicyTest {
     private final static int TIMEOUT = 10000;
+
+    static String dbAccountJson1 = "{\"_self\":\"\",\"id\":\"testaccount\",\"_rid\":\"testaccount.documents.azure.com\",\"media\":\"//media/\",\"addresses\":\"//addresses/\","
+            + "\"_dbs\":\"//dbs/\",\"writableLocations\":[{\"name\":\"East US\",\"databaseAccountEndpoint\":\"https://testaccount-eastus.documents.azure.com:443/\"},{\"name\":\"East Asia\","
+            + "\"databaseAccountEndpoint\":\"https://testaccount-eastasia.documents.azure.com:443/\"}],\"readableLocations\":[{\"name\":\"East US\","
+            + "\"databaseAccountEndpoint\":\"https://testaccount-eastus.documents.azure.com:443/\"},{\"name\":\"East Asia\",\"databaseAccountEndpoint\":\"https://testaccount-eastasia.documents"
+            + ".azure.com:443/\"}],\"enableMultipleWriteLocations\":true,\"userReplicationPolicy\":{\"asyncReplication\":false,\"minReplicaSetSize\":3,\"maxReplicasetSize\":4},"
+            + "\"userConsistencyPolicy\":{\"defaultConsistencyLevel\":\"Session\"},\"systemReplicationPolicy\":{\"minReplicaSetSize\":3,\"maxReplicasetSize\":4},"
+            + "\"readPolicy\":{\"primaryReadCoefficient\":1,\"secondaryReadCoefficient\":1},\"queryEngineConfiguration\":\"{\\\"maxSqlQueryInputLength\\\":262144,\\\"maxJoinsPerSqlQuery\\\":5,"
+            + "\\\"maxLogicalAndPerSqlQuery\\\":500,\\\"maxLogicalOrPerSqlQuery\\\":500,\\\"maxUdfRefPerSqlQuery\\\":10,\\\"maxInExpressionItemsCount\\\":16000,"
+            + "\\\"queryMaxInMemorySortDocumentCount\\\":500,\\\"maxQueryRequestTimeoutFraction\\\":0.9,\\\"sqlAllowNonFiniteNumbers\\\":false,\\\"sqlAllowAggregateFunctions\\\":true,"
+            + "\\\"sqlAllowSubQuery\\\":true,\\\"sqlAllowScalarSubQuery\\\":true,\\\"allowNewKeywords\\\":true,\\\"sqlAllowLike\\\":false,\\\"sqlAllowGroupByClause\\\":true,"
+            + "\\\"maxSpatialQueryCells\\\":12,\\\"spatialMaxGeometryPointCount\\\":256,\\\"sqlAllowTop\\\":true,\\\"enableSpatialIndexing\\\":true}\"}\n"
+            + "0\n" + "\n";
 
     @Test(groups = "unit")
     public void networkFailureOnRead() throws Exception {
@@ -394,7 +410,6 @@ public class ClientRetryPolicyTest {
         }
     }
 
-
     @Test(groups = "unit")
     public void onBeforeSendRequestNotInvoked() {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
@@ -418,15 +433,55 @@ public class ClientRetryPolicyTest {
         Mockito.verifyNoInteractions(endpointManager);
     }
 
+    @Test(groups = "unit")
+    public void multimasterMetadataWriteRetry() throws Exception {
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(false);
+
+        DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
+
+        DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any())).thenReturn(Flux.just(databaseAccount));
+        Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount-eastasia.documents.azure.com:443"));
+
+        GlobalEndpointManager endpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
+        endpointManager.init();
+
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, false, throttlingRetryOptions, null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/dbID", ResourceType.Database);
+
+        assert endpointManager.isMultimasterMetadataWriteRequest(request);
+        
+        clientRetryPolicy.onBeforeSendRequest(request);
+
+        assert request.requestContext.locationEndpointToRoute.toString() == "https://testaccount-eastasia.documents.azure.com:443";
+        
+        Exception exception = new Exception();
+        CosmosException cosmosException =
+            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.FORBIDDEN, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN);
+        
+        Mono<ShouldRetryResult> retryResult = clientRetryPolicy.shouldRetry(cosmosException);
+
+        clientRetryPolicy.onBeforeSendRequest(request);
+
+        assert request.requestContext.locationEndpointToRoute.toString() == "https://testaccount-eastus.documents.azure.com:443/";
+    }
+
     public static void validateSuccess(Mono<ShouldRetryResult> single,
-                                       ShouldRetryValidator validator) {
+            ShouldRetryValidator validator) {
 
         validateSuccess(single, validator, TIMEOUT);
     }
 
     public static void validateSuccess(Mono<ShouldRetryResult> single,
-                                       ShouldRetryValidator validator,
-                                       long timeout) {
+            ShouldRetryValidator validator,
+            long timeout) {
         TestSubscriber<ShouldRetryResult> testSubscriber = new TestSubscriber<>();
 
         single.flux().subscribe(testSubscriber);

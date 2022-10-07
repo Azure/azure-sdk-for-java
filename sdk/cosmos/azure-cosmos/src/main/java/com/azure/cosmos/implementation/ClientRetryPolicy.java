@@ -24,16 +24,17 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  *
- *  Client policy is combination of endpoint change retry + throttling retry.
+ * Client policy is combination of endpoint change retry + throttling retry.
  */
 public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ClientRetryPolicy.class);
 
-    final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
+    final static int RetryIntervalInMS = 1000; // Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
     private final static int MaxServiceUnavailableRetryCount = 1;
-    //  Query Plan and Address Refresh will be re-tried 3 times, please check the if condition carefully :)
+    // Query Plan and Address Refresh will be re-tried 3 times, please check the if
+    // condition carefully :)
     private final static int MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT = 2;
 
     private final DocumentClientRetryPolicy throttlingRetry;
@@ -55,10 +56,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private RxCollectionCache rxCollectionCache;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
-                             GlobalEndpointManager globalEndpointManager,
-                             boolean enableEndpointDiscovery,
-                             ThrottlingRetryOptions throttlingRetryOptions,
-                             RxCollectionCache rxCollectionCache) {
+            GlobalEndpointManager globalEndpointManager,
+            boolean enableEndpointDiscovery,
+            ThrottlingRetryOptions throttlingRetryOptions,
+            RxCollectionCache rxCollectionCache) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -68,24 +69,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
-            throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-            throttlingRetryOptions.getMaxRetryWaitTime(),
-            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
-            false);
+                throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+                throttlingRetryOptions.getMaxRetryWaitTime(),
+                BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
+                false);
         this.rxCollectionCache = rxCollectionCache;
     }
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         logger.debug("retry count {}, isReadRequest {}, canUseMultipleWriteLocations {}, due to failure:",
-            cnt.incrementAndGet(),
-            isReadRequest,
-            canUseMultipleWriteLocations,
-            e);
+                cnt.incrementAndGet(),
+                isReadRequest,
+                canUseMultipleWriteLocations,
+                e);
         if (this.locationEndpoint == null) {
-            // on before request is not invoked because Document Service Request creation failed.
+            // on before request is not invoked because Document Service Request creation
+            // failed.
             logger.error("locationEndpoint is null because ClientRetryPolicy::onBeforeRequest(.) is not invoked, " +
-                                 "probably request creation failed due to invalid options, serialization setting, etc.");
+                    "probably request creation failed due to invalid options, serialization setting, etc.");
             return Mono.just(ShouldRetryResult.error(e));
         }
 
@@ -97,25 +99,38 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
-                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
-        {
+                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.warn("Endpoint not writable. Will refresh cache and retry ", e);
+
+            if (this.globalEndpointManager.isMultimasterMetadataWriteRequest(this.request)) {
+                boolean forceRefresh = false;
+
+                if (this.retryContext != null && this.retryContext.routeToHub) {
+                    forceRefresh = true;
+                }
+
+                Mono<ShouldRetryResult> retryResult = this.shouldRetryOnEndpointFailureAsync(false, forceRefresh, true);
+
+                return retryResult;
+            }
             return this.shouldRetryOnEndpointFailureAsync(false, true);
         }
 
-        // Regional endpoint is not available yet for reads (e.g. add/ online of region is in progress)
+        // Regional endpoint is not available yet for reads (e.g. add/ online of region
+        // is in progress)
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.DATABASE_ACCOUNT_NOTFOUND) &&
-                this.isReadRequest)
-        {
+                this.isReadRequest) {
             logger.warn("Endpoint not available for reads. Will refresh cache and retry. ", e);
             return this.shouldRetryOnEndpointFailureAsync(true, false);
         }
 
-        // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
+        // Received Connection error (HttpRequestException), initiate the endpoint
+        // rediscovery
         if (WebExceptionUtility.isNetworkFailure(e)) {
-            if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
+            if (clientException != null && Exceptions.isSubStatusCode(clientException,
+                    HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
                     logger.warn("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
                     return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false);
@@ -123,8 +138,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
                 }
             } else if (clientException != null &&
-                WebExceptionUtility.isReadTimeoutException(clientException) &&
-                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
+                    WebExceptionUtility.isReadTimeoutException(clientException) &&
+                    Exceptions.isSubStatusCode(clientException,
+                            HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
                 // if operationType is QueryPlan / AddressRefresh then just retry
                 if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
@@ -132,7 +148,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             } else {
                 logger.warn("Backend endpoint not reachable. ", e);
                 return this.shouldRetryOnBackendServiceUnavailableAsync(this.isReadRequest, WebExceptionUtility
-                                                                                                .isWebExceptionRetriable(e));
+                        .isWebExceptionRetriable(e));
             }
         }
 
@@ -144,8 +160,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // This is for gateway mode, collection recreate scenario is not handled there
         if (clientException != null &&
-            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
-            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
+                Exceptions.isSubStatusCode(clientException,
+                        HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
             return this.shouldRetryOnStaleContainer();
         }
 
@@ -156,21 +173,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (this.queryPlanAddressRefreshCount++ > MAX_QUERY_PLAN_AND_ADDRESS_RETRY_COUNT) {
             logger
-                .warn(
-                    "shouldRetryQueryPlanAndAddress() No more retrying on endpoint {}, operationType = {}, count = {}, " +
-                        "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
+                    .warn(
+                            "shouldRetryQueryPlanAndAddress() No more retrying on endpoint {}, operationType = {}, count = {}, "
+                                    +
+                                    "isAddressRefresh = {}",
+                            this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
+                            this.request.isAddressRefresh());
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
         logger
-            .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
-                      "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
-                      "shouldForceCollectionRoutingMapRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
-                this.request.isAddressRefresh(),
-                this.request.shouldForceAddressRefresh(),
-                this.request.forceCollectionRoutingMapRefresh);
+                .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
+                        "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
+                        "shouldForceCollectionRoutingMapRefresh = {}",
+                        this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
+                        this.request.isAddressRefresh(),
+                        this.request.shouldForceAddressRefresh(),
+                        this.request.forceCollectionRoutingMapRefresh);
 
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
@@ -180,18 +199,20 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.sessionTokenRetryCount++;
 
         if (!this.enableEndpointDiscovery) {
-            // if endpoint discovery is disabled, the request cannot be retried anywhere else
+            // if endpoint discovery is disabled, the request cannot be retried anywhere
+            // else
             return ShouldRetryResult.noRetry();
         } else {
             if (this.canUseMultipleWriteLocations) {
-                UnmodifiableList<URI> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                UnmodifiableList<URI> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints()
+                        : this.globalEndpointManager.getWriteEndpoints();
 
                 if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount , true);
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount, true);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
@@ -215,20 +236,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         this.request.setForceNameCacheRefresh(true);
 
-        // Refresh the sdk collection cache and throw the exception if intendedCollectionRid was passed by outside sdk, so caller will refresh their own collection cache if they have one
+        // Refresh the sdk collection cache and throw the exception if
+        // intendedCollectionRid was passed by outside sdk, so caller will refresh their
+        // own collection cache if they have one
         // Cosmos encryption is one use case
-        if(request.intendedCollectionRidPassedIntoSDK) {
-            return this.rxCollectionCache.refreshAsync(null, this.request).then( Mono.just(ShouldRetryResult.noRetry()));
+        if (request.intendedCollectionRidPassedIntoSDK) {
+            return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.noRetry()));
         }
 
-        //remove the previous header and try again
-        if(StringUtils.isNotEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+        // remove the previous header and try again
+        if (StringUtils.isNotEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
             request.getHeaders().remove(INTENDED_COLLECTION_RID_HEADER);
         }
-        return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
+        return this.rxCollectionCache.refreshAsync(null, this.request)
+                .then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
@@ -236,15 +260,17 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh);
 
-        // Some requests may be in progress when the endpoint manager and client are closed.
+        // Some requests may be in progress when the endpoint manager and client are
+        // closed.
         // In that case, the request won't succeed since the http client is closed.
-        // Therefore just skip the retry here to avoid the delay because retrying won't go through in the end.
+        // Therefore just skip the retry here to avoid the delay because retrying won't
+        // go through in the end.
 
         Duration retryDelay = Duration.ZERO;
         if (!isReadRequest) {
-            logger.debug("Failover happening. retryCount {}",  this.failoverRetryCount);
+            logger.debug("Failover happening. retryCount {}", this.failoverRetryCount);
             if (this.failoverRetryCount > 1) {
-                //if retried both endpoints, follow regular retry interval.
+                // if retried both endpoints, follow regular retry interval.
                 retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
             }
         } else {
@@ -253,7 +279,38 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
 
-    private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh,
+            boolean overrideEndointDiscovery) {
+        if ((!this.enableEndpointDiscovery && !overrideEndointDiscovery) || this.failoverRetryCount > MaxRetryCount) {
+            logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh);
+
+        // Some requests may be in progress when the endpoint manager and client are
+        // closed.
+        // In that case, the request won't succeed since the http client is closed.
+        // Therefore just skip the retry here to avoid the delay because retrying won't
+        // go through in the end.
+
+        Duration retryDelay = Duration.ZERO;
+        if (!isReadRequest) {
+            logger.debug("Failover happening. retryCount {}", this.failoverRetryCount);
+            if (this.failoverRetryCount > 1) {
+                // if retried both endpoints, follow regular retry interval.
+                retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+            }
+        } else {
+            retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+        }
+        if (this.globalEndpointManager.isMultimasterMetadataWriteRequest(this.request)) {
+            this.retryContext.routeToHub = true;
+        }
+        return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
+    }
+
+    private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
@@ -267,10 +324,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Mark the current read endpoint as unavailable
         if (isReadRequest) {
-            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for read", this.locationEndpoint);
             this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoint);
         } else {
-            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for write", this.locationEndpoint);
             this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoint);
         }
 
@@ -278,14 +335,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(boolean isReadRequest, boolean isWebExceptionRetriable) {
+    private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(boolean isReadRequest,
+            boolean isWebExceptionRetriable) {
         if (!isReadRequest && !isWebExceptionRetriable) {
-            logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}", this.serviceUnavailableRetryCount);
+            logger.warn(
+                    "shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}",
+                    this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
         if (this.serviceUnavailableRetryCount++ > MaxServiceUnavailableRetryCount) {
-            logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying. Retry count = {}", this.serviceUnavailableRetryCount);
+            logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying. Retry count = {}",
+                    this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -296,11 +357,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         int availablePreferredLocations = this.globalEndpointManager.getPreferredLocationCount();
         if (availablePreferredLocations <= 1) {
-            logger.warn("shouldRetryOnServiceUnavailable() Not retrying. No other regions available for the request. AvailablePreferredLocations = {}", availablePreferredLocations);
+            logger.warn(
+                    "shouldRetryOnServiceUnavailable() Not retrying. No other regions available for the request. AvailablePreferredLocations = {}",
+                    availablePreferredLocations);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        logger.warn("shouldRetryOnServiceUnavailable() Retrying. Received on endpoint {}, IsReadRequest = {}", this.locationEndpoint, isReadRequest);
+        logger.warn("shouldRetryOnServiceUnavailable() Retrying. Received on endpoint {}, IsReadRequest = {}",
+                this.locationEndpoint, isReadRequest);
 
         // Retrying on second PreferredLocations
         // RetryCount is used as zero-based index
@@ -322,12 +386,20 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             request.requestContext.clearRouteToLocation();
         }
         if (this.retryContext != null) {
-            // set location-based routing directive based on request retry context
-            request.requestContext.routeToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
+
+            if (this.retryContext.routeToHub) {
+                request.requestContext.routeToLocation(this.globalEndpointManager.getHubUri());
+            } else {
+                // set location-based routing directive based on request retry context
+                request.requestContext.routeToLocation(this.retryContext.retryCount,
+                        this.retryContext.retryRequestOnPreferredLocations);
+            }
         }
 
-        // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
-        // This enables marking the endpoint unavailability on endpoint failover/unreachability
+        // Resolve the endpoint for the request and pin the resolution to the resolved
+        // endpoint
+        // This enables marking the endpoint unavailability on endpoint
+        // failover/unreachability
         this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.locationEndpoint);
@@ -347,11 +419,21 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         public int retryCount;
         public boolean retryRequestOnPreferredLocations;
+        public boolean routeToHub;
 
         public RetryContext(int retryCount,
-                            boolean retryRequestOnPreferredLocations) {
+                boolean retryRequestOnPreferredLocations) {
             this.retryCount = retryCount;
             this.retryRequestOnPreferredLocations = retryRequestOnPreferredLocations;
+            this.routeToHub = false;
+        }
+
+        public RetryContext(int retryCount,
+                boolean retryRequestOnPreferredLocations,
+                boolean routeToHub) {
+            this.retryCount = retryCount;
+            this.retryRequestOnPreferredLocations = retryRequestOnPreferredLocations;
+            this.routeToHub = routeToHub;
         }
     }
 }
