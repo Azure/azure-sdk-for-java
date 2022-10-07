@@ -8,9 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
