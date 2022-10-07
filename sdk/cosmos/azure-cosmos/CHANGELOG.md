@@ -7,9 +7,11 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-Enabled **failover to preferred** locations in the case of single-write/multi-read region enabled account for **read in Gateway mode** and for metadata requests in Direct mode. See [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421)
+* Enabled **failover to preferred** locations in the case of single-write/multi-read region enabled account for **read in Gateway mode** and for metadata requests in Direct mode. - More details about the [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421). - See [PR 31314](https://github.com/Azure/azure-sdk-for-java/pull/31314)
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
 
 #### Other Changes
+* Added SslHandshakeTimeout minimum duration config - See [PR 31298](https://github.com/Azure/azure-sdk-for-java/pull/31298)
 
 ### 4.37.0 (2022-09-30)
 
