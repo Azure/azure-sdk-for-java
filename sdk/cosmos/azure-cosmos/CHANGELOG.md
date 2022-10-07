@@ -8,7 +8,7 @@
 
 #### Bugs Fixed
 
-* Enabled read failover to preferred locations in the case of single-write/multi-read region enabled account. See [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421)
+Enabled **failover to preferred** locations in the case of single-write/multi-read region enabled account for **read in Gateway mode** and for metadata requests in Direct mode. See [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421)
 
 #### Other Changes
 
