@@ -46,6 +46,9 @@
 # PRLabel: %Communication - Calling Server
 /sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
+# PRLabel: %Communication - Call Automation
+/sdk/communication/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
+
 # PRLabel: %Communication - Chat
 /sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
@@ -282,7 +285,7 @@
 #/<NotInRepo>/          @assafi
 
 # ServiceLabel: %Cognitive - Form Recognizer %Service Attention
-#/<NotInRepo>/          @ctstone @anrothMSFT
+#/<NotInRepo>/          @ctstone @vkurpad
 
 # ServiceLabel: %Cognitive - Anomaly Detector %Service Attention
 #/<NotInRepo>/          @yingqunpku @bowgong

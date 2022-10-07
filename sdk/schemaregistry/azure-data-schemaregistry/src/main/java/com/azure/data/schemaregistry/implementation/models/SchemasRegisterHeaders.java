@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SchemasRegisterHeaders model. */
@@ -45,6 +46,21 @@ public final class SchemasRegisterHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SchemasRegisterHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SchemasRegisterHeaders(HttpHeaders rawHeaders) {
+        this.schemaVersion = Integer.parseInt(rawHeaders.getValue("Schema-Version"));
+        this.schemaId = rawHeaders.getValue("Schema-Id");
+        this.schemaGroupName = rawHeaders.getValue("Schema-Group-Name");
+        this.schemaName = rawHeaders.getValue("Schema-Name");
+        this.schemaIdLocation = rawHeaders.getValue("Schema-Id-Location");
+        this.location = rawHeaders.getValue("Location");
+    }
 
     /**
      * Get the schemaVersion property: The Schema-Version property.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class which is a sparse representation of a Traffic Manager endpoint. */
 @Fluent
 public final class HeatMapEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HeatMapEndpoint.class);
-
     /*
      * The ARM Resource ID of this Traffic Manager endpoint.
      */
@@ -25,6 +21,10 @@ public final class HeatMapEndpoint {
      */
     @JsonProperty(value = "endpointId")
     private Integer endpointId;
+
+    /** Creates an instance of HeatMapEndpoint class. */
+    public HeatMapEndpoint() {
+    }
 
     /**
      * Get the resourceId property: The ARM Resource ID of this Traffic Manager endpoint.
