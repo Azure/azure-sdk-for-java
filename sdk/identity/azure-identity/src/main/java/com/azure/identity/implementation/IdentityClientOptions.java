@@ -54,8 +54,6 @@ public final class IdentityClientOptions implements Cloneable {
     private Configuration configuration;
     private IdentityLogOptionsImpl identityLogOptionsImpl;
     private boolean accountIdentifierLogging;
-    private ManagedIdentityType managedIdentityType;
-    private ManagedIdentityParameters managedIdentityParameters;
     private Set<String> additionallyAllowedTenants;
 
     /**
@@ -97,6 +95,11 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public String getImdsAuthorityHost() {
         return imdsAuthorityHost;
+    }
+
+    IdentityClientOptions setImdsAuthorityHost(String imdsAuthorityHost) {
+        this.imdsAuthorityHost = imdsAuthorityHost;
+        return this;
     }
 
     /**
@@ -258,6 +261,11 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setPersistenceCache(boolean persistenceCache) {
+        this.sharedTokenCacheEnabled = persistenceCache;
+        return this;
+    }
+
     /*
      * Get the KeePass database path.
      * @return the KeePass database path to extract inellij credentials from.
@@ -368,6 +376,11 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setUserAssertion(UserAssertion userAssertion) {
+        this.userAssertion = userAssertion;
+        return this;
+    }
+
     /**
      * Get the configured {@link UserAssertion}
      *
@@ -406,6 +419,11 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setConfigurationStore(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
     /**
      * Gets the configured configuration store.
      *
@@ -433,43 +451,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Set the Managed Identity Type
-     * @param managedIdentityType the Managed Identity Type
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
-        this.managedIdentityType = managedIdentityType;
-        return this;
-    }
-
-    /**
-     * Get the Managed Identity Type
-     * @return the Managed Identity Type
-     */
-    public ManagedIdentityType getManagedIdentityType() {
-        return managedIdentityType;
-    }
-
-    /**
-     * Get the Managed Identity parameters
-     * @return the Managed Identity Parameters
-     */
-    public ManagedIdentityParameters getManagedIdentityParameters() {
-        return managedIdentityParameters;
-    }
-
-    /**
-     * Configure the managed identity parameters.
-     *
-     * @param managedIdentityParameters the managed identity parameters to use for authentication.
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setManagedIdentityParameters(ManagedIdentityParameters managedIdentityParameters) {
-        this.managedIdentityParameters = managedIdentityParameters;
-        return this;
-    }
-
-    /**
      * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
      * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
      *
@@ -483,6 +464,11 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    IdentityClientOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
+        this.additionallyAllowedTenants = additionallyAllowedTenants;
+        return this;
+    }
+
     /**
      * Get the Additionally Allowed Tenants.
      * @return the List containing additionally allowed tenants.
@@ -490,7 +476,6 @@ public final class IdentityClientOptions implements Cloneable {
     public Set<String> getAdditionallyAllowedTenants() {
         return this.additionallyAllowedTenants;
     }
-
 
     IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
         this.cp1Disabled = cp1Disabled;
@@ -501,32 +486,6 @@ public final class IdentityClientOptions implements Cloneable {
         this.multiTenantAuthDisabled = multiTenantAuthDisabled;
         return this;
     }
-
-    IdentityClientOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
-        this.additionallyAllowedTenants = additionallyAllowedTenants;
-        return this;
-    }
-
-    IdentityClientOptions setConfigurationStore(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    IdentityClientOptions setUserAssertion(UserAssertion userAssertion) {
-        this.userAssertion = userAssertion;
-        return this;
-    }
-
-    IdentityClientOptions setPersistenceCache(boolean persistenceCache) {
-        this.sharedTokenCacheEnabled = persistenceCache;
-        return this;
-    }
-
-    IdentityClientOptions setImdsAuthorityHost(String imdsAuthorityHost) {
-        this.imdsAuthorityHost = imdsAuthorityHost;
-        return this;
-    }
-
 
     /**
      * Loads the details from the specified Configuration Store.

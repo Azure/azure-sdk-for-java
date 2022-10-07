@@ -51,6 +51,8 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
+        return identityClient.authenticateToManagedIdentityEndpoint(identityEndpoint, identityHeader,
+            msiEndpoint, msiSecret,
+            request);
     }
 }

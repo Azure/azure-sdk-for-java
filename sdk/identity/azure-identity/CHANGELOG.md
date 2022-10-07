@@ -1,25 +1,5 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.7.0-beta.1 (2022-09-20)
-
-### Features Added
-
-- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`.
--  Added support for in-memory token caching in `ManagedIdentityCredential`.
-
-### Breaking Changes
-- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
-
 ## 1.6.0 (2022-09-19)
 
 ### Features Added
@@ -35,7 +15,7 @@
     - `UsernamePasswordCredentialBuilder`
     - `VisualStudioCodeCredentialBuilder`
     - `VisualStudioCredentialBuilder`
-
+    
 ### Breaking Changes
 - Credential types supporting multi-tenant authentication will now throw `ClientAuthenticationException` if the requested tenant ID doesn't match the credential's tenant ID, and is not included in the `additionallyAllowedTenants` option. Applications must now explicitly add additional tenants to the `additionallyAllowedTenants` list, or add '*' to list, to enable acquiring tokens from tenants other than the originally specified tenant ID. See [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md#160).
 
@@ -43,7 +23,7 @@
     - removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain
     - `AZURE_CLIENT_CERTIFICATE_PASSWORD` support for `EnvironmentCredential`
     - in-memory token caching support for `ManagedIdentityCredential`.
-
+  
 ### Other Changes
 
 #### Dependency Updates
@@ -71,7 +51,11 @@
 - Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
 
 ### Other Changes
+
 #### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
 - Upgraded `msal4j` from `1.12.0` to version `1.13.0`.
 
 ## 1.5.4 (2022-08-08)
