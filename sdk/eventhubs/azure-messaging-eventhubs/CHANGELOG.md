@@ -6,6 +6,7 @@
 
 - Added algorithm for mapping partition keys to partition ids.
 - Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+- Added initialPartitionEventPositionFallback to EventHubClientBuilder
 
 ### Breaking Changes
 
