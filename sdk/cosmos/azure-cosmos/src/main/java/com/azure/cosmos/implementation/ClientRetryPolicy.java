@@ -118,7 +118,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
                     logger.warn("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
-                    return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, isReadRequest);
+                    return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, true);
                 } else {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false, false);
                 }
