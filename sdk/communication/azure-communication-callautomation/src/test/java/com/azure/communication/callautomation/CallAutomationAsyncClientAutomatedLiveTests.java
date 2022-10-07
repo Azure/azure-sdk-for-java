@@ -69,7 +69,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             assertNotNull(repeatabilityHeaders);
             assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
             assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
-            assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();

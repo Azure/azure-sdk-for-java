@@ -107,7 +107,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(repeatabilityHeaders);
             assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
             assertInstanceOf(String.class, repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-            assertTrue(ZonedDateTime.now().isAfter(repeatabilityHeaders.getRepeatabilityFirstSent()));
             assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
 
             // wait for the incomingCallContext on another receiver
