@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SoftwareInventoriesClient;
 import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 import com.azure.resourcemanager.security.models.SoftwaresList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SoftwareInventoriesClient. */
 public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesClient {
-    private final ClientLogger logger = new ClientLogger(SoftwareInventoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SoftwareInventoriesService service;
 
@@ -137,7 +134,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(
@@ -208,7 +206,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceSinglePageAsync(
@@ -275,7 +274,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listByExtendedResourceAsync(
@@ -298,7 +297,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listByExtendedResourceAsync(
@@ -321,7 +320,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> listByExtendedResource(
@@ -342,7 +341,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> listByExtendedResource(
@@ -356,7 +355,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listSinglePageAsync() {
@@ -398,7 +398,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listSinglePageAsync(Context context) {
@@ -435,7 +436,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listAsync() {
@@ -450,7 +452,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SoftwareInner> listAsync(Context context) {
@@ -463,7 +466,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> list() {
@@ -477,7 +481,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SoftwareInner> list(Context context) {
@@ -496,7 +501,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
+     * @return a single software data of the virtual machine along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareInner>> getWithResponseAsync(
@@ -567,7 +573,8 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
+     * @return a single software data of the virtual machine along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareInner>> getWithResponseAsync(
@@ -635,7 +642,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
+     * @return a single software data of the virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareInner> getAsync(
@@ -645,14 +652,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
         String resourceName,
         String softwareName) {
         return getWithResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName)
-            .flatMap(
-                (Response<SoftwareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -692,7 +692,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
+     * @return a single software data of the virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftwareInner> getWithResponse(
@@ -710,11 +710,13 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the software inventory of the virtual machine.
+     * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceNextSinglePageAsync(String nextLink) {
@@ -746,12 +748,14 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the software inventory of the virtual machine.
+     * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listByExtendedResourceNextSinglePageAsync(
@@ -783,11 +787,13 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the software inventory of the virtual machine.
+     * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -819,12 +825,14 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the software inventory of the virtual machine.
+     * @return represents the software inventory of the virtual machine along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SoftwareInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

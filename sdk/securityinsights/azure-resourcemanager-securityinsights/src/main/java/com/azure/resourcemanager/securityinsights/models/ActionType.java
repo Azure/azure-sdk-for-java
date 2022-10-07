@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionType. */
+/** The type of the automation rule action. */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
     /** Static value ModifyProperties for ActionType. */
     public static final ActionType MODIFY_PROPERTIES = fromString("ModifyProperties");

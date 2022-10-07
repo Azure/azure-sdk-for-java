@@ -2,24 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
-import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
-
+import java.util.UUID
 import scala.collection.mutable
 
 class SparkE2EQueryITest
   extends IntegrationSpec
-    with Spark
+    with SparkWithJustDropwizardAndNoSlf4jMetrics
     with CosmosClient
     with AutoCleanableCosmosContainer
-    with BasicLoggingTrait {
+    with BasicLoggingTrait
+    with MetricAssertions {
 
   val objectMapper = new ObjectMapper()
 
@@ -41,11 +41,14 @@ class SparkE2EQueryITest
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
+    CosmosClientMetrics.meterRegistry.isDefined shouldEqual true
+    val meterRegistry = CosmosClientMetrics.meterRegistry.get
+
     val id = UUID.randomUUID().toString
 
     val rawItem = s"""
       | {
-      |   "id" : "${id}",
+      |   "id" : "$id",
       |   "nestedObject" : {
       |     "prop1" : 5,
       |     "prop2" : "6"
@@ -71,6 +74,13 @@ class SparkE2EQueryITest
 
     val item = rowsArray(0)
     item.getAs[String]("id") shouldEqual id
+
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    // Gateway requests are not happening always - but they can happen
+    //assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
   private def insertDummyValue() : Unit = {
@@ -78,7 +88,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -100,7 +110,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -140,7 +150,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -180,7 +190,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -266,7 +276,7 @@ class SparkE2EQueryITest
       .collect()
     rowsArray should have size 20
 
-    for (index <- 0 until rowsArray.length) {
+    for (index <- rowsArray.indices) {
       val row = rowsArray(index)
       row.getAs[String]("name") shouldEqual "Shrodigner's cat"
       row.getAs[String]("type") shouldEqual "cat"
@@ -280,7 +290,7 @@ class SparkE2EQueryITest
     SimpleFileDiagnosticsProvider.reset()
     messages should not be null
     messages.size should not be 0
-    for ((msg, throwable) <- messages) {
+    for ((msg, _) <- messages) {
       if (msg.contains(logTestCaseIdentifier)) {
         val itemCountPos = msg.indexOf("itemCount:")
         if (itemCountPos > 0) {
@@ -338,7 +348,7 @@ class SparkE2EQueryITest
     val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
     rowsArray should have size 20
 
-    for (index <- 0 until rowsArray.length) {
+    for (index <- rowsArray.indices) {
       val row = rowsArray(index)
       row.getAs[String]("name") shouldEqual "Shrodigner's cat"
       row.getAs[String]("type") shouldEqual "cat"
@@ -747,18 +757,18 @@ class SparkE2EQueryITest
     val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
     val rowsArray = df.collect()
 
-    for (index <- 0 until rowsArray.length) {
+    for (index <- rowsArray.indices) {
       val row = rowsArray(index)
       val ts = row.getAs[Timestamp]("_ts")
       val id = row.getAs[String]("id")
 
-      ts.getTime() > 0 shouldBe true
+      ts.getTime > 0 shouldBe true
 
       val itemResponse = container.readItem(id, new PartitionKey(id), classOf[ObjectNode]).block()
 
       val documentTs = itemResponse.getItem.get("_ts").asLong
 
-      ts.getTime() shouldBe documentTs
+      ts.getTime shouldBe documentTs
     }
   }
 
@@ -770,7 +780,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -868,7 +878,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -1046,7 +1056,7 @@ class SparkE2EQueryITest
       .collect()
     rowsArray should have size 20
 
-    for (index <- 0 until rowsArray.length) {
+    for (index <- rowsArray.indices) {
       val row = rowsArray(index)
       row.getAs[String]("name") shouldEqual "Shrodigner's cat"
       row.getAs[String]("type") shouldEqual "cat"
@@ -1062,7 +1072,7 @@ class SparkE2EQueryITest
     messages.size should not be 0
 
     val correlationActivityIds = mutable.HashSet.empty[String]
-    for ((msg, throwable) <- messages) {
+    for ((msg, _) <- messages) {
       if (msg.contains(logTestCaseIdentifier)) {
         var startPos = 0
         var continueLoop = true
@@ -1097,7 +1107,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -1114,7 +1124,7 @@ class SparkE2EQueryITest
 
     val rawItem2 = s"""
                      | {
-                     |   "id" : "${id2}",
+                     |   "id" : "$id2",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "7"
@@ -1153,7 +1163,7 @@ class SparkE2EQueryITest
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "nestedObject" : {
                      |     "prop1" : 5,
                      |     "prop2" : "6"
@@ -1170,7 +1180,7 @@ class SparkE2EQueryITest
 
     val rawItem2 = s"""
                       | {
-                      |   "id" : "${id2}",
+                      |   "id" : "$id2",
                       |   "nestedObject" : {
                       |     "prop1" : 8,
                       |     "prop2" : "7"
@@ -1205,6 +1215,54 @@ class SparkE2EQueryITest
 
     val item2 = rowsArray(1)
     item2.getAs[Int]("_value") shouldEqual 8
+  }
+
+  "spark query" can "read invalid json with duplicate properties if setting is overridden" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem = s"""
+                     | {
+                     |   "id" : "${id}",
+                     |   "prop1" : 5,
+                     |   "prop1" : 7,
+                     |   "nestedObject" : {
+                     |     "prop2" : "6"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val requestOptions = new CosmosItemRequestOptions()
+    container.createItem(blob, new PartitionKey(id), requestOptions).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties" -> "true"
+    )
+
+    try {
+      val df = spark.read.format("cosmos.oltp").options(cfg).load()
+      val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
+      rowsArray should have size 1
+
+      val item = rowsArray(0)
+      item.getAs[String]("id") shouldEqual id
+      item.getAs[Int]("prop1") shouldEqual 7
+    } finally {
+      try {
+        container.deleteItem(id, new PartitionKey(id)).block()
+      } finally {
+        SparkBridgeImplementationInternal.configureSimpleObjectMapper(false)
+      }
+    }
   }
 
   //scalastyle:on magic.number

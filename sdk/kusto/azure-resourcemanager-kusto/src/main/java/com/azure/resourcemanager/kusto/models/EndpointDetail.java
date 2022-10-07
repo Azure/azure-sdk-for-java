@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Current TCP connectivity information from the Kusto cluster to a single endpoint. */
 @Fluent
 public final class EndpointDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
-
     /*
      * The port an endpoint is connected to.
      */

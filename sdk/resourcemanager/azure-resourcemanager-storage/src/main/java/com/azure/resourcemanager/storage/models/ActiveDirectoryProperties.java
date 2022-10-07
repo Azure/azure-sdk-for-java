@@ -57,7 +57,7 @@ public final class ActiveDirectoryProperties {
      * Specifies the Active Directory account type for Azure Storage.
      */
     @JsonProperty(value = "accountType")
-    private AccountType accountType;
+    private ActiveDirectoryPropertiesAccountType accountType;
 
     /**
      * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
@@ -204,7 +204,7 @@ public final class ActiveDirectoryProperties {
      *
      * @return the accountType value.
      */
-    public AccountType accountType() {
+    public ActiveDirectoryPropertiesAccountType accountType() {
         return this.accountType;
     }
 
@@ -214,7 +214,7 @@ public final class ActiveDirectoryProperties {
      * @param accountType the accountType value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties withAccountType(AccountType accountType) {
+    public ActiveDirectoryProperties withAccountType(ActiveDirectoryPropertiesAccountType accountType) {
         this.accountType = accountType;
         return this;
     }

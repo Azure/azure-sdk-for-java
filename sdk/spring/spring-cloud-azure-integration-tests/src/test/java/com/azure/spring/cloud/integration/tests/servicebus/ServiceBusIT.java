@@ -70,14 +70,15 @@ public class ServiceBusIT {
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
+        Assertions.assertEquals(1, receivedMessages.stream().count());
         if (receivedMessages.stream().iterator().hasNext()) {
             ServiceBusReceivedMessage message = receivedMessages.stream().iterator().next();
             Assertions.assertEquals(DATA1, message.getBody().toString());
             receiverClient.complete(message);
         }
-        processorClient.start();
         senderClient.sendMessage(new ServiceBusMessage(DATA2));
         senderClient.close();
+        processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
         LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA2, MESSAGE);

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.DiscoveredSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutionList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiscoveredSecuritySolutionsClient. */
 public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSecuritySolutionsClient {
-    private final ClientLogger logger = new ClientLogger(DiscoveredSecuritySolutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DiscoveredSecuritySolutionsService service;
 
@@ -128,7 +125,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listSinglePageAsync() {
@@ -170,7 +168,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listSinglePageAsync(Context context) {
@@ -207,7 +206,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiscoveredSecuritySolutionInner> listAsync() {
@@ -221,7 +221,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiscoveredSecuritySolutionInner> listAsync(Context context) {
@@ -234,7 +235,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> list() {
@@ -248,7 +250,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription.
+     * @return a list of discovered Security Solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> list(Context context) {
@@ -263,7 +266,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listByHomeRegionSinglePageAsync(String ascLocation) {
@@ -316,7 +320,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listByHomeRegionSinglePageAsync(
@@ -361,7 +366,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiscoveredSecuritySolutionInner> listByHomeRegionAsync(String ascLocation) {
@@ -379,7 +385,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiscoveredSecuritySolutionInner> listByHomeRegionAsync(String ascLocation, Context context) {
@@ -396,7 +403,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> listByHomeRegion(String ascLocation) {
@@ -412,7 +420,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of discovered Security Solutions for the subscription and location.
+     * @return a list of discovered Security Solutions for the subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoveredSecuritySolutionInner> listByHomeRegion(String ascLocation, Context context) {
@@ -430,7 +439,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiscoveredSecuritySolutionInner>> getWithResponseAsync(
@@ -490,7 +500,8 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiscoveredSecuritySolutionInner>> getWithResponseAsync(
@@ -546,20 +557,13 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiscoveredSecuritySolutionInner> getAsync(
         String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName) {
         return getWithResponseAsync(resourceGroupName, ascLocation, discoveredSecuritySolutionName)
-            .flatMap(
-                (Response<DiscoveredSecuritySolutionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -593,7 +597,7 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveredSecuritySolutionInner> getWithResponse(
@@ -604,11 +608,12 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listNextSinglePageAsync(String nextLink) {
@@ -639,12 +644,13 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listNextSinglePageAsync(
@@ -676,11 +682,12 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listByHomeRegionNextSinglePageAsync(String nextLink) {
@@ -711,12 +718,13 @@ public final class DiscoveredSecuritySolutionsClientImpl implements DiscoveredSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoveredSecuritySolutionInner>> listByHomeRegionNextSinglePageAsync(

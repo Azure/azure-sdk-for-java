@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class VerticaLinkedService extends LinkedService {
     /*
-     * An ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
@@ -32,9 +31,8 @@ public class VerticaLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference pwd;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

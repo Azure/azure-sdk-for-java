@@ -8,24 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.IpConfiguration;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the properties of an inbound endpoint for a DNS resolver. */
 @Fluent
 public final class InboundEndpointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundEndpointProperties.class);
-
     /*
      * IP configurations for the inbound endpoint.
      */
-    @JsonProperty(value = "ipConfigurations")
+    @JsonProperty(value = "ipConfigurations", required = true)
     private List<IpConfiguration> ipConfigurations;
 
     /*
-     * The current provisioning state of the inbound endpoint. This is a
-     * read-only property and any attempt to set this value will be ignored.
+     * The current provisioning state of the inbound endpoint. This is a read-only property and any attempt to set this
+     * value will be ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -81,8 +78,15 @@ public final class InboundEndpointProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipConfigurations() != null) {
+        if (ipConfigurations() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipConfigurations in model InboundEndpointProperties"));
+        } else {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InboundEndpointProperties.class);
 }

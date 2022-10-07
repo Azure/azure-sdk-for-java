@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network interface IP configuration properties. */
 @Fluent
 public final class NetworkInterfaceIpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfiguration.class);
-
     /*
      * IP address allocation method.
      */
@@ -50,6 +46,10 @@ public final class NetworkInterfaceIpConfiguration {
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
+
+    /** Creates an instance of NetworkInterfaceIpConfiguration class. */
+    public NetworkInterfaceIpConfiguration() {
+    }
 
     /**
      * Get the ipAllocationMethod property: IP address allocation method.

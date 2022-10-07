@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDbV2CollectionDatasetTypeProperties {
     /*
-     * The collection name of the MongoDB database. Type: string (or Expression
-     * with resultType string).
+     * The collection name of the MongoDB database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collection", required = true)
     private Object collection;

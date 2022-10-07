@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 

@@ -14,6 +14,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -231,7 +232,7 @@ public final class LibraryClient {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -253,7 +254,7 @@ public final class LibraryClient {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,7 +272,7 @@ public final class LibraryClient {
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
      *     length.
      * @param content Library file chunk.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
      *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
      *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
@@ -286,6 +287,74 @@ public final class LibraryClient {
     public Response<Void> appendWithResponse(
             String libraryName,
             Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        return this.serviceClient.appendWithResponse(
+                libraryName, content, contentLength, blobConditionAppendPosition, context);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+        this.serviceClient.append(libraryName, content, contentLength, blobConditionAppendPosition);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(String libraryName, BinaryData content, long contentLength) {
+        this.serviceClient.append(libraryName, content, contentLength);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(
+            String libraryName,
+            BinaryData content,
             long contentLength,
             Long blobConditionAppendPosition,
             Context context) {

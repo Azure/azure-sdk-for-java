@@ -61,6 +61,7 @@ public final class TestUtils {
     static final String EXAMPLE_DOCX = "example.docx";
     static final String EXAMPLE_PPT = "example.pptx";
     static final String EXAMPLE_HTML = "example.html";
+    static final String INSURANCE_PNG = "insurance.png";
 
     static final String EXAMPLE_XLSX = "example.xlsx";
     static final String GERMAN_PNG = "read-german.png";
@@ -130,8 +131,9 @@ public final class TestUtils {
         testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    static void damagedPdfDataRunner(BiConsumer<InputStream, Integer> testRunner) {
-        testRunner.accept(new ByteArrayInputStream(new byte[] {0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}), 7);
+    static void damagedPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
+        testRunner.accept(new ByteArrayInputStream(new byte[] {0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}),
+            Long.valueOf(7));
     }
 
     static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName, boolean isPlaybackMode) {
@@ -241,7 +243,7 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         List<DocumentAnalysisServiceVersion> serviceVersions = new ArrayList<>();
-        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_06_30_PREVIEW);
+        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_08_31);
         getHttpClients()
             .forEach(httpClient -> serviceVersions.stream().filter(
                     TestUtils::shouldServiceVersionBeTested)
@@ -282,13 +284,13 @@ public final class TestUtils {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                return DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
 
             case AzureAuthorityHosts.AZURE_CHINA:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_CHINA;
+                return DocumentAnalysisAudience.AZURE_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+                return DocumentAnalysisAudience.AZURE_GOVERNMENT;
 
             default:
                 return null;

@@ -231,7 +231,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
+    @Host("https://{sub1}.host.com")
     @ServiceInterface(name = "HostSubstitutionMethods")
     interface HostSubstitutionMethods {
         @Get("test")
@@ -242,77 +242,98 @@ public class SwaggerMethodParserTests {
 
         @Get("test")
         void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
+
+        @Get("test")
+        void substitutionWrongParam(@HostParam("sub2") String sub2);
+
+        @Get("test")
+        void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
     @ParameterizedTest
     @MethodSource("hostSubstitutionSupplier")
-    public void hostSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
+    public void hostSubstitution(Method method, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        SwaggerMethodParser.setSchemeAndHost(rawHost, swaggerMethodParser.hostSubstitutions, arguments, urlBuilder,
-            DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost("https://{sub1}.host.com", swaggerMethodParser.hostSubstitutions,
+            arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
 
     private static Stream<Arguments> hostSubstitutionSupplier() throws NoSuchMethodException {
-        String sub1RawHost = "https://{sub1}.host.com";
-        String sub2RawHost = "https://{sub2}.host.com";
-
         Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
         Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+        Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
+        Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
         return Stream.of(
-            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "https://{sub1}.host.com"),
-            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("raw"), "https://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("{sub1}"), "https://{sub1}.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), "https://.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "https://{sub1}.host.com"),
-            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "https://raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "https://%7Bsub1%7D.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), "https://.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "https://{sub1}.host.com"),
-            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com")
+            Arguments.of(noSubstitutions, toObjectArray("raw"), "https://{sub1}.host.com"),
+            Arguments.of(substitution, toObjectArray("raw"), "https://raw.host.com"),
+            Arguments.of(substitution, toObjectArray("{sub1}"), "https://{sub1}.host.com"),
+            Arguments.of(substitution, toObjectArray((String) null), "https://.host.com"),
+            Arguments.of(substitution, null, "https://{sub1}.host.com"),
+            Arguments.of(substitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("raw"), "https://raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("{sub1}"), "https://%7Bsub1%7D.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray((String) null), "https://.host.com"),
+            Arguments.of(substitution, null, "https://{sub1}.host.com"),
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com")
         );
+    }
+
+    @Host("{sub1}://raw.host.com")
+    @ServiceInterface(name = "SchemeSubstitutionMethods")
+    interface SchemeSubstitutionMethods {
+        @Get("test")
+        void noSubstitutions(String sub1);
+
+        @Get("test")
+        void substitution(@HostParam("sub1") String sub1);
+
+        @Get("test")
+        void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
+
+        @Get("test")
+        void substitutionWrongParam(@HostParam("sub2") String sub2);
+
+        @Get("test")
+        void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
     @ParameterizedTest
     @MethodSource("schemeSubstitutionSupplier")
-    public void schemeSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
+    public void schemeSubstitution(Method method, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        SwaggerMethodParser.setSchemeAndHost(rawHost, swaggerMethodParser.hostSubstitutions, arguments, urlBuilder,
-            DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost("{sub1}://raw.host.com", swaggerMethodParser.hostSubstitutions, arguments,
+            urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
 
     private static Stream<Arguments> schemeSubstitutionSupplier() throws NoSuchMethodException {
-        String sub1RawHost = "{sub1}://raw.host.com";
-        String sub2RawHost = "{sub2}://raw.host.com";
-
-        Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
+        Class<SchemeSubstitutionMethods> clazz = SchemeSubstitutionMethods.class;
         Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+        Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
+        Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
         return Stream.of(
-            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("http"), "http://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("ĥttps"), "ĥttps://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "raw.host.com"),
-            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("http"), "http://raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("ĥttps"), "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "raw.host.com")
+            Arguments.of(noSubstitutions, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(substitution, toObjectArray("http"), "http://raw.host.com"),
+            Arguments.of(substitution, toObjectArray("ĥttps"), "ĥttps://raw.host.com"),
+            Arguments.of(substitution, toObjectArray((String) null), "raw.host.com"),
+            Arguments.of(substitution, null, "raw.host.com"),
+            Arguments.of(substitutionWrongParam, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("http"), "http://raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("ĥttps"), "raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray((String) null), "raw.host.com"),
+            Arguments.of(substitution, null, "raw.host.com"),
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "raw.host.com")
         );
     }
 

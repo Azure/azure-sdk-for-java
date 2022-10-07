@@ -82,15 +82,17 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -162,7 +164,8 @@ public class IdentityClient {
         InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
         Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
-            tenantId = "organizations";
+            tenantId = IdentityUtil.DEFAULT_TENANT;
+            options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
         }
         if (options == null) {
             options = new IdentityClientOptions();
@@ -550,9 +553,14 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azCommand.append(" --tenant ").append(tenant);
+        try {
+            String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+
+            if (!CoreUtils.isNullOrEmpty(tenant)) {
+                azCommand.append(" --tenant ").append(tenant);
+            }
+        } catch (ClientAuthenticationException e) {
+            return Mono.error(e);
         }
 
         AccessToken token;
@@ -795,7 +803,8 @@ public class IdentityClient {
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
                 }
-            )).map(MsalToken::new);
+            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -944,7 +953,7 @@ public class IdentityClient {
                     parametersBuilder.claims(customClaimRequest);
                 }
                 return pc.acquireToken(parametersBuilder.build());
-            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
+            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code.", null, t))
                 .map(MsalToken::new));
     }
 

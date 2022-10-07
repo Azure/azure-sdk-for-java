@@ -19,10 +19,9 @@ import com.azure.resourcemanager.kusto.models.DataConnection;
 import com.azure.resourcemanager.kusto.models.DataConnectionCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationListResult;
 import com.azure.resourcemanager.kusto.models.DataConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataConnectionsImpl implements DataConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataConnectionsImpl.class);
 
     private final DataConnectionsClient innerClient;
 

@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashMap;
@@ -91,15 +92,12 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public HttpHeader get(String name) {
-        if (nettyHeaders.contains(name)) {
-            // Be careful here: Netty's HttpHeaders 'get' method will return only the first value,
-            // which is obviously not what we want to call!
-            // We call 'getAll' instead, but unfortunately there is a representation mismatch:
-            // Netty HttpHeaders uses List<String>, whereas azure-core HttpHeaders joins it all into a
-            // comma-separated String.
-            return new NettyHttpHeader(this, name, nettyHeaders.getAll(name));
-        }
-        return null;
+        // Be careful here: Netty's HttpHeaders 'get' method will return only the first value, which is obviously not
+        // what we want to call! We call 'getAll' instead, but unfortunately there is a representation mismatch:
+        // Netty HttpHeaders uses List<String>, whereas azure-core HttpHeaders joins it all into a comma-separated
+        // String. Additionally, 'getAll' will return an empty list if there is no value(s) for the header.
+        List<String> values = nettyHeaders.getAll(name);
+        return (CoreUtils.isNullOrEmpty(values)) ? null : new NettyHttpHeader(this, name, values);
     }
 
     @Override
@@ -125,7 +123,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     public Map<String, String> toMap() {
         if (abstractMap == null) {
             abstractMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
-                getAll -> String.join(",", getAll));
+                getAll -> CoreUtils.stringJoin(",", getAll));
         }
         return abstractMap;
     }
@@ -140,7 +138,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Iterator<HttpHeader> iterator() {
-        return stream().iterator();
+        return new NettyHeadersIterator(this);
     }
 
     @Override
@@ -166,6 +164,28 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         public void addValue(String value) {
             super.addValue(value);
             allHeaders.add(getName(), value);
+        }
+    }
+
+    static final class NettyHeadersIterator implements Iterator<HttpHeader> {
+        private final NettyToAzureCoreHttpHeadersWrapper allHeaders;
+        private final Iterator<String> headerNames;
+
+        NettyHeadersIterator(NettyToAzureCoreHttpHeadersWrapper allHeaders) {
+            this.allHeaders = allHeaders;
+            this.headerNames = allHeaders.nettyHeaders.names().iterator();
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return headerNames.hasNext();
+        }
+
+        @Override
+        public NettyHttpHeader next() {
+            String headerName = headerNames.next();
+            return new NettyHttpHeader(allHeaders, headerName, allHeaders.nettyHeaders.getAll(headerName));
         }
     }
 }

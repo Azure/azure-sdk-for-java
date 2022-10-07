@@ -35,8 +35,8 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
-     * 'final' modifier.
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
+     * modifier.
      */
     public OkHttpAsyncClientProvider() {
         enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
@@ -62,9 +62,10 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
         OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
-                      .configuration(clientOptions.getConfiguration())
-                      .writeTimeout(clientOptions.getWriteTimeout())
-                      .readTimeout(clientOptions.getReadTimeout());
+            .configuration(clientOptions.getConfiguration())
+            .connectionTimeout(clientOptions.getConnectTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .readTimeout(clientOptions.getReadTimeout());
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
         int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)

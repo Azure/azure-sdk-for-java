@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -228,7 +228,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final URI address = addressUri.getURI();
 
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
@@ -471,6 +471,9 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final boolean preferTcpNative;
 
+        @JsonProperty()
+        private final Duration sslHandshakeTimeoutMinDuration;
+
         // endregion
 
         // region Constructors
@@ -504,6 +507,7 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIntvl = builder.tcpKeepIntvl;
             this.tcpKeepIdle = builder.tcpKeepIdle;
             this.preferTcpNative = builder.preferTcpNative;
+            this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -536,6 +540,7 @@ public class RntbdTransportClient extends TransportClient {
             this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
+            this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
             this.preferTcpNative = true;
         }
 
@@ -636,6 +641,10 @@ public class RntbdTransportClient extends TransportClient {
         public int tcpKeepIdle() { return this.tcpKeepIdle; }
 
         public boolean preferTcpNative() { return this.preferTcpNative; }
+
+        public long sslHandshakeTimeoutInMillis() {
+            return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
+        }
 
         // endregion
 
@@ -794,6 +803,7 @@ public class RntbdTransportClient extends TransportClient {
             private int tcpKeepIntvl;
             private int tcpKeepIdle;
             private boolean preferTcpNative;
+            private Duration sslHandshakeTimeoutMinDuration;
 
             // endregion
 
@@ -827,6 +837,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.tcpKeepIntvl = DEFAULT_OPTIONS.tcpKeepIntvl;
                 this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
+                this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
             }
 
             // endregion

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineScaleSetVMRunCommands Delete. */
 public final class VirtualMachineScaleSetVMRunCommandsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
      */
     /**
      * Sample code: Delete VirtualMachineScaleSet VM run command.

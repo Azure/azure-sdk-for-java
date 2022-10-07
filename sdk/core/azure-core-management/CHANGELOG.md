@@ -1,16 +1,24 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.1 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.8.0 (2022-09-01)
 
 ### Features Added
 
 - Added new Azure region `Region.QATAR_CENTRAL`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
 
 ## 1.7.1 (2022-08-05)
 

@@ -57,8 +57,8 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     private Double confidenceScore;
 
     /*
-     * The confidence score calculation status, i.e. indicating if score
-     * calculation is pending for this alert, not applicable or final.
+     * The confidence score calculation status, i.e. indicating if score calculation is pending for this alert, not
+     * applicable or final.
      */
     @JsonProperty(value = "confidenceScoreStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConfidenceScoreStatus confidenceScoreStatus;
@@ -70,8 +70,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     private String description;
 
     /*
-     * The impact end time of the alert (the time of the last event
-     * contributing to the alert).
+     * The impact end time of the alert (the time of the last event contributing to the alert).
      */
     @JsonProperty(value = "endTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTimeUtc;
@@ -83,8 +82,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     private KillChainIntent intent;
 
     /*
-     * The identifier of the alert inside the product which generated the
-     * alert.
+     * The identifier of the alert inside the product which generated the alert.
      */
     @JsonProperty(value = "providerAlertId", access = JsonProperty.Access.WRITE_ONLY)
     private String providerAlertId;
@@ -126,8 +124,7 @@ public final class SecurityAlertProperties extends EntityCommonProperties {
     private AlertSeverity severity;
 
     /*
-     * The impact start time of the alert (the time of the first event
-     * contributing to the alert).
+     * The impact start time of the alert (the time of the first event contributing to the alert).
      */
     @JsonProperty(value = "startTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTimeUtc;

@@ -1,14 +1,31 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.12.1 (2022-10-07)
 
 ### Bugs Fixed
 
+- Fixed a bug where `session-records` folder didn't exist a `NullPointerException` would be thrown. Now the folder is
+  created when it doesn't exist.
+- Fixed a bug where `URL.getPath` of a file would contain special characters and result in the file not being found. Now
+  `URL.toURI` is used which converts URL encoded characters to their filesystem representation (`"%20"` -> `" "`).
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.12.0 (2022-09-01)
+
+### Features Added
+
+- Added metrics-based testing utilities.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
 
 ## 1.11.0 (2022-08-05)
 

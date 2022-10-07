@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Metadata Get. */
 public final class MetadataGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/GetMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/GetMetadata.json
      */
     /**
      * Sample code: Get single metadata by name.
