@@ -1,7 +1,8 @@
 ## Release History
 
 ### 4.37.1 (2022-10-07)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.37.1 and above.
 #### Bugs Fixed
 * Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
 
@@ -73,8 +74,6 @@
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.31.0 and above.
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
