@@ -22,6 +22,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
+    private Iterable<AbstractiveSummaryAction> abstractiveSummaryActions;
 
     /**
      * Gets the custom name for the actions.
@@ -262,6 +263,28 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
         this.multiLabelClassifyActions = multiLabelClassifyActions == null
                                                 ? null : Arrays.asList(multiLabelClassifyActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link AbstractiveSummaryAction} to be executed.
+     *
+     * @return the list of {@link AbstractiveSummaryAction} to be executed.
+     */
+    public Iterable<AbstractiveSummaryAction> getAbstractiveSummaryActions() {
+        return abstractiveSummaryActions;
+    }
+
+    /**
+     * Sets the list of {@link AbstractiveSummaryAction} to be executed.
+     *
+     * @param abstractiveSummaryActions The list of {@link AbstractiveSummaryAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions) {
+        this.abstractiveSummaryActions = abstractiveSummaryActions == null
+            ? null : Arrays.asList(abstractiveSummaryActions);
         return this;
     }
 }
