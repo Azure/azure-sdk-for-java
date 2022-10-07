@@ -26,8 +26,8 @@ class DevCenterClientTestBase extends TestBase {
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME"))
+                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
+                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
                         .devCenterDnsSuffix(
                                 Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
                         .httpClient(HttpClient.createDefault())
@@ -47,8 +47,8 @@ class DevCenterClientTestBase extends TestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME"))
+                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
+                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
                         .devCenterDnsSuffix(
                                 Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
                         .httpClient(HttpClient.createDefault())
@@ -68,8 +68,8 @@ class DevCenterClientTestBase extends TestBase {
 
         EnvironmentsClientBuilder environmentsClientbuilder =
                 new EnvironmentsClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME"))
+                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
+                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
                         .devCenterDnsSuffix(
                                 Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
                         .httpClient(HttpClient.createDefault())

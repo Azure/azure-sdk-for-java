@@ -15,10 +15,10 @@ import org.junit.jupiter.api.Assertions;
 class EnvironmentTests extends DevCenterClientTestBase {
     @Test
     public void testCreateEnvironment() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME");
-        String environmentTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME");
-        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME");
-        String catalogItemName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_ITEM_NAME");
+        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-default-project");
+        String environmentTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-default-environment-type");
+        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
+        String catalogItemName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_ITEM_NAME", "Empty");
 
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString(
@@ -26,20 +26,20 @@ class EnvironmentTests extends DevCenterClientTestBase {
             + "\", \"catalogName\":\"" + catalogName
             + "\", \"environmentType\":\"" + environmentTypeName  + "\"}");
         SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTestEnvironment", environmentBody, null);
+                environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
 
 
         // Fetch the deployment artifacts:
-        PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment(projectName, "me", "SdkTestEnvironment", null);
+        PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment(projectName, "me", "SdkTesting-Environment", null);
         for (BinaryData p: artifactListResponse) {
             System.out.println(p);
         }
 
         // Delete the environment when we're finished:
         SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
-                        environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTestEnvironment", null);
+                        environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
     }
