@@ -558,7 +558,7 @@
             <compilerArgs combine.children="append" combine.self="append">
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
-              <arg>-Xlint:classfile</arg>
+              <!--arg>-Xlint:classfile</arg-->
               <arg>-Xlint:${compiler.failondeprecatedstatus}deprecation</arg>
               <arg>-Xlint:dep-ann</arg>
               <arg>-Xlint:divzero</arg>
