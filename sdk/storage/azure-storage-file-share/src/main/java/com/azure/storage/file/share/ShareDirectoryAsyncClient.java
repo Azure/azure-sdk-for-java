@@ -2172,7 +2172,7 @@ public class ShareDirectoryAsyncClient {
 
     private static String decodeName(StringEncoded stringEncoded) throws UnsupportedEncodingException {
         if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
-            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8);
+            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
         } else {
             return stringEncoded.getContent();
         }
