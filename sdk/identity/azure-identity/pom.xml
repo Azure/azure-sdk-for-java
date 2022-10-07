@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.7.0-beta.2</version><!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.6.1</version><!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -17,6 +17,8 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
+      <!-- Identity loads NettyAsyncHttpClient from unnamed module in "from source" core runs -->
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -79,24 +81,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.lettuce</groupId>
-      <artifactId>lettuce-core</artifactId>
-      <version>6.2.0.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.redisson</groupId>
-      <artifactId>redisson</artifactId>
-      <version>3.17.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy</artifactId>
-      <version>1.12.17</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
       <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
@@ -153,9 +137,7 @@
             <configuration>
               <sources>
                 <source>src/samples/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Jedis/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Lettuce/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Redisson/java</source>
+                <source>src/samples/Azure Cache For Redis/Jedis/java</source>
               </sources>
             </configuration>
           </execution>

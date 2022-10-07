@@ -23,7 +23,7 @@ class Authenticator {
     private volatile boolean authenticated;
     ReentrantLock lock;
 
-    Authenticator(String username, AccessTokenCache tokenCache) {
+    public Authenticator(String username, AccessTokenCache tokenCache) {
         this.username = username;
         this.tokenCache = tokenCache;
         this.tokenRequestContext = new TokenRequestContext()
@@ -31,7 +31,7 @@ class Authenticator {
         lock = new ReentrantLock();
     }
 
-    Authenticator(String username, String password) {
+    public Authenticator(String username, String password) {
         this.password = password;
         this.username = username;
         lock = new ReentrantLock();

@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH AZURE_CLIENT_CERTIFICATE_PATH}</li>
- *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD AZURE_CLIENT_CERTIFICATE_PASSWORD}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  * or:
@@ -59,7 +58,6 @@ public class EnvironmentCredential implements TokenCredential {
         String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
-        String certPassword = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
         if (CoreUtils.isNullOrEmpty(identityClientOptions.getAdditionallyAllowedTenants())) {
@@ -79,7 +77,7 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     LOGGER.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
-                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, certPassword,
+                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
                             identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
