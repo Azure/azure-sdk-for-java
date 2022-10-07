@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/syntex/ci.yml
+      - sdk/syntex/azure-resourcemanager-syntex/
+    exclude:
+      - sdk/syntex/pom.xml
+      - sdk/syntex/azure-resourcemanager-syntex/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/syntex/ci.yml
+      - sdk/syntex/azure-resourcemanager-syntex/
+    exclude:
+      - sdk/syntex/pom.xml
+      - sdk/syntex/azure-resourcemanager-syntex/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersyntex
+    displayName: azure-resourcemanager-syntex
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: syntex
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-syntex
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersyntex
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersyntex }}

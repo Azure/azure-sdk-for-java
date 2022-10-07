@@ -161,6 +161,7 @@
     <module>sdk/subscription</module>
     <module>sdk/support</module>
     <module>sdk/synapse</module>
+    <module>sdk/syntex</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>
