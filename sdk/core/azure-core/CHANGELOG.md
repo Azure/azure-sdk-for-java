@@ -10,8 +10,6 @@
 - Added `SyncPoller.createPoller(Duration, Function, Function, BiFunction, Function)`. ([#31296](https://github.com/Azure/azure-sdk-for-java/pull/31296))
 - Added `TokenCredential.getTokenSync(TokenRequestContext)`. ([#31056](https://github.com/Azure/azure-sdk-for-java/pull/31056))
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Added a short delay to `AccessTokenCache.getToken()` to avoid an async-busy-loop when the first thread to retrieve a fresh token takes longer than usual and the cache is shared amongst many threads. ([#31110](https://github.com/Azure/azure-sdk-for-java/pull/31110))
