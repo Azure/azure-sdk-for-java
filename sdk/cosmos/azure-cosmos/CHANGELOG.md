@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.38.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.37.1 (2022-10-07)
 > [!IMPORTANT]
 > We strongly recommend our customers to use version 4.37.1 and above.
