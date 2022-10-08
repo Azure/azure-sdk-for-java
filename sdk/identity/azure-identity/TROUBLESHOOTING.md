@@ -1,4 +1,4 @@
-# Troubleshoot Azure Identity Authentication Issues
+# Troubleshoot Azure Identity authentication issues
 
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Identity Java client library, and mitigation steps to resolve these errors.
 
@@ -22,7 +22,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzurePowerShellCredential Authentication Issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Get Additional Help](#get-additional-help)
 
-## Handle Azure Identity Exceptions
+## Handle Azure Identity exceptions
 
 ### ClientAuthenticationException
 Exceptions arising from authentication errors can be raised on any service client method that makes a request to the service. This is because the token is requested from the credential on the first call to the service and on any subsequent requests to the service that need to refresh the token.
@@ -48,11 +48,11 @@ To distinguish these failures from failures in the service client, Azure Identit
 
 The `CredentialUnavailableExcpetion` is a special exception type derived from `ClientAuthenticationException`. This exception type is used to indicate that the credential can’t authenticate in the current environment, due to lack of required configuration or setup. This exception is also used as a signal to chained credential types, such as `DefaultAzureCredential` and `ChainedTokenCredential`, that the chained credential should continue to try other credential types later in the chain.
 
-### Permission Issues
+### Permission issues
 
 Calls to service clients resulting in `HttpResponseException` with a `StatusCode` of 401 or 403 often indicate the caller doesn't have sufficient permissions for the specified API. Check the service documentation to determine which RBAC roles are needed for the specific request, and ensure the authenticated user or service principal have been granted the appropriate roles on the resource.
 
-## Find Relevant Information in Exception Messages
+## Find relevant information in exception messages
 
 `ClientAuthenticationException` is thrown when unexpected errors occurred while a credential is authenticating. This can include errors received from requests to the AAD STS and often contains information helpful to diagnosis. Consider the following `ClientAuthenticationException` message.
 
@@ -66,27 +66,27 @@ This error contains several pieces of information:
 
 - __Correlation ID and Timestamp__: The correlation ID and call Timestamp used to identify the request in server-side logs. This information can be useful to support engineers when diagnosing unexpected STS failures.
 
-### Enable and Configure Logging
+### Enable and configure logging
 
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging](https://learn.microsoft.com/en-us/azure/developer/java/sdk/logging-overview) documentation for guidance to enable logging.
 
 > CAUTION: Requests and responses in the Azure Identity library contain sensitive information. Precaution must be taken to protect logs when customizing the output to avoid compromising account security.
 
-## Troubleshoot `DefaultAzureCredential` Authentication Issues
+## Troubleshoot `DefaultAzureCredential` authentication issues
 
 | Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |---|---|---|
 |`CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials."|All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[VisualStudioCodeCredential](#troubleshoot-visualstudiocodecredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowershellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
 |`HttpResponseException` raised from the client with a status code of 401 or 403|Authentication succeeded but the authorizing Azure service responded with a 401 (Authenticate), or 403 (Forbidden) status code. This can often be caused by the `DefaultAzureCredential` authenticating an account other than the intended or that the intended account does not have the correct permissions or roles assigned.| <ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>In the case a credential other than the expected is returning a token, look too bypass this by signing out of the corresponding development tool.`</li><li>Ensure that the correct role is assigned to the account being used. For example, a service specific role rather than the subscription Owner role.</li></ul>                                                                                                                                                                                                                                                                                                                                                                         |
 
-## Troubleshoot `EnvironmentCredential` Authentication Issues
+## Troubleshoot `EnvironmentCredential` authentication issues
 `CredentialUnavailableException`
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |Environment variables aren't fully configured.|A valid combination of environment variables wasn't set.|Ensure the appropriate environment variables are set **prior to application startup** for the intended authentication method.</p><ul><li>To authenticate a service principal using a client secret, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` are properly set.</li><li>To authenticate a service principal using a certificate, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_CERTIFICATE_PATH` and optionally `AZURE_CLIENT_CERTIFICATE_PASSWORD` are properly set.</li><li>To authenticate a user using a password, ensure the variables `AZURE_USERNAME` and `AZURE_PASSWORD` are properly set.</li></ul>|
 
-## Troubleshoot `ClientSecretCredential` Authentication Issues
+## Troubleshoot `ClientSecretCredential` authentication issues
 `ClientAuthenticationException`
 
 | Error Code | Issue | Mitigation |
@@ -95,7 +95,7 @@ Azure SDK for Java offers a consistent logging story to help aid in troubleshoot
 |AADSTS7000222|An expired client secret was provided.|Create a new client secret using the Azure portal. Details on creating a new client secret can be found [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the specified `clientId` and `tenantId` are correct for your application registration.  For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
-## Troubleshoot `ClientCertificateCredential` Authentication Issues
+## Troubleshoot `ClientCertificateCredential` authentication issues
 `ClientAuthenticationException`
 
 | Error Code | Description | Mitigation |
@@ -103,7 +103,7 @@ Azure SDK for Java offers a consistent logging story to help aid in troubleshoot
 |AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the AAD application registration. Instructions for uploading certificates to the application registration can be found [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
 |AADSTS700016|The specified application wasn’t found in the specified tenant.| Ensure the specified `clientId` and `tenantId` are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
-## Troubleshoot `ClientAssertionCredential` Authentication issues
+## Troubleshoot `ClientAssertionCredential` authentication issues
 
 ### AuthenticationRequiredError
 
@@ -113,14 +113,14 @@ Azure SDK for Java offers a consistent logging story to help aid in troubleshoot
 |AADSTS700023| Client assertion audience claim does not match Realm issuer. Review the documentation at https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials. | Ensure the audience `aud` field in the JWT assertion created has the correct value for the audience specified in the payload. This should be set to `https://login.microsoftonline.com/{tenantId}/v2`.|
 |AADSTS50027| JWT token is invalid or malformed. | Ensure the JWT assertion token is in the valid format. Refer to the documentation for [client assertion format](https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials).|
 
-## Troubleshoot `UsernamePasswordCredential` Authentication Issues
+## Troubleshoot `UsernamePasswordCredential` authentication issues
 `ClientAuthenticationException`
 
 | Error Code | Issue | Mitigation |
 |---|---|---|
 |AADSTS50126|The provided username or password is invalid|Ensure the `username` and `password` provided when constructing the credential are valid.|
 
-## Troubleshoot `ManagedIdentityCredential` Authentication Issues
+## Troubleshoot `ManagedIdentityCredential` authentication issues
 
 The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts that provide managed identity. Configuring the managed identity and troubleshooting failures varies from hosts. The below table lists the Azure hosts that can be assigned a managed identity, and are supported by the `ManagedIdentityCredential`.
 
@@ -158,7 +158,7 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 |---|---|---|
 |ManagedIdentityCredential authentication unavailable.|The environment variables configured by the App Services host weren’t present.|<ul><li>Ensure the managed identity has been properly configured on the App Service. Instructions for configuring the managed identity can be found [here](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet).</li><li>Verify the App Service environment is properly configured and the managed identity endpoint is available. See [below](#verify-the-app-service-managed-identity-endpoint-is-available) for instructions.</li></ul>|
 
-#### __Verify the App Service managed identity endpoint is available__
+#### __Verify the App Service Managed Identity endpoint is available__
 
 If you have access to SSH into the App Service, you can verify managed identity is available in the environment. First ensure the environment variables `MSI_ENDPOINT` and `MSI_SECRET` have been set in the environment. Then you can verify the managed identity endpoint is available using curl.
 ```bash
@@ -167,14 +167,14 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 > Note that the output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
 
 ### Azure Kubernetes Service Managed Identity
-#### Pod Identity For Kubernetes
+#### Pod Identity for Kubernetes
 `CredentialUnavailableException`
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |No Managed Identity endpoint found|The application attempted to authenticate before an identity was assigned to its pod|Verify the pod is labeled correctly. This also occurs when a correctly labeled pod authenticates before the identity is ready. To prevent initialization races, configure NMI to set the Retry-After header in its responses (see [Pod Identity documentation](https://azure.github.io/aad-pod-identity/docs/configure/feature_flags/#set-retry-after-header-in-nmi-response)).|
 
-## Troubleshoot `VisualStudioCodeCredential` Authentication Issues
+## Troubleshoot `VisualStudioCodeCredential` authentication issues
 
 > It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider [authenticating via the Azure CLI](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-via-development-tools).
 
@@ -186,7 +186,8 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 |MSAL Interaction Required Exception|The `VisualStudioCodeCredential` was able to read the cached credentials from the cache but the cached token is likely expired.|Log into the Azure Account extension via **View > Command Palette** to execute the **Azure: Sign In** command in the VS Code IDE.|
 |ADFS tenant not supported|ADFS tenants are not currently supported by Visual Studio `Azure Service Authentication`.|Use credentials from a supported cloud when authenticating with Visual Studio. The supported clouds are:</p><ul><li>AZURE PUBLIC CLOUD - https://login.microsoftonline.com/</li><li>AZURE GERMANY - https://login.microsoftonline.de/</li><li>AZURE CHINA - https://login.chinacloudapi.cn/</li><li>AZURE GOVERNMENT - https://login.microsoftonline.us/</li></ul>|
 
-## Troubleshoot `AzureCliCredential` Authentication Issues
+## Troubleshoot `AzureCliCredential` authentication issues
+
 `CredentialUnavailableException`
 
 | Error Message |Description| Mitigation |
@@ -209,7 +210,7 @@ az account get-access-token --output json --resource https://management.core.win
 ```
 >Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
 
-## Troubleshoot `AzurePowerShellCredential` Authentication Issues
+## Troubleshoot `AzurePowerShellCredential` authentication issues
 
 `CredentialUnavailableException`
 
@@ -238,13 +239,13 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 ```
 >Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
 
-## Troubleshoot Multi Tenant Authentication Issues
+## Troubleshoot multi tenant authentication issues
 `ClientAuthenticationException`
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
 
-## Get Additional Help
+## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md) at the root of the repo.
