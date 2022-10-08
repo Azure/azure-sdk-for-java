@@ -3,24 +3,24 @@
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Identity Java client library, and mitigation steps to resolve these errors.
 
 ## Table of contents
-- [Handle Azure Identity Exceptions](#handle-azure-identity-exceptions)
+- [Handle Azure Identity exceptions](#handle-azure-identity-exceptions)
     - [ClientAuthenticationException](#clientauthenticationexception)
     - [CredentialUnavailableException](#credentialunavailableexception)
-    - [Permission Issues](#permission-issues)
-- [Find Relevant Information in Exception Messages](#find-relevant-information-in-exception-messages)
-- [Enable and Configure Logging](#enable-and-configure-logging)
-- [Troubleshoot DefaultAzureCredential Authentication Issues](#troubleshoot-defaultazurecredential-authentication-issues)
-- [Troubleshoot EnvironmentCredential Authentication Issues](#troubleshoot-environmentcredential-authentication-issues)
-- [Troubleshoot ClientSecretCredential Authentication Issues](#troubleshoot-clientsecretcredential-authentication-issues)
-- [Troubleshoot ClientCertificateCredential Authentication Issues](#troubleshoot-clientcertificatecredential-authentication-issues)
-- [Troubleshoot UsernamePasswordCredential Authentication Issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
-- [Troubleshoot ManagedIdentityCredential Authentication Issues](#troubleshoot-managedidentitycredential-authentication-issues)
+    - [Permission issues](#permission-issues)
+- [Find relevant information in exception messages](#find-relevant-information-in-exception-messages)
+- [Enable and configure logging](#enable-and-configure-logging)
+- [Troubleshoot DefaultAzureCredential authentication issues](#troubleshoot-defaultazurecredential-authentication-issues)
+- [Troubleshoot EnvironmentCredential authentication issues](#troubleshoot-environmentcredential-authentication-issues)
+- [Troubleshoot ClientSecretCredential authentication issues](#troubleshoot-clientsecretcredential-authentication-issues)
+- [Troubleshoot ClientCertificateCredential authentication issues](#troubleshoot-clientcertificatecredential-authentication-issues)
+- [Troubleshoot UsernamePasswordCredential authentication issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
+- [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
     - [Azure Virtual Machine Managed Identity](#azure-virtual-machine-managed-identity)
     - [Azure App Service and Azure Functions Managed Identity](#azure-app-service-and-azure-functions-managed-identity)
-- [Troubleshoot VisualStudioCodeCredential Authentication Issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
-- [Troubleshoot AzureCliCredential Authentication Issues](#troubleshoot-azureclicredential-authentication-issues)
-- [Troubleshoot AzurePowerShellCredential Authentication Issues](#troubleshoot-azurepowershellcredential-authentication-issues)
-- [Get Additional Help](#get-additional-help)
+- [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
+- [Troubleshoot AzureCliCredential authentication issues](#troubleshoot-azureclicredential-authentication-issues)
+- [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
+- [Get additional help](#get-additional-help)
 
 ## Handle Azure Identity exceptions
 
