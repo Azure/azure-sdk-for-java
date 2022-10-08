@@ -265,7 +265,6 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <th>credential class</th>
       <th>usage</th>
-      <th>configuration</th>
       <th>example</th>
     </tr>
   </thead>
@@ -273,39 +272,34 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable">DefaultAzureCredential</a></code></td>
       <td>provides a simplified authentication experience to quickly start developing applications run in the Azure cloud</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential">example</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.chainedtokencredential?view=azure-java-stable">ChainedTokenCredential</a></code></td>
       <td>allows users to define custom authentication flows composing multiple credentials</td>
-      <td></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials">example</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable">EnvironmentCredential</a></code></td>
       <td>authenticates a service principal or user via credential information specified in environment variables</td>
       <td></td>
-      <td></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable">ManagedIdentityCredential</a></code></td>
       <td>authenticates the managed identity of an azure resource</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
     </tr>
   </tbody>
 </table>
-    
-### Authenticate service principals
+
+### Authenticating service principals
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticate service principals</caption>
+  <caption>Authenticating service principals</caption>
   <thead>
     <tr>
       <th>credential class</th>
       <th>usage</th>
-      <th>configuration</th>
       <th>example</th>
       <th>reference</th>
     </tr>
@@ -320,13 +314,13 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientcertificatecredential?view=azure-java-stable">ClientCertificateCredential</a></code></td>
       <td>authenticates a service principal using a certificate</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
     <tr>
-      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
+      <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a></code></td>
       <td>authenticates a service principal using a secret</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals">Service principal authentication</a></td>
     </tr>
   </tbody>
@@ -340,7 +334,6 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <th>credential class</th>
       <th>usage</th>
-      <th>configuration</th>
       <th>example</th>
       <th>reference</th>
     </tr>
@@ -349,20 +342,18 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.authorizationcodecredential?view=azure-java-stable">AuthorizationCodeCredential</a></code></td>
       <td>authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-oauth-2-auth-code-flow">configuration</a></td>
+      <td></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.devicecodecredential?view=azure-java-stable">DeviceCodeCredential</a></code></td>
       <td>interactively authenticates a user on devices with limited UI</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-device-code-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code">Device code authentication</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable">InteractiveBrowserCredential</a></code></td>
       <td>interactively authenticates a user with the default system browser</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow">OAuth2 authentication code</a></td>
     </tr>
@@ -375,7 +366,6 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?view=azure-java-stable">UsernamePasswordCredential</a></code></td>
       <td>authenticates a user with a username and password without multi-factored auth</td>
-      <td></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth-ropc">Username + password authentication</a></td>
     </tr>
@@ -390,7 +380,6 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <th>credential class</th>
       <th>usage</th>
-      <th>configuration</th>
       <th>example</th>
       <th>reference</th>
     </tr>
@@ -399,21 +388,18 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
       <td><a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
       <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable">IntelliJCredential</a></code></td>
       <td>Authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable">VisualStudioCodeCredential</a></code></td>
       <td>Authenticate in a development environment with the account in Visual Studio Azure Account extension. </td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-visual-studio-code-azure-account-extension-for-visualstudiocodecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
       <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure extension</a></td>
     </tr>
