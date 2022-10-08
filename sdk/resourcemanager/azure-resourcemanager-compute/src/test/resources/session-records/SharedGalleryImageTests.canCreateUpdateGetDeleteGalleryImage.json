@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "fff810f1-94cb-41f0-ac1c-9cc933180c39",
@@ -49,7 +49,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGallery3Min;47,Microsoft.Compute/CreateUpdateGallery30Min;297",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220921T062426Z:83cb556b-8675-40e8-8314-a33797fe369c",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/348d028b-56d2-4c0a-a18f-1303666516ea?api-version=2022-01-03",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/348d028b-56d2-4c0a-a18f-1303666516ea?api-version=2022-03-03",
       "x-ms-request-id" : "348d028b-56d2-4c0a-a18f-1303666516ea",
       "Body" : "{\r\n  \"name\": \"jsim57627428\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428\",\r\n  \"type\": \"Microsoft.Compute/galleries\",\r\n  \"location\": \"westcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"java's image gallery\",\r\n    \"identifier\": {\r\n      \"uniqueName\": \"00000000-0000-0000-0000-000000000000-JSIM57627428\"\r\n    },\r\n    \"provisioningState\": \"Creating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "fff810f1-94cb-41f0-ac1c-9cc933180c39",
@@ -58,7 +58,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/348d028b-56d2-4c0a-a18f-1303666516ea?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/348d028b-56d2-4c0a-a18f-1303666516ea?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "e14ec32e-67d1-4c49-925a-2bd1f2450a55"
@@ -87,7 +87,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "33892e9a-112b-4aef-9cd1-883e07deaf31"
@@ -116,7 +116,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "a287ff97-ab0f-4092-a8ed-a49a62be0e78",
@@ -138,7 +138,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImage3Min;148,Microsoft.Compute/CreateUpdateGalleryImage30Min;748",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220921T062459Z:d86513f2-5303-4d53-92cb-e9f9f5c92922",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/74c8039d-efd8-4fa8-aaa6-b7d1f23e0305?api-version=2022-01-03",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/74c8039d-efd8-4fa8-aaa6-b7d1f23e0305?api-version=2022-03-03",
       "x-ms-request-id" : "74c8039d-efd8-4fa8-aaa6-b7d1f23e0305",
       "Body" : "{\r\n  \"name\": \"JavaImages\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages\",\r\n  \"type\": \"Microsoft.Compute/galleries/images\",\r\n  \"location\": \"westcentralus\",\r\n  \"properties\": {\r\n    \"hyperVGeneration\": \"V1\",\r\n    \"architecture\": \"x64\",\r\n    \"osType\": \"Windows\",\r\n    \"osState\": \"Generalized\",\r\n    \"identifier\": {\r\n      \"publisher\": \"JavaSDKTeam\",\r\n      \"offer\": \"JDK\",\r\n      \"sku\": \"Jdk-9\"\r\n    },\r\n    \"recommended\": {\r\n      \"vCPUs\": {\r\n        \"max\": 25\r\n      },\r\n      \"memory\": {\r\n        \"max\": 3200\r\n      }\r\n    },\r\n    \"disallowed\": {\r\n      \"diskTypes\": [\r\n        \"Standard_LRS\",\r\n        \"Premium_LRS\"\r\n      ]\r\n    },\r\n    \"provisioningState\": \"Creating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "a287ff97-ab0f-4092-a8ed-a49a62be0e78",
@@ -147,7 +147,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/74c8039d-efd8-4fa8-aaa6-b7d1f23e0305?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/74c8039d-efd8-4fa8-aaa6-b7d1f23e0305?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "f085810d-2a18-466b-9615-fc9914579864"
@@ -176,7 +176,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "afee52b5-7422-4712-a9cf-f0cefff96f7f"
@@ -205,7 +205,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "b6797ad2-61b9-4378-b342-edd6d91ffc3f",
@@ -227,7 +227,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImage3Min;147,Microsoft.Compute/CreateUpdateGalleryImage30Min;747",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220921T062532Z:11b4b4ee-2416-4c5e-a802-508b57a630dc",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/24849310-cdff-4b70-9f61-2bc732bbcd4a?api-version=2022-01-03",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/24849310-cdff-4b70-9f61-2bc732bbcd4a?api-version=2022-03-03",
       "x-ms-request-id" : "24849310-cdff-4b70-9f61-2bc732bbcd4a",
       "Body" : "{\r\n  \"name\": \"JavaImages\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages\",\r\n  \"type\": \"Microsoft.Compute/galleries/images\",\r\n  \"location\": \"westcentralus\",\r\n  \"properties\": {\r\n    \"hyperVGeneration\": \"V1\",\r\n    \"architecture\": \"x64\",\r\n    \"osType\": \"Windows\",\r\n    \"osState\": \"Generalized\",\r\n    \"identifier\": {\r\n      \"publisher\": \"JavaSDKTeam\",\r\n      \"offer\": \"JDK\",\r\n      \"sku\": \"Jdk-9\"\r\n    },\r\n    \"recommended\": {\r\n      \"vCPUs\": {\r\n        \"min\": 15,\r\n        \"max\": 25\r\n      },\r\n      \"memory\": {\r\n        \"min\": 2200,\r\n        \"max\": 3200\r\n      }\r\n    },\r\n    \"disallowed\": {\r\n      \"diskTypes\": [\r\n        \"Standard_LRS\"\r\n      ]\r\n    },\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "b6797ad2-61b9-4378-b342-edd6d91ffc3f",
@@ -236,7 +236,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/24849310-cdff-4b70-9f61-2bc732bbcd4a?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/24849310-cdff-4b70-9f61-2bc732bbcd4a?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "dd350fc1-3a87-4c16-b062-92a6bf598654"
@@ -265,7 +265,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "dcac897b-6482-4f4f-ab70-4152a58882a4"
@@ -294,7 +294,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "e77a3835-b6d7-4f96-aed8-f7ddc0a469b8",
@@ -316,7 +316,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImage3Min;146,Microsoft.Compute/CreateUpdateGalleryImage30Min;746",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220921T062604Z:12eadb23-7cde-4536-b169-9986774bdf07",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/c1588588-835e-413b-a7ab-6dc820286dda?api-version=2022-01-03",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/c1588588-835e-413b-a7ab-6dc820286dda?api-version=2022-03-03",
       "x-ms-request-id" : "c1588588-835e-413b-a7ab-6dc820286dda",
       "Body" : "{\r\n  \"name\": \"JavaImages\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages\",\r\n  \"type\": \"Microsoft.Compute/galleries/images\",\r\n  \"location\": \"westcentralus\",\r\n  \"tags\": {\r\n    \"tag1\": \"myTag1\"\r\n  },\r\n  \"properties\": {\r\n    \"hyperVGeneration\": \"V1\",\r\n    \"architecture\": \"x64\",\r\n    \"osType\": \"Windows\",\r\n    \"osState\": \"Generalized\",\r\n    \"identifier\": {\r\n      \"publisher\": \"JavaSDKTeam\",\r\n      \"offer\": \"JDK\",\r\n      \"sku\": \"Jdk-9\"\r\n    },\r\n    \"recommended\": {\r\n      \"vCPUs\": {\r\n        \"min\": 10,\r\n        \"max\": 20\r\n      },\r\n      \"memory\": {\r\n        \"min\": 10,\r\n        \"max\": 20\r\n      }\r\n    },\r\n    \"disallowed\": {\r\n      \"diskTypes\": [\r\n        \"Standard_LRS\",\r\n        \"Premium_LRS\"\r\n      ]\r\n    },\r\n    \"provisioningState\": \"Updating\",\r\n    \"description\": \"This is my gallery image\",\r\n    \"releaseNoteUri\": \"http://www.example.com/compute/galleryimageuri\",\r\n    \"endOfLifeDate\": \"2022-10-01T06:26:02.744313+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "e77a3835-b6d7-4f96-aed8-f7ddc0a469b8",
@@ -325,7 +325,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/c1588588-835e-413b-a7ab-6dc820286dda?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/c1588588-835e-413b-a7ab-6dc820286dda?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "0d4c1f15-1ef0-48e9-a69c-3d4e09a0e0db"
@@ -354,7 +354,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "402a60bc-137d-4fc3-b31f-b45863f44b93"
@@ -383,7 +383,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "14def6d2-e2c7-42d2-8dd5-d5dc8a09b9a8",
@@ -413,7 +413,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "94c222b9-3002-43fb-8da3-4295fb23919f",
@@ -443,7 +443,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "b6ac3c57-447e-4cc6-9084-5a2f9323040d",
@@ -473,7 +473,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg35168/providers/Microsoft.Compute/galleries/jsim57627428/images/JavaImages?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "6a9712ab-4b29-4751-8cc2-cc49a34807a0",
@@ -495,15 +495,15 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteGalleryImage3Min;49,Microsoft.Compute/DeleteGalleryImage30Min;299",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220921T062639Z:8c39058e-4b2a-4da1-8b0f-e8b66d9b47d4",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?api-version=2022-01-03",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?api-version=2022-03-03",
       "x-ms-request-id" : "66c6fb64-1a95-4f95-bb30-20059d6f7087",
       "x-ms-client-request-id" : "6a9712ab-4b29-4751-8cc2-cc49a34807a0",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?monitor=true&api-version=2022-01-03"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?monitor=true&api-version=2022-03-03"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "79c8a5c1-6d48-4528-a3d0-22a4b1779ce7"
@@ -532,7 +532,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?monitor=true&api-version=2022-01-03",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/66c6fb64-1a95-4f95-bb30-20059d6f7087?monitor=true&api-version=2022-03-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "8ef17267-b116-4472-a685-f059b8b8d9dc"
