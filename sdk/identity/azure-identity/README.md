@@ -221,6 +221,24 @@ public void createManagedIdentityCredential() {
 }
 ```
 
+### Define a custom authentication flow with the `ChainedTokenCredential`
+While the `DefaultAzureCredential` is generally the quickest way to get started developing applications for Azure, more advanced users may want to customize the credentials considered when authenticating. The `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential` which will attempt to authenticate using managed identity, and fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment. The credential is then used to authenticate an `EventHubProducerClient` from the [Azure.Messaging.EventHubs][eventhubs_client_library] client library.
+
+```C# Snippet:CustomChainedTokenCredential
+// Authenticate using managed identity if it is available; otherwise use the Azure CLI to authenticate.
+
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
+    AzureCliCredential cliCredential = new AzureCliCredentialBuilder().build();
+    
+    ChainedTokenCredential credential = new ChainedTokenCredentialBuilder().addLast(managedIdentityCredential).addLast(cliCredential).build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(credential)
+        .buildClient();
+```
+
 ## Cloud configuration
 Credentials default to authenticating to the Azure Active Directory endpoint for
 Azure Public Cloud. To access resources in other clouds, such as Azure Government
@@ -404,7 +422,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
-Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
+Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#define-a-custom-authentication-flow-with-the-chainedtokencredential) for details.
 
 ## Environment variables
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
