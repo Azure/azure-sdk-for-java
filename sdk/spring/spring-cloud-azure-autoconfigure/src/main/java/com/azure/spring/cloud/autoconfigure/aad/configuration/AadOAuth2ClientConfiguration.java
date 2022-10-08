@@ -144,11 +144,11 @@ public class AadOAuth2ClientConfiguration {
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
         DefaultJwtBearerTokenResponseClient responseClient = new DefaultJwtBearerTokenResponseClient();
         responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        AadJwtBearerGrantRequestEntityConverter converter = new AadJwtBearerGrantRequestEntityConverter();
         if (resolver != null) {
-            AadJwtBearerGrantRequestEntityConverter converter = new AadJwtBearerGrantRequestEntityConverter();
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-            responseClient.setRequestEntityConverter(converter);
         }
+        responseClient.setRequestEntityConverter(converter);
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
