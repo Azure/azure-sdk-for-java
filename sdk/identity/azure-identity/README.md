@@ -392,7 +392,13 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
       <td><a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
-      <td><code><a href="https://docs.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable">IntelliJCredential</a></code></td>
+      <td><code><a href="https://learn.microsoft.com/en-us/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
+      <td>Authenticate in a development environment with the enabled user or service principal in Azure PowerShell</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-powershell">example</a></td>
+      <td><a href="https://learn.microsoft.com/en-us/powershell/azure/?view=azps-8.3.0">Azure PowerShell documentation</a></td>
+    </tr>
+    <tr>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable">IntelliJCredential</a></code></td>
       <td>Authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
       <td><a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
