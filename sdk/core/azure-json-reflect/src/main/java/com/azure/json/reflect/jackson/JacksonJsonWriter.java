@@ -14,6 +14,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
@@ -26,6 +27,8 @@ public class JacksonJsonWriter extends JsonWriter {
 
     private final Object jacksonGenerator;
     private static Object FACTORY;
+
+    private static Class jacksonFeatureEnum;
 
     private static MethodHandle flushMethod;
     private static MethodHandle closeMethod;
@@ -44,6 +47,7 @@ public class JacksonJsonWriter extends JsonWriter {
     private static MethodHandle writeStringMethod;
     private static MethodHandle writeRawValueMethod;
     private static MethodHandle createGeneratorMethod;
+    private static MethodHandle configureMethod;
 
     /**
      * Creates a {@link DefaultJsonWriter} that writes the given {@link OutputStream}.
@@ -86,7 +90,8 @@ public class JacksonJsonWriter extends JsonWriter {
             }
 
             jacksonGenerator = createGeneratorMethod.invoke(FACTORY, writer);
-            // configure Jackson to support non-numeric numbers
+            // Configure Jackson to support non-numeric numbers
+            configureMethod.invoke(jacksonGenerator, Enum.valueOf(jacksonFeatureEnum, "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
 
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -94,7 +99,8 @@ public class JacksonJsonWriter extends JsonWriter {
             } else if (e instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             } else {
-                throw new IllegalStateException("Incorrect Library Present");
+                throw new IOException(e);
+//                throw new IllegalStateException("Incorrect Library Present");
             }
         }
 
@@ -103,6 +109,7 @@ public class JacksonJsonWriter extends JsonWriter {
     static void initialize() throws ReflectiveOperationException {
         Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
         Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
+        jacksonFeatureEnum = (Class) Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
 
         MethodHandle constructorFactory = publicLookup.findConstructor(factoryClass, methodType(void.class));
         createGeneratorMethod = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
@@ -112,24 +119,27 @@ public class JacksonJsonWriter extends JsonWriter {
             throw (RuntimeException) e.getCause();
         }
 
-        writeRawValueMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeRawValue", MethodType.methodType(void.class,String.class));
-        flushMethod = publicLookup.findVirtual(jacksonGeneratorClass, "flush", MethodType.methodType(void.class));
-        closeMethod = publicLookup.findVirtual(jacksonGeneratorClass, "close", MethodType.methodType(void.class));
-        writeStartObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartObject", MethodType.methodType(void.class));
-        writeEndObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndObject", MethodType.methodType(void.class));
-        writeStartArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartArray", MethodType.methodType(void.class));
-        writeEndArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndArray", MethodType.methodType(void.class));
-        writeFieldNameMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeFieldName", MethodType.methodType(void.class,String.class));
-        writeNullMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNull", MethodType.methodType(void.class));
-        writeBinaryMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBinary", methodType(void.class, byte[].class));
-        writeBooleanMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBoolean", MethodType.methodType(void.class,boolean.class));
-        writeDoubleMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,double.class));
-        writeFloatMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,float.class));
-        writeIntMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,int.class));
-        writeLongMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,long.class));
-        writeStringMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeString", MethodType.methodType(void.class,String.class));
-        initialized = true;
+        MethodType voidMT = methodType(void.class);
 
+        writeRawValueMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeRawValue", methodType(void.class, String.class));
+        flushMethod = publicLookup.findVirtual(jacksonGeneratorClass, "flush", voidMT);
+        closeMethod = publicLookup.findVirtual(jacksonGeneratorClass, "close", voidMT);
+        writeStartObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartObject", voidMT);
+        writeEndObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndObject", voidMT);
+        writeStartArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartArray", voidMT);
+        writeEndArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndArray", voidMT);
+        writeFieldNameMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeFieldName", methodType(void.class, String.class));
+        writeNullMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNull", voidMT);
+        writeBinaryMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBinary", methodType(void.class, byte[].class));
+        writeBooleanMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBoolean", methodType(void.class, boolean.class));
+        writeDoubleMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, double.class));
+        writeFloatMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, float.class));
+        writeIntMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, int.class));
+        writeLongMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, long.class));
+        writeStringMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeString", methodType(void.class, String.class));
+        configureMethod = publicLookup.findVirtual(jacksonGeneratorClass, "configure", methodType(jacksonGeneratorClass, jacksonFeatureEnum, boolean.class));
+
+        initialized = true;
     }
     @Override
     public JsonWriteContext getWriteContext() {
