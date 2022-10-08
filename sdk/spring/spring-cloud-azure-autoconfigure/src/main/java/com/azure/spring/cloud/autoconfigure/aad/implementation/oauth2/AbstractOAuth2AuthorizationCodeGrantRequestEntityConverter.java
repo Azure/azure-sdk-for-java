@@ -4,11 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
@@ -20,25 +19,17 @@ import java.util.UUID;
 public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
+    protected AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter() {
+        addHeadersConverter((request) -> getHttpHeaders());
+        addParametersConverter(this::getHttpBody);
+    }
+
     /**
      * Gets the application ID.
      *
      * @return the application ID
      */
     protected abstract String getApplicationId();
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
-        addHeadersConverter(headersConverter);
-        addParametersConverter(parametersConverter);
-        return super.convert(request);
-    }
-
-    private final Converter<OAuth2AuthorizationCodeGrantRequest, HttpHeaders> headersConverter = (request) -> getHttpHeaders();
-
-    private final Converter<OAuth2AuthorizationCodeGrantRequest, MultiValueMap<String, String>> parametersConverter = this::getHttpBody;
-
     /**
      * Additional default headers information.
      * @return HttpHeaders
@@ -57,6 +48,6 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
      * @return MultiValueMap
      */
     public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
-        return null;
+        return new LinkedMultiValueMap<>();
     }
 }
