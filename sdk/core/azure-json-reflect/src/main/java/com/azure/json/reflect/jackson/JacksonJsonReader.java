@@ -21,6 +21,7 @@ public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> jacksonTokenEnum = null;
+    private static Class<Enum> jacksonReadFeatureEnum = null;
     private static Object jsonFactory;
 
     private final Object jacksonParser;
@@ -38,6 +39,7 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle currentNameMethod;
 	private static MethodHandle skipChildrenMethod;
 	private static MethodHandle closeMethod;
+    private static MethodHandle enableFeatureMethod;
 
     private final byte[] jsonBytes;
     private final String jsonString;
@@ -101,7 +103,12 @@ public class JacksonJsonReader extends JsonReader {
             if (!initialized) {
                 initialize();
             }
-    		jacksonParser = createParserMethod.invoke(jsonFactory, reader);
+            if (nonNumericNumbersSupported) {
+                Object temp = createParserMethod.invoke(jsonFactory, reader);
+                jacksonParser = enableFeatureMethod.invoke(temp, Enum.valueOf(jacksonReadFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"));
+            } else {
+                jacksonParser = createParserMethod.invoke(jsonFactory, reader);
+            }
             // Configure parser to allow non-numeric numbers
     	} catch (Throwable e) {
             if (e instanceof IOException) {
@@ -112,8 +119,7 @@ public class JacksonJsonReader extends JsonReader {
                 throw new IllegalStateException("Incorrect Library Present");
             }
     	}
-
-    	this.resetSupported = resetSupported;
+        this.resetSupported = resetSupported;
     	this.jsonBytes = jsonBytes;
     	this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
@@ -128,6 +134,14 @@ public class JacksonJsonReader extends JsonReader {
 		// The jacksonJsonParser is the equivalent of the Gson JsonReader
 
 		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
+
+        for (Class i: jacksonJsonParser.getDeclaredClasses()) {
+            if (i.getSimpleName().equals("Feature")){
+                jacksonReadFeatureEnum = i;
+                break;
+            }
+        }
+
     	// Initializing the factory
         try {
             jsonFactory = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class)).invoke();
@@ -137,6 +151,7 @@ public class JacksonJsonReader extends JsonReader {
 
         // Initializing all the method handles.
         createParserMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
+        enableFeatureMethod = publicLookup.findVirtual(jacksonJsonParser, "enable", methodType(jacksonJsonParser, jacksonReadFeatureEnum));
 		getBooleanMethod = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
 		getFloatValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
     	getDoubleValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getDoubleValue", methodType(double.class));

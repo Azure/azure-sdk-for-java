@@ -15,7 +15,12 @@ import java.io.IOException;
  */
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
 	@Override
-	public JsonReader getJsonReader(String json) throws IOException {
-		return JacksonJsonReader.fromString(json, new JsonOptions());
-	}
+	public JsonReader getJsonReader(String json) {
+        try {
+            return JacksonJsonReader.fromString(json, new JsonOptions());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
