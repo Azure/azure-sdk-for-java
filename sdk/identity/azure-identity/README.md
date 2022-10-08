@@ -100,7 +100,7 @@ Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364)
 ## Examples
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples). 
 
-### Authenticating with `DefaultAzureCredential`
+### Authenticate with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`.
 
 ```java
@@ -121,7 +121,7 @@ public void createDefaultAzureCredential() {
 
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
-### Authenticating a user assigned managed identity with `DefaultAzureCredential`
+### Authenticate a user assigned Managed Identity with `DefaultAzureCredential`
 To Authenticate using User Assigned Managed Identity, please ensure that configuration instructions for your supported Azure Resource [here](#managed-identity-support) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
@@ -147,8 +147,8 @@ public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
 
 In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using the `DefaultAzureCredential`.
 
-### Authenticating a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
-To Authenticate using IntelliJ, please ensure that configuration instructions [here](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
+### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
+To Authenticate using IntelliJ, please ensure that configuration instructions [here](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
 
@@ -183,7 +183,7 @@ The [Managed identity authentication](https://learn.microsoft.com/azure/active-d
 * [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 
 ### Examples
-####  Authenticating in Azure with Managed Identity
+####  Authenticate in Azure with Managed Identity
 This examples demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
 
 see more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
@@ -221,7 +221,7 @@ public void createManagedIdentityCredential() {
 }
 ```
 
-## Cloud Configuration
+## Cloud configuration
 Credentials default to authenticating to the Azure Active Directory endpoint for
 Azure Public Cloud. To access resources in other clouds, such as Azure Government
 or a private cloud, configure credentials with the `auhtorityHost` argument.
@@ -239,10 +239,10 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ## Credential classes
 
-### Authenticating Azure-hosted applications
+### Authenticate Azure-hosted applications
         
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating Azure-hosted applications</caption>
+  <caption>Authenticate Azure-hosted applications</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -279,10 +279,10 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
     
-### Authenticating Service Principals
+### Authenticate service principals
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating service principals</caption>
+  <caption>Authenticate service principals</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -314,10 +314,10 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating Users
+### Authenticating users
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating users</caption>
+  <caption>Authenticate users</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -364,7 +364,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating via Development Tools
+### Authenticating via development tools
 
 <table style="border: 1px; width: 100%;">
   <caption>Authenticating via development tools</caption>
@@ -406,7 +406,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
-## Environment Variables
+## Environment variables
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
 
 ### Service principal with secret
