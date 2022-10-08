@@ -26,9 +26,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");
         }
 
-        shareServiceClient = new ShareServiceClientBuilder().connectionString(connectionString).
-            buildClient();
+        ShareServiceClientBuilder builder = new ShareServiceClientBuilder()
+            .connectionString(connectionString);
 
+        configureClientBuilder(builder);
+
+        shareServiceClient = builder.buildClient();
         shareServiceAsyncClient = new ShareServiceClientBuilder().connectionString(connectionString).
             buildAsyncClient();
     }
