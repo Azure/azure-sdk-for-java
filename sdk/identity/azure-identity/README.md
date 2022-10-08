@@ -361,7 +361,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.onbehalfofcredential?view=azure-java-stable">OnBehalfOfCredential</a></code></td>
       <td>propagates the delegated user identity and permissions through the request chain</td>
       <td></td>
-      <td></td>
+      <td><a href="https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow">On-behalf-of authentication</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?view=azure-java-stable">UsernamePasswordCredential</a></code></td>
@@ -513,7 +513,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 The java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
 
-The [microsoft-graph-sdk][https://github.com/microsoftgraph/msgraph-sdk-java] also supports authenticating with `TokenCredential` and the Azure Identity library.
+The [microsoft-graph-sdk](https://github.com/microsoftgraph/msgraph-sdk-java) also supports authenticating with `TokenCredential` and the Azure Identity library.
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
