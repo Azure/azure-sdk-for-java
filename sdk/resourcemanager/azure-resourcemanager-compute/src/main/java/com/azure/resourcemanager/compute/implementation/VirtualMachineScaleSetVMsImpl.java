@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
@@ -169,8 +170,9 @@ class VirtualMachineScaleSetVMsImpl
     public Mono<VirtualMachineScaleSetVM> getInstanceAsync(String instanceId) {
         return this
             .client
-            .getAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId,
+            .getWithResponseAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId,
                 InstanceViewTypes.INSTANCE_VIEW)
+            .map(Response::getValue)
             .map(this::wrapModel);
     }
 

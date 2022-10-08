@@ -78,7 +78,7 @@ public class VirtualMachinesImpl
 
     @Override
     public void deallocate(String groupName, String name, boolean hibernate) {
-        this.inner().deallocate(groupName, name, hibernate);
+        this.inner().deallocate(groupName, name, hibernate, Context.NONE);
     }
 
     @Override

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource;
+import com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
@@ -207,7 +207,7 @@ class GalleryImageVersionImpl
             this.innerModel().withStorageProfile(new GalleryImageVersionStorageProfile());
         }
         if (this.innerModel().storageProfile().source() == null) {
-            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionSource());
+            this.innerModel().storageProfile().withSource(new GalleryArtifactVersionFullSource());
         }
         this.innerModel().storageProfile().source().withId(customImageId);
         return this;

@@ -446,10 +446,11 @@ class VirtualMachineImpl
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
+            .getByResourceGroupWithResponseAsync(
+                this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
                 inner -> {
-                    virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(inner.instanceView());
+                    virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(inner.getValue().instanceView());
                     return virtualMachineInstanceView;
                 })
             .switchIfEmpty(

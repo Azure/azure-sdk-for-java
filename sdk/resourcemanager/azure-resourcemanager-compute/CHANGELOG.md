@@ -2,13 +2,11 @@
 
 ## 2.20.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated Gallery to `2022-03-03`.
 
 ## 2.19.0 (2022-09-23)
 

@@ -91,8 +91,8 @@ class VirtualMachineExtensionImpl
     public Mono<VirtualMachineExtensionInstanceView> getInstanceViewAsync() {
         return this
             .client
-            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
-            .map(inner -> inner.instanceView());
+            .getWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
+            .map(inner -> inner.getValue().instanceView());
     }
 
     @Override
