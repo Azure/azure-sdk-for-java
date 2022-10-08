@@ -29,6 +29,10 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /** Creates an instance of AvailabilitySetUpdate class. */
+    public AvailabilitySetUpdate() {
+    }
+
     /**
      * Get the innerProperties property: The instance view of a resource.
      *

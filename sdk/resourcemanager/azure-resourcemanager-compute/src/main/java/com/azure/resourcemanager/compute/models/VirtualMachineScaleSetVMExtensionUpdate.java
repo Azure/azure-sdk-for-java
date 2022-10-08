@@ -29,6 +29,10 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionUpdateProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionUpdate class. */
+    public VirtualMachineScaleSetVMExtensionUpdate() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *

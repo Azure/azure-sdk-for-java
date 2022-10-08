@@ -29,6 +29,10 @@ public final class GrantAccessData {
     @JsonProperty(value = "getSecureVMGuestStateSAS")
     private Boolean getSecureVMGuestStateSas;
 
+    /** Creates an instance of GrantAccessData class. */
+    public GrantAccessData() {
+    }
+
     /**
      * Get the access property: The access property.
      *

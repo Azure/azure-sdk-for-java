@@ -27,6 +27,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     @JsonProperty(value = "properties")
     private VirtualMachineImageProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineImageInner class. */
+    public VirtualMachineImageInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Image.
      *

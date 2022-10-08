@@ -17,6 +17,10 @@ public final class OSDiskImage {
     @JsonProperty(value = "operatingSystem", required = true)
     private OperatingSystemTypes operatingSystem;
 
+    /** Creates an instance of OSDiskImage class. */
+    public OSDiskImage() {
+    }
+
     /**
      * Get the operatingSystem property: The operating system of the osDiskImage.
      *

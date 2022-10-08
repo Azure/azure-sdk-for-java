@@ -46,6 +46,10 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
     @JsonProperty(value = "rollbackInfo", access = JsonProperty.Access.WRITE_ONLY)
     private RollbackStatusInfo rollbackInfo;
 
+    /** Creates an instance of UpgradeOperationHistoricalStatusInfoProperties class. */
+    public UpgradeOperationHistoricalStatusInfoProperties() {
+    }
+
     /**
      * Get the runningStatus property: Information about the overall status of the upgrade operation.
      *

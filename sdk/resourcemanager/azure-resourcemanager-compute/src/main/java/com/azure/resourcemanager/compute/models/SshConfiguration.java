@@ -17,6 +17,10 @@ public final class SshConfiguration {
     @JsonProperty(value = "publicKeys")
     private List<SshPublicKey> publicKeys;
 
+    /** Creates an instance of SshConfiguration class. */
+    public SshConfiguration() {
+    }
+
     /**
      * Get the publicKeys property: The list of SSH public keys used to authenticate with linux based VMs.
      *

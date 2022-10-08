@@ -19,6 +19,10 @@ public final class ImageUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private ImageProperties innerProperties;
 
+    /** Creates an instance of ImageUpdate class. */
+    public ImageUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of an Image.
      *

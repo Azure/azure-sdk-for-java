@@ -18,6 +18,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
 
+    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings class. */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings() {
+    }
+
     /**
      * Get the domainNameLabel property: The Domain name label.The concatenation of the domain name label and vm index
      * will be the domain name labels of the PublicIPAddress resources that will be created.

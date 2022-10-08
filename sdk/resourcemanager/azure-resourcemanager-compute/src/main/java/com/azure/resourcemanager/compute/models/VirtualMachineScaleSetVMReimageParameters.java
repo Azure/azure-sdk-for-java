@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
 @Fluent
 public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
+    /** Creates an instance of VirtualMachineScaleSetVMReimageParameters class. */
+    public VirtualMachineScaleSetVMReimageParameters() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {

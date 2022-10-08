@@ -66,6 +66,10 @@ public final class VirtualMachineAssessPatchesResultInner {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
+    /** Creates an instance of VirtualMachineAssessPatchesResultInner class. */
+    public VirtualMachineAssessPatchesResultInner() {
+    }
+
     /**
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or

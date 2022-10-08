@@ -23,6 +23,10 @@ public final class UserArtifactSource {
     @JsonProperty(value = "defaultConfigurationLink")
     private String defaultConfigurationLink;
 
+    /** Creates an instance of UserArtifactSource class. */
+    public UserArtifactSource() {
+    }
+
     /**
      * Get the mediaLink property: Required. The mediaLink of the artifact, must be a readable storage page blob.
      *

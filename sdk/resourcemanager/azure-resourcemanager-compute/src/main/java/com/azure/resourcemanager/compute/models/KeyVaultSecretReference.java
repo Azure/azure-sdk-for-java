@@ -24,6 +24,10 @@ public final class KeyVaultSecretReference {
     @JsonProperty(value = "sourceVault", required = true)
     private SubResource sourceVault;
 
+    /** Creates an instance of KeyVaultSecretReference class. */
+    public KeyVaultSecretReference() {
+    }
+
     /**
      * Get the secretUrl property: The URL referencing a secret in a Key Vault.
      *

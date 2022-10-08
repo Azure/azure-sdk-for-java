@@ -25,6 +25,10 @@ public final class DiskSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
+    /** Creates an instance of DiskSku class. */
+    public DiskSku() {
+    }
+
     /**
      * Get the name property: The sku name.
      *

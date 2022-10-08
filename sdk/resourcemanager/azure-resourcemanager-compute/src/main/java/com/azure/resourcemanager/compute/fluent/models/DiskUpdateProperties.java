@@ -152,6 +152,10 @@ public final class DiskUpdateProperties {
     @JsonProperty(value = "optimizedForFrequentAttach")
     private Boolean optimizedForFrequentAttach;
 
+    /** Creates an instance of DiskUpdateProperties class. */
+    public DiskUpdateProperties() {
+    }
+
     /**
      * Get the osType property: the Operating System type.
      *

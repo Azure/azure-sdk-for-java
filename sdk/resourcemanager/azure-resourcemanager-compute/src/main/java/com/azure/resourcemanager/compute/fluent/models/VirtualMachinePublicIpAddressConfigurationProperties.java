@@ -60,6 +60,10 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     @JsonProperty(value = "publicIPAllocationMethod")
     private PublicIpAllocationMethod publicIpAllocationMethod;
 
+    /** Creates an instance of VirtualMachinePublicIpAddressConfigurationProperties class. */
+    public VirtualMachinePublicIpAddressConfigurationProperties() {
+    }
+
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *

@@ -26,6 +26,10 @@ public final class OSFamilyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OSFamilyListResult class. */
+    public OSFamilyListResult() {
+    }
+
     /**
      * Get the value property: The list of resources.
      *

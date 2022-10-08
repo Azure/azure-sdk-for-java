@@ -228,6 +228,10 @@ public final class DiskProperties {
     @JsonProperty(value = "optimizedForFrequentAttach")
     private Boolean optimizedForFrequentAttach;
 
+    /** Creates an instance of DiskProperties class. */
+    public DiskProperties() {
+    }
+
     /**
      * Get the timeCreated property: The time when the disk was created.
      *

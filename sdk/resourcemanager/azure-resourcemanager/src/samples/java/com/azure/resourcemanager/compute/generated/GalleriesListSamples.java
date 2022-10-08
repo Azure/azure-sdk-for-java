@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Galleries List. */
 public final class GalleriesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/Gallery_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_ListBySubscription.json
      */
     /**
      * Sample code: List galleries in a subscription.

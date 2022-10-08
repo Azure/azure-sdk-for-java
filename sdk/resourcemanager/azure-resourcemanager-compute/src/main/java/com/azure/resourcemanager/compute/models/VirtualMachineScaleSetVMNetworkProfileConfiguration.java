@@ -17,6 +17,10 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
+    /** Creates an instance of VirtualMachineScaleSetVMNetworkProfileConfiguration class. */
+    public VirtualMachineScaleSetVMNetworkProfileConfiguration() {
+    }
+
     /**
      * Get the networkInterfaceConfigurations property: The list of network configurations.
      *

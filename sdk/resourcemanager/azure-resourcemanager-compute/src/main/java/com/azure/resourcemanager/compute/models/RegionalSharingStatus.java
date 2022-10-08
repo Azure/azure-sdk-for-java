@@ -30,6 +30,10 @@ public final class RegionalSharingStatus {
     @JsonProperty(value = "details")
     private String details;
 
+    /** Creates an instance of RegionalSharingStatus class. */
+    public RegionalSharingStatus() {
+    }
+
     /**
      * Get the region property: Region name.
      *

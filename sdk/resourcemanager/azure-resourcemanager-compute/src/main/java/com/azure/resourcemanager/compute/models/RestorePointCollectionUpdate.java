@@ -20,6 +20,10 @@ public final class RestorePointCollectionUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private RestorePointCollectionProperties innerProperties;
 
+    /** Creates an instance of RestorePointCollectionUpdate class. */
+    public RestorePointCollectionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: The restore point collection properties.
      *

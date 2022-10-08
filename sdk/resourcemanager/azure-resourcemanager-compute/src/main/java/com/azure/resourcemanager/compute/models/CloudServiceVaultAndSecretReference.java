@@ -25,6 +25,10 @@ public final class CloudServiceVaultAndSecretReference {
     @JsonProperty(value = "secretUrl")
     private String secretUrl;
 
+    /** Creates an instance of CloudServiceVaultAndSecretReference class. */
+    public CloudServiceVaultAndSecretReference() {
+    }
+
     /**
      * Get the sourceVault property: The ARM Resource ID of the Key Vault.
      *

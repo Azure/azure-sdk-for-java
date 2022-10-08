@@ -41,6 +41,10 @@ public final class OSFamilyInner {
     @JsonProperty(value = "properties")
     private OSFamilyProperties properties;
 
+    /** Creates an instance of OSFamilyInner class. */
+    public OSFamilyInner() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

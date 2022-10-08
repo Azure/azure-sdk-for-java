@@ -34,6 +34,10 @@ public final class OSVersionPropertiesBase {
     @JsonProperty(value = "isActive", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isActive;
 
+    /** Creates an instance of OSVersionPropertiesBase class. */
+    public OSVersionPropertiesBase() {
+    }
+
     /**
      * Get the version property: The OS version.
      *

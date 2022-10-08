@@ -34,6 +34,10 @@ public final class DedicatedHostGroupInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of DedicatedHostGroupInner class. */
+    public DedicatedHostGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.
      *

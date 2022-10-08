@@ -36,6 +36,10 @@ public final class ImageDiskReference {
     @JsonProperty(value = "lun")
     private Integer lun;
 
+    /** Creates an instance of ImageDiskReference class. */
+    public ImageDiskReference() {
+    }
+
     /**
      * Get the id property: A relative uri containing either a Platform Image Repository, user image, or Azure Compute
      * Gallery image reference.

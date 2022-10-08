@@ -22,6 +22,10 @@ public final class RestorePointCollectionSourceProperties {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of RestorePointCollectionSourceProperties class. */
+    public RestorePointCollectionSourceProperties() {
+    }
+
     /**
      * Get the location property: Location of the source resource used to create this restore point collection.
      *

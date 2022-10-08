@@ -26,6 +26,10 @@ public final class GalleryImageList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GalleryImageList class. */
+    public GalleryImageList() {
+    }
+
     /**
      * Get the value property: A list of Shared Image Gallery images.
      *

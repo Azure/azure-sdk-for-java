@@ -34,6 +34,10 @@ public final class ScaleInPolicy {
     @JsonProperty(value = "forceDeletion")
     private Boolean forceDeletion;
 
+    /** Creates an instance of ScaleInPolicy class. */
+    public ScaleInPolicy() {
+    }
+
     /**
      * Get the rules property: The rules to be followed when scaling-in a virtual machine scale set.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Default** When a virtual machine scale set is

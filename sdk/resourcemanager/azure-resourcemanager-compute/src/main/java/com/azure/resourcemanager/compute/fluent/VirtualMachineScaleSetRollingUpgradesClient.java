@@ -345,19 +345,6 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the latest virtual machine scale set rolling upgrade.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName);
-
-    /**
-     * Gets the status of the latest virtual machine scale set rolling upgrade.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -367,4 +354,17 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(
         String resourceGroupName, String vmScaleSetName, Context context);
+
+    /**
+     * Gets the status of the latest virtual machine scale set rolling upgrade.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the latest virtual machine scale set rolling upgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RollingUpgradeStatusInfoInner getLatest(String resourceGroupName, String vmScaleSetName);
 }

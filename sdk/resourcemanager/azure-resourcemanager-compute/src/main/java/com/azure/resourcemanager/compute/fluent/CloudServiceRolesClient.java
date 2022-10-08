@@ -50,20 +50,6 @@ public interface CloudServiceRolesClient {
      * @param roleName Name of the role.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role from a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServiceRoleInner get(String roleName, String resourceGroupName, String cloudServiceName);
-
-    /**
-     * Gets a role from a cloud service.
-     *
-     * @param roleName Name of the role.
-     * @param resourceGroupName Name of the resource group.
-     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -73,6 +59,20 @@ public interface CloudServiceRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CloudServiceRoleInner> getWithResponse(
         String roleName, String resourceGroupName, String cloudServiceName, Context context);
+
+    /**
+     * Gets a role from a cloud service.
+     *
+     * @param roleName Name of the role.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role from a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CloudServiceRoleInner get(String roleName, String resourceGroupName, String cloudServiceName);
 
     /**
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.

@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualMachineScaleSetListOSUpgradeHistory class. */
+    public VirtualMachineScaleSetListOSUpgradeHistory() {
+    }
+
     /**
      * Get the value property: The list of OS upgrades performed on the virtual machine scale set.
      *

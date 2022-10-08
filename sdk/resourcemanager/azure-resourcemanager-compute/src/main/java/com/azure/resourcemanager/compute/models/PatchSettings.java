@@ -45,6 +45,10 @@ public final class PatchSettings {
     @JsonProperty(value = "automaticByPlatformSettings")
     private WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
+    /** Creates an instance of PatchSettings class. */
+    public PatchSettings() {
+    }
+
     /**
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible

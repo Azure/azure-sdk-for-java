@@ -17,6 +17,10 @@ public final class LogAnalyticsOperationResultInner {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private LogAnalyticsOutput properties;
 
+    /** Creates an instance of LogAnalyticsOperationResultInner class. */
+    public LogAnalyticsOperationResultInner() {
+    }
+
     /**
      * Get the properties property: LogAnalyticsOutput.
      *

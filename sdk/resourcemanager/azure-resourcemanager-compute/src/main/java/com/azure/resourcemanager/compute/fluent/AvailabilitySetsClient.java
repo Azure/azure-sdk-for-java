@@ -61,21 +61,6 @@ public interface AvailabilitySetsClient
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters);
-
-    /**
-     * Create or update an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -86,6 +71,21 @@ public interface AvailabilitySetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailabilitySetInner> createOrUpdateWithResponse(
         String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters, Context context);
+
+    /**
+     * Create or update an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailabilitySetInner createOrUpdate(
+        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters);
 
     /**
      * Update an availability set.
@@ -125,20 +125,6 @@ public interface AvailabilitySetsClient
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner update(String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters);
-
-    /**
-     * Update an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -149,6 +135,20 @@ public interface AvailabilitySetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailabilitySetInner> updateWithResponse(
         String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters, Context context);
+
+    /**
+     * Update an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailabilitySetInner update(String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters);
 
     /**
      * Delete an availability set.
@@ -181,18 +181,6 @@ public interface AvailabilitySetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String availabilitySetName);
-
-    /**
-     * Delete an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -201,6 +189,18 @@ public interface AvailabilitySetsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String availabilitySetName, Context context);
+
+    /**
+     * Delete an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String availabilitySetName);
 
     /**
      * Retrieves information about an availability set.
@@ -236,19 +236,6 @@ public interface AvailabilitySetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName);
-
-    /**
-     * Retrieves information about an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -259,6 +246,19 @@ public interface AvailabilitySetsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailabilitySetInner> getByResourceGroupWithResponse(
         String resourceGroupName, String availabilitySetName, Context context);
+
+    /**
+     * Retrieves information about an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName);
 
     /**
      * Lists all availability sets in a subscription.

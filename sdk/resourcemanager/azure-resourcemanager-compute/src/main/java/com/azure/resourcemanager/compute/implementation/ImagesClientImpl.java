@@ -1037,23 +1037,6 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1064,22 +1047,6 @@ public final class ImagesClientImpl
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
-        final String expand = null;
-        return getByResourceGroupAsync(resourceGroupName, imageName, expand).block();
     }
 
     /**
@@ -1098,6 +1065,22 @@ public final class ImagesClientImpl
     public Response<ImageInner> getByResourceGroupWithResponse(
         String resourceGroupName, String imageName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand, context).block();
+    }
+
+    /**
+     * Gets an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageInner getByResourceGroup(String resourceGroupName, String imageName) {
+        final String expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, imageName, expand, Context.NONE).getValue();
     }
 
     /**

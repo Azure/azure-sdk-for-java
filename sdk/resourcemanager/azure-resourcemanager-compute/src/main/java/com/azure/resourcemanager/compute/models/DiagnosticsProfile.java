@@ -19,6 +19,10 @@ public final class DiagnosticsProfile {
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
 
+    /** Creates an instance of DiagnosticsProfile class. */
+    public DiagnosticsProfile() {
+    }
+
     /**
      * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
      * and Screenshot to diagnose VM status. &lt;br&gt;**NOTE**: If storageUri is being specified then ensure that the

@@ -20,6 +20,10 @@ public final class DedicatedHostUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private DedicatedHostProperties innerProperties;
 
+    /** Creates an instance of DedicatedHostUpdate class. */
+    public DedicatedHostUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the dedicated host.
      *

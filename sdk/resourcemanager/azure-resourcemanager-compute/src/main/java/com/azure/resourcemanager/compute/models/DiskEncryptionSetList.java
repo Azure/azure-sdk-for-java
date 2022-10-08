@@ -26,6 +26,10 @@ public final class DiskEncryptionSetList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DiskEncryptionSetList class. */
+    public DiskEncryptionSetList() {
+    }
+
     /**
      * Get the value property: A list of disk encryption sets.
      *

@@ -29,6 +29,10 @@ public final class UpgradeOperationHistoryStatus {
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of UpgradeOperationHistoryStatus class. */
+    public UpgradeOperationHistoryStatus() {
+    }
+
     /**
      * Get the code property: Code indicating the current status of the upgrade.
      *

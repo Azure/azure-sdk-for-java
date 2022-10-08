@@ -138,6 +138,10 @@ public final class VirtualMachineScaleSetProperties {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /** Creates an instance of VirtualMachineScaleSetProperties class. */
+    public VirtualMachineScaleSetProperties() {
+    }
+
     /**
      * Get the upgradePolicy property: The upgrade policy.
      *

@@ -63,6 +63,10 @@ public class GalleryArtifactPublishingProfileBase {
     @JsonProperty(value = "targetExtendedLocations")
     private List<GalleryTargetExtendedLocation> targetExtendedLocations;
 
+    /** Creates an instance of GalleryArtifactPublishingProfileBase class. */
+    public GalleryArtifactPublishingProfileBase() {
+    }
+
     /**
      * Get the targetRegions property: The target regions where the Image Version is going to be replicated to. This
      * property is updatable.

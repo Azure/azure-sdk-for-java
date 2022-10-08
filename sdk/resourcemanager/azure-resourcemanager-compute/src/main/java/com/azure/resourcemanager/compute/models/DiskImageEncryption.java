@@ -16,6 +16,10 @@ public class DiskImageEncryption {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
+    /** Creates an instance of DiskImageEncryption class. */
+    public DiskImageEncryption() {
+    }
+
     /**
      * Get the diskEncryptionSetId property: A relative URI containing the resource ID of the disk encryption set.
      *

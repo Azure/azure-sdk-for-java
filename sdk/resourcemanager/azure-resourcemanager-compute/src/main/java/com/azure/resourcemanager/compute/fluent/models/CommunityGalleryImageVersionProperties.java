@@ -39,6 +39,10 @@ public final class CommunityGalleryImageVersionProperties {
     @JsonProperty(value = "storageProfile")
     private SharedGalleryImageVersionStorageProfile storageProfile;
 
+    /** Creates an instance of CommunityGalleryImageVersionProperties class. */
+    public CommunityGalleryImageVersionProperties() {
+    }
+
     /**
      * Get the publishedDate property: The published date of the gallery image version Definition. This property can be
      * used for decommissioning purposes. This property is updatable.

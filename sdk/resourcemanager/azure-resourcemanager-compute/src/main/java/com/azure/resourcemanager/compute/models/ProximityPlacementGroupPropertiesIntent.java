@@ -17,6 +17,10 @@ public final class ProximityPlacementGroupPropertiesIntent {
     @JsonProperty(value = "vmSizes")
     private List<String> vmSizes;
 
+    /** Creates an instance of ProximityPlacementGroupPropertiesIntent class. */
+    public ProximityPlacementGroupPropertiesIntent() {
+    }
+
     /**
      * Get the vmSizes property: Specifies possible sizes of virtual machines that can be created in the proximity
      * placement group.

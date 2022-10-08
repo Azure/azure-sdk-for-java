@@ -26,6 +26,10 @@ public final class CapacityReservationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CapacityReservationListResult class. */
+    public CapacityReservationListResult() {
+    }
+
     /**
      * Get the value property: The list of capacity reservations.
      *

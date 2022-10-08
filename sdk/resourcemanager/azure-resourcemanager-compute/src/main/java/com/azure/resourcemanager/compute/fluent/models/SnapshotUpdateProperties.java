@@ -80,6 +80,10 @@ public final class SnapshotUpdateProperties {
     @JsonProperty(value = "supportedCapabilities")
     private SupportedCapabilities supportedCapabilities;
 
+    /** Creates an instance of SnapshotUpdateProperties class. */
+    public SnapshotUpdateProperties() {
+    }
+
     /**
      * Get the osType property: the Operating System type.
      *

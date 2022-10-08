@@ -25,6 +25,10 @@ public final class VirtualMachineListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualMachineListResult class. */
+    public VirtualMachineListResult() {
+    }
+
     /**
      * Get the value property: The list of virtual machines.
      *

@@ -63,6 +63,10 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateOSDisk class. */
+    public VirtualMachineScaleSetUpdateOSDisk() {
+    }
+
     /**
      * Get the caching property: The caching type.
      *

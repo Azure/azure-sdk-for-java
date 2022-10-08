@@ -100,6 +100,10 @@ public final class OSDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
+    /** Creates an instance of OSDisk class. */
+    public OSDisk() {
+    }
+
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk if
      * creating a VM from user-image or a specialized VHD. &lt;br&gt;&lt;br&gt; Possible values are:

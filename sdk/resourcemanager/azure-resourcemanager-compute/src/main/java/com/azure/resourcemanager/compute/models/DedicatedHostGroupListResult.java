@@ -26,6 +26,10 @@ public final class DedicatedHostGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DedicatedHostGroupListResult class. */
+    public DedicatedHostGroupListResult() {
+    }
+
     /**
      * Get the value property: The list of dedicated host groups.
      *

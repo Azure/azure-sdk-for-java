@@ -311,28 +311,6 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
      * @param diskRestorePointName The name of the disk restore point created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk restorePoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskRestorePointInner get(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return getAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .block();
-    }
-
-    /**
-     * Get disk restorePoint resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
-     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
-     * @param diskRestorePointName The name of the disk restore point created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -349,6 +327,29 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         return getWithResponseAsync(
                 resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
             .block();
+    }
+
+    /**
+     * Get disk restorePoint resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
+     * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
+     * @param diskRestorePointName The name of the disk restore point created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk restorePoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DiskRestorePointInner get(
+        String resourceGroupName,
+        String restorePointCollectionName,
+        String vmRestorePointName,
+        String diskRestorePointName) {
+        return getWithResponse(
+                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, Context.NONE)
+            .getValue();
     }
 
     /**

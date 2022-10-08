@@ -19,6 +19,10 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings {
     @JsonProperty(value = "rebootSetting")
     private WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
+    /** Creates an instance of WindowsVMGuestPatchAutomaticByPlatformSettings class. */
+    public WindowsVMGuestPatchAutomaticByPlatformSettings() {
+    }
+
     /**
      * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.

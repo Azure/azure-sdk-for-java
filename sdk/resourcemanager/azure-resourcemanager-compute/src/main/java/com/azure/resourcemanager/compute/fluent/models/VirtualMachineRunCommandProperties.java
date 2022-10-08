@@ -81,6 +81,10 @@ public final class VirtualMachineRunCommandProperties {
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRunCommandInstanceView instanceView;
 
+    /** Creates an instance of VirtualMachineRunCommandProperties class. */
+    public VirtualMachineRunCommandProperties() {
+    }
+
     /**
      * Get the source property: The source of the run command script.
      *

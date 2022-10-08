@@ -22,6 +22,10 @@ public final class OSDiskImageSecurityProfile {
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;
 
+    /** Creates an instance of OSDiskImageSecurityProfile class. */
+    public OSDiskImageSecurityProfile() {
+    }
+
     /**
      * Get the confidentialVMEncryptionType property: confidential VM encryption types.
      *

@@ -22,6 +22,10 @@ public final class StatusCodeCount {
     @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
+    /** Creates an instance of StatusCodeCount class. */
+    public StatusCodeCount() {
+    }
+
     /**
      * Get the code property: The instance view status code.
      *

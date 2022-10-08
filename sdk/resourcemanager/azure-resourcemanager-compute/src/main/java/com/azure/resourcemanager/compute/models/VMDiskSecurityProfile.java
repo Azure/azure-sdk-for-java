@@ -28,6 +28,10 @@ public final class VMDiskSecurityProfile {
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
 
+    /** Creates an instance of VMDiskSecurityProfile class. */
+    public VMDiskSecurityProfile() {
+    }
+
     /**
      * Get the securityEncryptionType property: Specifies the EncryptionType of the managed disk. &lt;br&gt; It is set
      * to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly for

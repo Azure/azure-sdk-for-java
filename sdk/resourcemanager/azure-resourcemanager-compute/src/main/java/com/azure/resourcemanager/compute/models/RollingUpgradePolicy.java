@@ -56,6 +56,10 @@ public final class RollingUpgradePolicy {
     @JsonProperty(value = "prioritizeUnhealthyInstances")
     private Boolean prioritizeUnhealthyInstances;
 
+    /** Creates an instance of RollingUpgradePolicy class. */
+    public RollingUpgradePolicy() {
+    }
+
     /**
      * Get the maxBatchInstancePercent property: The maximum percent of total virtual machine instances that will be
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in

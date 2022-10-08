@@ -45,6 +45,10 @@ public final class StorageProfile {
     @JsonProperty(value = "diskControllerType")
     private DiskControllerTypes diskControllerType;
 
+    /** Creates an instance of StorageProfile class. */
+    public StorageProfile() {
+    }
+
     /**
      * Get the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a

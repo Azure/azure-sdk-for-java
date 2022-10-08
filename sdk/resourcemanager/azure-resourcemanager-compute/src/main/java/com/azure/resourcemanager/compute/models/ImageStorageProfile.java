@@ -34,6 +34,10 @@ public final class ImageStorageProfile {
     @JsonProperty(value = "zoneResilient")
     private Boolean zoneResilient;
 
+    /** Creates an instance of ImageStorageProfile class. */
+    public ImageStorageProfile() {
+    }
+
     /**
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine.
      * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual

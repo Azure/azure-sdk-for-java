@@ -61,6 +61,10 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
+    /** Creates an instance of VirtualMachineNetworkInterfaceIpConfigurationProperties class. */
+    public VirtualMachineNetworkInterfaceIpConfigurationProperties() {
+    }
+
     /**
      * Get the subnet property: Specifies the identifier of the subnet.
      *

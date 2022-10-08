@@ -29,6 +29,10 @@ public final class DiskInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of DiskInstanceView class. */
+    public DiskInstanceView() {
+    }
+
     /**
      * Get the name property: The disk name.
      *

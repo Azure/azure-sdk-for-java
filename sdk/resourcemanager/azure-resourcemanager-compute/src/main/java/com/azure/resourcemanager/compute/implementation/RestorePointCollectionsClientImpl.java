@@ -333,24 +333,6 @@ public final class RestorePointCollectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param parameters Parameters supplied to the Create or Update restore point collection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create or update Restore Point collection parameters.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointCollectionInner createOrUpdate(
-        String resourceGroupName, String restorePointCollectionName, RestorePointCollectionInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, restorePointCollectionName, parameters).block();
-    }
-
-    /**
-     * The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints for
-     * more details. When updating a restore point collection, only tags may be modified.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param parameters Parameters supplied to the Create or Update restore point collection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -365,6 +347,25 @@ public final class RestorePointCollectionsClientImpl
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters, context)
             .block();
+    }
+
+    /**
+     * The operation to create or update the restore point collection. Please refer to https://aka.ms/RestorePoints for
+     * more details. When updating a restore point collection, only tags may be modified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param parameters Parameters supplied to the Create or Update restore point collection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return create or update Restore Point collection parameters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointCollectionInner createOrUpdate(
+        String resourceGroupName, String restorePointCollectionName, RestorePointCollectionInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, restorePointCollectionName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -512,23 +513,6 @@ public final class RestorePointCollectionsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param parameters Parameters supplied to the Update restore point collection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create or update Restore Point collection parameters.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointCollectionInner update(
-        String resourceGroupName, String restorePointCollectionName, RestorePointCollectionUpdate parameters) {
-        return updateAsync(resourceGroupName, restorePointCollectionName, parameters).block();
-    }
-
-    /**
-     * The operation to update the restore point collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param parameters Parameters supplied to the Update restore point collection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -542,6 +526,23 @@ public final class RestorePointCollectionsClientImpl
         RestorePointCollectionUpdate parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters, context).block();
+    }
+
+    /**
+     * The operation to update the restore point collection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param parameters Parameters supplied to the Update restore point collection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return create or update Restore Point collection parameters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointCollectionInner update(
+        String resourceGroupName, String restorePointCollectionName, RestorePointCollectionUpdate parameters) {
+        return updateWithResponse(resourceGroupName, restorePointCollectionName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -912,25 +913,6 @@ public final class RestorePointCollectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
-     * @param expand The expand expression to apply on the operation. If expand=restorePoints, server will return all
-     *     contained restore points in the restorePointCollection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create or update Restore Point collection parameters on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RestorePointCollectionInner> getByResourceGroupAsync(
-        String resourceGroupName, String restorePointCollectionName, RestorePointCollectionExpandOptions expand) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the restore point collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -942,22 +924,6 @@ public final class RestorePointCollectionsClientImpl
         final RestorePointCollectionExpandOptions expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the restore point collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create or update Restore Point collection parameters.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointCollectionInner getByResourceGroup(String resourceGroupName, String restorePointCollectionName) {
-        final RestorePointCollectionExpandOptions expand = null;
-        return getByResourceGroupAsync(resourceGroupName, restorePointCollectionName, expand).block();
     }
 
     /**
@@ -981,6 +947,23 @@ public final class RestorePointCollectionsClientImpl
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand, context)
             .block();
+    }
+
+    /**
+     * The operation to get the restore point collection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return create or update Restore Point collection parameters.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointCollectionInner getByResourceGroup(String resourceGroupName, String restorePointCollectionName) {
+        final RestorePointCollectionExpandOptions expand = null;
+        return getByResourceGroupWithResponse(resourceGroupName, restorePointCollectionName, expand, Context.NONE)
+            .getValue();
     }
 
     /**

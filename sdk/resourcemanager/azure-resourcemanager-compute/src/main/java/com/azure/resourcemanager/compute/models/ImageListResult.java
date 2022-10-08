@@ -25,6 +25,10 @@ public final class ImageListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ImageListResult class. */
+    public ImageListResult() {
+    }
+
     /**
      * Get the value property: The list of Images.
      *

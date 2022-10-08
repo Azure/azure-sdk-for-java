@@ -346,20 +346,6 @@ public interface ImagesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand);
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -367,19 +353,6 @@ public interface ImagesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName);
-
-    /**
-     * Gets an image.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageInner getByResourceGroup(String resourceGroupName, String imageName);
 
     /**
      * Gets an image.
@@ -396,6 +369,19 @@ public interface ImagesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ImageInner> getByResourceGroupWithResponse(
         String resourceGroupName, String imageName, String expand, Context context);
+
+    /**
+     * Gets an image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImageInner getByResourceGroup(String resourceGroupName, String imageName);
 
     /**
      * Gets the list of images under a resource group.

@@ -22,6 +22,10 @@ public final class AccessUriInner {
     @JsonProperty(value = "securityDataAccessSAS", access = JsonProperty.Access.WRITE_ONLY)
     private String securityDataAccessSas;
 
+    /** Creates an instance of AccessUriInner class. */
+    public AccessUriInner() {
+    }
+
     /**
      * Get the accessSas property: A SAS uri for accessing a disk.
      *

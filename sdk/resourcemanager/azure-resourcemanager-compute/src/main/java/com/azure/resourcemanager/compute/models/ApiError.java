@@ -17,6 +17,10 @@ public final class ApiError extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
+    /** Creates an instance of ApiError class. */
+    public ApiError() {
+    }
+
     /**
      * Get the innererror property: The Api inner error.
      *

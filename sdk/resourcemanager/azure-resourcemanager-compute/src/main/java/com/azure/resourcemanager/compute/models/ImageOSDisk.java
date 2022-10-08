@@ -25,6 +25,10 @@ public final class ImageOSDisk extends ImageDisk {
     @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
+    /** Creates an instance of ImageOSDisk class. */
+    public ImageOSDisk() {
+    }
+
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk if
      * creating a VM from a custom image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**

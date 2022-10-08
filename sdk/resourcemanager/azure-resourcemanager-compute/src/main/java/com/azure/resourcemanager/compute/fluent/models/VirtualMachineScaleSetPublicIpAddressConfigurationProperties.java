@@ -53,6 +53,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
+    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationProperties class. */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties() {
+    }
+
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *

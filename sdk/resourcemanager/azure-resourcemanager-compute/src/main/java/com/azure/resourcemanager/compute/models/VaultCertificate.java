@@ -34,6 +34,10 @@ public final class VaultCertificate {
     @JsonProperty(value = "certificateStore")
     private String certificateStore;
 
+    /** Creates an instance of VaultCertificate class. */
+    public VaultCertificate() {
+    }
+
     /**
      * Get the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret. For adding a secret to the Key Vault, see [Add a key or secret to the key

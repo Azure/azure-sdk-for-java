@@ -38,6 +38,10 @@ public final class AvailabilitySetInner extends Resource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /** Creates an instance of AvailabilitySetInner class. */
+    public AvailabilitySetInner() {
+    }
+
     /**
      * Get the innerProperties property: The instance view of a resource.
      *

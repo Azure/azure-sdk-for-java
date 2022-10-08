@@ -18,6 +18,10 @@ public final class NetworkInterfaceReference extends SubResource {
     @JsonProperty(value = "properties")
     private NetworkInterfaceReferenceProperties innerProperties;
 
+    /** Creates an instance of NetworkInterfaceReference class. */
+    public NetworkInterfaceReference() {
+    }
+
     /**
      * Get the innerProperties property: Describes a network interface reference properties.
      *

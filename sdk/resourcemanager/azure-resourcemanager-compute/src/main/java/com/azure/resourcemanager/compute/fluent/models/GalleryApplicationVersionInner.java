@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +21,10 @@ public final class GalleryApplicationVersionInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
+
+    /** Creates an instance of GalleryApplicationVersionInner class. */
+    public GalleryApplicationVersionInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a gallery image version.
@@ -65,6 +70,29 @@ public final class GalleryApplicationVersionInner extends Resource {
             this.innerProperties = new GalleryApplicationVersionProperties();
         }
         this.innerProperties().withPublishingProfile(publishingProfile);
+        return this;
+    }
+
+    /**
+     * Get the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryApplicationVersionSafetyProfile safetyProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().safetyProfile();
+    }
+
+    /**
+     * Set the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryApplicationVersionInner object itself.
+     */
+    public GalleryApplicationVersionInner withSafetyProfile(GalleryApplicationVersionSafetyProfile safetyProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationVersionProperties();
+        }
+        this.innerProperties().withSafetyProfile(safetyProfile);
         return this;
     }
 

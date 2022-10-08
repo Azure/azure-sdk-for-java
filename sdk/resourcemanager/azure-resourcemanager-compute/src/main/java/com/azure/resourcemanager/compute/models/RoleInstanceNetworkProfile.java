@@ -18,6 +18,10 @@ public final class RoleInstanceNetworkProfile {
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkInterfaces;
 
+    /** Creates an instance of RoleInstanceNetworkProfile class. */
+    public RoleInstanceNetworkProfile() {
+    }
+
     /**
      * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
      * the role instance.

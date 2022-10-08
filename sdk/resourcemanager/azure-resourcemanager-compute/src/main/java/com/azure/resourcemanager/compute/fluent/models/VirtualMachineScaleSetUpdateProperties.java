@@ -76,6 +76,10 @@ public final class VirtualMachineScaleSetUpdateProperties {
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateProperties class. */
+    public VirtualMachineScaleSetUpdateProperties() {
+    }
+
     /**
      * Get the upgradePolicy property: The upgrade policy.
      *

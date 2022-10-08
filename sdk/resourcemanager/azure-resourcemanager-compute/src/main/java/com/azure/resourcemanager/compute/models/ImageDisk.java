@@ -56,6 +56,10 @@ public class ImageDisk {
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
 
+    /** Creates an instance of ImageDisk class. */
+    public ImageDisk() {
+    }
+
     /**
      * Get the snapshot property: The snapshot.
      *

@@ -16,6 +16,10 @@ public final class ApiEntityReference {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ApiEntityReference class. */
+    public ApiEntityReference() {
+    }
+
     /**
      * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...

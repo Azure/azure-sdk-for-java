@@ -23,6 +23,10 @@ public final class VirtualMachineScaleSetVMExtensionsSummary {
     @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionsSummary class. */
+    public VirtualMachineScaleSetVMExtensionsSummary() {
+    }
+
     /**
      * Get the name property: The extension name.
      *

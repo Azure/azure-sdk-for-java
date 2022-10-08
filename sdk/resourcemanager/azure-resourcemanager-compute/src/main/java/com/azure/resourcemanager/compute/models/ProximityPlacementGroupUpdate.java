@@ -10,6 +10,10 @@ import java.util.Map;
 /** Specifies information about the proximity placement group. */
 @Fluent
 public final class ProximityPlacementGroupUpdate extends UpdateResource {
+    /** Creates an instance of ProximityPlacementGroupUpdate class. */
+    public ProximityPlacementGroupUpdate() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ProximityPlacementGroupUpdate withTags(Map<String, String> tags) {

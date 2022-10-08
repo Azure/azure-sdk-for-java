@@ -66,6 +66,10 @@ public final class EncryptionSetProperties {
     @JsonProperty(value = "federatedClientId")
     private String federatedClientId;
 
+    /** Creates an instance of EncryptionSetProperties class. */
+    public EncryptionSetProperties() {
+    }
+
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
      *

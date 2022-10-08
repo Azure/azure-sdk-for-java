@@ -25,6 +25,10 @@ public final class SnapshotList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SnapshotList class. */
+    public SnapshotList() {
+    }
+
     /**
      * Get the value property: A list of snapshots.
      *

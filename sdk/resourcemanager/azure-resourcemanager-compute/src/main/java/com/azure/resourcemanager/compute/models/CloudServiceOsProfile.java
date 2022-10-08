@@ -17,6 +17,10 @@ public final class CloudServiceOsProfile {
     @JsonProperty(value = "secrets")
     private List<CloudServiceVaultSecretGroup> secrets;
 
+    /** Creates an instance of CloudServiceOsProfile class. */
+    public CloudServiceOsProfile() {
+    }
+
     /**
      * Get the secrets property: Specifies set of certificates that should be installed onto the role instances.
      *

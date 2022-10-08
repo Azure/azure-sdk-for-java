@@ -26,6 +26,10 @@ public final class VirtualMachineScaleSetListSkusResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualMachineScaleSetListSkusResult class. */
+    public VirtualMachineScaleSetListSkusResult() {
+    }
+
     /**
      * Get the value property: The list of skus available for the virtual machine scale set.
      *

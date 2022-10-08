@@ -31,6 +31,10 @@ public final class DiskAccessProperties {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /** Creates an instance of DiskAccessProperties class. */
+    public DiskAccessProperties() {
+    }
+
     /**
      * Get the privateEndpointConnections property: A readonly collection of private endpoint connections created on the
      * disk. Currently only one endpoint connection is supported.

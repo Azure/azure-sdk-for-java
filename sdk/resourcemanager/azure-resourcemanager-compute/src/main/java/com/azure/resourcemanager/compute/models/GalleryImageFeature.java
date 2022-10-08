@@ -22,6 +22,10 @@ public final class GalleryImageFeature {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of GalleryImageFeature class. */
+    public GalleryImageFeature() {
+    }
+
     /**
      * Get the name property: The name of the gallery image feature.
      *

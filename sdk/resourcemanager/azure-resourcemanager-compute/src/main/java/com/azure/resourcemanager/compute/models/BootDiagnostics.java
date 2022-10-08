@@ -27,6 +27,10 @@ public final class BootDiagnostics {
     @JsonProperty(value = "storageUri")
     private String storageUri;
 
+    /** Creates an instance of BootDiagnostics class. */
+    public BootDiagnostics() {
+    }
+
     /**
      * Get the enabled property: Whether boot diagnostics should be enabled on the Virtual Machine.
      *

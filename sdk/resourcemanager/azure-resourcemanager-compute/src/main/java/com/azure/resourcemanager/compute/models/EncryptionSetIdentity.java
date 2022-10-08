@@ -46,6 +46,10 @@ public class EncryptionSetIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
+    /** Creates an instance of EncryptionSetIdentity class. */
+    public EncryptionSetIdentity() {
+    }
+
     /**
      * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
      * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of

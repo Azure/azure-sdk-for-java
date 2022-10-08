@@ -35,6 +35,10 @@ public final class RunCommandParameterDefinition {
     @JsonProperty(value = "required")
     private Boolean required;
 
+    /** Creates an instance of RunCommandParameterDefinition class. */
+    public RunCommandParameterDefinition() {
+    }
+
     /**
      * Get the name property: The run command parameter name.
      *

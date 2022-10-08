@@ -17,6 +17,10 @@ public class VirtualMachineReimageParameters {
     @JsonProperty(value = "tempDisk")
     private Boolean tempDisk;
 
+    /** Creates an instance of VirtualMachineReimageParameters class. */
+    public VirtualMachineReimageParameters() {
+    }
+
     /**
      * Get the tempDisk property: Specifies whether to reimage temp disk. Default value: false. Note: This temp disk
      * reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.

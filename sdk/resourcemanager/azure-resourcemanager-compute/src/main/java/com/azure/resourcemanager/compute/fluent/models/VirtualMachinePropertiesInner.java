@@ -218,6 +218,10 @@ public final class VirtualMachinePropertiesInner {
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
+    /** Creates an instance of VirtualMachinePropertiesInner class. */
+    public VirtualMachinePropertiesInner() {
+    }
+
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
      *

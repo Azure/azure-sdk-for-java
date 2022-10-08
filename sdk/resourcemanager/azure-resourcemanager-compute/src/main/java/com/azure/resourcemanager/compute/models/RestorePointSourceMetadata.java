@@ -62,6 +62,10 @@ public final class RestorePointSourceMetadata {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of RestorePointSourceMetadata class. */
+    public RestorePointSourceMetadata() {
+    }
+
     /**
      * Get the hardwareProfile property: Gets the hardware profile.
      *

@@ -23,6 +23,10 @@ public final class DiskSecurityProfile {
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;
 
+    /** Creates an instance of DiskSecurityProfile class. */
+    public DiskSecurityProfile() {
+    }
+
     /**
      * Get the securityType property: Specifies the SecurityType of the VM. Applicable for OS disks only.
      *

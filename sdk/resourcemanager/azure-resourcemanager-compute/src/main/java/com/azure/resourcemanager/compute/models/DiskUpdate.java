@@ -33,6 +33,10 @@ public final class DiskUpdate {
     @JsonProperty(value = "sku")
     private DiskSku sku;
 
+    /** Creates an instance of DiskUpdate class. */
+    public DiskUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Disk resource update properties.
      *

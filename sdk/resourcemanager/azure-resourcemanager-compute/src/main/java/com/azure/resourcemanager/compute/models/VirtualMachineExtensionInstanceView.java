@@ -41,6 +41,10 @@ public final class VirtualMachineExtensionInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of VirtualMachineExtensionInstanceView class. */
+    public VirtualMachineExtensionInstanceView() {
+    }
+
     /**
      * Get the name property: The virtual machine extension name.
      *

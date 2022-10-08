@@ -76,6 +76,10 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
     @JsonProperty(value = "dscpConfiguration")
     private SubResource dscpConfiguration;
 
+    /** Creates an instance of VirtualMachineNetworkInterfaceConfigurationProperties class. */
+    public VirtualMachineNetworkInterfaceConfigurationProperties() {
+    }
+
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.

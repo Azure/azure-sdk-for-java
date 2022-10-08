@@ -29,6 +29,10 @@ public final class CloudServiceRoleSku {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
+    /** Creates an instance of CloudServiceRoleSku class. */
+    public CloudServiceRoleSku() {
+    }
+
     /**
      * Get the name property: The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is
      * currently on, you need to delete and recreate the cloud service or move back to the old sku.

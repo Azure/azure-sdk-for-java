@@ -16,6 +16,10 @@ public final class SharedGalleryIdentifier {
     @JsonProperty(value = "uniqueId")
     private String uniqueId;
 
+    /** Creates an instance of SharedGalleryIdentifier class. */
+    public SharedGalleryIdentifier() {
+    }
+
     /**
      * Get the uniqueId property: The unique id of this shared gallery.
      *

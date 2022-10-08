@@ -16,6 +16,10 @@ public final class AutomaticOSUpgradeProperties {
     @JsonProperty(value = "automaticOSUpgradeSupported", required = true)
     private boolean automaticOSUpgradeSupported;
 
+    /** Creates an instance of AutomaticOSUpgradeProperties class. */
+    public AutomaticOSUpgradeProperties() {
+    }
+
     /**
      * Get the automaticOSUpgradeSupported property: Specifies whether automatic OS upgrade is supported on the image.
      *

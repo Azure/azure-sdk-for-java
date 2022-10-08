@@ -17,6 +17,10 @@ public final class InstanceViewStatusesSummary {
     @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<StatusCodeCount> statusesSummary;
 
+    /** Creates an instance of InstanceViewStatusesSummary class. */
+    public InstanceViewStatusesSummary() {
+    }
+
     /**
      * Get the statusesSummary property: The summary.
      *

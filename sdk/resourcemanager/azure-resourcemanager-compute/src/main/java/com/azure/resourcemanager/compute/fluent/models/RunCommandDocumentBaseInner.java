@@ -42,6 +42,10 @@ public class RunCommandDocumentBaseInner {
     @JsonProperty(value = "description", required = true)
     private String description;
 
+    /** Creates an instance of RunCommandDocumentBaseInner class. */
+    public RunCommandDocumentBaseInner() {
+    }
+
     /**
      * Get the schema property: The VM run command schema.
      *

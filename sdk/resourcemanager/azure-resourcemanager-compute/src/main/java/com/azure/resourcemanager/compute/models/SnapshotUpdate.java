@@ -33,6 +33,10 @@ public final class SnapshotUpdate {
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
 
+    /** Creates an instance of SnapshotUpdate class. */
+    public SnapshotUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Snapshot resource update properties.
      *

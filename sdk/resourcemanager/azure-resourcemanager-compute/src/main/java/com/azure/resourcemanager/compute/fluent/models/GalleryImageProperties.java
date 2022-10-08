@@ -119,6 +119,10 @@ public final class GalleryImageProperties {
     @JsonProperty(value = "architecture")
     private Architecture architecture;
 
+    /** Creates an instance of GalleryImageProperties class. */
+    public GalleryImageProperties() {
+    }
+
     /**
      * Get the description property: The description of this gallery image definition resource. This property is
      * updatable.

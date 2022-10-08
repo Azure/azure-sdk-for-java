@@ -844,29 +844,6 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
-     *     run-time state of a restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RestorePointInner> getAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String restorePointName,
-        RestorePointExpandOptions expand) {
-        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the restore point.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -878,23 +855,6 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         final RestorePointExpandOptions expand = null;
         return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the restore point.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner get(String resourceGroupName, String restorePointCollectionName, String restorePointName) {
-        final RestorePointExpandOptions expand = null;
-        return getAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand).block();
     }
 
     /**
@@ -920,5 +880,23 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         Context context) {
         return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand, context)
             .block();
+    }
+
+    /**
+     * The operation to get the restore point.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointInner get(String resourceGroupName, String restorePointCollectionName, String restorePointName) {
+        final RestorePointExpandOptions expand = null;
+        return getWithResponse(resourceGroupName, restorePointCollectionName, restorePointName, expand, Context.NONE)
+            .getValue();
     }
 }

@@ -26,6 +26,10 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DiskRestorePointProperties innerProperties;
 
+    /** Creates an instance of DiskRestorePointInner class. */
+    public DiskRestorePointInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of an incremental disk restore point.
      *

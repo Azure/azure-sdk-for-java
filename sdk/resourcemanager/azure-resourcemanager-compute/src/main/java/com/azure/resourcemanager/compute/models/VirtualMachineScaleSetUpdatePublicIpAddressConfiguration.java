@@ -24,6 +24,10 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdatePublicIpAddressConfiguration class. */
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration() {
+    }
+
     /**
      * Get the name property: The publicIP address configuration name.
      *

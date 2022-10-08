@@ -24,6 +24,10 @@ public final class VmImagesInEdgeZoneListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VmImagesInEdgeZoneListResultInner class. */
+    public VmImagesInEdgeZoneListResultInner() {
+    }
+
     /**
      * Get the value property: The list of VMImages in EdgeZone.
      *

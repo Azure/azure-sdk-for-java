@@ -28,6 +28,10 @@ public final class VirtualMachineRunCommandScriptSource {
     @JsonProperty(value = "commandId")
     private String commandId;
 
+    /** Creates an instance of VirtualMachineRunCommandScriptSource class. */
+    public VirtualMachineRunCommandScriptSource() {
+    }
+
     /**
      * Get the script property: Specifies the script content to be executed on the VM.
      *

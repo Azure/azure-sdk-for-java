@@ -53,6 +53,10 @@ public final class GalleryProperties {
     @JsonProperty(value = "sharingStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SharingStatus sharingStatus;
 
+    /** Creates an instance of GalleryProperties class. */
+    public GalleryProperties() {
+    }
+
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
      *

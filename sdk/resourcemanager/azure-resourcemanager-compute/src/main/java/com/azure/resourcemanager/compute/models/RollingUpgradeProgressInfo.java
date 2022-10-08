@@ -34,6 +34,10 @@ public final class RollingUpgradeProgressInfo {
     @JsonProperty(value = "pendingInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingInstanceCount;
 
+    /** Creates an instance of RollingUpgradeProgressInfo class. */
+    public RollingUpgradeProgressInfo() {
+    }
+
     /**
      * Get the successfulInstanceCount property: The number of instances that have been successfully upgraded.
      *

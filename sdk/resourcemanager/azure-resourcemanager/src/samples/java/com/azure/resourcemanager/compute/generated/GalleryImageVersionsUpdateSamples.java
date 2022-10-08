@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource;
+import com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionUpdate;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for GalleryImageVersions Update. */
 public final class GalleryImageVersionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Update.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version (Managed Image as source).
@@ -49,14 +49,14 @@ public final class GalleryImageVersionsUpdateSamples {
                     .withStorageProfile(
                         new GalleryImageVersionStorageProfile()
                             .withSource(
-                                new GalleryArtifactVersionSource()
+                                new GalleryArtifactVersionFullSource()
                                     .withId(
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}"))),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version without source id.

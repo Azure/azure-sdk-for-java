@@ -66,6 +66,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of VirtualMachineScaleSetInner class. */
+    public VirtualMachineScaleSetInner() {
+    }
+
     /**
      * Get the sku property: The virtual machine scale set sku.
      *

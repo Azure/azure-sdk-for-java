@@ -30,6 +30,10 @@ public final class PurchasePlan {
     @JsonProperty(value = "product", required = true)
     private String product;
 
+    /** Creates an instance of PurchasePlan class. */
+    public PurchasePlan() {
+    }
+
     /**
      * Get the publisher property: The publisher ID.
      *

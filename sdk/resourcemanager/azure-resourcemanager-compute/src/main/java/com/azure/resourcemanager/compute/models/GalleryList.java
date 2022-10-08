@@ -25,6 +25,10 @@ public final class GalleryList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GalleryList class. */
+    public GalleryList() {
+    }
+
     /**
      * Get the value property: A list of galleries.
      *

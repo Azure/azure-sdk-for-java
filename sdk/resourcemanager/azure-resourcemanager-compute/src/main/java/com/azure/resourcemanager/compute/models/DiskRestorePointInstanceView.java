@@ -22,6 +22,10 @@ public final class DiskRestorePointInstanceView {
     @JsonProperty(value = "replicationStatus")
     private DiskRestorePointReplicationStatus replicationStatus;
 
+    /** Creates an instance of DiskRestorePointInstanceView class. */
+    public DiskRestorePointInstanceView() {
+    }
+
     /**
      * Get the id property: Disk restore point Id.
      *

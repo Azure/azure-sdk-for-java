@@ -26,6 +26,10 @@ public final class DiskRestorePointList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DiskRestorePointList class. */
+    public DiskRestorePointList() {
+    }
+
     /**
      * Get the value property: A list of disk restore points.
      *
