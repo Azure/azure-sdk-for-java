@@ -32,7 +32,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         configureClientBuilder(builder);
 
         shareServiceClient = builder.buildClient();
-        shareServiceAsyncClient = new ShareServiceClientBuilder().connectionString(connectionString).
-            buildAsyncClient();
+        shareServiceAsyncClient = builder.buildAsyncClient();
     }
 }
