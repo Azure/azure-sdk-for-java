@@ -21,6 +21,7 @@ public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> jacksonTokenEnum = null;
+    // Wildcard cannot be used here, otherwise the class cannot be cast to an enum.
     private static Class<Enum> jacksonReadFeatureEnum = null;
     private static Object jsonFactory;
 
@@ -103,13 +104,14 @@ public class JacksonJsonReader extends JsonReader {
             if (!initialized) {
                 initialize();
             }
+            // Support for cases such as Inf
             if (nonNumericNumbersSupported) {
+                // unfortunately, you can't pass features when creating a parser
                 Object temp = createParserMethod.invoke(jsonFactory, reader);
                 jacksonParser = enableFeatureMethod.invoke(temp, Enum.valueOf(jacksonReadFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"));
             } else {
                 jacksonParser = createParserMethod.invoke(jsonFactory, reader);
             }
-            // Configure parser to allow non-numeric numbers
     	} catch (Throwable e) {
             if (e instanceof IOException) {
                 throw (IOException) e.getCause();
@@ -135,6 +137,9 @@ public class JacksonJsonReader extends JsonReader {
 
 		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
 
+        // JsonParser.Feature is a nested class.
+        // This is the easiest way to access nested classes reflectively.
+        // NOTE: JsonParser.Feature does not work.
         for (Class i: jacksonJsonParser.getDeclaredClasses()) {
             if (i.getSimpleName().equals("Feature")){
                 jacksonReadFeatureEnum = i;
