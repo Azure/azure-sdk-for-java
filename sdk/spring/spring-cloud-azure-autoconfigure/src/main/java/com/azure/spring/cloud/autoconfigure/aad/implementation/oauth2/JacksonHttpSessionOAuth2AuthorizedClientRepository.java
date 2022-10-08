@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -48,10 +49,10 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         Assert.notNull(response, "response cannot be null");
-        Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
+        Map<String, OAuth2AuthorizedClient> authorizedClients = new HashMap<>(this.getAuthorizedClients(request));
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
         request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-            serializeOAuth2AuthorizedClientMap(authorizedClients));
+            serializeOAuth2AuthorizedClientMap(Collections.unmodifiableMap(authorizedClients)));
     }
 
     @Override
@@ -77,6 +78,6 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                        .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
                        .map(Object::toString)
                        .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
-                       .orElseGet(HashMap::new);
+                       .orElseGet(Collections::emptyMap);
     }
 }
