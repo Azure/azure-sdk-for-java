@@ -1,6 +1,5 @@
 package com.azure.json.reflect.jackson;
 
-
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -15,14 +14,15 @@ import java.io.StringReader;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> jacksonTokenEnum = null;
-    // Wildcard cannot be used here, otherwise the class cannot be cast to an enum.
-    private static Class<Enum> jacksonReadFeatureEnum = null;
+    private static Class jacksonFeatureEnum;
     private static Object jsonFactory;
 
     private final Object jacksonParser;
@@ -41,6 +41,7 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle skipChildrenMethod;
 	private static MethodHandle closeMethod;
     private static MethodHandle enableFeatureMethod;
+    private static MethodHandle configureMethod;
 
     private final byte[] jsonBytes;
     private final String jsonString;
@@ -104,14 +105,10 @@ public class JacksonJsonReader extends JsonReader {
             if (!initialized) {
                 initialize();
             }
-            // Support for cases such as Inf
-            if (nonNumericNumbersSupported) {
-                // unfortunately, you can't pass features when creating a parser
-                Object temp = createParserMethod.invoke(jsonFactory, reader);
-                jacksonParser = enableFeatureMethod.invoke(temp, Enum.valueOf(jacksonReadFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"));
-            } else {
-                jacksonParser = createParserMethod.invoke(jsonFactory, reader);
-            }
+
+            jacksonParser = createParserMethod.invoke(jsonFactory, reader);
+            configureMethod.invoke(jacksonParser, Enum.valueOf(jacksonFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
+
     	} catch (Throwable e) {
             if (e instanceof IOException) {
                 throw (IOException) e.getCause();
@@ -131,43 +128,34 @@ public class JacksonJsonReader extends JsonReader {
     static void initialize() throws ReflectiveOperationException {
         jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
 
-		// The jacksonJsonParser is made via the JsonFactory
-		Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-		// The jacksonJsonParser is the equivalent of the Gson JsonReader
+		// The jacksonParserClass is made via the JsonFactory
+		Class<?> jacksonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+		Class<?> jacksonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser");
 
-		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
-
-        // JsonParser.Feature is a nested class.
-        // This is the easiest way to access nested classes reflectively.
-        // NOTE: JsonParser.Feature does not work.
-        for (Class i: jacksonJsonParser.getDeclaredClasses()) {
-            if (i.getSimpleName().equals("Feature")){
-                jacksonReadFeatureEnum = i;
-                break;
-            }
-        }
+        jacksonFeatureEnum = (Class) Arrays.stream(jacksonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
 
     	// Initializing the factory
         try {
-            jsonFactory = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class)).invoke();
+            jsonFactory = publicLookup.findConstructor(jacksonFactoryClass, methodType(void.class)).invoke();
         } catch (Throwable e) {
             throw (RuntimeException) e.getCause();
         }
 
         // Initializing all the method handles.
-        createParserMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
-        enableFeatureMethod = publicLookup.findVirtual(jacksonJsonParser, "enable", methodType(jacksonJsonParser, jacksonReadFeatureEnum));
-		getBooleanMethod = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
-		getFloatValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
-    	getDoubleValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getDoubleValue", methodType(double.class));
-		getIntValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getIntValue", methodType(int.class));
-    	getLongValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getLongValue", methodType(long.class));
-		getBinaryValueMethod = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
-    	nextTokenMethod = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
-		getValueAsStringMethod = publicLookup.findVirtual(jacksonJsonParser, "getValueAsString", methodType(String.class));
-    	currentNameMethod = publicLookup.findVirtual(jacksonJsonParser, "currentName", methodType(String.class));
-		skipChildrenMethod = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
-    	closeMethod = publicLookup.findVirtual(jacksonJsonParser, "close", methodType(void.class));
+        createParserMethod = publicLookup.findVirtual(jacksonFactoryClass, "createParser", methodType(jacksonParserClass, Reader.class));
+        enableFeatureMethod = publicLookup.findVirtual(jacksonParserClass, "enable", methodType(jacksonParserClass, jacksonFeatureEnum));
+		getBooleanMethod = publicLookup.findVirtual(jacksonParserClass, "getBooleanValue", methodType(boolean.class));
+		getFloatValueMethod = publicLookup.findVirtual(jacksonParserClass, "getFloatValue", methodType(float.class));
+    	getDoubleValueMethod = publicLookup.findVirtual(jacksonParserClass, "getDoubleValue", methodType(double.class));
+		getIntValueMethod = publicLookup.findVirtual(jacksonParserClass, "getIntValue", methodType(int.class));
+    	getLongValueMethod = publicLookup.findVirtual(jacksonParserClass, "getLongValue", methodType(long.class));
+		getBinaryValueMethod = publicLookup.findVirtual(jacksonParserClass, "getBinaryValue", methodType(byte[].class));
+    	nextTokenMethod = publicLookup.findVirtual(jacksonParserClass, "nextToken", methodType(jacksonTokenEnum));
+		getValueAsStringMethod = publicLookup.findVirtual(jacksonParserClass, "getValueAsString", methodType(String.class));
+    	currentNameMethod = publicLookup.findVirtual(jacksonParserClass, "currentName", methodType(String.class));
+		skipChildrenMethod = publicLookup.findVirtual(jacksonParserClass, "skipChildren", methodType(jacksonParserClass));
+    	closeMethod = publicLookup.findVirtual(jacksonParserClass, "close", methodType(void.class));
+        configureMethod = publicLookup.findVirtual(jacksonParserClass, "configure", methodType(jacksonParserClass, jacksonFeatureEnum, boolean.class));
 
 	    initialized = true;
     }
