@@ -2,8 +2,11 @@
 
 ## 4.5.0-beta.2 (Unreleased)
 
+Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
+
 ### Bugs Fixed
  - Fix bug: The parameter 'scope' is duplicated. [31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
+
 
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
