@@ -79,7 +79,7 @@ See [Credential Classes](#credential-classes) for a complete list of available c
 
 ### DefaultAzureCredential
 
-The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
+The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in Azure. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
 
 > Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
 
@@ -271,7 +271,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   <tbody>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable">DefaultAzureCredential</a></code></td>
-      <td>provides a simplified authentication experience to quickly start developing applications run in the Azure cloud</td>
+      <td>provides a simplified authentication experience to quickly start developing applications run in Azure</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential">example</a></td>
     </tr>
     <tr>
