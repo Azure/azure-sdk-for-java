@@ -1,6 +1,6 @@
 # Release History
 
-## 4.5.0-beta.5 (Unreleased)
+## 4.5.0-beta.2 (Unreleased)
 
 ### Bugs Fixed
  - Fix bug: The parameter 'scope' is duplicated. [31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
