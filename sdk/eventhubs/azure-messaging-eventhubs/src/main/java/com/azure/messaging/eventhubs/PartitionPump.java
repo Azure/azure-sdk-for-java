@@ -7,6 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
+
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
@@ -68,7 +70,7 @@ class PartitionPump implements AutoCloseable {
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log("Exception occurred disposing of consumer client.", error);
         } finally {
-            scheduler.dispose();
+            scheduler.disposeGracefully().block(Duration.ofSeconds(1));
         }
     }
 }

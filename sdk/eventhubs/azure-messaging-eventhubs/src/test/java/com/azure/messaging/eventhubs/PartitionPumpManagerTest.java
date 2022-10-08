@@ -316,10 +316,10 @@ public class PartitionPumpManagerTest {
         manager.stopAllPartitionPumps();
 
         // Assert
-        verify(scheduler1).dispose();
+        verify(scheduler1).disposeGracefully();
         verify(client1).close();
 
-        verify(scheduler2).dispose();
+        verify(scheduler2).disposeGracefully();
         verify(client2).close();
 
         assertTrue(manager.getPartitionPumps().isEmpty());
