@@ -1,5 +1,15 @@
 # Release History
 
+## 2.10.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.10.0-beta.1 (2022-10-06)
 
 - Added Geo-Replication support, only supported using endpoints.
