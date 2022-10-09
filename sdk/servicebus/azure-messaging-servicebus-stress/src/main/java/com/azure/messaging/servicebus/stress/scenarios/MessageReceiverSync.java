@@ -77,7 +77,5 @@ public class MessageReceiverSync extends ServiceBusScenario {
         } catch (ServiceBusException | AmqpException err) {
             LOGGER.error("Iterating iterable from receiveMessages({}) error", MAX_MESSAGE_COUNT, err);
         }
-
-
     }
 }

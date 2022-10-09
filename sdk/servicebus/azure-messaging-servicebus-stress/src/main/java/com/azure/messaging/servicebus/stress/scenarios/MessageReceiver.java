@@ -57,6 +57,5 @@ public class MessageReceiver extends ServiceBusScenario {
                     LOGGER.error("error happened: {}", error.getMessage());
                     telemetryClient.trackException((Exception) error);
                 });
-
     }
 }

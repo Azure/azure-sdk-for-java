@@ -39,11 +39,11 @@ public class MessageProcessor extends ServiceBusScenario {
             .queueName(queueName)
             .topicName(topicName)
             .subscriptionName(subscriptionName)
-            .maxConcurrentCalls(2)
+            .maxConcurrentCalls(10)
             //.maxAutoLockRenewDuration(Duration.ofMinutes(5))
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .disableAutoComplete()
-            .prefetchCount(0)
+            .prefetchCount(50)
             .processMessage(messageContext -> {
                 System.out.printf("messageProcessor %s%n", messageContext.getMessage().getLockToken());
                 LOGGER.info("Before complete. messageId: {}, lockToken: {}",
@@ -61,6 +61,5 @@ public class MessageProcessor extends ServiceBusScenario {
             .buildProcessorClient();
 
         client.start();
-
     }
 }

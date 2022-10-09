@@ -26,8 +26,8 @@ spec:
         - |
             set -a &&
             source $ENV_FILE &&
-            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
             "org.springframework.boot.loader.JarLauncher" \
-            --TEST_CLASS=MessageReceiver
+            --TEST_CLASS=MessageProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

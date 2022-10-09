@@ -17,8 +17,8 @@ import java.util.stream.IntStream;
 
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    private static final int SEND_TIMES = 10000;
-    private static final int MESSAGE_NUMBER = 500;
+    private static final int SEND_TIMES = 1000000;
+    private static final int MESSAGE_NUMBER = 100;
     private static final int PAYLOAD_SIZE = 4 * 1024;
 
     @Override
@@ -32,7 +32,6 @@ public class MessageSender extends ServiceBusScenario {
         } else if (entityType == MessagingEntityType.TOPIC) {
             topicName = options.getServicebusTopicName();
         }
-
 
         ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
