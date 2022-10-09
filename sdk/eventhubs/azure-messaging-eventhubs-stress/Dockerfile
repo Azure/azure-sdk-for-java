@@ -10,9 +10,9 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
-ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.2.11/applicationinsights-agent-3.2.11.jar
+ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.1/applicationinsights-agent-3.4.1.jar
 ADD ${AGENT_URL} ./BOOT-INF/classes/
 ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher", \
-            "-javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar", \
+            "-javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar", \
             "--TEST_CLASS=EventSender"]
 

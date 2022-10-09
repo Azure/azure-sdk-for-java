@@ -18,16 +18,16 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.microsoft.applicationinsights.core.dependencies.apachecommons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -123,7 +123,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                 errorContext.getPartitionContext().getEventHubName(),
                 errorContext.getPartitionContext().getConsumerGroup(),
                 errorContext.getPartitionContext().getPartitionId(),
-                ExceptionUtils.getStackTrace(errorContext.getThrowable()));
+                getStackTrace(errorContext.getThrowable()));
             telemetryClient.trackException(new Exception(errorContext.getThrowable()),
                 new HashMap<String, String>() {{
                     put("EventHub", errorContext.getPartitionContext().getEventHubName());
@@ -199,7 +199,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             eventContext.getEventData().getSequenceNumber(),
             eventContext.getEventData().getOffset(),
             eventContext.getEventData().getEnqueuedTime(),
-            ExceptionUtils.getStackTrace(t));
+            getStackTrace(t));
     }
 
     private void trackEvent(EventContext eventContext, long startTime, long endTime) {
@@ -240,6 +240,13 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             .buildConsumerClient()) {
             return (int) consumerClient.getEventHubProperties().getPartitionIds().stream().count();
         }
+    }
+
+    private String getStackTrace(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        throwable.printStackTrace(pw);
+        return sw.getBuffer().toString();
     }
 
 }
