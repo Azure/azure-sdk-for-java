@@ -66,39 +66,39 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-keys</artifactId>
-            <version>4.4.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+            <version>4.5.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.19.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.19.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.4.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.5.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-certificates</artifactId>
-            <version>4.3.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+            <version>4.4.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.13.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.13.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.35.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.37.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

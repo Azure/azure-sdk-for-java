@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForwardingRuleState. */
+/** The state of forwarding rule. */
 public final class ForwardingRuleState extends ExpandableStringEnum<ForwardingRuleState> {
     /** Static value Enabled for ForwardingRuleState. */
     public static final ForwardingRuleState ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class ForwardingRuleState extends ExpandableStringEnum<ForwardingRu
         return fromString(name, ForwardingRuleState.class);
     }
 
-    /** @return known ForwardingRuleState values. */
+    /**
+     * Gets known ForwardingRuleState values.
+     *
+     * @return known ForwardingRuleState values.
+     */
     public static Collection<ForwardingRuleState> values() {
         return values(ForwardingRuleState.class);
     }

@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.34.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -39,22 +39,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.4.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

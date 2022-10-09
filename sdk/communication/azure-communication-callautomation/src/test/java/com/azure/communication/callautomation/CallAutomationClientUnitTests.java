@@ -3,10 +3,13 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.RedirectCallOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -29,14 +32,13 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
-        callOptions.setSubject(CALL_SUBJECT);
 
-        CreateCallResult createCallResult = callAutomationClient.createCall(callOptions);
+        CreateCallResult createCallResult = callAutomationClient.createCall(caller, targets, CALL_CALLBACK_URL);
 
         assertNotNull(createCallResult);
     }
@@ -46,7 +48,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
@@ -58,6 +60,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
+        assertEquals(null, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test
@@ -65,7 +68,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
         AnswerCallResult answerCallResult = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
@@ -78,15 +81,19 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
+            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+
         Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL, MEDIA_STREAMING_CONFIGURATION, Context.NONE);
+            answerCallOptions, Context.NONE);
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
+        assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test
@@ -109,9 +116,10 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             ))
         );
         CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
 
         Response<Void> redirectCallResponse = callAutomationClient.redirectCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, target, Context.NONE);
+            redirectCallOptions, Context.NONE);
 
         assertEquals(204, redirectCallResponse.getStatusCode());
     }
@@ -124,7 +132,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             ))
         );
 
-        callAutomationClient.rejectCall(CALL_INCOMING_CALL_CONTEXT, CallRejectReason.BUSY);
+        callAutomationClient.rejectCall(CALL_INCOMING_CALL_CONTEXT);
     }
 
     @Test
@@ -135,8 +143,9 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             ))
         );
 
-        Response<Void> rejectCallResponse = callAutomationClient.rejectCallWithResponse(CALL_INCOMING_CALL_CONTEXT,
-            CallRejectReason.BUSY, Context.NONE);
+        RejectCallOptions rejectCallOptions = new RejectCallOptions(CALL_INCOMING_CALL_CONTEXT)
+            .setCallRejectReason(CallRejectReason.BUSY);
+        Response<Void> rejectCallResponse = callAutomationClient.rejectCallWithResponse(rejectCallOptions, Context.NONE);
 
         assertEquals(204, rejectCallResponse.getStatusCode());
     }

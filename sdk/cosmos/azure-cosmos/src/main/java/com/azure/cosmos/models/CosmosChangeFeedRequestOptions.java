@@ -26,8 +26,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Encapsulates options that can be specified for an operation within a change feed request.
  */
-@Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-    Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
@@ -87,8 +85,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the feed range.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return this.feedRangeInternal;
     }
@@ -99,8 +95,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the max number of items.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -112,8 +106,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
@@ -131,8 +123,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the modified change feed request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
@@ -151,8 +141,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                             asynchronously in the background
      * @return the modified change feed request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
         checkArgument(
             maxPrefetchPageCount > 0,
@@ -168,8 +156,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return true if quotaInfoEnabled is enabled
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isQuotaInfoEnabled() {
         return quotaInfoEnabled;
     }
@@ -180,8 +166,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
         this.quotaInfoEnabled = quotaInfoEnabled;
     }
@@ -220,8 +204,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                  logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
@@ -240,8 +222,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                     FeedResponse
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
@@ -292,8 +272,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                  logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");
@@ -315,8 +293,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                    logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromPointInTime(
         Instant pointInTime,
         FeedRange feedRange) {
@@ -368,30 +344,32 @@ public final class CosmosChangeFeedRequestOptions {
 
     /**
      * Changes the change feed mode so that the change feed will contain events for creations,
-     * deletes as well as all intermediary snapshots for updates. Enabling full fidelity change feed
-     * mode requires configuring a retention duration in the change feed policy of the
+     * deletes as well as all intermediary snapshots for updates. Enabling AllVersionsAndDeletes
+     * change feed mode requires configuring a retention duration in the change feed policy of the
      * container. {@link ChangeFeedPolicy}
      * <p>
      * Intermediary snapshots of changes as well as deleted documents would be
-     * available for processing for 8 minutes before they vanish.
-     * When enabling full fidelity mode you will only be able to process change feed events
+     * available for processing for retention window before they vanish.
+     * When enabling AllVersionsAndDeletes mode you will only be able to process change feed events
      * within the retention window configured in the change feed policy of the container.
      * If you attempt to process a change feed after more than the retention window
      * an error (Status Code 400) will be returned because the events for intermediary
      * updates and deletes have vanished.
-     * It would still be possible to process changes using Incremental mode even when
-     * configuring a full fidelity change feed policy with retention window on the container
-     * and when using Incremental mode it doesn't matter whether your are out of the retention
+     * It would still be possible to process changes using LatestVersion mode even when
+     * configuring a AllVersionsAndDeletes change feed policy with retention window on the container
+     * and when using LatestVersion mode it doesn't matter whether your are out of the retention
      * window or not - but no events for deletes or intermediary updates would be included.
      * When events are not getting processed within the retention window it is also possible
-     * to continue processing future events in full fidelity mode by querying the change feed
+     * to continue processing future events in AllVersionsAndDeletes mode by querying the change feed
      * with a new CosmosChangeFeedRequestOptions instance.
      * </p>
      *
-     * @return a {@link CosmosChangeFeedRequestOptions} instance with full fidelity mode enabled
+     * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
+     * @deprecated use {@link CosmosChangeFeedRequestOptions#allVersionsAndDeletes()} instead.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated //since = "V4_37_0", forRemoval = true
     public CosmosChangeFeedRequestOptions fullFidelity() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
@@ -407,11 +385,50 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /**
+     * Changes the change feed mode so that the change feed will contain events for creations,
+     * deletes as well as all intermediary snapshots for updates. Enabling AllVersionsAndDeletes
+     * change feed mode requires configuring a retention duration in the change feed policy of the
+     * container. {@link ChangeFeedPolicy}
+     * <p>
+     * Intermediary snapshots of changes as well as deleted documents would be
+     * available for processing for 8 minutes before they vanish.
+     * When enabling AllVersionsAndDeletes mode you will only be able to process change feed events
+     * within the retention window configured in the change feed policy of the container.
+     * If you attempt to process a change feed after more than the retention window
+     * an error (Status Code 400) will be returned because the events for intermediary
+     * updates and deletes have vanished.
+     * It would still be possible to process changes using LatestVersion mode even when
+     * configuring a AllVersionsAndDeletes change feed policy with retention window on the container
+     * and when using LatestVersion mode it doesn't matter whether your are out of the retention
+     * window or not - but no events for deletes or intermediary updates would be included.
+     * When events are not getting processed within the retention window it is also possible
+     * to continue processing future events in AllVersionsAndDeletes mode by querying the change feed
+     * with a new CosmosChangeFeedRequestOptions instance.
+     * </p>
+     *
+     * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
+     */
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions allVersionsAndDeletes() {
+
+        if (!this.startFromInternal.supportsFullFidelityRetention()) {
+            throw new IllegalStateException(
+                "All Versions and Deletes mode is not supported for the chosen change feed start from " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
+            );
+        }
+
+        this.mode = ChangeFeedMode.FULL_FIDELITY;
+        return this;
+    }
+
+    /**
      * Get the throughput control group name.
      *
      * @return The throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -422,7 +439,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @param throughputControlGroupName The throughput control group name.
      * @return A {@link CosmosChangeFeedRequestOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;

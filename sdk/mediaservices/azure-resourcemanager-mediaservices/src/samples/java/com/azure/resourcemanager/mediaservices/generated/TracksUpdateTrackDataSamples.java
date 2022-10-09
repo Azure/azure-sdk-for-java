@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Tracks UpdateTrackData. */
 public final class TracksUpdateTrackDataSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/asset-tracks-update-data.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-update-data.json
      */
     /**
      * Sample code: Update the data for a tracks.

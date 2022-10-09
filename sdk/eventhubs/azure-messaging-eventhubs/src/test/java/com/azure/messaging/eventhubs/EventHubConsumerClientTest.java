@@ -15,6 +15,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -74,6 +75,7 @@ public class EventHubConsumerClientTest {
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(4);
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    private static final Meter DEFAULT_METER = null;
 
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final TestPublisher<Message> messageProcessor = TestPublisher.createCold();
@@ -138,7 +140,7 @@ public class EventHubConsumerClientTest {
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_METER);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -164,7 +166,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
-            PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER);
+            PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_METER);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
@@ -194,7 +196,7 @@ public class EventHubConsumerClientTest {
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH,
-            false, onClientClosed, CLIENT_IDENTIFIER);
+            false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_METER);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;

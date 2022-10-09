@@ -197,9 +197,9 @@ stages:
                         - '!sdk/**/session-records/*'
 
                   - task: UsePythonVersion@0
-                    displayName: 'Use Python 3.6'
+                    displayName: 'Use Python $(PythonVersion)'
                     inputs:
-                      versionSpec: '3.6'
+                      versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.

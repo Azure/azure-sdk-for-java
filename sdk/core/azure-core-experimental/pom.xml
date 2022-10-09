@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-experimental</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.33</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+  <version>1.0.0-beta.34</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
 
   <name>Microsoft Azure Java Core Experimental Library</name>
   <description>This package contains experimental core types for Azure Java clients.</description>
@@ -48,6 +48,8 @@
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
+      --add-reads java.xml=com.azure-core-experimental
+      --add-opens com.azure.core.experimental/com.azure.core.experimental.http=com.azure.core
       --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
       --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
@@ -67,7 +69,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.34.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-xml</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -91,7 +106,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

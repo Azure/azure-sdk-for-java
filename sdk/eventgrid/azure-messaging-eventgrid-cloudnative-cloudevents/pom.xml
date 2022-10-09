@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.12.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.12.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.cloudevents</groupId>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

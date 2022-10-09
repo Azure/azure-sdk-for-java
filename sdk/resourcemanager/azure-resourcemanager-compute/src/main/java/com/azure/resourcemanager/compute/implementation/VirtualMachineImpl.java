@@ -83,6 +83,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -2166,7 +2167,10 @@ class VirtualMachineImpl
             this.innerModel().zones().add(zoneId.toString());
             // zone aware VM can be attached to only zone aware public IP.
             if (this.implicitPipCreatable != null) {
-                this.implicitPipCreatable.withAvailabilityZone(zoneId);
+                this.implicitPipCreatable
+                    .withAvailabilityZone(zoneId)
+                    .withSku(PublicIPSkuType.STANDARD) // standard sku is required for zone resiliency
+                    .withStaticIP(); // static allocation is required for standard sku
             }
         }
         return this;

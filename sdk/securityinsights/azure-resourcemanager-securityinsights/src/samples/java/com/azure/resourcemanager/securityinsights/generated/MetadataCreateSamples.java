@@ -19,7 +19,7 @@ import java.util.Arrays;
 /** Samples for Metadata Create. */
 public final class MetadataCreateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/PutMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/PutMetadata.json
      */
     /**
      * Sample code: Create/update full metadata.
@@ -95,7 +95,7 @@ public final class MetadataCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/PutMetadataMinimal.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/PutMetadataMinimal.json
      */
     /**
      * Sample code: Create/update minimal metadata.

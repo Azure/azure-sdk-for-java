@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationalState. */
+/** The operational state of the role instance. */
 public final class OperationalState extends ExpandableStringEnum<OperationalState> {
     /** Static value Unknown for OperationalState. */
     public static final OperationalState UNKNOWN = fromString("Unknown");
@@ -36,7 +36,11 @@ public final class OperationalState extends ExpandableStringEnum<OperationalStat
         return fromString(name, OperationalState.class);
     }
 
-    /** @return known OperationalState values. */
+    /**
+     * Gets known OperationalState values.
+     *
+     * @return known OperationalState values.
+     */
     public static Collection<OperationalState> values() {
         return values(OperationalState.class);
     }

@@ -175,15 +175,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionAsync(
             CreateDataFlowDebugSessionRequest request) {
-        return createDataFlowDebugSessionWithResponseAsync(request)
-                .flatMap(
-                        (DataFlowDebugSessionsCreateDataFlowDebugSessionResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createDataFlowDebugSessionWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -200,14 +192,7 @@ public final class DataFlowDebugSessionsImpl {
     public Mono<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionAsync(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context)
-                .flatMap(
-                        (DataFlowDebugSessionsCreateDataFlowDebugSessionResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -399,15 +384,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddDataFlowToDebugSessionResponse> addDataFlowAsync(DataFlowDebugPackage request) {
-        return addDataFlowWithResponseAsync(request)
-                .flatMap(
-                        (Response<AddDataFlowToDebugSessionResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return addDataFlowWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -422,15 +399,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddDataFlowToDebugSessionResponse> addDataFlowAsync(DataFlowDebugPackage request, Context context) {
-        return addDataFlowWithResponseAsync(request, context)
-                .flatMap(
-                        (Response<AddDataFlowToDebugSessionResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return addDataFlowWithResponseAsync(request, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -511,7 +480,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowDebugSessionAsync(DeleteDataFlowDebugSessionRequest request) {
-        return deleteDataFlowDebugSessionWithResponseAsync(request).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDataFlowDebugSessionWithResponseAsync(request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -526,8 +495,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowDebugSessionAsync(DeleteDataFlowDebugSessionRequest request, Context context) {
-        return deleteDataFlowDebugSessionWithResponseAsync(request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDataFlowDebugSessionWithResponseAsync(request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -609,15 +577,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugCommandResponse> executeCommandAsync(DataFlowDebugCommandRequest request) {
-        return executeCommandWithResponseAsync(request)
-                .flatMap(
-                        (DataFlowDebugSessionsExecuteCommandResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return executeCommandWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -634,15 +594,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugCommandResponse> executeCommandAsync(
             DataFlowDebugCommandRequest request, Context context) {
-        return executeCommandWithResponseAsync(request, context)
-                .flatMap(
-                        (DataFlowDebugSessionsExecuteCommandResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return executeCommandWithResponseAsync(request, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -678,7 +630,8 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -707,7 +660,8 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

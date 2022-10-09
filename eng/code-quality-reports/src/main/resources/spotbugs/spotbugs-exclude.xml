@@ -936,13 +936,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
-  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9044 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.RxGatewayStoreModel"/>
-    <Method name="validateOrThrow"/>
-    <Bug pattern="DM_DEFAULT_ENCODING"/>
-  </Match>
-
   <!-- The in-memory map is not serializable, given value is of type IServerIdentity which is not serializable -->
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap$MinPartitionKeyPairComparator"/>
@@ -986,16 +979,6 @@
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <!-- Code is doing DCL, this needs to be evaluated
-   https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
-   Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
-   -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
-    <Method name="getItem"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -1175,22 +1158,8 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
-    <Method name="addResourceIdOrPathHeaders"/>
-    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
-  <Match>
     <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
     <Method name="hash"/>
-    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.routing.PartitionKeyInternal"/>
-    <Method name="fromObjectArray"/>
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
   </Match>
 
@@ -1241,27 +1210,6 @@
     <Class name="com.azure.cosmos.implementation.http.SharedGatewayHttpClient"/>
     <Field name="sharedGatewayHttpClient"/>
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.RetryPolicyWithDiagnostics"/>
-    <Field name="retriesCountForDiagnostics"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer"/>
-    <Field name="processedDocCount"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
-    <Field name="retries"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
@@ -1452,13 +1400,6 @@
     <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9091 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
-    <Method name="compare"/>
-    <Bug pattern="DC_PARTIALLY_CONSTRUCTED"/>
-  </Match>
-
   <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextDecoder"/>
@@ -1586,27 +1527,6 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
     <Method name="close"/>
     <Bug pattern="BC_IMPOSSIBLE_INSTANCEOF"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
-    <Method name="~(.*)\$(apply|null)\$(.*)"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
-    <Method name="~(.*)\$(drainAsync|null)\$(.*)"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
-    <Method name="mergeQueryMetricsMap"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
@@ -2033,13 +1953,6 @@
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
 
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9108 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.CancellationTokenSource"/>
-    <Method name="close"/>
-    <Bug pattern="UC_USELESS_VOID_METHOD"/>
-  </Match>
-
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9109 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2088,28 +2001,6 @@
     <Method name="initialize"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
-    <Method name="setSessionToken"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
-    <Method name="shouldUpdateSessionToken"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
-    <Method name="rotateLeft32"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
 
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.UInt128"/>
@@ -2283,6 +2174,8 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
@@ -2739,6 +2632,13 @@
     <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
+  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
+    <Method name="computeHash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
   <!-- Non Shipped code -->
   <Match>
     <Or>
@@ -2753,6 +2653,21 @@
                   UPM_UNCALLED_PRIVATE_METHOD,
                   DLS_DEAD_LOCAL_STORE,
                   DM_STRING_TOSTRING"/>
+  </Match>
+
+  <!-- Implementations of BinaryDataContent were transitioned from AtomicReference<byte[]> to volatile byte[] and AtomicReferenceFieldUpdater to reduce object size. -->
+  <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
+  <Match>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
+    <Or>
+      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.FileContent"/>
+      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.SerializableContent"/>
+      <Class name="com.azure.core.implementation.util.StringContent"/>
+    </Or>
+    <Field name="bytes"/>
   </Match>
 
 </FindBugsFilter>

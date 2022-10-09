@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssetContainerPermission. */
+/** The permissions to set on the SAS URL. */
 public final class AssetContainerPermission extends ExpandableStringEnum<AssetContainerPermission> {
     /** Static value Read for AssetContainerPermission. */
     public static final AssetContainerPermission READ = fromString("Read");

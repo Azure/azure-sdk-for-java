@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** exportPolicy Set of export policy rules. */
+/**
+ * exportPolicy
+ *
+ * <p>Set of export policy rules.
+ */
 @Fluent
 public final class VolumePropertiesExportPolicy {
     /*

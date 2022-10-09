@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignment;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipalAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasePrincipalAssignmentsImpl.class);
 
     private final DatabasePrincipalAssignmentsClient innerClient;
 
@@ -132,7 +131,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
     public DatabasePrincipalAssignment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,21 +139,21 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,7 +169,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
     public Response<DatabasePrincipalAssignment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,21 +177,21 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +205,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -214,21 +213,21 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -242,7 +241,7 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -250,21 +249,21 @@ public final class DatabasePrincipalAssignmentsImpl implements DatabasePrincipal
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

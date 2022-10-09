@@ -16,8 +16,8 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
@@ -28,7 +28,10 @@ import com.azure.communication.callautomation.implementation.models.CallRejectRe
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingConfiguration;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.RedirectCallOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -44,7 +47,9 @@ import reactor.core.publisher.Mono;
 
 
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -87,20 +92,25 @@ public final class CallAutomationAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param createCallOptions Options bag for creating a new call.
+     * @param source The caller.
+     * @param targets The list of targets.
+     * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CreateCallOptions createCallOptions) {
+    public Mono<CreateCallResult> createCall(CommunicationIdentifier source,
+                                             List<CommunicationIdentifier> targets,
+                                             String callbackUrl) {
+        CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param createCallOptions Options bag for creating a new call.
+     * @param createCallOptions Options for creating a new call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
@@ -115,8 +125,15 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
+            if (createCallOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+                createCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
 
-            return serverCallingInternal.createCallWithResponseAsync(request, context)
+            return serverCallingInternal.createCallWithResponseAsync(request,
+                    createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -159,19 +176,18 @@ public final class CallAutomationAsyncClient {
     }
 
     private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingConfiguration mediaStreamingConfiguration
-    ) {
+        MediaStreamingOptions mediaStreamingOptions) {
         return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingConfiguration.getTransportUrl())
+            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
             .setAudioChannelType(
                 MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingConfiguration.getAudioChannelType().toString()))
+                    mediaStreamingOptions.getAudioChannelType().toString()))
             .setContentType(
                 MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingConfiguration.getContentType().toString()))
+                    mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
                 MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingConfiguration.getTransportType().toString()));
+                    mediaStreamingOptions.getTransportType().toString()));
     }
 
     /**
@@ -185,44 +201,49 @@ public final class CallAutomationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUrl) {
-        return answerCallWithResponse(incomingCallContext, callbackUrl, null).flatMap(FluxUtil::toMono);
+        return answerCallWithResponse(new AnswerCallOptions(incomingCallContext, callbackUrl))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back url.
-     * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
+     * @param answerCallOptions The options of answering the call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
-                                                                   String callbackUrl, MediaStreamingConfiguration mediaStreamingConfiguration) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context));
+    public Mono<Response<AnswerCallResult>> answerCallWithResponse(AnswerCallOptions answerCallOptions) {
+        return withContext(context -> answerCallWithResponseInternal(answerCallOptions, context));
     }
 
-    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUrl,
-                                                                    MediaStreamingConfiguration mediaStreamingConfiguration,
+    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(AnswerCallOptions answerCallOptions,
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUrl);
+                .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
+                .setCallbackUri(answerCallOptions.getCallbackUrl());
 
-            if (mediaStreamingConfiguration != null) {
+            if (answerCallOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+                answerCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(mediaStreamingConfiguration);
+                    getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
 
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
 
-            return serverCallingInternal.answerCallWithResponseAsync(request, context)
+            return serverCallingInternal.answerCallWithResponseAsync(request,
+                    answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    answerCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -250,33 +271,40 @@ public final class CallAutomationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target) {
-        return redirectCallWithResponse(incomingCallContext, target).flatMap(FluxUtil::toMono);
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, target);
+        return redirectCallWithResponse(redirectCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Redirect a call
      *
-     * @param incomingCallContext The incoming call context.
-     * @param target The target identity.
+     * @param redirectCallOptions Options for redirecting a call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target) {
-        return withContext(context -> redirectCallWithResponseInternal(incomingCallContext, target, context));
+    public Mono<Response<Void>> redirectCallWithResponse(RedirectCallOptions redirectCallOptions) {
+        return withContext(context -> redirectCallWithResponseInternal(redirectCallOptions, context));
     }
 
-    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, CommunicationIdentifier target,
-                                                          Context context) {
+    Mono<Response<Void>> redirectCallWithResponseInternal(RedirectCallOptions redirectCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setTarget(CommunicationIdentifierConverter.convert(target));
+                .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
+                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget()));
 
-            return serverCallingInternal.redirectCallWithResponseAsync(request, context)
+            if (redirectCallOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+                redirectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            return serverCallingInternal.redirectCallWithResponseAsync(request,
+                    redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -287,40 +315,48 @@ public final class CallAutomationAsyncClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason why call is rejected. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, CallRejectReason callRejectReason) {
-        return rejectCallWithResponse(incomingCallContext, callRejectReason).flatMap(FluxUtil::toMono);
+    public Mono<Void> rejectCall(String incomingCallContext) {
+        RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
+        return rejectCallWithResponse(rejectCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Reject a call
      *
-     * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason why call is rejected. Optional
+     * @param rejectCallOptions the options of rejecting the call
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason) {
-        return withContext(context -> rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context));
+    public Mono<Response<Void>> rejectCallWithResponse(RejectCallOptions rejectCallOptions) {
+        return withContext(context -> rejectCallWithResponseInternal(rejectCallOptions, context));
     }
 
-    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, CallRejectReason callRejectReason,
-                                                        Context context) {
+    Mono<Response<Void>> rejectCallWithResponseInternal(RejectCallOptions rejectCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
+                .setIncomingCallContext(rejectCallOptions.getIncomingCallContext());
+            if (rejectCallOptions.getCallRejectReason() != null) {
+                request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
+            }
 
-            return serverCallingInternal.rejectCallWithResponseAsync(request, context)
+            if (rejectCallOptions.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+                rejectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
+            return serverCallingInternal.rejectCallWithResponseAsync(request,
+                    rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                    rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -15,20 +15,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PoolProperties {
     /*
-     * poolId UUID v4 used to identify the Pool
+     * poolId
+     *
+     * UUID v4 used to identify the Pool
      */
     @JsonProperty(value = "poolId", access = JsonProperty.Access.WRITE_ONLY)
     private String poolId;
 
     /*
-     * size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
-     * chunks (value must be multiply of 4398046511104).
+     * size
+     *
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      */
     @JsonProperty(value = "size", required = true)
     private long size;
 
     /*
-     * serviceLevel The service level of the file system
+     * serviceLevel
+     *
+     * The service level of the file system
      */
     @JsonProperty(value = "serviceLevel", required = true)
     private ServiceLevel serviceLevel;
@@ -64,15 +70,18 @@ public final class PoolProperties {
     private Boolean coolAccess;
 
     /*
-     * encryptionType Encryption type of the capacity pool, set encryption type
-     * for data at rest for this pool and all volumes in it. This value can
-     * only be set when creating new pool.
+     * encryptionType
+     *
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+     * This value can only be set when creating new pool.
      */
     @JsonProperty(value = "encryptionType")
     private EncryptionType encryptionType;
 
     /**
-     * Get the poolId property: poolId UUID v4 used to identify the Pool.
+     * Get the poolId property: poolId
+     *
+     * <p>UUID v4 used to identify the Pool.
      *
      * @return the poolId value.
      */
@@ -81,8 +90,10 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Get the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @return the size value.
      */
@@ -91,8 +102,10 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Set the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @param size the size value to set.
      * @return the PoolProperties object itself.
@@ -103,7 +116,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel The service level of the file system.
+     * Get the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -112,7 +127,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel The service level of the file system.
+     * Set the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @param serviceLevel the serviceLevel value to set.
      * @return the PoolProperties object itself.
@@ -190,8 +207,10 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Get the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @return the encryptionType value.
      */
@@ -200,8 +219,10 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Set the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @param encryptionType the encryptionType value to set.
      * @return the PoolProperties object itself.

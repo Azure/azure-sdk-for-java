@@ -74,6 +74,10 @@ public final class OutboundEndpointImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public OutboundEndpointInner innerModel() {
         return this.innerObject;
     }
@@ -212,6 +216,11 @@ public final class OutboundEndpointImpl
         return this;
     }
 
+    public OutboundEndpointImpl withSubnet(SubResource subnet) {
+        this.innerModel().withSubnet(subnet);
+        return this;
+    }
+
     public OutboundEndpointImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -220,11 +229,6 @@ public final class OutboundEndpointImpl
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public OutboundEndpointImpl withSubnet(SubResource subnet) {
-        this.innerModel().withSubnet(subnet);
-        return this;
     }
 
     public OutboundEndpointImpl withIfMatch(String ifMatch) {

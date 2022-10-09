@@ -20,12 +20,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemaVersions;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Schemas. */
@@ -74,6 +78,18 @@ public final class SchemasImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/$schemaGroups/{groupName}/schemas/{schemaName}/versions/{schemaVersion}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<SchemasGetSchemaVersionResponse> getSchemaVersion(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("groupName") String groupName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("schemaVersion") int schemaVersion,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/$schemaGroups/{groupName}/schemas/{schemaName}:get-id")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -85,8 +101,24 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json; serialization=Avro") String schemaContent,
-                @HeaderParam("Content-Type") String contentType,
+                @BodyParam("application/json; serialization=Avro") Flux<ByteBuffer> schemaContent,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/$schemaGroups/{groupName}/schemas/{schemaName}:get-id")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ErrorException.class,
+                code = {415})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<SchemasQueryIdByContentResponse> queryIdByContent(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("groupName") String groupName,
+                @PathParam("schemaName") String schemaName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json; serialization=Avro") BinaryData schemaContent,
+                @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -101,40 +133,61 @@ public final class SchemasImpl {
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json; serialization=Avro") String schemaContent,
-                @HeaderParam("Content-Type") String contentType,
+                @BodyParam("application/json; serialization=Avro") Flux<ByteBuffer> schemaContent,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/$schemaGroups/{groupName}/schemas/{schemaName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ErrorException.class,
+                code = {415})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<SchemasRegisterResponse> register(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("groupName") String groupName,
+                @PathParam("schemaName") String schemaName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json; serialization=Avro") BinaryData schemaContent,
+                @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
-     * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
-     * Operation response type is based on serialization of schema requested.
+     * Get a registered schema by its unique ID reference.
+     *
+     * <p>Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a
+     * namespace. Operation response type is based on serialization of schema requested.
      *
      * @param id References specific schema in registry namespace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a registered schema by its unique ID.
+     * @return a registered schema by its unique ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasGetByIdResponse> getByIdWithResponseAsync(String id, Context context) {
-        final String accept = "application/json; serialization=avro";
+        final String accept = "application/json; serialization=Avro";
         return service.getById(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Gets the list of all versions of one schema.
+     * Get list schema versions.
+     *
+     * <p>Gets the list of all versions of one schema.
      *
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
-     * @param schemaName Name of schema being registered.
+     * @param schemaName Name of schema.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all versions of one schema.
+     * @return the list of all versions of one schema along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaVersions>> getVersionsWithResponseAsync(
@@ -145,25 +198,56 @@ public final class SchemasImpl {
     }
 
     /**
-     * Gets the ID referencing an existing schema within the specified schema group, as matched by schema content
+     * Get specific schema versions.
+     *
+     * <p>Gets one specific version of one schema.
+     *
+     * @param groupName Schema group under which schema is registered. Group's serialization type should match the
+     *     serialization type specified in the request.
+     * @param schemaName Name of schema.
+     * @param schemaVersion Version number of specific schema.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one specific version of one schema on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemasGetSchemaVersionResponse> getSchemaVersionWithResponseAsync(
+            String groupName, String schemaName, int schemaVersion, Context context) {
+        final String accept = "application/json";
+        return service.getSchemaVersion(
+                this.client.getEndpoint(),
+                groupName,
+                schemaName,
+                schemaVersion,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get ID for existing schema.
+     *
+     * <p>Gets the ID referencing an existing schema within the specified schema group, as matched by schema content
      * comparison.
      *
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
-     * @param schemaName Name of requested schema.
+     * @param schemaName Name of schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
-     * @param contentType The contentType parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws ErrorException thrown if the request is rejected by server on status code 415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ID referencing an existing schema within the specified schema group, as matched by schema content
-     *     comparison.
+     *     comparison on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
-            String groupName, String schemaName, String schemaContent, String contentType, Context context) {
+            String groupName, String schemaName, Flux<ByteBuffer> schemaContent, long contentLength, Context context) {
         final String accept = "application/json";
         return service.queryIdByContent(
                 this.client.getEndpoint(),
@@ -171,29 +255,67 @@ public final class SchemasImpl {
                 schemaName,
                 this.client.getApiVersion(),
                 schemaContent,
-                contentType,
+                contentLength,
                 accept,
                 context);
     }
 
     /**
-     * Register new schema. If schema of specified name does not exist in specified group, schema is created at version
-     * 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.
+     * Get ID for existing schema.
      *
-     * @param groupName Schema group under which schema should be registered. Group's serialization type should match
-     *     the serialization type specified in the request.
-     * @param schemaName Name of schema being registered.
-     * @param schemaContent String representation (UTF-8) of the schema being registered.
+     * <p>Gets the ID referencing an existing schema within the specified schema group, as matched by schema content
+     * comparison.
+     *
+     * @param groupName Schema group under which schema is registered. Group's serialization type should match the
+     *     serialization type specified in the request.
+     * @param schemaName Name of schema.
+     * @param schemaContent String representation (UTF-8) of the registered schema.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws ErrorException thrown if the request is rejected by server on status code 415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the ID referencing an existing schema within the specified schema group, as matched by schema content
+     *     comparison on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemasQueryIdByContentResponse> queryIdByContentWithResponseAsync(
+            String groupName, String schemaName, BinaryData schemaContent, long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.queryIdByContent(
+                this.client.getEndpoint(),
+                groupName,
+                schemaName,
+                this.client.getApiVersion(),
+                schemaContent,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Register new schema
+     *
+     * <p>Register new schema. If schema of specified name does not exist in specified group, schema is created at
+     * version 1. If schema of specified name exists already in specified group, schema is created at latest version +
+     * 1.
+     *
+     * @param groupName Schema group under which schema should be registered. Group's serialization type should match
+     *     the serialization type specified in the request.
+     * @param schemaName Name of schema.
+     * @param schemaContent String representation (UTF-8) of the schema being registered.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server on status code 415.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasRegisterResponse> registerWithResponseAsync(
-            String groupName, String schemaName, String schemaContent, String contentType, Context context) {
+            String groupName, String schemaName, Flux<ByteBuffer> schemaContent, long contentLength, Context context) {
         final String accept = "application/json";
         return service.register(
                 this.client.getEndpoint(),
@@ -201,7 +323,41 @@ public final class SchemasImpl {
                 schemaName,
                 this.client.getApiVersion(),
                 schemaContent,
-                contentType,
+                contentLength,
+                accept,
+                context);
+    }
+
+    /**
+     * Register new schema
+     *
+     * <p>Register new schema. If schema of specified name does not exist in specified group, schema is created at
+     * version 1. If schema of specified name exists already in specified group, schema is created at latest version +
+     * 1.
+     *
+     * @param groupName Schema group under which schema should be registered. Group's serialization type should match
+     *     the serialization type specified in the request.
+     * @param schemaName Name of schema.
+     * @param schemaContent String representation (UTF-8) of the schema being registered.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server on status code 415.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemasRegisterResponse> registerWithResponseAsync(
+            String groupName, String schemaName, BinaryData schemaContent, long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.register(
+                this.client.getEndpoint(),
+                groupName,
+                schemaName,
+                this.client.getApiVersion(),
+                schemaContent,
+                contentLength,
                 accept,
                 context);
     }
