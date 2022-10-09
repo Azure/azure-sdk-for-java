@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationType. */
+/** Enum to indicate the operation type of the event. */
 public final class OperationType extends ExpandableStringEnum<OperationType> {
     /** Static value Create for OperationType. */
     public static final OperationType CREATE = fromString("Create");
@@ -33,7 +33,11 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
         return fromString(name, OperationType.class);
     }
 
-    /** @return known OperationType values. */
+    /**
+     * Gets known OperationType values.
+     *
+     * @return known OperationType values.
+     */
     public static Collection<OperationType> values() {
         return values(OperationType.class);
     }

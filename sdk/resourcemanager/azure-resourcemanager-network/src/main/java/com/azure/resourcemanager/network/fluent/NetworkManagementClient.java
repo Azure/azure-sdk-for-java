@@ -14,13 +14,20 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationsListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.BastionActiveSessionInner;
 import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
 import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
 import com.azure.resourcemanager.network.fluent.models.DnsNameAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteProviderPortInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveConnectivityConfigurationListResultInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.fluent.models.VpnProfileResponseInner;
+import com.azure.resourcemanager.network.models.ActiveConfigurationParameter;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
+import com.azure.resourcemanager.network.models.QueryRequestOptions;
 import com.azure.resourcemanager.network.models.SessionIds;
 import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
 import java.nio.ByteBuffer;
@@ -263,6 +270,13 @@ public interface NetworkManagementClient {
     ExpressRouteLinksClient getExpressRouteLinks();
 
     /**
+     * Gets the ExpressRoutePortAuthorizationsClient object to access its operations.
+     *
+     * @return the ExpressRoutePortAuthorizationsClient object.
+     */
+    ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations();
+
+    /**
      * Gets the FirewallPoliciesClient object to access its operations.
      *
      * @return the FirewallPoliciesClient object.
@@ -394,6 +408,90 @@ public interface NetworkManagementClient {
      * @return the NetworkInterfaceTapConfigurationsClient object.
      */
     NetworkInterfaceTapConfigurationsClient getNetworkInterfaceTapConfigurations();
+
+    /**
+     * Gets the NetworkManagersClient object to access its operations.
+     *
+     * @return the NetworkManagersClient object.
+     */
+    NetworkManagersClient getNetworkManagers();
+
+    /**
+     * Gets the NetworkManagerCommitsClient object to access its operations.
+     *
+     * @return the NetworkManagerCommitsClient object.
+     */
+    NetworkManagerCommitsClient getNetworkManagerCommits();
+
+    /**
+     * Gets the NetworkManagerDeploymentStatusOperationsClient object to access its operations.
+     *
+     * @return the NetworkManagerDeploymentStatusOperationsClient object.
+     */
+    NetworkManagerDeploymentStatusOperationsClient getNetworkManagerDeploymentStatusOperations();
+
+    /**
+     * Gets the SubscriptionNetworkManagerConnectionsClient object to access its operations.
+     *
+     * @return the SubscriptionNetworkManagerConnectionsClient object.
+     */
+    SubscriptionNetworkManagerConnectionsClient getSubscriptionNetworkManagerConnections();
+
+    /**
+     * Gets the ManagementGroupNetworkManagerConnectionsClient object to access its operations.
+     *
+     * @return the ManagementGroupNetworkManagerConnectionsClient object.
+     */
+    ManagementGroupNetworkManagerConnectionsClient getManagementGroupNetworkManagerConnections();
+
+    /**
+     * Gets the ConnectivityConfigurationsClient object to access its operations.
+     *
+     * @return the ConnectivityConfigurationsClient object.
+     */
+    ConnectivityConfigurationsClient getConnectivityConfigurations();
+
+    /**
+     * Gets the NetworkGroupsClient object to access its operations.
+     *
+     * @return the NetworkGroupsClient object.
+     */
+    NetworkGroupsClient getNetworkGroups();
+
+    /**
+     * Gets the StaticMembersClient object to access its operations.
+     *
+     * @return the StaticMembersClient object.
+     */
+    StaticMembersClient getStaticMembers();
+
+    /**
+     * Gets the ScopeConnectionsClient object to access its operations.
+     *
+     * @return the ScopeConnectionsClient object.
+     */
+    ScopeConnectionsClient getScopeConnections();
+
+    /**
+     * Gets the SecurityAdminConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityAdminConfigurationsClient object.
+     */
+    SecurityAdminConfigurationsClient getSecurityAdminConfigurations();
+
+    /**
+     * Gets the AdminRuleCollectionsClient object to access its operations.
+     *
+     * @return the AdminRuleCollectionsClient object.
+     */
+    AdminRuleCollectionsClient getAdminRuleCollections();
+
+    /**
+     * Gets the AdminRulesClient object to access its operations.
+     *
+     * @return the AdminRulesClient object.
+     */
+    AdminRulesClient getAdminRules();
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.
@@ -718,6 +816,13 @@ public interface NetworkManagementClient {
     VpnServerConfigurationsClient getVpnServerConfigurations();
 
     /**
+     * Gets the ConfigurationPolicyGroupsClient object to access its operations.
+     *
+     * @return the ConfigurationPolicyGroupsClient object.
+     */
+    ConfigurationPolicyGroupsClient getConfigurationPolicyGroups();
+
+    /**
      * Gets the VirtualHubsClient object to access its operations.
      *
      * @return the VirtualHubsClient object.
@@ -835,6 +940,13 @@ public interface NetworkManagementClient {
      * @return the WebApplicationFirewallPoliciesClient object.
      */
     WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies();
+
+    /**
+     * Gets the ExpressRouteProviderPortsLocationsClient object to access its operations.
+     *
+     * @return the ExpressRouteProviderPortsLocationsClient object.
+     */
+    ExpressRouteProviderPortsLocationsClient getExpressRouteProviderPortsLocations();
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
@@ -1181,6 +1293,265 @@ public interface NetworkManagementClient {
         String location, String domainNameLabel, Context context);
 
     /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ActiveConnectivityConfigurationsListResultInner listActiveConnectivityConfigurations(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsWithResponse(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Context context);
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ActiveSecurityAdminRulesListResultInner listActiveSecurityAdminRules(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesWithResponse(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Context context);
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerEffectiveConnectivityConfigurationListResultInner
+        listNetworkManagerEffectiveConnectivityConfigurations(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponse(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Context context);
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkManagerEffectiveSecurityAdminRulesListResultInner> listNetworkManagerEffectiveSecurityAdminRulesAsync(
+        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerEffectiveSecurityAdminRulesListResultInner listNetworkManagerEffectiveSecurityAdminRules(
+        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponse(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Context context);
+
+    /**
      * Gives the supported security providers for the virtual wan.
      *
      * @param resourceGroupName The resource group name.
@@ -1359,4 +1730,53 @@ public interface NetworkManagementClient {
         String virtualWanName,
         VirtualWanVpnProfileParameters vpnClientParams,
         Context context);
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ExpressRouteProviderPortInner>> expressRouteProviderPortWithResponseAsync(String providerport);
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteProviderPortInner> expressRouteProviderPortAsync(String providerport);
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteProviderPortInner expressRouteProviderPort(String providerport);
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteProviderPortInner> expressRouteProviderPortWithResponse(String providerport, Context context);
 }

@@ -123,7 +123,17 @@ public enum CriteriaType {
     /**
      * Array contains
      */
-    ARRAY_CONTAINS("ARRAY_CONTAINS");
+    ARRAY_CONTAINS("ARRAY_CONTAINS"),
+
+    /**
+     * String equals
+     */
+    STRING_EQUALS("STRINGEQUALS"),
+
+    /**
+     * Not Contain
+     */
+    NOT_CONTAINING("NOT CONTAINS");
 
     private String sqlKeyword;
 
@@ -142,6 +152,7 @@ public enum CriteriaType {
         map.put(Part.Type.NOT_IN, CriteriaType.NOT_IN);
         map.put(Part.Type.GREATER_THAN, CriteriaType.GREATER_THAN);
         map.put(Part.Type.CONTAINING, CriteriaType.CONTAINING);
+        map.put(Part.Type.NOT_CONTAINING, CriteriaType.NOT_CONTAINING);
         map.put(Part.Type.ENDING_WITH, CriteriaType.ENDS_WITH);
         map.put(Part.Type.STARTING_WITH, CriteriaType.STARTS_WITH);
         map.put(Part.Type.GREATER_THAN_EQUAL, CriteriaType.GREATER_THAN_EQUAL);
@@ -245,9 +256,11 @@ public enum CriteriaType {
             case GREATER_THAN:
             case GREATER_THAN_EQUAL:
             case CONTAINING:
+            case NOT_CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;
@@ -263,11 +276,32 @@ public enum CriteriaType {
     public static boolean isFunction(CriteriaType type) {
         switch (type) {
             case CONTAINING:
+            case NOT_CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
             case IS_NULL:
             case IS_NOT_NULL:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Check if CriteriaType operation is a function.
+     *
+     * @param type CriteriaType
+     * @return True if match, or false.
+     */
+    public static boolean isFunctionWithCaseSensitiveSupport(CriteriaType type) {
+        switch (type) {
+            case CONTAINING:
+            case NOT_CONTAINING:
+            case ENDS_WITH:
+            case STARTS_WITH:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;

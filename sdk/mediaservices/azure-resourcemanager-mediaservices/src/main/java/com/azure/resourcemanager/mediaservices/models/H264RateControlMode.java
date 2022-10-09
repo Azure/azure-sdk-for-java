@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H264RateControlMode. */
+/** The video rate control mode. */
 public final class H264RateControlMode extends ExpandableStringEnum<H264RateControlMode> {
     /** Static value ABR for H264RateControlMode. */
     public static final H264RateControlMode ABR = fromString("ABR");
@@ -30,7 +30,11 @@ public final class H264RateControlMode extends ExpandableStringEnum<H264RateCont
         return fromString(name, H264RateControlMode.class);
     }
 
-    /** @return known H264RateControlMode values. */
+    /**
+     * Gets known H264RateControlMode values.
+     *
+     * @return known H264RateControlMode values.
+     */
     public static Collection<H264RateControlMode> values() {
         return values(H264RateControlMode.class);
     }

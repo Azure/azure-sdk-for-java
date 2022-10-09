@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationType;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Schema for UserSession properties. */
 @Fluent
 public final class UserSessionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSessionProperties.class);
-
     /*
      * ObjectId of user session. (internal use)
      */

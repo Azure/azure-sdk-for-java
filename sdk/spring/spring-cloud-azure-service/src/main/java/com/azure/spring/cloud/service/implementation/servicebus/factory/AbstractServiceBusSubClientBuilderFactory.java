@@ -110,17 +110,17 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
+                    this.serviceBusClientBuilder.credential(credential);
                 }
             }),
             new SasAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
+                    this.serviceBusClientBuilder.credential(credential);
                 }
             }),
             new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
+                    this.serviceBusClientBuilder.credential(credential);
                 }
             })
         );
@@ -139,7 +139,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, credential) -> {
             if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.credential(this.properties.getFullyQualifiedNamespace(), credential);
+                this.serviceBusClientBuilder.credential(credential);
             }
         };
     }
@@ -151,6 +151,13 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
                 this.serviceBusClientBuilder.connectionString(connectionString);
             }
         };
+    }
+
+    @Override
+    protected void configureService(T builder) {
+        if (!isShareServiceBusClientBuilder()) {
+            this.serviceBusClientBuilder.fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        }
     }
 
     protected ServiceBusClientBuilder getServiceBusClientBuilder() {

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsRecommendationsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRecommendationInner;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedRecommendationList;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
  */
 public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
     implements IotSecuritySolutionsAnalyticsRecommendationsClient {
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsAnalyticsRecommendationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotSecuritySolutionsAnalyticsRecommendationsService service;
 
@@ -122,7 +119,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecurityAggregatedRecommendationInner>> getWithResponseAsync(
@@ -182,7 +180,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecurityAggregatedRecommendationInner>> getWithResponseAsync(
@@ -238,20 +237,13 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecurityAggregatedRecommendationInner> getAsync(
         String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
         return getWithResponseAsync(resourceGroupName, solutionName, aggregatedRecommendationName)
-            .flatMap(
-                (Response<IoTSecurityAggregatedRecommendationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -285,7 +277,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution recommendation information.
+     * @return ioT Security solution recommendation information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecurityAggregatedRecommendationInner> getWithResponse(
@@ -303,7 +295,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecurityAggregatedRecommendationInner>> listSinglePageAsync(
@@ -365,7 +358,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecurityAggregatedRecommendationInner>> listSinglePageAsync(
@@ -423,7 +417,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecurityAggregatedRecommendationInner> listAsync(
@@ -442,7 +436,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecurityAggregatedRecommendationInner> listAsync(
@@ -464,7 +458,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecurityAggregatedRecommendationInner> listAsync(
@@ -483,7 +477,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedRecommendationInner> list(String resourceGroupName, String solutionName) {
@@ -502,7 +497,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedRecommendationInner> list(
@@ -513,11 +509,13 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecurityAggregatedRecommendationInner>> listNextSinglePageAsync(String nextLink) {
@@ -548,12 +546,14 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated recommendations.
+     * @return list of IoT Security solution aggregated recommendations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecurityAggregatedRecommendationInner>> listNextSinglePageAsync(

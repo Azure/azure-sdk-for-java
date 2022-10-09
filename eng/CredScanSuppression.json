@@ -40,6 +40,10 @@
             "_justification": "Mocked key used in performance testing."
         },
         {
+            "placeholder": "OAuth2ClientCredential",
+            "_justification": "Javadoc in azure-resourcemanager-datafactory"
+        },
+        {
             "file":[
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
@@ -54,9 +58,7 @@
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p384keynew.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p521keynew.pem",
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/SECP256key.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem",
-                "sdk/spring/azure-spring-boot/src/test/resources/testkeyvault.pfx",
-                "sdk/spring/azure-spring-boot/src/test/resources/nopwdcert.pfx"
+                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
             ],
             "_justification": "File contains private key used by test code."
         }

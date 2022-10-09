@@ -1,0 +1,159 @@
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        namespace: ${AZURE_EVENTHUBS_NAMESPACE}
+        processor:
+          checkpoint-store:
+            account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+            endpoint: ${AZURE_STORAGE_BLOB_ENDPOINT}
+    stream:
+      function:
+        definition: consume;supply
+      bindings:
+        consume-in-0:
+          group: $Default
+      default:
+        producer:
+          errorChannelEnabled: true
+      default-binder: eventhubs
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
+    stream:
+      bindings:
+        consume-in-0:
+          content-type: text/plain
+          consumer:
+            batch-mode: true
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
+        supply-out-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
+      eventhubs:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint:
+                mode: BATCH
+              batch:
+                max-size: 10
+                max-wait-time: 2s
+  config:
+    activate:
+      on-profile: batch
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
+        supply-out-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
+      eventhubs:
+        default:
+          consumer:
+            checkpoint:
+              mode: MANUAL
+  config:
+    activate:
+      on-profile: message
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
+        supply-out-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
+      eventhubs:
+        default:
+          consumer:
+            checkpoint:
+              mode: MANUAL
+  config:
+    activate:
+      on-profile: manual
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
+        supply-out-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
+      eventhubs:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint:
+                mode: RECORD
+  config:
+    activate:
+      on-profile: record
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
+        supply-out-0:
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
+      eventhubs:
+        bindings:
+          supply-out-0:
+            producer:
+              sync: true
+  config:
+    activate:
+      on-profile: sync
+---
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
+    stream:
+      bindings:
+        consume-in-0:
+          destination: notexists
+        supply-out-0:
+          destination: notexists
+      eventhubs:
+        bindings:
+          supply-out-0:
+            producer:
+              sync: true
+  config:
+    activate:
+      on-profile: produceerror

@@ -20,9 +20,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     private String name;
 
     /*
-     * Describes a virtual machine scale set updatable network profile's IP
-     * configuration.Use this object for updating network profile's IP
-     * Configuration.
+     * Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating
+     * network profile's IP Configuration.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties;
@@ -110,6 +109,32 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
             this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withDisableTcpStateTracking(
+        Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 

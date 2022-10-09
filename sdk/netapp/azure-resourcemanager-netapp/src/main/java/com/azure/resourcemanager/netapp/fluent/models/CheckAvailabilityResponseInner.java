@@ -5,37 +5,30 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.InAvailabilityReasonType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information regarding availability of a resource. */
 @Fluent
 public final class CheckAvailabilityResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckAvailabilityResponseInner.class);
-
     /*
-     * <code>true</code> indicates name is valid and available.
-     * <code>false</code> indicates the name is invalid, unavailable, or both.
+     * <code>true</code> indicates name is valid and available. <code>false</code> indicates the name is invalid,
+     * unavailable, or both.
      */
     @JsonProperty(value = "isAvailable")
     private Boolean isAvailable;
 
     /*
-     * <code>Invalid</code> indicates the name provided does not match Azure
-     * App Service naming requirements. <code>AlreadyExists</code> indicates
-     * that the name is already in use and is therefore unavailable.
+     * <code>Invalid</code> indicates the name provided does not match Azure App Service naming requirements.
+     * <code>AlreadyExists</code> indicates that the name is already in use and is therefore unavailable.
      */
     @JsonProperty(value = "reason")
     private InAvailabilityReasonType reason;
 
     /*
-     * If reason == invalid, provide the user with the reason why the given
-     * name is invalid, and provide the resource naming requirements so that
-     * the user can select a valid name. If reason == AlreadyExists, explain
-     * that resource name is already in use, and direct them to select a
-     * different name.
+     * If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource
+     * naming requirements so that the user can select a valid name. If reason == AlreadyExists, explain that resource
+     * name is already in use, and direct them to select a different name.
      */
     @JsonProperty(value = "message")
     private String message;

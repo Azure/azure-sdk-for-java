@@ -33,7 +33,11 @@ public final class MaxSizeUnit extends ExpandableStringEnum<MaxSizeUnit> {
         return fromString(name, MaxSizeUnit.class);
     }
 
-    /** @return known MaxSizeUnit values. */
+    /**
+     * Gets known MaxSizeUnit values.
+     *
+     * @return known MaxSizeUnit values.
+     */
     public static Collection<MaxSizeUnit> values() {
         return values(MaxSizeUnit.class);
     }

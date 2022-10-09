@@ -31,6 +31,7 @@ import reactor.core.publisher.Mono
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.BiFunction
 import java.util.function.Function
@@ -64,6 +65,8 @@ class APISpec extends StorageSpec {
     static final String receivedLeaseID = "received"
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    static final String encryptionScopeString = "testscope1"
 
     DataLakeServiceClient primaryDataLakeServiceClient
     DataLakeServiceAsyncClient primaryDataLakeServiceAsyncClient
@@ -653,6 +656,16 @@ class APISpec extends StorageSpec {
                 return HttpPipelinePosition.PER_CALL
             }
         }
+    }
+
+    /**
+     * Compares the two timestamps to the minute
+     * @param expectedTime
+     * @param actualTime
+     * @return whether timestamps match (excluding seconds)
+     */
+    def compareDatesWithPrecision(OffsetDateTime expectedTime, OffsetDateTime actualTime) {
+        return expectedTime.truncatedTo(ChronoUnit.MINUTES) == actualTime.truncatedTo(ChronoUnit.MINUTES)
     }
 
     /**

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Schema for MSIX Package properties. */
 @Fluent
 public final class MsixPackageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackageProperties.class);
-
     /*
      * VHD/CIM image path on Network Share.
      */

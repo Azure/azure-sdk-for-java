@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class ServiceDelegationPropertiesFormat {
     /*
-     * The name of the service to whom the subnet should be delegated (e.g.
-     * Microsoft.Sql/servers).
+     * The name of the service to whom the subnet should be delegated (e.g. Microsoft.Sql/servers).
      */
     @JsonProperty(value = "serviceName")
     private String serviceName;

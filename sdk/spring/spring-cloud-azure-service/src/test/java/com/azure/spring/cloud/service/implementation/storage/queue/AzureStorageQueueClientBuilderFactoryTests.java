@@ -11,8 +11,10 @@ import com.azure.spring.cloud.service.implementation.AzureHttpClientBuilderFacto
 import com.azure.spring.cloud.service.implementation.core.http.TestHttpClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
+import com.azure.storage.queue.QueueServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
@@ -85,6 +87,21 @@ class AzureStorageQueueClientBuilderFactoryTests extends
     @Override
     protected void buildClient(QueueServiceClientBuilder builder) {
         builder.buildClient();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureStorageQueueTestProperties properties = new AzureStorageQueueTestProperties();
+        properties.setEndpoint(ENDPOINT);
+        properties.setServiceVersion(QueueServiceVersion.V2019_07_07);
+        properties.setMessageEncoding(QueueMessageEncoding.NONE);
+
+        final QueueServiceClientBuilder builder = createClientBuilderFactoryWithMockBuilder(properties).build();
+        final QueueServiceClient client = builder.buildClient();
+
+        verify(builder, times(1)).endpoint(ENDPOINT);
+        verify(builder, times(1)).serviceVersion(QueueServiceVersion.V2019_07_07);
+        verify(builder, times(1)).messageEncoding(QueueMessageEncoding.NONE);
     }
 
     @Override

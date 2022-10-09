@@ -33,7 +33,11 @@ public final class SsoSecretType extends ExpandableStringEnum<SsoSecretType> {
         return fromString(name, SsoSecretType.class);
     }
 
-    /** @return known SsoSecretType values. */
+    /**
+     * Gets known SsoSecretType values.
+     *
+     * @return known SsoSecretType values.
+     */
     public static Collection<SsoSecretType> values() {
         return values(SsoSecretType.class);
     }

@@ -265,6 +265,31 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
+     * Get the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @return the pickHostnameFromBackendSettings value.
+     */
+    public Boolean pickHostnameFromBackendSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().pickHostnameFromBackendSettings();
+    }
+
+    /**
+     * Set the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @param pickHostnameFromBackendSettings the pickHostnameFromBackendSettings value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withPickHostnameFromBackendSettings(Boolean pickHostnameFromBackendSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPickHostnameFromBackendSettings(pickHostnameFromBackendSettings);
+        return this;
+    }
+
+    /**
      * Get the minServers property: Minimum number of servers that are always marked healthy. Default value is 0.
      *
      * @return the minServers value.

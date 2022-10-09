@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagementPolicyBaseBlob {
     /*
-     * The function to tier blobs to cool storage. Support blobs currently at
-     * Hot tier
+     * The function to tier blobs to cool storage. Support blobs currently at Hot tier
      */
     @JsonProperty(value = "tierToCool")
     private DateAfterModification tierToCool;
 
     /*
-     * The function to tier blobs to archive storage. Support blobs currently
-     * at Hot or Cool tier
+     * The function to tier blobs to archive storage. Support blobs currently at Hot or Cool tier
      */
     @JsonProperty(value = "tierToArchive")
     private DateAfterModification tierToArchive;
@@ -31,8 +29,7 @@ public final class ManagementPolicyBaseBlob {
     private DateAfterModification delete;
 
     /*
-     * This property enables auto tiering of a blob from cool to hot on a blob
-     * access. This property requires
+     * This property enables auto tiering of a blob from cool to hot on a blob access. This property requires
      * tierToCool.daysAfterLastAccessTimeGreaterThan.
      */
     @JsonProperty(value = "enableAutoTierToHotFromCool")

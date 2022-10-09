@@ -1,15 +1,61 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 4.4.0 (2022-09-20)
+
+### Breaking Changes
+- Made it so that we verify that the challenge resource matches the vault domain by default. This should affect few customers who can use the `disableChallengeResourceVerification()` method in client builders to disable this functionality. See https://aka.ms/azsdk/blog/vault-uri for more information.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 4.3.5 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.31.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.4`.
+
+## 4.3.4 (2022-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.30.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.3`.
+
+## 4.3.3 (2022-06-10)
+
+### Bugs Fixed
 - Fixed an issue that caused the `organizationId` and `enabled` parameters not be sent to the Key Vault service when creating or updating a `CertificateIssuer`.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.29.1`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.2`.
+
+## 4.3.2 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.28.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.0`.
 
 ## 4.3.1 (2022-04-08)
 

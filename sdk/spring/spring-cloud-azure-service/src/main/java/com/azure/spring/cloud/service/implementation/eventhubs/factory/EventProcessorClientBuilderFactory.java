@@ -105,6 +105,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected void configureService(EventProcessorClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
+        map.from(eventProcessorClientProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        map.from(eventProcessorClientProperties.getEventHubName()).to(builder::eventHubName);
         map.from(eventProcessorClientProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventProcessorClientProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventProcessorClientProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
@@ -138,12 +140,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(c -> builder.credential(
-                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c)),
-            new SasAuthenticationDescriptor(c -> builder.credential(
-                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c)),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(
-                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c))
+            new NamedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c))
         );
     }
 
@@ -154,9 +153,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-            eventProcessorClientProperties.getEventHubName(),
-            tokenCredential);
+        return (builder, tokenCredential) -> builder.credential(tokenCredential);
     }
 
     @Override

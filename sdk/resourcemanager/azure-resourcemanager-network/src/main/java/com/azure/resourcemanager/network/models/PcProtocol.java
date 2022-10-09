@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PcProtocol. */
+/** Protocol to be filtered on. */
 public final class PcProtocol extends ExpandableStringEnum<PcProtocol> {
     /** Static value TCP for PcProtocol. */
     public static final PcProtocol TCP = fromString("TCP");
@@ -30,7 +30,11 @@ public final class PcProtocol extends ExpandableStringEnum<PcProtocol> {
         return fromString(name, PcProtocol.class);
     }
 
-    /** @return known PcProtocol values. */
+    /**
+     * Gets known PcProtocol values.
+     *
+     * @return known PcProtocol values.
+     */
     public static Collection<PcProtocol> values() {
         return values(PcProtocol.class);
     }

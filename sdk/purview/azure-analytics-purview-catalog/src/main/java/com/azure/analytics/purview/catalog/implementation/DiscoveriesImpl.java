@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -68,6 +69,7 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData searchRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -87,6 +89,7 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData suggestRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,6 +109,7 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData browseRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -125,20 +129,13 @@ public final class DiscoveriesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData autoCompleteRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -260,26 +257,20 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponseAsync(BinaryData searchRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.query(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 searchRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -403,24 +394,18 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponseAsync(
             BinaryData searchRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.query(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 searchRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -548,14 +533,6 @@ public final class DiscoveriesImpl {
     /**
      * Get search suggestions by query criteria.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -620,26 +597,20 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
             BinaryData suggestRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.suggest(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 suggestRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -706,24 +677,18 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(
             BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.suggest(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 suggestRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -793,14 +758,6 @@ public final class DiscoveriesImpl {
     /**
      * Browse entities by path or entity type.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -848,26 +805,20 @@ public final class DiscoveriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponseAsync(BinaryData browseRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.browse(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 browseRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -918,24 +869,18 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponseAsync(
             BinaryData browseRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.browse(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 browseRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -990,14 +935,6 @@ public final class DiscoveriesImpl {
     /**
      * Get auto complete options.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1032,26 +969,20 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.autoComplete(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 autoCompleteRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get auto complete options.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1088,24 +1019,18 @@ public final class DiscoveriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(
             BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.autoComplete(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 autoCompleteRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get auto complete options.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *

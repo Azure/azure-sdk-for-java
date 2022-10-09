@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
+/** The advertised public prefix state of the Peering resource. */
 public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
     extends ExpandableStringEnum<ExpressRouteCircuitPeeringAdvertisedPublicPrefixState> {
     /** Static value NotConfigured for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
@@ -36,7 +36,11 @@ public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
         return fromString(name, ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.class);
     }
 
-    /** @return known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values. */
+    /**
+     * Gets known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values.
+     *
+     * @return known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values.
+     */
     public static Collection<ExpressRouteCircuitPeeringAdvertisedPublicPrefixState> values() {
         return values(ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.class);
     }

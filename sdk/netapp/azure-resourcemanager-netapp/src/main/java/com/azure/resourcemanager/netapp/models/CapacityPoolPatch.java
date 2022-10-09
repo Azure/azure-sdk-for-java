@@ -6,17 +6,13 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.PoolPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool patch resource. */
 @Fluent
 public final class CapacityPoolPatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolPatch.class);
-
     /*
      * Capacity pool properties
      */
@@ -47,8 +43,10 @@ public final class CapacityPoolPatch extends Resource {
     }
 
     /**
-     * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Get the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @return the size value.
      */
@@ -57,8 +55,10 @@ public final class CapacityPoolPatch extends Resource {
     }
 
     /**
-     * Set the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Set the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @param size the size value to set.
      * @return the CapacityPoolPatch object itself.
@@ -91,6 +91,29 @@ public final class CapacityPoolPatch extends Resource {
             this.innerProperties = new PoolPatchProperties();
         }
         this.innerProperties().withQosType(qosType);
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccess();
+    }
+
+    /**
+     * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the CapacityPoolPatch object itself.
+     */
+    public CapacityPoolPatch withCoolAccess(Boolean coolAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolPatchProperties();
+        }
+        this.innerProperties().withCoolAccess(coolAccess);
         return this;
     }
 

@@ -26,9 +26,7 @@ def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version)
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
-    args = parser.parse_args()
-    log.set_log_level(args.log)
-    return args
+    return parser.parse_args()
 
 
 def update_external_dependencies_comment(source_name, target_file):

@@ -5,66 +5,80 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties which represents actual subvolume model which is stored as a file in the system. */
 @Fluent
 public final class SubvolumeModelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumeModelProperties.class);
-
     /*
-     * path Path to the subvolume
+     * path
+     *
+     * Path to the subvolume
      */
     @JsonProperty(value = "path")
     private String path;
 
     /*
-     * parentpath Path to the parent subvolume
+     * parentpath
+     *
+     * Path to the parent subvolume
      */
     @JsonProperty(value = "parentPath")
     private String parentPath;
 
     /*
-     * size Size of subvolume
+     * size
+     *
+     * Size of subvolume
      */
     @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * bytesUsed Bytes used
+     * bytesUsed
+     *
+     * Bytes used
      */
     @JsonProperty(value = "bytesUsed")
     private Long bytesUsed;
 
     /*
-     * permissions Permissions of the subvolume
+     * permissions
+     *
+     * Permissions of the subvolume
      */
     @JsonProperty(value = "permissions")
     private String permissions;
 
     /*
-     * creationTimeStamp Creation time and date
+     * creationTimeStamp
+     *
+     * Creation time and date
      */
     @JsonProperty(value = "creationTimeStamp")
     private OffsetDateTime creationTimestamp;
 
     /*
-     * accessedTimeStamp Most recent access time and date
+     * accessedTimeStamp
+     *
+     * Most recent access time and date
      */
     @JsonProperty(value = "accessedTimeStamp")
     private OffsetDateTime accessedTimestamp;
 
     /*
-     * modifiedTimeStamp Most recent modification time and date
+     * modifiedTimeStamp
+     *
+     * Most recent modification time and date
      */
     @JsonProperty(value = "modifiedTimeStamp")
     private OffsetDateTime modifiedTimestamp;
 
     /*
-     * changedTimeStamp Most recent change time and date
+     * changedTimeStamp
+     *
+     * Most recent change time and date
      */
     @JsonProperty(value = "changedTimeStamp")
     private OffsetDateTime changedTimestamp;
@@ -76,7 +90,9 @@ public final class SubvolumeModelProperties {
     private String provisioningState;
 
     /**
-     * Get the path property: path Path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
@@ -85,7 +101,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the path property: path Path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -96,7 +114,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the parentPath property: parentpath Path to the parent subvolume.
+     * Get the parentPath property: parentpath
+     *
+     * <p>Path to the parent subvolume.
      *
      * @return the parentPath value.
      */
@@ -105,7 +125,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the parentPath property: parentpath Path to the parent subvolume.
+     * Set the parentPath property: parentpath
+     *
+     * <p>Path to the parent subvolume.
      *
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -116,7 +138,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the size property: size Size of subvolume.
+     * Get the size property: size
+     *
+     * <p>Size of subvolume.
      *
      * @return the size value.
      */
@@ -125,7 +149,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the size property: size Size of subvolume.
+     * Set the size property: size
+     *
+     * <p>Size of subvolume.
      *
      * @param size the size value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -136,7 +162,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the bytesUsed property: bytesUsed Bytes used.
+     * Get the bytesUsed property: bytesUsed
+     *
+     * <p>Bytes used.
      *
      * @return the bytesUsed value.
      */
@@ -145,7 +173,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the bytesUsed property: bytesUsed Bytes used.
+     * Set the bytesUsed property: bytesUsed
+     *
+     * <p>Bytes used.
      *
      * @param bytesUsed the bytesUsed value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -156,7 +186,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the permissions property: permissions Permissions of the subvolume.
+     * Get the permissions property: permissions
+     *
+     * <p>Permissions of the subvolume.
      *
      * @return the permissions value.
      */
@@ -165,7 +197,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the permissions property: permissions Permissions of the subvolume.
+     * Set the permissions property: permissions
+     *
+     * <p>Permissions of the subvolume.
      *
      * @param permissions the permissions value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -176,7 +210,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the creationTimestamp property: creationTimeStamp Creation time and date.
+     * Get the creationTimestamp property: creationTimeStamp
+     *
+     * <p>Creation time and date.
      *
      * @return the creationTimestamp value.
      */
@@ -185,7 +221,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the creationTimestamp property: creationTimeStamp Creation time and date.
+     * Set the creationTimestamp property: creationTimeStamp
+     *
+     * <p>Creation time and date.
      *
      * @param creationTimestamp the creationTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -196,7 +234,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the accessedTimestamp property: accessedTimeStamp Most recent access time and date.
+     * Get the accessedTimestamp property: accessedTimeStamp
+     *
+     * <p>Most recent access time and date.
      *
      * @return the accessedTimestamp value.
      */
@@ -205,7 +245,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the accessedTimestamp property: accessedTimeStamp Most recent access time and date.
+     * Set the accessedTimestamp property: accessedTimeStamp
+     *
+     * <p>Most recent access time and date.
      *
      * @param accessedTimestamp the accessedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -216,7 +258,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the modifiedTimestamp property: modifiedTimeStamp Most recent modification time and date.
+     * Get the modifiedTimestamp property: modifiedTimeStamp
+     *
+     * <p>Most recent modification time and date.
      *
      * @return the modifiedTimestamp value.
      */
@@ -225,7 +269,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the modifiedTimestamp property: modifiedTimeStamp Most recent modification time and date.
+     * Set the modifiedTimestamp property: modifiedTimeStamp
+     *
+     * <p>Most recent modification time and date.
      *
      * @param modifiedTimestamp the modifiedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -236,7 +282,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the changedTimestamp property: changedTimeStamp Most recent change time and date.
+     * Get the changedTimestamp property: changedTimeStamp
+     *
+     * <p>Most recent change time and date.
      *
      * @return the changedTimestamp value.
      */
@@ -245,7 +293,9 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the changedTimestamp property: changedTimeStamp Most recent change time and date.
+     * Set the changedTimestamp property: changedTimeStamp
+     *
+     * <p>Most recent change time and date.
      *
      * @param changedTimestamp the changedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.

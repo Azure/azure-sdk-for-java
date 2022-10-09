@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
+import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTClaimsSet.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -18,7 +20,10 @@ import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTH
 
 /**
  * Entity class of AADOAuth2AuthenticatedPrincipal
+ *
+ * @deprecated use the default converter {@link JwtAuthenticationConverter} instead in {@link AadResourceServerWebSecurityConfigurerAdapter}.
  */
+@Deprecated
 public class AadOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
     private static final long serialVersionUID = -3625690847771476854L;

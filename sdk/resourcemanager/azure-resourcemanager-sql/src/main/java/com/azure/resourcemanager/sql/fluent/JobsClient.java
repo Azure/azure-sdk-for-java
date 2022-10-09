@@ -25,7 +25,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs.
+     * @return a list of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobInner> listByAgentAsync(String resourceGroupName, String serverName, String jobAgentName);
@@ -40,7 +40,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs.
+     * @return a list of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName);
@@ -56,7 +56,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs.
+     * @return a list of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobInner> listByAgent(
@@ -73,7 +73,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobInner>> getWithResponseAsync(
@@ -90,7 +90,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobInner> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName);
@@ -123,7 +123,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobInner> getWithResponse(
@@ -137,11 +137,11 @@ public interface JobsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
-     * @param parameters A job.
+     * @param parameters The requested job state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobInner>> createOrUpdateWithResponseAsync(
@@ -155,11 +155,11 @@ public interface JobsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
-     * @param parameters A job.
+     * @param parameters The requested job state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobInner> createOrUpdateAsync(
@@ -173,7 +173,7 @@ public interface JobsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
-     * @param parameters A job.
+     * @param parameters The requested job state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,12 +191,12 @@ public interface JobsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
-     * @param parameters A job.
+     * @param parameters The requested job state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
+     * @return a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobInner> createOrUpdateWithResponse(
@@ -218,7 +218,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(
@@ -235,7 +235,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName);
@@ -267,7 +267,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

@@ -7,15 +7,11 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subvolume Information properties. */
 @Fluent
 public final class SubvolumeInfoInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumeInfoInner.class);
-
     /*
      * Subvolume Properties
      */
@@ -23,7 +19,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     private SubvolumeProperties innerProperties;
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -38,7 +34,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -47,7 +43,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the path property: path Path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
@@ -56,7 +54,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the path property: path Path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -70,7 +70,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the size property: size Truncate subvolume to the provided size in bytes.
+     * Get the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
@@ -79,7 +81,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the size property: size Truncate subvolume to the provided size in bytes.
+     * Set the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @param size the size value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -93,7 +97,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the parentPath property: name parent path to the subvolume.
+     * Get the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @return the parentPath value.
      */
@@ -102,7 +108,9 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the parentPath property: name parent path to the subvolume.
+     * Set the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeInfoInner object itself.

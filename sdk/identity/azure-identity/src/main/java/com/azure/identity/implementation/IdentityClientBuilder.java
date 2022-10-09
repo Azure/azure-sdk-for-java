@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * @see IdentityClient
  */
 public final class IdentityClientBuilder {
-    private IdentityClientOptions identityClientOptions;
+    private IdentityClientOptions identityClientOptions = new IdentityClientOptions();
     private String tenantId;
     private String clientId;
     private String resourceId;

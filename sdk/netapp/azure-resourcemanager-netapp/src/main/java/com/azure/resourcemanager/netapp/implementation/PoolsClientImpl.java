@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PoolsClient. */
 public final class PoolsClientImpl implements PoolsClient {
-    private final ClientLogger logger = new ClientLogger(PoolsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PoolsService service;
 
@@ -160,7 +157,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -217,7 +216,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -273,7 +274,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -289,7 +292,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -307,7 +312,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -322,7 +329,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
+     *
+     * <p>List all capacity pools in the NetApp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -338,7 +347,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -392,7 +403,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -444,7 +457,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -457,18 +472,13 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CapacityPoolInner> getAsync(String resourceGroupName, String accountName, String poolName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (Response<CapacityPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -484,7 +494,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -502,7 +514,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -562,7 +576,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -620,7 +636,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -647,7 +665,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -672,7 +692,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -690,7 +712,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -709,7 +733,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -729,7 +755,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -750,7 +778,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -768,7 +798,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Create or Update a capacity pool.
+     * Create or Update the specified capacity pool within the resource group
+     *
+     * <p>Create or Update a capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -787,7 +819,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -847,7 +881,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -905,7 +941,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -931,7 +969,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -956,7 +996,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -974,7 +1016,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -993,7 +1037,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1013,7 +1059,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1034,7 +1082,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1052,7 +1102,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Patch the specified capacity pool.
+     * Update a capacity pool
+     *
+     * <p>Patch the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1071,7 +1123,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1122,7 +1176,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1171,7 +1227,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1192,7 +1250,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1215,7 +1275,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1232,7 +1294,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1250,7 +1314,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1268,7 +1334,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1287,7 +1355,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1302,7 +1372,9 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1320,7 +1392,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1356,7 +1429,8 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

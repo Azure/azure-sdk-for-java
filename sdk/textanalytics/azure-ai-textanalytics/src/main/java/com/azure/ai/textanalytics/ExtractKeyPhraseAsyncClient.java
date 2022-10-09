@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextKeyPhraseExtractionInput;
@@ -22,13 +22,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -41,16 +44,21 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
-    private final MicrosoftCognitiveLanguageServiceImpl service;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+    ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -96,7 +104,6 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getExtractedKeyPhrasesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -116,7 +123,6 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getExtractedKeyPhrasesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -135,6 +141,8 @@ class ExtractKeyPhraseAsyncClient {
      */
     private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
         if (service != null) {
@@ -142,7 +150,7 @@ class ExtractKeyPhraseAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextKeyPhraseExtractionInput()
                                .setParameters(
-                                   (KeyPhraseTaskParameters) new KeyPhraseTaskParameters()
+                                   new KeyPhraseTaskParameters()
                                                                  .setModelVersion(options.getModelVersion())
                                                                  .setLoggingOptOut(options.isServiceLogsDisabled()))
                                .setAnalysisInput(
@@ -170,5 +178,13 @@ class ExtractKeyPhraseAsyncClient {
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
             .map(Utility::toExtractKeyPhrasesResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
+        if (options != null && options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

@@ -149,6 +149,14 @@
         <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
         <Method name="getX509Thumbprint"/>
       </And>
+      <And>
+        <Class name="com.azure.json.implementation.DefaultJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
+        <Class name="com.azure.json.gson.GsonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -179,6 +187,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
+      <Method name="getBytes"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <Match>
     <Or>
@@ -385,7 +401,9 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
+      <Class name="com.azure.core.implementation.http.HttpPipelineCallState"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -596,6 +614,14 @@
 
   <Match>
     <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
@@ -736,28 +762,28 @@
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="getFinalResult"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="poll"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitForCompletion"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitUntil"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -910,13 +936,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
-  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9044 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.RxGatewayStoreModel"/>
-    <Method name="validateOrThrow"/>
-    <Bug pattern="DM_DEFAULT_ENCODING"/>
-  </Match>
-
   <!-- The in-memory map is not serializable, given value is of type IServerIdentity which is not serializable -->
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap$MinPartitionKeyPairComparator"/>
@@ -960,16 +979,6 @@
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <!-- Code is doing DCL, this needs to be evaluated
-   https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
-   Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
-   -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
-    <Method name="getItem"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -1039,7 +1048,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
-    <Field name="durationInMicroSec"/>
+    <Field name="durationInMilliSecs"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1149,22 +1158,8 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
-    <Method name="addResourceIdOrPathHeaders"/>
-    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
-  <Match>
     <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
     <Method name="hash"/>
-    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.routing.PartitionKeyInternal"/>
-    <Method name="fromObjectArray"/>
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
   </Match>
 
@@ -1215,27 +1210,6 @@
     <Class name="com.azure.cosmos.implementation.http.SharedGatewayHttpClient"/>
     <Field name="sharedGatewayHttpClient"/>
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.RetryPolicyWithDiagnostics"/>
-    <Field name="retriesCountForDiagnostics"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
-    <Field name="processedDocCount"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
-    <Field name="retries"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
@@ -1293,10 +1267,10 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentModelOperationException fields re serializable -->
+  <!-- FormRecognizerException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
-    <Field name="documentModelOperationError"/>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
+    <Field name="errorInformationList"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -1426,13 +1400,6 @@
     <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9091 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
-    <Method name="compare"/>
-    <Bug pattern="DC_PARTIALLY_CONSTRUCTED"/>
-  </Match>
-
   <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextDecoder"/>
@@ -1560,27 +1527,6 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
     <Method name="close"/>
     <Bug pattern="BC_IMPOSSIBLE_INSTANCEOF"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
-    <Method name="~(.*)\$(apply|null)\$(.*)"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
-    <Method name="~(.*)\$(drainAsync|null)\$(.*)"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
-    <Method name="mergeQueryMetricsMap"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
@@ -2007,13 +1953,6 @@
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
 
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9108 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.CancellationTokenSource"/>
-    <Method name="close"/>
-    <Bug pattern="UC_USELESS_VOID_METHOD"/>
-  </Match>
-
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9109 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2062,28 +2001,6 @@
     <Method name="initialize"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
-    <Method name="setSessionToken"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
-    <Method name="shouldUpdateSessionToken"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-
-  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
-    <Method name="rotateLeft32"/>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
 
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.UInt128"/>
@@ -2257,6 +2174,8 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientTelemetryConfigHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>
@@ -2428,6 +2347,8 @@
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
       <Method name="getCredentialFromKdbx"/>
+      <Method name="parseRefreshTokenFromJson"/>
+      <Method name="getIntelliJCredentialsFromIdentityMsalCache"/>
     </Or>
     <Bug pattern="DM_DEFAULT_ENCODING,
     REC_CATCH_EXCEPTION"/>
@@ -2488,7 +2409,10 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+    <Or>
+      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.azure.core.implementation.ByteBufferCollector"/>
+    </Or>
   </Match>
 
   <!-- EventGrid swagger naming -->
@@ -2592,6 +2516,12 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Some generated base clients in Purview Catalog do not send api-version -->
   <Match>
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
@@ -2628,6 +2558,13 @@
     <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
+    <Method name="~getMap.*+"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <Match>
@@ -2679,66 +2616,58 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
   <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
+    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    <Method name="locateExceptionConstructor"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Shaded code shouldn't run Spotbugs -->
+  <Match>
+    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.xml.implementation.DefaultXmlReader"/>
+    <Bug pattern="XXE_XMLSTREAMREADER"/>
+  </Match>
+
+  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
+    <Method name="computeHash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
+  <!-- Non Shipped code -->
+  <Match>
     <Or>
-      <Method name="getCustomEntitiesTaskParameters"/>
-      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
-      <Method name="getCustomSingleClassificationTaskParameters"/>
-      <Method name="getEntitiesTaskParameters"/>
-      <Method name="getEntityLinkingTaskParameters"/>
-      <Method name="getExtractiveSummarizationTaskParameters"/>
-      <Method name="getHealthcareTaskParameters"/>
-      <Method name="getKeyPhraseTaskParameters"/>
-      <Method name="getPiiTaskParameters"/>
-      <Method name="getSentimentAnalysisTaskParameters"/>
+      <Package name="~com\.azure\.redisson.*"/>
+      <Package name="~com\.azure\.lettuce.*"/>
+      <Package name="~com\.azure\.jedis.*"/>
     </Or>
+    <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+                  UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+                  UPM_UNCALLED_PRIVATE_METHOD,
+                  DLS_DEAD_LOCAL_STORE,
+                  DM_STRING_TOSTRING"/>
   </Match>
+
+  <!-- Implementations of BinaryDataContent were transitioned from AtomicReference<byte[]> to volatile byte[] and AtomicReferenceFieldUpdater to reduce object size. -->
+  <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
   <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
     <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.FileContent"/>
+      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.SerializableContent"/>
+      <Class name="com.azure.core.implementation.util.StringContent"/>
     </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+    <Field name="bytes"/>
   </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-    <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>  
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
-    <Method name="getDetectedLanguageResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
-    <Method name="getExtractedKeyPhrasesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
-    <Method name="getRecognizedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
-    <Method name="getRecognizedLinkedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>  
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
-    <Method name="getRecognizePiiEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
+
 </FindBugsFilter>

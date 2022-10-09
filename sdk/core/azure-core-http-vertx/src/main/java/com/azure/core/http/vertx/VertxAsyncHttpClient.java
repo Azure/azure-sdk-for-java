@@ -4,18 +4,19 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
-import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +30,6 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
-    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -52,62 +52,68 @@ class VertxAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        return Mono.create(sink ->
-            toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-                vertxHttpRequest.exceptionHandler(sink::error);
+        // boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-                HttpHeaders requestHeaders = request.getHeaders();
-                if (requestHeaders != null) {
-                    requestHeaders.stream().forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                    if (request.getHeaders().get("Content-Length") == null) {
-                        vertxHttpRequest.setChunked(true);
-                    }
+        RequestOptions options = new RequestOptions()
+            .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
+            .setAbsoluteURI(request.getUrl());
+
+        return Mono.create(sink -> client.request(options, requestResult -> {
+            if (requestResult.failed()) {
+                sink.error(requestResult.cause());
+                return;
+            }
+
+            HttpClientRequest vertxHttpRequest = requestResult.result();
+            vertxHttpRequest.exceptionHandler(sink::error);
+
+            request.getHeaders().stream()
+                .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+
+            if (request.getHeaders().get("Content-Length") == null) {
+                vertxHttpRequest.setChunked(true);
+            }
+
+            vertxHttpRequest.response(event -> {
+                if (event.succeeded()) {
+                    HttpClientResponse vertxHttpResponse = event.result();
+                    vertxHttpResponse.exceptionHandler(sink::error);
+
+                    // TODO (alzimmer)
+                    // For now Vertx will always use a buffered response until reliability issues when using streaming
+                    // can be resolved.
+                    vertxHttpResponse.body(bodyEvent -> {
+                        if (bodyEvent.succeeded()) {
+                            sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
+                        } else {
+                            sink.error(bodyEvent.cause());
+                        }
+                    });
                 } else {
-                    vertxHttpRequest.setChunked(true);
+                    sink.error(event.cause());
+                }
+            });
+
+            // TODO (alzimmer)
+            // For now Vertx will always use a buffered request until reliability issues when using streamin can be
+            // resolved.
+            Flux<ByteBuffer> requestBody = request.getBody();
+            if (requestBody == null) {
+                vertxHttpRequest.end();
+            } else {
+                if (progressReporter != null) {
+                    requestBody = requestBody.map(buffer -> {
+                        progressReporter.reportProgress(buffer.remaining());
+                        return buffer;
+                    });
                 }
 
-                vertxHttpRequest.response(event -> {
-                    if (event.succeeded()) {
-                        HttpClientResponse vertxHttpResponse = event.result();
-                        vertxHttpResponse.exceptionHandler(sink::error);
-
-                        if (eagerlyReadResponse) {
-                            vertxHttpResponse.body(bodyEvent -> {
-                                if (bodyEvent.succeeded()) {
-                                    sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
-                                } else {
-                                    sink.error(bodyEvent.cause());
-                                }
-                            });
-                        } else {
-                            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-                        }
-                    }
-                });
-
-                getRequestBody(request)
+                FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
                     .subscribeOn(scheduler)
-                    .map(Unpooled::wrappedBuffer)
-                    .map(Buffer::buffer)
-                    .subscribe(buffer -> vertxHttpRequest.write(buffer), sink::error, vertxHttpRequest::end);
-            }, sink::error));
-    }
-
-    private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        HttpMethod httpMethod = request.getHttpMethod();
-        io.vertx.core.http.HttpMethod requestMethod = io.vertx.core.http.HttpMethod.valueOf(httpMethod.name());
-
-        RequestOptions options = new RequestOptions();
-        options.setMethod(requestMethod);
-        options.setAbsoluteURI(request.getUrl());
-        return Mono.fromCompletionStage(client.request(options).toCompletionStage());
-    }
-
-    private Flux<ByteBuffer> getRequestBody(HttpRequest request) {
-        if (request.getBody() == null) {
-            return Flux.empty();
-        }
-        return request.getBody();
+                    .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
+                        sink::error, vertxHttpRequest::end);
+            }
+        }));
     }
 }

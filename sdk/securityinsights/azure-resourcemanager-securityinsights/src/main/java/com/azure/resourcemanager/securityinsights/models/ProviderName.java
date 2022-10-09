@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProviderName. */
+/** Provider name. */
 public final class ProviderName extends ExpandableStringEnum<ProviderName> {
     /** Static value Microsoft.OperationalInsights/solutions for ProviderName. */
     public static final ProviderName MICROSOFT_OPERATIONAL_INSIGHTS_SOLUTIONS =

@@ -45,7 +45,7 @@ def main():
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     args = get_args()
-    update_changelog(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version, CHANGE_LOG_FILE)
+    update_changelog(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version, CHANGELOG_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

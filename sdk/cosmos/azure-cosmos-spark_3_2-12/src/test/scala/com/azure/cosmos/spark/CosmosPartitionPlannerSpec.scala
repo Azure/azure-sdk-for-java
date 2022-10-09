@@ -16,6 +16,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -78,6 +79,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -135,11 +137,12 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     calculate(0).endLsn.get shouldBe startLsn
   }
 
-  it should "calculateEndLsn should throw when latestLsn > 0 but < startLsn" in {
+  it should "calculateEndLsn should return startLsn when lastLsn < startLsn (possible with replication lag)" in {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -189,17 +192,12 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       createdAt,
       lastRetrievedAt)
 
-    try {
-      CosmosPartitionPlanner.calculateEndLsn(
-        Array[PartitionMetadata](metadata1, metadata2),
-        ReadLimit.allAvailable()
-      )
+    val calculate = CosmosPartitionPlanner.calculateEndLsn(
+      Array[PartitionMetadata](metadata1, metadata2),
+      ReadLimit.allAvailable()
+    )
 
-      fail("Should have thrown on invalid data (latestLsn > 0 but < startLsn")
-    }
-    catch {
-      case _: Exception => succeed
-    }
+    calculate(0).endLsn.get shouldBe startLsn
   }
 
   it should "calculateEndLsn with readLimit should honor estimated lag" in {
@@ -207,6 +205,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -267,6 +266,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -343,6 +343,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,

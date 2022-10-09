@@ -5,67 +5,132 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Class representing a Traffic Manager profile. */
-@JsonFlatten
 @Fluent
-public class ProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
+public final class ProfileInner extends Resource {
+    /*
+     * The properties of the Traffic Manager profile.
+     */
+    @JsonProperty(value = "properties")
+    private ProfileProperties innerProperties;
 
     /*
-     * The status of the Traffic Manager profile.
+     * Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
      */
-    @JsonProperty(value = "properties.profileStatus")
-    private ProfileStatus profileStatus;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
-     * The traffic routing method of the Traffic Manager profile.
+     * The name of the resource
      */
-    @JsonProperty(value = "properties.trafficRoutingMethod")
-    private TrafficRoutingMethod trafficRoutingMethod;
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
-     * The DNS settings of the Traffic Manager profile.
+     * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      */
-    @JsonProperty(value = "properties.dnsConfig")
-    private DnsConfig dnsConfig;
+    @JsonProperty(value = "type")
+    private String type;
 
-    /*
-     * The endpoint monitoring settings of the Traffic Manager profile.
-     */
-    @JsonProperty(value = "properties.monitorConfig")
-    private MonitorConfig monitorConfig;
+    /** Creates an instance of ProfileInner class. */
+    public ProfileInner() {
+    }
 
-    /*
-     * The list of endpoints in the Traffic Manager profile.
+    /**
+     * Get the innerProperties property: The properties of the Traffic Manager profile.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endpoints")
-    private List<EndpointInner> endpoints;
+    private ProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
-     * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this
-     * feature will increase the cost of the Traffic Manage profile.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
+     *
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.trafficViewEnrollmentStatus")
-    private TrafficViewEnrollmentStatus trafficViewEnrollmentStatus;
+    public String id() {
+        return this.id;
+    }
 
-    /*
-     * Maximum number of endpoints to be returned for MultiValue routing type.
+    /**
+     * Set the id property: Fully qualified resource Id for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
+     *
+     * @param id the id value to set.
+     * @return the ProfileInner object itself.
      */
-    @JsonProperty(value = "properties.maxReturn")
-    private Long maxReturn;
+    public ProfileInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: The name of the resource.
+     *
+     * @param name the name value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
+     *
+     * @param type the type value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the profileStatus property: The status of the Traffic Manager profile.
@@ -73,7 +138,7 @@ public class ProfileInner extends Resource {
      * @return the profileStatus value.
      */
     public ProfileStatus profileStatus() {
-        return this.profileStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().profileStatus();
     }
 
     /**
@@ -83,7 +148,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withProfileStatus(ProfileStatus profileStatus) {
-        this.profileStatus = profileStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withProfileStatus(profileStatus);
         return this;
     }
 
@@ -93,7 +161,7 @@ public class ProfileInner extends Resource {
      * @return the trafficRoutingMethod value.
      */
     public TrafficRoutingMethod trafficRoutingMethod() {
-        return this.trafficRoutingMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().trafficRoutingMethod();
     }
 
     /**
@@ -103,7 +171,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withTrafficRoutingMethod(TrafficRoutingMethod trafficRoutingMethod) {
-        this.trafficRoutingMethod = trafficRoutingMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withTrafficRoutingMethod(trafficRoutingMethod);
         return this;
     }
 
@@ -113,7 +184,7 @@ public class ProfileInner extends Resource {
      * @return the dnsConfig value.
      */
     public DnsConfig dnsConfig() {
-        return this.dnsConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsConfig();
     }
 
     /**
@@ -123,7 +194,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withDnsConfig(DnsConfig dnsConfig) {
-        this.dnsConfig = dnsConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withDnsConfig(dnsConfig);
         return this;
     }
 
@@ -133,7 +207,7 @@ public class ProfileInner extends Resource {
      * @return the monitorConfig value.
      */
     public MonitorConfig monitorConfig() {
-        return this.monitorConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().monitorConfig();
     }
 
     /**
@@ -143,7 +217,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withMonitorConfig(MonitorConfig monitorConfig) {
-        this.monitorConfig = monitorConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withMonitorConfig(monitorConfig);
         return this;
     }
 
@@ -153,7 +230,7 @@ public class ProfileInner extends Resource {
      * @return the endpoints value.
      */
     public List<EndpointInner> endpoints() {
-        return this.endpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
     }
 
     /**
@@ -163,7 +240,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withEndpoints(List<EndpointInner> endpoints) {
-        this.endpoints = endpoints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withEndpoints(endpoints);
         return this;
     }
 
@@ -175,7 +255,7 @@ public class ProfileInner extends Resource {
      * @return the trafficViewEnrollmentStatus value.
      */
     public TrafficViewEnrollmentStatus trafficViewEnrollmentStatus() {
-        return this.trafficViewEnrollmentStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().trafficViewEnrollmentStatus();
     }
 
     /**
@@ -187,7 +267,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withTrafficViewEnrollmentStatus(TrafficViewEnrollmentStatus trafficViewEnrollmentStatus) {
-        this.trafficViewEnrollmentStatus = trafficViewEnrollmentStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withTrafficViewEnrollmentStatus(trafficViewEnrollmentStatus);
         return this;
     }
 
@@ -197,7 +280,7 @@ public class ProfileInner extends Resource {
      * @return the maxReturn value.
      */
     public Long maxReturn() {
-        return this.maxReturn;
+        return this.innerProperties() == null ? null : this.innerProperties().maxReturn();
     }
 
     /**
@@ -207,7 +290,10 @@ public class ProfileInner extends Resource {
      * @return the ProfileInner object itself.
      */
     public ProfileInner withMaxReturn(Long maxReturn) {
-        this.maxReturn = maxReturn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withMaxReturn(maxReturn);
         return this;
     }
 
@@ -217,14 +303,8 @@ public class ProfileInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dnsConfig() != null) {
-            dnsConfig().validate();
-        }
-        if (monitorConfig() != null) {
-            monitorConfig().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

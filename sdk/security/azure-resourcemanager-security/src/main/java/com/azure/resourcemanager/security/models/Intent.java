@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Intent. */
+/**
+ * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
+ * Center's supported kill chain intents.
+ */
 public final class Intent extends ExpandableStringEnum<Intent> {
     /** Static value Unknown for Intent. */
     public static final Intent UNKNOWN = fromString("Unknown");
@@ -69,7 +72,11 @@ public final class Intent extends ExpandableStringEnum<Intent> {
         return fromString(name, Intent.class);
     }
 
-    /** @return known Intent values. */
+    /**
+     * Gets known Intent values.
+     *
+     * @return known Intent values.
+     */
     public static Collection<Intent> values() {
         return values(Intent.class);
     }

@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM mcr.microsoft.com/mirror/docker/library/ubuntu:18.04
 RUN apt-get update && apt-get install -y openjdk-8-jdk net-tools vim
 COPY ./azure-cosmos-benchmark*-jar-with-dependencies.jar /usr/app/azure-cosmos-benchmark-jar-with-dependencies.jar
 COPY ./run_benchmark.sh /usr/app/

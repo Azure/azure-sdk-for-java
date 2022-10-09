@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.3 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.11.2 (2022-09-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.11.1 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+
+## 1.11.0 (2022-06-30)
+
+### Features Added
+
+- Added ability to track progress by passing `ProgressReporter` in the `Context`. For example:
+  ```java
+  HttpClient httpClient = new OkHttpAsyncHttpClientBuilder().build();
+  ProgressReporter progressReporter = ProgressReporter.withProgressListener(progress -> System.out.println(progress));
+  Context context = Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext();
+  HttpRequest request = new HttpRequest(
+      HttpMethod.PUT, new URL("http://example.com"), new HttpHeaders(), BinaryData.fromString("sample body"))
+  httpClient.send(request, context).subscribe();
+  ```
+
+### Other Changes
+
+- Added synchronous implementation of `HttpClient.sendSync`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded OkHttp from `4.9.2` to `4.10.0`.
 
 ## 1.10.1 (2022-06-03)
 

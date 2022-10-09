@@ -63,6 +63,10 @@ public final class ContentKeyPolicyImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ContentKeyPolicyInner innerModel() {
         return this.innerObject;
     }

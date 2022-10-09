@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class AutomationTriggeringRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationTriggeringRule.class);
-
     /*
      * The JPath of the entity model property that should be checked.
      */
@@ -24,8 +20,7 @@ public final class AutomationTriggeringRule {
     private String propertyJPath;
 
     /*
-     * The data type of the compared operands (string, integer, floating point
-     * number or a boolean [true/false]]
+     * The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]
      */
     @JsonProperty(value = "propertyType")
     private PropertyType propertyType;
@@ -37,8 +32,7 @@ public final class AutomationTriggeringRule {
     private String expectedValue;
 
     /*
-     * A valid comparer operator to use. A case-insensitive comparison will be
-     * applied for String PropertyType.
+     * A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType.
      */
     @JsonProperty(value = "operator")
     private Operator operator;

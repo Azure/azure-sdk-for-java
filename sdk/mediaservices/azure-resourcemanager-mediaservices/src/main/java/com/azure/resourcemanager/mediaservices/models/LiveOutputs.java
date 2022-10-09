@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of LiveOutputs. */
 public interface LiveOutputs {
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -24,7 +26,9 @@ public interface LiveOutputs {
     PagedIterable<LiveOutput> list(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -38,7 +42,9 @@ public interface LiveOutputs {
     PagedIterable<LiveOutput> list(String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -52,7 +58,9 @@ public interface LiveOutputs {
     LiveOutput get(String resourceGroupName, String accountName, String liveEventName, String liveOutputName);
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -68,7 +76,9 @@ public interface LiveOutputs {
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -81,7 +91,9 @@ public interface LiveOutputs {
     void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName);
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -96,7 +108,83 @@ public interface LiveOutputs {
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
 
     /**
-     * Gets a live output.
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response}.
+     */
+    Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    LiveOutput operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response}.
+     */
+    Response<LiveOutput> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String liveEventName,
+        String liveOutputName,
+        String operationId,
+        Context context);
+
+    /**
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +195,9 @@ public interface LiveOutputs {
     LiveOutput getById(String id);
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -119,7 +209,9 @@ public interface LiveOutputs {
     Response<LiveOutput> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +221,9 @@ public interface LiveOutputs {
     void deleteById(String id);
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

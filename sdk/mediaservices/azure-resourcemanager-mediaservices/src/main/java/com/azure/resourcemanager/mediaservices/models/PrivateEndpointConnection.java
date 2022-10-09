@@ -53,6 +53,13 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnectionProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner object.
      *
      * @return the inner object.

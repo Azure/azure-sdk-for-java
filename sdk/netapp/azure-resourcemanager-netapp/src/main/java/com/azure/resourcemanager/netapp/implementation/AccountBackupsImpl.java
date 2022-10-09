@@ -13,10 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Backup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountBackupsImpl implements AccountBackups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountBackupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountBackupsImpl.class);
 
     private final AccountBackupsClient innerClient;
 

@@ -89,25 +89,13 @@ stages:
                     - '!sdk/**/session-records'
 
               - task: UsePythonVersion@0
-                displayName: 'Use Python 3.6'
+                displayName: 'Use Python $(PythonVersion)'
                 inputs:
-                  versionSpec: '3.6'
+                  versionSpec: $(PythonVersion)
 
               - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
                 parameters:
-                  PackageName: "azure-sdk-template"
-                  ServiceDirectory: "template"
-                  TestPipeline: ${{ parameters.TestPipeline }}
-
-              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-                parameters:
-                  PackageName: "azure-sdk-template-two"
-                  ServiceDirectory: "template"
-                  TestPipeline: ${{ parameters.TestPipeline }}
-
-              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-                parameters:
-                  PackageName: "azure-sdk-template-three"
+                  PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
                   ServiceDirectory: "template"
                   TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -189,7 +177,7 @@ stages:
                         path: azure-sdk-build-tools
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
-                          SkipDefaultCheckout: true
+                          SkipCheckoutNone: true
                           Repositories:
                             - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
@@ -261,7 +249,6 @@ stages:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
-                          SkipDefaultCheckout: true
                           Paths:
                             - sdk
                             - common/perf-test-core
@@ -353,9 +340,9 @@ stages:
                             - '!sdk/**/session-records'
 
                       - task: UsePythonVersion@0
-                        displayName: 'Use Python 3.6'
+                        displayName: 'Use Python $(PythonVersion)'
                         inputs:
-                          versionSpec: '3.6'
+                          versionSpec: $(PythonVersion)
 
                       - script: |
                           python --version
@@ -395,7 +382,7 @@ stages:
           path: azure-sdk-build-tools
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
             Repositories:
               - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
@@ -447,7 +434,6 @@ stages:
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
-              SkipDefaultCheckout: true
               Paths:
                 - sdk/**/*.md
                 - .github/CODEOWNERS

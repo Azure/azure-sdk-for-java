@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallPolicyResourceState. */
+/** Resource status of the policy. */
 public final class WebApplicationFirewallPolicyResourceState
     extends ExpandableStringEnum<WebApplicationFirewallPolicyResourceState> {
     /** Static value Creating for WebApplicationFirewallPolicyResourceState. */
@@ -40,7 +40,11 @@ public final class WebApplicationFirewallPolicyResourceState
         return fromString(name, WebApplicationFirewallPolicyResourceState.class);
     }
 
-    /** @return known WebApplicationFirewallPolicyResourceState values. */
+    /**
+     * Gets known WebApplicationFirewallPolicyResourceState values.
+     *
+     * @return known WebApplicationFirewallPolicyResourceState values.
+     */
     public static Collection<WebApplicationFirewallPolicyResourceState> values() {
         return values(WebApplicationFirewallPolicyResourceState.class);
     }

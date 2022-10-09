@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryGetGlossary {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarygetglossary.glossarygetglossary
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarygetglossary.glossarygetglossary
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 glossaryClient.getGlossaryWithResponse("47029611-67a1-42d5-8766-90eb904f7f22", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.glossarygetglossary.glossarygetglossary
+        // END:com.azure.analytics.purview.catalog.generated.glossarygetglossary.glossarygetglossary
     }
 }

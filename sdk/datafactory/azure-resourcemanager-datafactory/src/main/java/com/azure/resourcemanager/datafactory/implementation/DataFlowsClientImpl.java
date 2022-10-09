@@ -291,14 +291,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
         DataFlowResourceInner dataFlow,
         String ifMatch) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, dataFlowName, dataFlow, ifMatch)
-            .flatMap(
-                (Response<DataFlowResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -318,14 +311,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
         String resourceGroupName, String factoryName, String dataFlowName, DataFlowResourceInner dataFlow) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, dataFlowName, dataFlow, ifMatch)
-            .flatMap(
-                (Response<DataFlowResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -501,14 +487,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
     private Mono<DataFlowResourceInner> getAsync(
         String resourceGroupName, String factoryName, String dataFlowName, String ifNoneMatch) {
         return getWithResponseAsync(resourceGroupName, factoryName, dataFlowName, ifNoneMatch)
-            .flatMap(
-                (Response<DataFlowResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -526,14 +505,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
     private Mono<DataFlowResourceInner> getAsync(String resourceGroupName, String factoryName, String dataFlowName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, dataFlowName, ifNoneMatch)
-            .flatMap(
-                (Response<DataFlowResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -690,8 +662,7 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String dataFlowName) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, dataFlowName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, factoryName, dataFlowName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -910,7 +881,8 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -945,7 +917,8 @@ public final class DataFlowsClientImpl implements DataFlowsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

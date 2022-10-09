@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.securityinsights.fluent.EntityQueryTemplatesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
-import com.azure.resourcemanager.securityinsights.models.Constant74;
+import com.azure.resourcemanager.securityinsights.models.Constant88;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryTemplateList;
 import reactor.core.publisher.Mono;
 
@@ -66,7 +66,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EntityQueryTemplateList>> list(
             @HostParam("$host") String endpoint,
-            @QueryParam("kind") Constant74 kind,
+            @QueryParam("kind") Constant88 kind,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -115,7 +115,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EntityQueryTemplateInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Constant74 kind) {
+        String resourceGroupName, String workspaceName, Constant88 kind) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -175,7 +175,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EntityQueryTemplateInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Constant74 kind, Context context) {
+        String resourceGroupName, String workspaceName, Constant88 kind, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -231,7 +231,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryTemplateInner> listAsync(
-        String resourceGroupName, String workspaceName, Constant74 kind) {
+        String resourceGroupName, String workspaceName, Constant88 kind) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, kind),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -249,7 +249,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryTemplateInner> listAsync(String resourceGroupName, String workspaceName) {
-        final Constant74 kind = null;
+        final Constant88 kind = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, kind),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -269,7 +269,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryTemplateInner> listAsync(
-        String resourceGroupName, String workspaceName, Constant74 kind, Context context) {
+        String resourceGroupName, String workspaceName, Constant88 kind, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, kind, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -287,7 +287,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryTemplateInner> list(String resourceGroupName, String workspaceName) {
-        final Constant74 kind = null;
+        final Constant88 kind = null;
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, kind));
     }
 
@@ -305,7 +305,7 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryTemplateInner> list(
-        String resourceGroupName, String workspaceName, Constant74 kind, Context context) {
+        String resourceGroupName, String workspaceName, Constant88 kind, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, kind, context));
     }
 
@@ -470,7 +470,8 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -506,7 +507,8 @@ public final class EntityQueryTemplatesClientImpl implements EntityQueryTemplate
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

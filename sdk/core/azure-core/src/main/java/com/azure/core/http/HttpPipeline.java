@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
@@ -89,6 +90,7 @@ public final class HttpPipeline {
         return this.send(new HttpPipelineCallContext(request, data));
     }
 
+
     /**
      * Sends the context (containing an HTTP request) through pipeline.
      *
@@ -99,8 +101,23 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
+            HttpPipelineNextPolicy next =
+                new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
             return next.process();
         });
+    }
+
+    /**
+     * Wraps the request in a context with additional metadata and sends it through the pipeline.
+     *
+     * @param request THe HTTP request to send.
+     * @param data Additional metadata to pass along with the request.
+     * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
+     * upon completion.
+     */
+    public HttpResponse sendSync(HttpRequest request, Context data) {
+        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
+            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+        return next.processSync();
     }
 }

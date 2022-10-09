@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -97,9 +99,14 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
 
     /**
-     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     * Path of a PFX/PEM certificate file to use when performing service principal authentication with Azure.
      */
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
+
+    /**
+     * Password for a PFX/PEM certificate used when performing service principal authentication with Azure.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PASSWORD";
 
     /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
@@ -152,6 +159,12 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /**
+     * Disables metrics.
+     */
+    public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
+
+
+    /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
      * fails.
      */
@@ -184,6 +197,21 @@ public class Configuration implements Cloneable {
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
     public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
+
+    /**
+     * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
+     * {@link HttpClient}.
+     * <p>
+     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * packages.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
+     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link HttpClient}.
+     */
+    public static final String PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION = "AZURE_HTTP_CLIENT_IMPLEMENTATION";
 
     /*
      * Gets the global configuration shared by all client libraries.

@@ -58,7 +58,7 @@ public final class SlackChannelProperties {
      * Whether to register the settings before OAuth validation is performed.
      * Recommended to True.
      */
-    @JsonProperty(value = "registerBeforeOAuthFlow", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "registerBeforeOAuthFlow")
     private Boolean registerBeforeOAuthFlow;
 
     /*
@@ -209,6 +209,18 @@ public final class SlackChannelProperties {
      */
     public Boolean registerBeforeOAuthFlow() {
         return this.registerBeforeOAuthFlow;
+    }
+
+    /**
+     * Set the registerBeforeOAuthFlow property: Whether to register the settings before OAuth validation is performed.
+     * Recommended to True.
+     *
+     * @param registerBeforeOAuthFlow the registerBeforeOAuthFlow value to set.
+     * @return the SlackChannelProperties object itself.
+     */
+    public SlackChannelProperties withRegisterBeforeOAuthFlow(Boolean registerBeforeOAuthFlow) {
+        this.registerBeforeOAuthFlow = registerBeforeOAuthFlow;
+        return this;
     }
 
     /**

@@ -220,7 +220,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -287,7 +287,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -530,7 +530,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -597,7 +597,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -832,7 +832,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -887,7 +887,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1088,7 +1088,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1147,7 +1147,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1272,7 +1272,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1333,7 +1333,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1432,7 +1432,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1467,7 +1467,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1489,7 +1489,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1525,7 +1525,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1544,7 +1544,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1568,7 +1568,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1594,7 +1594,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1614,7 +1614,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1635,7 +1635,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1656,7 +1656,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1678,7 +1678,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1696,7 +1696,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1714,7 +1714,8 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1750,7 +1751,8 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

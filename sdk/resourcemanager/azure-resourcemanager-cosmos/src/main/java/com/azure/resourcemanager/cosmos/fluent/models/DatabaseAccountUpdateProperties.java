@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
@@ -14,20 +13,18 @@ import com.azure.resourcemanager.cosmos.models.Capacity;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties to update Azure Cosmos DB database accounts. */
 @Fluent
 public final class DatabaseAccountUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountUpdateProperties.class);
-
     /*
      * The consistency policy for the Cosmos DB account.
      */
@@ -35,8 +32,7 @@ public final class DatabaseAccountUpdateProperties {
     private ConsistencyPolicy consistencyPolicy;
 
     /*
-     * An array that contains the georeplication locations enabled for the
-     * Cosmos DB account.
+     * An array that contains the georeplication locations enabled for the Cosmos DB account.
      */
     @JsonProperty(value = "locations")
     private List<Location> locations;
@@ -54,10 +50,9 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will
-     * result in a new write region for the account and is chosen based on the
-     * failover priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
+     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
+     * priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -87,15 +82,13 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enableCassandraConnector;
 
     /*
-     * The cassandra connector offer type for the Cosmos DB database C*
-     * account.
+     * The cassandra connector offer type for the Cosmos DB database C* account.
      */
     @JsonProperty(value = "connectorOffer")
     private ConnectorOffer connectorOffer;
 
     /*
-     * Disable write operations on metadata resources (databases, containers,
-     * throughput) via account keys
+     * Disable write operations on metadata resources (databases, containers, throughput) via account keys
      */
     @JsonProperty(value = "disableKeyBasedMetadataWriteAccess")
     private Boolean disableKeyBasedMetadataWriteAccess;
@@ -107,10 +100,8 @@ public final class DatabaseAccountUpdateProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like
-     * customer managed keys. The default identity needs to be explicitly set
-     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
-     * and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity
+     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -164,25 +155,35 @@ public final class DatabaseAccountUpdateProperties {
     private NetworkAclBypass networkAclBypass;
 
     /*
-     * An array that contains the Resource Ids for Network Acl Bypass for the
-     * Cosmos DB account.
+     * An array that contains the Resource Ids for Network Acl Bypass for the Cosmos DB account.
      */
     @JsonProperty(value = "networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
 
     /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
+     * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
-     * The object that represents all properties related to capacity
-     * enforcement on an account.
+     * The object that represents all properties related to capacity enforcement on an account.
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;
+
+    /*
+     * This property is ignored during the update operation, as the metadata is read-only. The object represents the
+     * metadata for the Account Keys of the Cosmos DB account.
+     */
+    @JsonProperty(value = "keysMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    private DatabaseAccountKeysMetadata keysMetadata;
+
+    /*
+     * Flag to indicate enabling/disabling of Partition Merge feature on the account
+     */
+    @JsonProperty(value = "enablePartitionMerge")
+    private Boolean enablePartitionMerge;
 
     /**
      * Get the consistencyPolicy property: The consistency policy for the Cosmos DB account.
@@ -687,6 +688,38 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
+     * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
+     *
+     * @return the keysMetadata value.
+     */
+    public DatabaseAccountKeysMetadata keysMetadata() {
+        return this.keysMetadata;
+    }
+
+    /**
+     * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @return the enablePartitionMerge value.
+     */
+    public Boolean enablePartitionMerge() {
+        return this.enablePartitionMerge;
+    }
+
+    /**
+     * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @param enablePartitionMerge the enablePartitionMerge value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnablePartitionMerge(Boolean enablePartitionMerge) {
+        this.enablePartitionMerge = enablePartitionMerge;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -721,6 +754,9 @@ public final class DatabaseAccountUpdateProperties {
         }
         if (capacity() != null) {
             capacity().validate();
+        }
+        if (keysMetadata() != null) {
+            keysMetadata().validate();
         }
     }
 }

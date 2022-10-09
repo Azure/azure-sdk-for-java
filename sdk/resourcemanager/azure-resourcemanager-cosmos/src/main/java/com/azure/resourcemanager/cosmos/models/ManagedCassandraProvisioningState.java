@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedCassandraProvisioningState. */
+/** The status of the resource at the time the operation was called. */
 public final class ManagedCassandraProvisioningState extends ExpandableStringEnum<ManagedCassandraProvisioningState> {
     /** Static value Creating for ManagedCassandraProvisioningState. */
     public static final ManagedCassandraProvisioningState CREATING = fromString("Creating");
@@ -39,7 +39,11 @@ public final class ManagedCassandraProvisioningState extends ExpandableStringEnu
         return fromString(name, ManagedCassandraProvisioningState.class);
     }
 
-    /** @return known ManagedCassandraProvisioningState values. */
+    /**
+     * Gets known ManagedCassandraProvisioningState values.
+     *
+     * @return known ManagedCassandraProvisioningState values.
+     */
     public static Collection<ManagedCassandraProvisioningState> values() {
         return values(ManagedCassandraProvisioningState.class);
     }

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NetworkInterfaceReferenceProperties {
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;

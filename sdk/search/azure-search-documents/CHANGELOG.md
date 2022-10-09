@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.11 (Unreleased)
+## 11.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,91 @@
 
 ### Other Changes
 
-## 11.4.11 (2022-06-07)
+## 11.6.0-beta.1 (2022-09-06)
+
+### Features Added
+
+- All features from the `11.5.x` betas that weren't included in `11.5.0`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.20` to version `1.2.21`.
+
+## 11.5.0 (2022-09-06)
+
+### Features Added
+
+- Added multi-cloud support via `SearchAudience` to allow users to select the Azure cloud where the resource is located. ([#30331](https://github.com/Azure/azure-sdk-for-java/pull/30331))
+- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder`
+  and `SearchClientBuilder`.
+
+### Other Changes
+
+- Doesn't include other features added in the `11.5.x` betas. To continue using those features upgrade to `11.6.0-beta.1`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.20` to version `1.2.21`.
+
+## 11.4.13 (2022-08-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
+
+## 11.5.0-beta.12 (2022-08-17)
+
+### Features Added
+
+- Added multi-cloud support via `SearchAudience` to allow users to select the Azure cloud where the resource is located. ([#30331](https://github.com/Azure/azure-sdk-for-java/pull/30331))
+- Added new languages to `ImageAnalysisSkillLanguage` and `OcrSkillLanguage`. ([#30363](https://github.com/Azure/azure-sdk-for-java/pull/30363))
+
+### Other Changes
+
+- Added fluent setter overloads to subclasses that return the subclass type instead of the super class type
+  allowing for fluent calls to maintain type instead of requiring a type cast.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
+
+## 11.5.0-beta.11 (2022-07-01)
+
+### Features Added
+
+- Added support for `LexicalNormalizer`s in `SimpleField` and `SearchableField` annotations.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.18` to version `1.2.19`.
+
+## 11.4.12 (2022-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.18` to version `1.2.19`.
+
+## 11.5.0-beta.10 (2022-06-07)
 
 ### Bugs Fixed
 
@@ -24,7 +108,7 @@
 - Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.16` to version `1.2.18`.
 
-## 11.5.0-beta.10 (2022-06-07)
+## 11.4.11 (2022-06-07)
 
 ### Bugs Fixed
 

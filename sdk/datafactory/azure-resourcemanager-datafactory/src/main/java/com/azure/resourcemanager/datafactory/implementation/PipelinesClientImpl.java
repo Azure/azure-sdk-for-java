@@ -495,14 +495,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
         PipelineResourceInner pipeline,
         String ifMatch) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch)
-            .flatMap(
-                (Response<PipelineResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -522,14 +515,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
         String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch)
-            .flatMap(
-                (Response<PipelineResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -705,14 +691,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     private Mono<PipelineResourceInner> getAsync(
         String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch) {
         return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch)
-            .flatMap(
-                (Response<PipelineResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -730,14 +709,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     private Mono<PipelineResourceInner> getAsync(String resourceGroupName, String factoryName, String pipelineName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch)
-            .flatMap(
-                (Response<PipelineResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -894,8 +866,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String pipelineName) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, pipelineName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, factoryName, pipelineName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1120,14 +1091,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
                 startActivityName,
                 startFromFailure,
                 parameters)
-            .flatMap(
-                (Response<CreateRunResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1158,14 +1122,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
                 startActivityName,
                 startFromFailure,
                 parameters)
-            .flatMap(
-                (Response<CreateRunResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1247,7 +1204,8 @@ public final class PipelinesClientImpl implements PipelinesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1282,7 +1240,8 @@ public final class PipelinesClientImpl implements PipelinesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

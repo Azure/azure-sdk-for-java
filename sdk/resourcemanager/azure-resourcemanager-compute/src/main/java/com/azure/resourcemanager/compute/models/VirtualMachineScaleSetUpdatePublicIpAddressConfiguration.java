@@ -19,8 +19,7 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
     private String name;
 
     /*
-     * Describes a virtual machines scale set IP Configuration's
-     * PublicIPAddress configuration
+     * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties;

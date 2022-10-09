@@ -92,7 +92,7 @@ public final class DigitalTwinsImpl {
                 Context context);
 
         @Put("/digitaltwins/{id}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DigitalTwinsAddResponse> add(
                 @HostParam("$host") String host,
@@ -117,7 +117,7 @@ public final class DigitalTwinsImpl {
                 Context context);
 
         @Patch("/digitaltwins/{id}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DigitalTwinsUpdateResponse> update(
                 @HostParam("$host") String host,
@@ -247,7 +247,7 @@ public final class DigitalTwinsImpl {
                 Context context);
 
         @Patch("/digitaltwins/{id}/components/{componentPath}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DigitalTwinsUpdateComponentResponse> updateComponent(
                 @HostParam("$host") String host,

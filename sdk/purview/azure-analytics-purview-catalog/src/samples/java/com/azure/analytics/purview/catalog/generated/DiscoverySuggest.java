@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoverySuggest {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoverysuggest.discoverysuggest
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoverysuggest.discoverysuggest
         BinaryData suggestRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"entityType\":\"azure_blob_path\",\"includeSubTypes\":false}]},\"keywords\":\"exampledata\",\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.suggestWithResponse(suggestRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoverysuggest.discoverysuggest
+        // END:com.azure.analytics.purview.catalog.generated.discoverysuggest.discoverysuggest
     }
 }

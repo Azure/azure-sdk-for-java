@@ -1,1 +1,2 @@
 com.azure.core.test.AzureTestWatcher
+com.azure.core.test.ThreadDumper

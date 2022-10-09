@@ -19,16 +19,224 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = TypesClientBuilder.class)
 public final class TypesClient {
-    @Generated private final TypesAsyncClient asyncClient;
+    @Generated private final TypesAsyncClient client;
 
     /**
      * Initializes an instance of TypesClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    TypesClient(TypesAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    TypesClient(TypesAsyncClient client) {
+        this.client = client;
+    }
+
+    /**
+     * Get the businessMetadata definition for the given guid.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param guid businessMetadata guid.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition for the given guid along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBusinessMetadataDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.getBusinessMetadataDefByGuidWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Get the businessMetadata definition by it's name (unique).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param name businessMetadata name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBusinessMetadataDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.client.getBusinessMetadataDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -141,7 +349,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -254,7 +462,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getClassificationDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -387,7 +595,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -520,7 +728,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.client.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -606,7 +814,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getEnumDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getEnumDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -692,7 +900,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getEnumDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getEnumDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -807,7 +1015,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -922,7 +1130,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getRelationshipDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getRelationshipDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1026,7 +1234,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getStructDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getStructDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1130,7 +1338,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getStructDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getStructDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1285,7 +1493,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1440,7 +1648,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.client.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1457,7 +1665,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.deleteTypeByNameWithResponse(name, requestOptions).block();
+        return this.client.deleteTypeByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1468,16 +1676,16 @@ public final class TypesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -1558,6 +1766,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -1743,7 +1974,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.getAllTypeDefinitionsWithResponse(requestOptions).block();
+        return this.client.getAllTypeDefinitionsWithResponse(requestOptions).block();
     }
 
     /**
@@ -1754,7 +1985,7 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -1835,6 +2066,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2014,7 +2268,7 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2095,6 +2349,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2281,7 +2558,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -2291,7 +2568,7 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2372,6 +2649,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2551,7 +2851,7 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2632,6 +2932,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2819,7 +3142,7 @@ public final class TypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -2829,7 +3152,7 @@ public final class TypesClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2910,6 +3233,29 @@ public final class TypesClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -3096,7 +3442,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -3107,9 +3453,9 @@ public final class TypesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3135,19 +3481,11 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.listTypeDefinitionHeadersWithResponse(requestOptions).block();
+        return this.client.listTypeDefinitionHeadersWithResponse(requestOptions).block();
     }
 
     /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3247,19 +3585,11 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
      * Get the term template definition by its name (unique).
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3359,6 +3689,6 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
     }
 }

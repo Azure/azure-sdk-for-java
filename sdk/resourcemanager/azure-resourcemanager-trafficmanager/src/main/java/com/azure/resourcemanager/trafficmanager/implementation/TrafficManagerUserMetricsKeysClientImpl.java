@@ -7,6 +7,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -22,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.fluent.TrafficManagerUserMetricsKeysClient;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.UserMetricsModelInner;
@@ -30,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TrafficManagerUserMetricsKeysClient. */
 public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficManagerUserMetricsKeysClient {
-    private final ClientLogger logger = new ClientLogger(TrafficManagerUserMetricsKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TrafficManagerUserMetricsKeysService service;
 
@@ -60,7 +58,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface TrafficManagerUserMetricsKeysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -68,9 +66,10 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -78,9 +77,10 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -88,6 +88,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -96,7 +97,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection.
+     * @return the subscription-level key used for Real User Metrics collection along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserMetricsModelInner>> getWithResponseAsync() {
@@ -112,6 +114,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -120,8 +123,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -131,7 +135,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection.
+     * @return the subscription-level key used for Real User Metrics collection along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserMetricsModelInner>> getWithResponseAsync(Context context) {
@@ -147,9 +152,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+            .get(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -157,19 +168,26 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection.
+     * @return the subscription-level key used for Real User Metrics collection on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserMetricsModelInner> getAsync() {
-        return getWithResponseAsync()
-            .flatMap(
-                (Response<UserMetricsModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the subscription-level key used for Real User Metrics collection.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription-level key used for Real User Metrics collection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserMetricsModelInner> getWithResponse(Context context) {
+        return getWithResponseAsync(context).block();
     }
 
     /**
@@ -181,21 +199,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserMetricsModelInner get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get the subscription-level key used for Real User Metrics collection.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserMetricsModelInner> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+        return getWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -203,7 +207,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics.
+     * @return class representing Traffic Manager User Metrics along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserMetricsModelInner>> createOrUpdateWithResponseAsync() {
@@ -219,6 +224,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -227,8 +233,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -238,7 +245,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics.
+     * @return class representing Traffic Manager User Metrics along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserMetricsModelInner>> createOrUpdateWithResponseAsync(Context context) {
@@ -254,10 +262,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -265,19 +278,25 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics.
+     * @return class representing Traffic Manager User Metrics on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserMetricsModelInner> createOrUpdateAsync() {
-        return createOrUpdateWithResponseAsync()
-            .flatMap(
-                (Response<UserMetricsModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a subscription-level key used for Real User Metrics collection.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing Traffic Manager User Metrics along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserMetricsModelInner> createOrUpdateWithResponse(Context context) {
+        return createOrUpdateWithResponseAsync(context).block();
     }
 
     /**
@@ -289,21 +308,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserMetricsModelInner createOrUpdate() {
-        return createOrUpdateAsync().block();
-    }
-
-    /**
-     * Create or update a subscription-level key used for Real User Metrics collection.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserMetricsModelInner> createOrUpdateWithResponse(Context context) {
-        return createOrUpdateWithResponseAsync(context).block();
+        return createOrUpdateWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -311,7 +316,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync() {
@@ -327,6 +333,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -335,8 +342,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -346,7 +354,8 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(Context context) {
@@ -362,9 +371,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -372,19 +387,25 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync() {
-        return deleteWithResponseAsync()
-            .flatMap(
-                (Response<DeleteOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return deleteWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Delete a subscription-level key used for Real User Metrics collection.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the request or operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeleteOperationResultInner> deleteWithResponse(Context context) {
+        return deleteWithResponseAsync(context).block();
     }
 
     /**
@@ -396,20 +417,6 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete() {
-        return deleteAsync().block();
-    }
-
-    /**
-     * Delete a subscription-level key used for Real User Metrics collection.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(Context context) {
-        return deleteWithResponseAsync(context).block();
+        return deleteWithResponse(Context.NONE).getValue();
     }
 }

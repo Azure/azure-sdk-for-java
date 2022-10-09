@@ -13,17 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetEntitiesByUniqueAttributes {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitygetentitiesbyuniqueattributes.entitygetentitiesbyuniqueattributes
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitygetentitiesbyuniqueattributes.entitygetentitiesbyuniqueattributes
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 entityClient.getEntitiesByUniqueAttributesWithResponse("azure_storage_account", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entitygetentitiesbyuniqueattributes.entitygetentitiesbyuniqueattributes
+        // END:com.azure.analytics.purview.catalog.generated.entitygetentitiesbyuniqueattributes.entitygetentitiesbyuniqueattributes
     }
 }

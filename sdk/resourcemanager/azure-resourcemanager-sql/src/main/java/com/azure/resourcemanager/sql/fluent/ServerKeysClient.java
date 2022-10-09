@@ -29,7 +29,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerKeyInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -43,7 +43,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerKeyInner> listByServer(String resourceGroupName, String serverName);
@@ -58,7 +58,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerKeyInner> listByServer(String resourceGroupName, String serverName, Context context);
@@ -73,7 +73,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerKeyInner>> getWithResponseAsync(String resourceGroupName, String serverName, String keyName);
@@ -88,7 +88,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerKeyInner> getAsync(String resourceGroupName, String serverName, String keyName);
@@ -119,7 +119,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerKeyInner> getWithResponse(
@@ -135,11 +135,11 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -155,13 +155,13 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link PollerFlux} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters);
 
@@ -175,13 +175,13 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link SyncPoller} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters);
 
@@ -195,14 +195,14 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link SyncPoller} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters, Context context);
 
@@ -216,11 +216,11 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerKeyInner> createOrUpdateAsync(
@@ -236,7 +236,7 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +256,7 @@ public interface ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,7 +277,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -293,9 +293,9 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName, String keyName);
 
     /**
@@ -308,9 +308,9 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String keyName);
 
     /**
@@ -324,9 +324,9 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String keyName, Context context);
 
@@ -340,7 +340,7 @@ public interface ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String keyName);

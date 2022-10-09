@@ -17,6 +17,12 @@ public final class InlineEventProperties {
     private String description;
 
     /*
+     * The displayName for the inline event.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
+    /*
      * The documentationUrl for the inline event.
      */
     @JsonProperty(value = "documentationUrl")
@@ -45,6 +51,26 @@ public final class InlineEventProperties {
      */
     public InlineEventProperties withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The displayName for the inline event.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The displayName for the inline event.
+     *
+     * @param displayName the displayName value to set.
+     * @return the InlineEventProperties object itself.
+     */
+    public InlineEventProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 

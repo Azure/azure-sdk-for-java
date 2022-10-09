@@ -30,7 +30,11 @@ public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<Man
         return fromString(name, ManagedInstanceProxyOverride.class);
     }
 
-    /** @return known ManagedInstanceProxyOverride values. */
+    /**
+     * Gets known ManagedInstanceProxyOverride values.
+     *
+     * @return known ManagedInstanceProxyOverride values.
+     */
     public static Collection<ManagedInstanceProxyOverride> values() {
         return values(ManagedInstanceProxyOverride.class);
     }

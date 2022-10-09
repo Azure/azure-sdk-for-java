@@ -39,7 +39,11 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
         return fromString(name, DeploymentProvisioningState.class);
     }
 
-    /** @return known DeploymentProvisioningState values. */
+    /**
+     * Gets known DeploymentProvisioningState values.
+     *
+     * @return known DeploymentProvisioningState values.
+     */
     public static Collection<DeploymentProvisioningState> values() {
         return values(DeploymentProvisioningState.class);
     }

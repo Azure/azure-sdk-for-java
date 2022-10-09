@@ -3,11 +3,13 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -16,11 +18,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A {@link BinaryDataContent} backed by a file.
@@ -32,7 +36,10 @@ public final class FileContent extends BinaryDataContent {
     private final int chunkSize;
     private final long position;
     private final long length;
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<FileContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(FileContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link FileContent}.
@@ -110,12 +117,7 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
@@ -154,27 +156,16 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.using(() -> FileChannel.open(file), channel -> Flux.generate(() -> 0L, (count, sink) -> {
-            if (count == length) {
-                sink.complete();
-                return count;
-            }
-
-            int readCount = (int) Math.min(chunkSize, length - count);
-            try {
-                sink.next(channel.map(FileChannel.MapMode.READ_ONLY, position + count, readCount));
-            } catch (IOException ex) {
-                sink.error(ex);
-            }
-
-            return count + readCount;
-        }), channel -> {
-            try {
-                channel.close();
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        });
+        return Flux.using(
+            () -> AsynchronousFileChannel.open(file, StandardOpenOption.READ),
+            channel -> FluxUtil.readFile(channel, chunkSize, position, length),
+            channel -> {
+                try {
+                    channel.close();
+                } catch (IOException ex) {
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
+                }
+            });
     }
 
     /**
@@ -195,15 +186,46 @@ public final class FileContent extends BinaryDataContent {
         return chunkSize;
     }
 
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
+    }
+
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 String.format("'length' cannot be greater than %d when buffering content.",
                     MAX_ARRAY_SIZE)));
         }
-        byte[] bytes = new byte[(int) length];
-        toByteBuffer().get(bytes);
-        return bytes;
+        try (InputStream is = this.toStream()) {
+            byte[] bytes = new byte[(int) length];
+            int pendingBytes = bytes.length;
+            int offset = 0;
+            do {
+                // This usually reads in one shot.
+                int read = is.read(bytes, offset, pendingBytes);
+                if (read >= 0) {
+                    pendingBytes -= read;
+                    offset += read;
+                } else {
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalStateException("Premature EOF. File was modified concurrently."));
+                }
+            } while (pendingBytes > 0);
+            return bytes;
+        } catch (IOException exception) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        }
     }
 }
 

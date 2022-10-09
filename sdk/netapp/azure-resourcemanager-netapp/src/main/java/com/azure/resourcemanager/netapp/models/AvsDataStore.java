@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvsDataStore. */
+/**
+ * avsDataStore
+ *
+ * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+ */
 public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
     /** Static value Enabled for AvsDataStore. */
     public static final AvsDataStore ENABLED = fromString("Enabled");
@@ -27,7 +31,11 @@ public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
         return fromString(name, AvsDataStore.class);
     }
 
-    /** @return known AvsDataStore values. */
+    /**
+     * Gets known AvsDataStore values.
+     *
+     * @return known AvsDataStore values.
+     */
     public static Collection<AvsDataStore> values() {
         return values(AvsDataStore.class);
     }

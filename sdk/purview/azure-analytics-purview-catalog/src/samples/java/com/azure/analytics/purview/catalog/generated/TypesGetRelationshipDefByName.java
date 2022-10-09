@@ -13,17 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetRelationshipDefByName {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.typesgetrelationshipdefbyname.typesgetrelationshipdefbyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetrelationshipdefbyname.typesgetrelationshipdefbyname
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 typesClient.getRelationshipDefByNameWithResponse("storm_topology_nodes", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.typesgetrelationshipdefbyname.typesgetrelationshipdefbyname
+        // END:com.azure.analytics.purview.catalog.generated.typesgetrelationshipdefbyname.typesgetrelationshipdefbyname
     }
 }

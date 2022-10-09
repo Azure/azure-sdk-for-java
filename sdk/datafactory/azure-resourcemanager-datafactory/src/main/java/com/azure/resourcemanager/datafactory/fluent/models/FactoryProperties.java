@@ -9,6 +9,7 @@ import com.azure.resourcemanager.datafactory.models.EncryptionConfiguration;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoConfiguration;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
+import com.azure.resourcemanager.datafactory.models.PurviewConfiguration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -34,6 +35,12 @@ public final class FactoryProperties {
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
+
+    /*
+     * Purview information of the factory.
+     */
+    @JsonProperty(value = "purviewConfiguration")
+    private PurviewConfiguration purviewConfiguration;
 
     /*
      * Git repo information of the factory.
@@ -85,6 +92,26 @@ public final class FactoryProperties {
      */
     public String version() {
         return this.version;
+    }
+
+    /**
+     * Get the purviewConfiguration property: Purview information of the factory.
+     *
+     * @return the purviewConfiguration value.
+     */
+    public PurviewConfiguration purviewConfiguration() {
+        return this.purviewConfiguration;
+    }
+
+    /**
+     * Set the purviewConfiguration property: Purview information of the factory.
+     *
+     * @param purviewConfiguration the purviewConfiguration value to set.
+     * @return the FactoryProperties object itself.
+     */
+    public FactoryProperties withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        this.purviewConfiguration = purviewConfiguration;
+        return this;
     }
 
     /**
@@ -173,6 +200,9 @@ public final class FactoryProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (purviewConfiguration() != null) {
+            purviewConfiguration().validate();
+        }
         if (repoConfiguration() != null) {
             repoConfiguration().validate();
         }

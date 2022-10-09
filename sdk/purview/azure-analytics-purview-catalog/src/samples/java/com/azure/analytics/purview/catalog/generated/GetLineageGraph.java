@@ -13,20 +13,21 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetLineageGraph {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.lineagegetlineagegraph.getlineagegraph
         LineageClient lineageClient =
                 new LineageClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("depth", "1");
-        requestOptions.addQueryParam("direction", "INPUT");
-        requestOptions.addQueryParam("getDerivedLineage", "true");
-        requestOptions.addQueryParam("includeParent", "true");
-        requestOptions.addQueryParam("width", "5");
+        // BEGIN:com.azure.analytics.purview.catalog.generated.lineagegetlineagegraph.getlineagegraph
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .addQueryParam("depth", "1")
+                        .addQueryParam("getDerivedLineage", "true")
+                        .addQueryParam("includeParent", "true")
+                        .addQueryParam("width", "5");
         Response<BinaryData> response =
-                lineageClient.getLineageGraphWithResponse("a6894eb3-81f3-829b-2adc-52f3e603411a", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.lineagegetlineagegraph.getlineagegraph
+                lineageClient.getLineageGraphWithResponse(
+                        "a6894eb3-81f3-829b-2adc-52f3e603411a", "INPUT", requestOptions);
+        // END:com.azure.analytics.purview.catalog.generated.lineagegetlineagegraph.getlineagegraph
     }
 }

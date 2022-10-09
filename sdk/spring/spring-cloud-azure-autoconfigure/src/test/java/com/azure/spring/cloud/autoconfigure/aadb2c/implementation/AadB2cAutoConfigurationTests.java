@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +15,11 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.Arrays;
@@ -54,7 +56,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 assertTrue(authorizationClients.containsKey("test"));
                 assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
-                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AadAuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
 
                 Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
                 assertEquals(authenticateAdditionalParameters.size(), 2);
@@ -68,7 +70,12 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AadB2cAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(
+                    AzureGlobalPropertiesAutoConfiguration.class,
+                    WebOAuth2ClientApp.class,
+                    AadB2cAutoConfiguration.class,
+                    HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
             .withPropertyValues(getGlobalConfigurableItems());
@@ -150,7 +157,12 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Test
     void setDefaultValueFromAzureGlobalPropertiesTest() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AadB2cAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(
+                    AzureGlobalPropertiesAutoConfiguration.class,
+                    WebOAuth2ClientApp.class,
+                    AadB2cAutoConfiguration.class,
+                    HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
             .withPropertyValues(
@@ -169,7 +181,12 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 assertEquals("aad-tenant-id", properties.getProfile().getTenantId());
             });
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientApp.class, AadB2cAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(
+                    AzureGlobalPropertiesAutoConfiguration.class,
+                    WebOAuth2ClientApp.class,
+                    AadB2cAutoConfiguration.class,
+                    HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
             .withPropertyValues(
@@ -236,8 +253,11 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
             new WebApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(WebResourceServerApp.class,
-                    AadB2cResourceServerAutoConfiguration.class))
+                .withConfiguration(AutoConfigurations.of(
+                        WebResourceServerApp.class,
+                        AadB2cResourceServerAutoConfiguration.class,
+                        HttpMessageConvertersAutoConfiguration.class,
+                        RestTemplateAutoConfiguration.class))
                 .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
                 .withPropertyValues(getGlobalConfigurableItems())
                 .run(c -> {

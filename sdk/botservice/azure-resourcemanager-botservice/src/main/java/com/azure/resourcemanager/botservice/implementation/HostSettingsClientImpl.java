@@ -144,15 +144,7 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HostSettingsResponseInner> getAsync() {
-        return getWithResponseAsync()
-            .flatMap(
-                (Response<HostSettingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

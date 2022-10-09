@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuConversionStatus. */
+/** This property indicates the current sku conversion status. */
 public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversionStatus> {
     /** Static value InProgress for SkuConversionStatus. */
     public static final SkuConversionStatus IN_PROGRESS = fromString("InProgress");

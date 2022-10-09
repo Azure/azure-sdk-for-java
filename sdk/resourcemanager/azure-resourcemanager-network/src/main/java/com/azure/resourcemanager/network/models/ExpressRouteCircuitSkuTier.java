@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteCircuitSkuTier. */
+/** The tier of the SKU. */
 public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<ExpressRouteCircuitSkuTier> {
     /** Static value Standard for ExpressRouteCircuitSkuTier. */
     public static final ExpressRouteCircuitSkuTier STANDARD = fromString("Standard");
@@ -33,7 +33,11 @@ public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<Expre
         return fromString(name, ExpressRouteCircuitSkuTier.class);
     }
 
-    /** @return known ExpressRouteCircuitSkuTier values. */
+    /**
+     * Gets known ExpressRouteCircuitSkuTier values.
+     *
+     * @return known ExpressRouteCircuitSkuTier values.
+     */
     public static Collection<ExpressRouteCircuitSkuTier> values() {
         return values(ExpressRouteCircuitSkuTier.class);
     }

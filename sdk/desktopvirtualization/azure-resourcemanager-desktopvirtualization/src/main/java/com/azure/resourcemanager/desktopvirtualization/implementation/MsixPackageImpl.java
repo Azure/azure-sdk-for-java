@@ -90,6 +90,10 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MsixPackageInner innerModel() {
         return this.innerObject;
     }

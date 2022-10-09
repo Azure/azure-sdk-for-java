@@ -3,17 +3,20 @@
 
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
+import java.util.function.Function;
+
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
-import org.springframework.util.StringUtils;
 
-import java.util.function.Function;
+import org.springframework.util.StringUtils;
 
 /**
  * Resolve the token credential according to the azure properties.
@@ -44,19 +47,25 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
         final boolean isClientIdSet = StringUtils.hasText(clientId);
+
         if (StringUtils.hasText(tenantId)) {
 
             if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
-                return new ClientSecretCredentialBuilder().clientId(clientId)
-                                                          .clientSecret(properties.getClientSecret())
-                                                          .tenantId(tenantId)
-                                                          .build();
+                return new ClientSecretCredentialBuilderFactory(azureProperties)
+                    .build()
+                    .clientId(clientId)
+                    .clientSecret(properties.getClientSecret())
+                    .tenantId(tenantId)
+                    .build();
             }
 
             String clientCertificatePath = properties.getClientCertificatePath();
             if (StringUtils.hasText(clientCertificatePath)) {
-                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder().tenantId(tenantId)
-                                                                                                     .clientId(clientId);
+                ClientCertificateCredentialBuilder builder =
+                    new ClientCertificateCredentialBuilderFactory(azureProperties)
+                        .build()
+                        .tenantId(tenantId)
+                        .clientId(clientId);
 
                 if (StringUtils.hasText(properties.getClientCertificatePassword())) {
                     builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
@@ -70,15 +79,17 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
 
         if (isClientIdSet && StringUtils.hasText(properties.getUsername())
             && StringUtils.hasText(properties.getPassword())) {
-            return new UsernamePasswordCredentialBuilder().username(properties.getUsername())
-                                                          .password(properties.getPassword())
-                                                          .clientId(clientId)
-                                                          .tenantId(tenantId)
-                                                          .build();
+            return new UsernamePasswordCredentialBuilderFactory(azureProperties)
+                .build()
+                .username(properties.getUsername())
+                .password(properties.getPassword())
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         if (properties.isManagedIdentityEnabled()) {
-            ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilder();
+            ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilderFactory(azureProperties).build();
             if (isClientIdSet) {
                 builder.clientId(clientId);
             }

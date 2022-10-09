@@ -17,46 +17,40 @@ import java.util.List;
 @Fluent
 public final class HDInsightOnDemandLinkedServiceTypeProperties {
     /*
-     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type:
-     * string (or Expression with resultType string).
+     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "clusterSize", required = true)
     private Object clusterSize;
 
     /*
-     * The allowed idle time for the on-demand HDInsight cluster. Specifies how
-     * long the on-demand HDInsight cluster stays alive after completion of an
-     * activity run if there are no other active jobs in the cluster. The
-     * minimum value is 5 mins. Type: string (or Expression with resultType
-     * string).
+     * The allowed idle time for the on-demand HDInsight cluster. Specifies how long the on-demand HDInsight cluster
+     * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
+     * value is 5 mins. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "timeToLive", required = true)
     private Object timeToLive;
 
     /*
-     * Version of the HDInsight cluster.  Type: string (or Expression with
-     * resultType string).
+     * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "version", required = true)
     private Object version;
 
     /*
-     * Azure Storage linked service to be used by the on-demand cluster for
-     * storing and processing data.
+     * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The customer’s subscription to host the cluster. Type: string (or
-     * Expression with resultType string).
+     * The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "hostSubscriptionId", required = true)
     private Object hostSubscriptionId;
 
     /*
-     * The service principal id for the hostSubscriptionId. Type: string (or
-     * Expression with resultType string).
+     * The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -68,29 +62,26 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The Tenant id/name to which the service principal belongs. Type: string
-     * (or Expression with resultType string).
+     * The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
-     * The resource group where the cluster belongs. Type: string (or
-     * Expression with resultType string).
+     * The resource group where the cluster belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clusterResourceGroup", required = true)
     private Object clusterResourceGroup;
 
     /*
-     * The prefix of cluster name, postfix will be distinct with timestamp.
-     * Type: string (or Expression with resultType string).
+     * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "clusterNamePrefix")
     private Object clusterNamePrefix;
 
     /*
-     * The username to access the cluster. Type: string (or Expression with
-     * resultType string).
+     * The username to access the cluster. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clusterUserName")
     private Object clusterUsername;
@@ -102,8 +93,8 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     private SecretBase clusterPassword;
 
     /*
-     * The username to SSH remotely connect to cluster’s node (for Linux).
-     * Type: string (or Expression with resultType string).
+     * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "clusterSshUserName")
     private Object clusterSshUsername;
@@ -115,16 +106,15 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     private SecretBase clusterSshPassword;
 
     /*
-     * Specifies additional storage accounts for the HDInsight linked service
-     * so that the Data Factory service can register them on your behalf.
+     * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
+     * register them on your behalf.
      */
     @JsonProperty(value = "additionalLinkedServiceNames")
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
-     * The name of Azure SQL linked service that point to the HCatalog
-     * database. The on-demand HDInsight cluster is created by using the Azure
-     * SQL database as the metastore.
+     * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
+     * created by using the Azure SQL database as the metastore.
      */
     @JsonProperty(value = "hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
@@ -136,72 +126,62 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     private Object clusterType;
 
     /*
-     * The version of spark if the cluster type is 'spark'. Type: string (or
-     * Expression with resultType string).
+     * The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sparkVersion")
     private Object sparkVersion;
 
     /*
-     * Specifies the core configuration parameters (as in core-site.xml) for
-     * the HDInsight cluster to be created.
+     * Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
      */
     @JsonProperty(value = "coreConfiguration")
     private Object coreConfiguration;
 
     /*
-     * Specifies the HBase configuration parameters (hbase-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "hBaseConfiguration")
     private Object hBaseConfiguration;
 
     /*
-     * Specifies the HDFS configuration parameters (hdfs-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "hdfsConfiguration")
     private Object hdfsConfiguration;
 
     /*
-     * Specifies the hive configuration parameters (hive-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "hiveConfiguration")
     private Object hiveConfiguration;
 
     /*
-     * Specifies the MapReduce configuration parameters (mapred-site.xml) for
-     * the HDInsight cluster.
+     * Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "mapReduceConfiguration")
     private Object mapReduceConfiguration;
 
     /*
-     * Specifies the Oozie configuration parameters (oozie-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "oozieConfiguration")
     private Object oozieConfiguration;
 
     /*
-     * Specifies the Storm configuration parameters (storm-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "stormConfiguration")
     private Object stormConfiguration;
 
     /*
-     * Specifies the Yarn configuration parameters (yarn-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "yarnConfiguration")
     private Object yarnConfiguration;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
@@ -225,24 +205,22 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     private Object zookeeperNodeSize;
 
     /*
-     * Custom script actions to run on HDI ondemand cluster once it's up.
-     * Please refer to
+     * Custom script actions to run on HDI ondemand cluster once it's up. Please refer to
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
     @JsonProperty(value = "scriptActions")
     private List<ScriptAction> scriptActions;
 
     /*
-     * The ARM resource ID for the vNet to which the cluster should be joined
-     * after creation. Type: string (or Expression with resultType string).
+     * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "virtualNetworkId")
     private Object virtualNetworkId;
 
     /*
-     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was
-     * specified, then this property is required. Type: string (or Expression
-     * with resultType string).
+     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
+     * required. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "subnetName")
     private Object subnetName;

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupPoliciesImpl implements BackupPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupPoliciesImpl.class);
 
     private final BackupPoliciesClient innerClient;
 
@@ -73,7 +72,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     public BackupPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -81,7 +80,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,7 +88,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,7 +100,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     public Response<BackupPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +164,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,7 +172,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         }
         String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -62,7 +62,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all the Media Services operations.
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -76,7 +78,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
@@ -84,7 +86,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all the Media Services operations.
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,14 +104,16 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
-     * Lists all the Media Services operations.
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -115,19 +121,13 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationCollectionInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<OperationCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Lists all the Media Services operations.
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,7 +139,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all the Media Services operations.
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

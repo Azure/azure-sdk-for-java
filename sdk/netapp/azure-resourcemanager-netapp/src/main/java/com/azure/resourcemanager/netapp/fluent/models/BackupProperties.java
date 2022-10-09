@@ -5,25 +5,25 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.BackupType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Backup properties. */
 @Fluent
 public final class BackupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupProperties.class);
-
     /*
-     * backupId UUID v4 used to identify the Backup
+     * backupId
+     *
+     * UUID v4 used to identify the Backup
      */
     @JsonProperty(value = "backupId", access = JsonProperty.Access.WRITE_ONLY)
     private String backupId;
 
     /*
-     * creationDate The creation date of the backup
+     * creationDate
+     *
+     * The creation date of the backup
      */
     @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
@@ -47,7 +47,9 @@ public final class BackupProperties {
     private String label;
 
     /*
-     * backupType Type of backup Manual or Scheduled
+     * backupType
+     *
+     * Type of backup Manual or Scheduled
      */
     @JsonProperty(value = "backupType", access = JsonProperty.Access.WRITE_ONLY)
     private BackupType backupType;
@@ -65,14 +67,16 @@ public final class BackupProperties {
     private String volumeName;
 
     /*
-     * Manual backup an already existing snapshot. This will always be false
-     * for scheduled backups and true/false for manual backups
+     * Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for
+     * manual backups
      */
     @JsonProperty(value = "useExistingSnapshot")
     private Boolean useExistingSnapshot;
 
     /**
-     * Get the backupId property: backupId UUID v4 used to identify the Backup.
+     * Get the backupId property: backupId
+     *
+     * <p>UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
@@ -81,7 +85,9 @@ public final class BackupProperties {
     }
 
     /**
-     * Get the creationDate property: creationDate The creation date of the backup.
+     * Get the creationDate property: creationDate
+     *
+     * <p>The creation date of the backup.
      *
      * @return the creationDate value.
      */
@@ -128,7 +134,9 @@ public final class BackupProperties {
     }
 
     /**
-     * Get the backupType property: backupType Type of backup Manual or Scheduled.
+     * Get the backupType property: backupType
+     *
+     * <p>Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */

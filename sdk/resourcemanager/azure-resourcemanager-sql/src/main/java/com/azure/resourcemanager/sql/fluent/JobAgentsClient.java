@@ -14,8 +14,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.JobAgentInner;
+import com.azure.resourcemanager.sql.models.JobAgentUpdate;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +30,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server.
+     * @return a list of job agents in a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobAgentInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -44,7 +44,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server.
+     * @return a list of job agents in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobAgentInner> listByServer(String resourceGroupName, String serverName);
@@ -59,7 +59,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job agents in a server.
+     * @return a list of job agents in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobAgentInner> listByServer(String resourceGroupName, String serverName, Context context);
@@ -74,7 +74,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
+     * @return a job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobAgentInner>> getWithResponseAsync(
@@ -90,7 +90,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
+     * @return a job agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobAgentInner> getAsync(String resourceGroupName, String serverName, String jobAgentName);
@@ -121,7 +121,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
+     * @return a job agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobAgentInner> getWithResponse(
@@ -134,11 +134,11 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -151,13 +151,13 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
 
@@ -168,13 +168,13 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
 
@@ -185,14 +185,14 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters, Context context);
 
@@ -203,11 +203,11 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return an Azure SQL job agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobAgentInner> createOrUpdateAsync(
@@ -220,7 +220,7 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,7 +237,7 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
-     * @param parameters An Azure SQL job agent.
+     * @param parameters The requested job agent resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -258,7 +258,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -274,9 +274,9 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String jobAgentName);
 
@@ -290,9 +290,9 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String jobAgentName);
 
     /**
@@ -306,9 +306,9 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String jobAgentName, Context context);
 
@@ -322,7 +322,7 @@ public interface JobAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName);
@@ -363,15 +363,15 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
@@ -380,15 +380,15 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
@@ -397,15 +397,15 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
@@ -414,16 +414,16 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags, Context context);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters, Context context);
 
     /**
      * Updates a job agent.
@@ -432,15 +432,15 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
+     * @return an Azure SQL job agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobAgentInner> updateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
@@ -449,13 +449,14 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
+     * @param parameters The update to the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JobAgentInner> updateAsync(String resourceGroupName, String serverName, String jobAgentName);
+    JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
@@ -464,23 +465,7 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags);
-
-    /**
-     * Updates a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be updated.
-     * @param tags Resource tags.
+     * @param parameters The update to the job agent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -489,20 +474,5 @@ public interface JobAgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     JobAgentInner update(
-        String resourceGroupName, String serverName, String jobAgentName, Map<String, String> tags, Context context);
-
-    /**
-     * Updates a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL job agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName);
+        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters, Context context);
 }

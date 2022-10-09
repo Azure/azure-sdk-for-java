@@ -261,15 +261,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceProviderResponseListInner> listServiceProvidersAsync() {
-        return listServiceProvidersWithResponseAsync()
-            .flatMap(
-                (Response<ServiceProviderResponseListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listServiceProvidersWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -419,14 +411,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     private Mono<ConnectionSettingInner> listWithSecretsAsync(
         String resourceGroupName, String resourceName, String connectionName) {
         return listWithSecretsWithResponseAsync(resourceGroupName, resourceName, connectionName)
-            .flatMap(
-                (Response<ConnectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -602,14 +587,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     private Mono<ConnectionSettingInner> createAsync(
         String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
         return createWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters)
-            .flatMap(
-                (Response<ConnectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -791,14 +769,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     private Mono<ConnectionSettingInner> updateAsync(
         String resourceGroupName, String resourceName, String connectionName, ConnectionSettingInner parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, connectionName, parameters)
-            .flatMap(
-                (Response<ConnectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -963,14 +934,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     private Mono<ConnectionSettingInner> getAsync(
         String resourceGroupName, String resourceName, String connectionName) {
         return getWithResponseAsync(resourceGroupName, resourceName, connectionName)
-            .flatMap(
-                (Response<ConnectionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1125,7 +1089,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String connectionName) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, connectionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
@@ -240,7 +241,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @return the enableAcceleratedNetworking value.
      */
@@ -249,7 +251,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfaceInner object itself.
@@ -411,6 +414,29 @@ public final class NetworkInterfaceInner extends Resource {
             this.innerProperties = new NetworkInterfacePropertiesFormatInner();
         }
         this.innerProperties().withMigrationPhase(migrationPhase);
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliaryMode();
+    }
+
+    /**
+     * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withAuxiliaryMode(auxiliaryMode);
         return this;
     }
 

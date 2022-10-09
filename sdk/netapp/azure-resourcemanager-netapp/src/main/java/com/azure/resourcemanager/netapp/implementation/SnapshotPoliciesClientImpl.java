@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SnapshotPoliciesClient. */
 public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(SnapshotPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SnapshotPoliciesService service;
 
@@ -451,14 +448,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     private Mono<SnapshotPolicyInner> getAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName)
-            .flatMap(
-                (Response<SnapshotPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -635,14 +625,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     private Mono<SnapshotPolicyInner> createAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body) {
         return createWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName, body)
-            .flatMap(
-                (Response<SnapshotPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1245,7 +1228,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1300,7 +1285,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1353,7 +1340,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1367,18 +1356,13 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     private Mono<SnapshotPolicyVolumeListInner> listVolumesAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName) {
         return listVolumesWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName)
-            .flatMap(
-                (Response<SnapshotPolicyVolumeListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1395,7 +1379,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
     }
 
     /**
-     * Get volumes associated with snapshot policy.
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

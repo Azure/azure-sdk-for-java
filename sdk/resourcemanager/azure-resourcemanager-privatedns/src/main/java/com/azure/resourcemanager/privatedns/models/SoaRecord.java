@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An SOA record. */
 @Fluent
 public final class SoaRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoaRecord.class);
-
     /*
      * The domain name of the authoritative name server for this SOA record.
      */
@@ -51,8 +47,7 @@ public final class SoaRecord {
     private Long expireTime;
 
     /*
-     * The minimum value for this SOA record. By convention this is used to
-     * determine the negative caching duration.
+     * The minimum value for this SOA record. By convention this is used to determine the negative caching duration.
      */
     @JsonProperty(value = "minimumTtl")
     private Long minimumTtl;

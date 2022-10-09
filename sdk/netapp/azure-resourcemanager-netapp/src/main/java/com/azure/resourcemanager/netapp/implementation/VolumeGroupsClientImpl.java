@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VolumeGroupsClient. */
 public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
-    private final ClientLogger logger = new ClientLogger(VolumeGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VolumeGroupsService service;
 
@@ -133,7 +130,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -185,7 +184,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -235,7 +236,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -250,7 +253,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -267,7 +272,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -282,7 +289,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -299,7 +308,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -354,7 +365,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -407,7 +420,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -421,18 +436,13 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     private Mono<VolumeGroupDetailsInner> getAsync(
         String resourceGroupName, String accountName, String volumeGroupName) {
         return getWithResponseAsync(resourceGroupName, accountName, volumeGroupName)
-            .flatMap(
-                (Response<VolumeGroupDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -448,7 +458,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -466,7 +478,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -527,7 +543,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -590,7 +610,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -617,7 +641,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -650,7 +678,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -668,7 +700,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -691,7 +727,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -711,7 +751,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -736,7 +780,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -754,7 +802,11 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -777,7 +829,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -829,7 +883,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -879,7 +935,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -901,7 +959,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -924,7 +984,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -941,7 +1003,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -959,7 +1023,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -977,7 +1043,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -997,7 +1065,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1012,7 +1082,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

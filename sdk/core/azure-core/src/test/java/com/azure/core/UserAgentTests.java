@@ -123,9 +123,28 @@ public class UserAgentTests {
             .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
-            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
+                new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    /**
+     * Tests that passing a {@link Context} with a value set for {@link UserAgentPolicy#APPEND_USER_AGENT_CONTEXT_KEY}
+     * will append the value to the User-Agent header.
+     */
+    @ParameterizedTest(name = "{displayName} [{index}]")
+    @MethodSource("userAgentAndExpectedSupplier")
+    public void appendUserAgentContextSendSync(UserAgentPolicy userAgentPolicy, String expected) {
+        String appendUserAgent = "appendUserAgent";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request ->
+                assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
+
+        HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"),
+            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent));
+        assertEquals(200, response.getStatusCode());
     }
 
     @SuppressWarnings("deprecation")
@@ -191,6 +210,12 @@ public class UserAgentTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             validator.accept(request);
             return Mono.just(new MockHttpResponse(request, 200));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            validator.accept(request);
+            return new MockHttpResponse(request, 200);
         }
     }
 

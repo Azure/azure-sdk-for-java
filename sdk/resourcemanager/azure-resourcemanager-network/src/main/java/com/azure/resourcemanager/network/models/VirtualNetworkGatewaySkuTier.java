@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkGatewaySkuTier. */
+/** Gateway SKU tier. */
 public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<VirtualNetworkGatewaySkuTier> {
     /** Static value Basic for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier BASIC = fromString("Basic");
@@ -72,7 +72,11 @@ public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<Vir
         return fromString(name, VirtualNetworkGatewaySkuTier.class);
     }
 
-    /** @return known VirtualNetworkGatewaySkuTier values. */
+    /**
+     * Gets known VirtualNetworkGatewaySkuTier values.
+     *
+     * @return known VirtualNetworkGatewaySkuTier values.
+     */
     public static Collection<VirtualNetworkGatewaySkuTier> values() {
         return values(VirtualNetworkGatewaySkuTier.class);
     }

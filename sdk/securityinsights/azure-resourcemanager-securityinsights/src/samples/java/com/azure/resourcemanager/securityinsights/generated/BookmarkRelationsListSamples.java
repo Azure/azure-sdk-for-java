@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BookmarkRelations List. */
 public final class BookmarkRelationsListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/relations/GetAllBookmarkRelations.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/relations/GetAllBookmarkRelations.json
      */
     /**
      * Sample code: Get all bookmark relations.

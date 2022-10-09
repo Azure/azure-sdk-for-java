@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpPrefixSkuTier. */
+/** Tier of a public IP prefix SKU. */
 public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPrefixSkuTier> {
     /** Static value Regional for PublicIpPrefixSkuTier. */
     public static final PublicIpPrefixSkuTier REGIONAL = fromString("Regional");
@@ -27,7 +27,11 @@ public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPr
         return fromString(name, PublicIpPrefixSkuTier.class);
     }
 
-    /** @return known PublicIpPrefixSkuTier values. */
+    /**
+     * Gets known PublicIpPrefixSkuTier values.
+     *
+     * @return known PublicIpPrefixSkuTier values.
+     */
     public static Collection<PublicIpPrefixSkuTier> values() {
         return values(PublicIpPrefixSkuTier.class);
     }

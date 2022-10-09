@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryCreateGlossaryTerm {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossaryterm
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossaryterm
         BinaryData glossaryTerm =
                 BinaryData.fromString(
                         "{\"name\":\"ExampleTerm1\",\"abbreviation\":\"T1\",\"anchor\":{\"glossaryGuid\":\"c018ddaf-7c21-4b37-a838-dae5f110c3d8\"},\"contacts\":{\"Expert\":[{\"info\":\"Example Expert Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}],\"Steward\":[{\"info\":\"Example Steward info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}]},\"longDescription\":\"Example Long Description\",\"resources\":[{\"displayName\":\"Example Display Name\",\"url\":\"Example Url\"}],\"shortDescription\":\"Example Short Description\",\"status\":\"Approved\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = glossaryClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossaryterm
+        // END:com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossaryterm
     }
 }

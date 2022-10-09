@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The daily volume cap for ingestion. */
 @Fluent
 public final class WorkspaceCapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceCapping.class);
-
     /*
      * The workspace daily quota for ingestion.
      */

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureTableDatasetTypeProperties {
     /*
-     * The table name of the Azure Table storage. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Azure Table storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;

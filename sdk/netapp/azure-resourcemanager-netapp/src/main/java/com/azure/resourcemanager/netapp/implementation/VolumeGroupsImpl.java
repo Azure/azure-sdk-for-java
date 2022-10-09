@@ -15,10 +15,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.netapp.models.VolumeGroup;
 import com.azure.resourcemanager.netapp.models.VolumeGroupDetails;
 import com.azure.resourcemanager.netapp.models.VolumeGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VolumeGroupsImpl implements VolumeGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeGroupsImpl.class);
 
     private final VolumeGroupsClient innerClient;
 
@@ -78,7 +77,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     public VolumeGroupDetails getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,7 +85,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String volumeGroupName = Utils.getValueFromIdByName(id, "volumeGroups");
         if (volumeGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
@@ -105,7 +104,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     public Response<VolumeGroupDetails> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,7 +120,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String volumeGroupName = Utils.getValueFromIdByName(id, "volumeGroups");
         if (volumeGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
@@ -132,7 +131,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String volumeGroupName = Utils.getValueFromIdByName(id, "volumeGroups");
         if (volumeGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));
@@ -159,7 +158,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         }
         String volumeGroupName = Utils.getValueFromIdByName(id, "volumeGroups");
         if (volumeGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumeGroups'.", id)));

@@ -117,6 +117,13 @@ public interface Job {
     OffsetDateTime endTime();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.JobInner object.
      *
      * @return the inner object.
@@ -326,7 +333,9 @@ public interface Job {
     Job refresh(Context context);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,7 +343,9 @@ public interface Job {
     void cancelJob();
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -45,6 +45,10 @@ public final class IntegrationRuntimeResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationRuntimeResourceInner innerModel() {
         return this.innerObject;
     }

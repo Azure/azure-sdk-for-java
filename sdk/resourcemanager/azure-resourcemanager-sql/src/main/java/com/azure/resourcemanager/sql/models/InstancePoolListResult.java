@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.InstancePoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of Azure SQL instance pools. */
 @Immutable
 public final class InstancePoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolListResult.class);
-
     /*
      * Array of results.
      */

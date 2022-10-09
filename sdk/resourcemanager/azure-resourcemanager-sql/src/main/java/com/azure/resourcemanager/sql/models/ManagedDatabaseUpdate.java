@@ -5,131 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An managed database update. */
-@JsonFlatten
 @Fluent
-public class ManagedDatabaseUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDatabaseUpdate.class);
+public final class ManagedDatabaseUpdate {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private ManagedDatabaseProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Collation of the managed database.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * Status of the database.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagedDatabaseStatus status;
-
-    /*
-     * Creation date of the database.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * Earliest restore point in time for point in time restore.
-     */
-    @JsonProperty(value = "properties.earliestRestorePoint", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestorePoint;
-
-    /*
-     * Conditional. If createMode is PointInTimeRestore, this value is
-     * required. Specifies the point in time (ISO8601 format) of the source
-     * database that will be restored to create the new database.
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * Geo paired region.
-     */
-    @JsonProperty(value = "properties.defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultSecondaryLocation;
-
-    /*
-     * Collation of the metadata catalog.
-     */
-    @JsonProperty(value = "properties.catalogCollation")
-    private CatalogCollationType catalogCollation;
-
-    /*
-     * Managed database create mode. PointInTimeRestore: Create a database by
-     * restoring a point in time backup of an existing database.
-     * SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
-     * specified. RestoreExternalBackup: Create a database by restoring from
-     * external backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Recovery: Creates a database
-     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
-     * specified as the recoverable database resource ID to restore.
-     */
-    @JsonProperty(value = "properties.createMode")
-    private ManagedDatabaseCreateMode createMode;
-
-    /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the uri of the storage container where backups for
-     * this restore are stored.
-     */
-    @JsonProperty(value = "properties.storageContainerUri")
-    private String storageContainerUri;
-
-    /*
-     * The resource identifier of the source database associated with create
-     * operation of this database.
-     */
-    @JsonProperty(value = "properties.sourceDatabaseId")
-    private String sourceDatabaseId;
-
-    /*
-     * The restorable dropped database resource id to restore when creating
-     * this database.
-     */
-    @JsonProperty(value = "properties.restorableDroppedDatabaseId")
-    private String restorableDroppedDatabaseId;
-
-    /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
-     */
-    @JsonProperty(value = "properties.storageContainerSasToken")
-    private String storageContainerSasToken;
-
-    /*
-     * Instance Failover Group resource identifier that this managed database
-     * belongs to.
-     */
-    @JsonProperty(value = "properties.failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String failoverGroupId;
-
-    /*
-     * The resource identifier of the recoverable database associated with
-     * create operation of this database.
-     */
-    @JsonProperty(value = "properties.recoverableDatabaseId")
-    private String recoverableDatabaseId;
-
-    /*
-     * The name of the Long Term Retention backup to be used for restore of
-     * this managed database.
-     */
-    @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
-    private String longTermRetentionBackupResourceId;
+    private ManagedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -157,7 +62,7 @@ public class ManagedDatabaseUpdate {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -167,7 +72,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -177,7 +85,7 @@ public class ManagedDatabaseUpdate {
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -186,7 +94,7 @@ public class ManagedDatabaseUpdate {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -195,7 +103,7 @@ public class ManagedDatabaseUpdate {
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
-        return this.earliestRestorePoint;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestorePoint();
     }
 
     /**
@@ -206,7 +114,7 @@ public class ManagedDatabaseUpdate {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -218,7 +126,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -228,7 +139,7 @@ public class ManagedDatabaseUpdate {
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
-        return this.defaultSecondaryLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultSecondaryLocation();
     }
 
     /**
@@ -237,7 +148,7 @@ public class ManagedDatabaseUpdate {
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
-        return this.catalogCollation;
+        return this.innerProperties() == null ? null : this.innerProperties().catalogCollation();
     }
 
     /**
@@ -247,7 +158,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withCatalogCollation(CatalogCollationType catalogCollation) {
-        this.catalogCollation = catalogCollation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCatalogCollation(catalogCollation);
         return this;
     }
 
@@ -262,7 +176,7 @@ public class ManagedDatabaseUpdate {
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
-        return this.createMode;
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
@@ -277,7 +191,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withCreateMode(ManagedDatabaseCreateMode createMode) {
-        this.createMode = createMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 
@@ -288,7 +205,7 @@ public class ManagedDatabaseUpdate {
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
-        return this.storageContainerUri;
+        return this.innerProperties() == null ? null : this.innerProperties().storageContainerUri();
     }
 
     /**
@@ -299,7 +216,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withStorageContainerUri(String storageContainerUri) {
-        this.storageContainerUri = storageContainerUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withStorageContainerUri(storageContainerUri);
         return this;
     }
 
@@ -310,7 +230,7 @@ public class ManagedDatabaseUpdate {
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
-        return this.sourceDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseId();
     }
 
     /**
@@ -321,7 +241,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withSourceDatabaseId(String sourceDatabaseId) {
-        this.sourceDatabaseId = sourceDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
         return this;
     }
 
@@ -332,7 +255,7 @@ public class ManagedDatabaseUpdate {
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
-        return this.restorableDroppedDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().restorableDroppedDatabaseId();
     }
 
     /**
@@ -343,7 +266,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
-        this.restorableDroppedDatabaseId = restorableDroppedDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
         return this;
     }
 
@@ -354,7 +280,7 @@ public class ManagedDatabaseUpdate {
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
-        return this.storageContainerSasToken;
+        return this.innerProperties() == null ? null : this.innerProperties().storageContainerSasToken();
     }
 
     /**
@@ -365,7 +291,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withStorageContainerSasToken(String storageContainerSasToken) {
-        this.storageContainerSasToken = storageContainerSasToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withStorageContainerSasToken(storageContainerSasToken);
         return this;
     }
 
@@ -376,7 +305,7 @@ public class ManagedDatabaseUpdate {
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
-        return this.failoverGroupId;
+        return this.innerProperties() == null ? null : this.innerProperties().failoverGroupId();
     }
 
     /**
@@ -386,7 +315,7 @@ public class ManagedDatabaseUpdate {
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
-        return this.recoverableDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().recoverableDatabaseId();
     }
 
     /**
@@ -397,7 +326,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withRecoverableDatabaseId(String recoverableDatabaseId) {
-        this.recoverableDatabaseId = recoverableDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
         return this;
     }
 
@@ -408,7 +340,7 @@ public class ManagedDatabaseUpdate {
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
-        return this.longTermRetentionBackupResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().longTermRetentionBackupResourceId();
     }
 
     /**
@@ -419,7 +351,10 @@ public class ManagedDatabaseUpdate {
      * @return the ManagedDatabaseUpdate object itself.
      */
     public ManagedDatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
-        this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
         return this;
     }
 
@@ -429,5 +364,8 @@ public class ManagedDatabaseUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -7,8 +7,6 @@ package com.azure.resourcemanager.netapp.implementation;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.netapp.models.VolumeGroup;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
-import java.util.Collections;
-import java.util.Map;
 
 public final class VolumeGroupImpl implements VolumeGroup {
     private VolumeGroupInner innerObject;
@@ -34,15 +32,6 @@ public final class VolumeGroupImpl implements VolumeGroup {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public String provisioningState() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseAccountKind. */
+/** Indicates the type of database account. This can only be set at database account creation. */
 public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAccountKind> {
     /** Static value GlobalDocumentDB for DatabaseAccountKind. */
     public static final DatabaseAccountKind GLOBAL_DOCUMENT_DB = fromString("GlobalDocumentDB");
@@ -30,7 +30,11 @@ public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAcco
         return fromString(name, DatabaseAccountKind.class);
     }
 
-    /** @return known DatabaseAccountKind values. */
+    /**
+     * Gets known DatabaseAccountKind values.
+     *
+     * @return known DatabaseAccountKind values.
+     */
     public static Collection<DatabaseAccountKind> values() {
         return values(DatabaseAccountKind.class);
     }

@@ -12,17 +12,21 @@ public interface PrivateLinkResources {
     /**
      * Get list of group IDs.
      *
+     * <p>List supported group IDs.
+     *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of group IDs.
+     * @return a list of private link resources.
      */
     PrivateLinkResourceListResult list(String resourceGroupName, String accountName);
 
     /**
      * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -30,7 +34,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of group IDs along with {@link Response}.
+     * @return a list of private link resources along with {@link Response}.
      */
     Response<PrivateLinkResourceListResult> listWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -38,18 +42,22 @@ public interface PrivateLinkResources {
     /**
      * Get group ID.
      *
+     * <p>Get details of a group ID.
+     *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return group ID.
+     * @return details of a group ID.
      */
     PrivateLinkResource get(String resourceGroupName, String accountName, String name);
 
     /**
      * Get group ID.
+     *
+     * <p>Get details of a group ID.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -58,7 +66,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return group ID along with {@link Response}.
+     * @return details of a group ID along with {@link Response}.
      */
     Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String accountName, String name, Context context);

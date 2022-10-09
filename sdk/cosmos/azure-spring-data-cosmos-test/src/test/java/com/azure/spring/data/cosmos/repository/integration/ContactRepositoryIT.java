@@ -248,6 +248,8 @@ public class ContactRepositoryIT {
     @Test
     public void testAnnotatedQueriesDistinctStatus() {
         List<Boolean> statusContacts = repository.findDistinctStatusValues();
-        assertThat(statusContacts).isEqualTo(Arrays.asList(Boolean.TRUE, Boolean.FALSE));
+
+        List<Boolean> expectedResults = Arrays.asList(Boolean.TRUE, Boolean.FALSE);
+        assertThat(statusContacts).hasSize(expectedResults.size()).hasSameElementsAs(expectedResults);
     }
 }

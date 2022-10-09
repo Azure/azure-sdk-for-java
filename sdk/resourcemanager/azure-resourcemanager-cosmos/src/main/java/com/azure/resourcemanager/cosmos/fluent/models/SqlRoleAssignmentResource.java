@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Cosmos DB SQL Role Assignment resource object. */
 @Fluent
 public final class SqlRoleAssignmentResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleAssignmentResource.class);
-
     /*
      * The unique identifier for the associated Role Definition.
      */
@@ -21,17 +17,14 @@ public final class SqlRoleAssignmentResource {
     private String roleDefinitionId;
 
     /*
-     * The data plane resource path for which access is being granted through
-     * this Role Assignment.
+     * The data plane resource path for which access is being granted through this Role Assignment.
      */
     @JsonProperty(value = "scope")
     private String scope;
 
     /*
-     * The unique identifier for the associated AAD principal in the AAD graph
-     * to which access is being granted through this Role Assignment. Tenant ID
-     * for the principal is inferred using the tenant associated with the
-     * subscription.
+     * The unique identifier for the associated AAD principal in the AAD graph to which access is being granted through
+     * this Role Assignment. Tenant ID for the principal is inferred using the tenant associated with the subscription.
      */
     @JsonProperty(value = "principalId")
     private String principalId;

@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryAttribute {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryattribute
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryattribute
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"attributeName\":\"name\",\"attributeValue\":\"exampledata.csv\",\"operator\":\"eq\"},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryattribute
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryattribute
     }
 }

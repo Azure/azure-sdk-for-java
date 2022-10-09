@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignment;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterPrincipalAssignmentsImpl.class);
 
     private final ClusterPrincipalAssignmentsClient innerClient;
 
@@ -114,7 +113,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public ClusterPrincipalAssignment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,14 +121,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public Response<ClusterPrincipalAssignment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,14 +150,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,14 +179,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -201,7 +200,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -209,14 +208,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

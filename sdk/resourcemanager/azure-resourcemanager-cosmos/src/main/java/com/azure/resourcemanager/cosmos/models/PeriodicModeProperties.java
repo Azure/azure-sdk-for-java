@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration values for periodic mode backup. */
 @Fluent
 public final class PeriodicModeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeriodicModeProperties.class);
-
     /*
      * An integer representing the interval in minutes between two backups
      */

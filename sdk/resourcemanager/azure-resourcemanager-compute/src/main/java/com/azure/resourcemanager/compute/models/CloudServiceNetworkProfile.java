@@ -13,18 +13,24 @@ import java.util.List;
 @Fluent
 public final class CloudServiceNetworkProfile {
     /*
-     * List of Load balancer configurations. Cloud service can have up to two
-     * load balancer configurations, corresponding to a Public Load Balancer
-     * and an Internal Load Balancer.
+     * List of Load balancer configurations. Cloud service can have up to two load balancer configurations,
+     * corresponding to a Public Load Balancer and an Internal Load Balancer.
      */
     @JsonProperty(value = "loadBalancerConfigurations")
     private List<LoadBalancerConfiguration> loadBalancerConfigurations;
 
     /*
-     * The id reference of the cloud service containing the target IP with
-     * which the subject cloud service can perform a swap. This property cannot
-     * be updated once it is set. The swappable cloud service referred by this
-     * id must be present otherwise an error will be thrown.
+     * Slot type for the cloud service.
+     * Possible values are <br /><br />**Production**<br /><br />**Staging**<br /><br />
+     * If not specified, the default value is Production.
+     */
+    @JsonProperty(value = "slotType")
+    private CloudServiceSlotType slotType;
+
+    /*
+     * The id reference of the cloud service containing the target IP with which the subject cloud service can perform
+     * a swap. This property cannot be updated once it is set. The swappable cloud service referred by this id must be
+     * present otherwise an error will be thrown.
      */
     @JsonProperty(value = "swappableCloudService")
     private SubResource swappableCloudService;
@@ -49,6 +55,30 @@ public final class CloudServiceNetworkProfile {
     public CloudServiceNetworkProfile withLoadBalancerConfigurations(
         List<LoadBalancerConfiguration> loadBalancerConfigurations) {
         this.loadBalancerConfigurations = loadBalancerConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the slotType property: Slot type for the cloud service. Possible values are &lt;br /&gt;&lt;br
+     * /&gt;**Production**&lt;br /&gt;&lt;br /&gt;**Staging**&lt;br /&gt;&lt;br /&gt; If not specified, the default
+     * value is Production.
+     *
+     * @return the slotType value.
+     */
+    public CloudServiceSlotType slotType() {
+        return this.slotType;
+    }
+
+    /**
+     * Set the slotType property: Slot type for the cloud service. Possible values are &lt;br /&gt;&lt;br
+     * /&gt;**Production**&lt;br /&gt;&lt;br /&gt;**Staging**&lt;br /&gt;&lt;br /&gt; If not specified, the default
+     * value is Production.
+     *
+     * @param slotType the slotType value to set.
+     * @return the CloudServiceNetworkProfile object itself.
+     */
+    public CloudServiceNetworkProfile withSlotType(CloudServiceSlotType slotType) {
+        this.slotType = slotType;
         return this;
     }
 

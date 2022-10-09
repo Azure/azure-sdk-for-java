@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayCustomErrorStatusCode. */
+/** Status code of the application gateway customer error. */
 public final class ApplicationGatewayCustomErrorStatusCode
     extends ExpandableStringEnum<ApplicationGatewayCustomErrorStatusCode> {
     /** Static value HttpStatus403 for ApplicationGatewayCustomErrorStatusCode. */
@@ -28,7 +28,11 @@ public final class ApplicationGatewayCustomErrorStatusCode
         return fromString(name, ApplicationGatewayCustomErrorStatusCode.class);
     }
 
-    /** @return known ApplicationGatewayCustomErrorStatusCode values. */
+    /**
+     * Gets known ApplicationGatewayCustomErrorStatusCode values.
+     *
+     * @return known ApplicationGatewayCustomErrorStatusCode values.
+     */
     public static Collection<ApplicationGatewayCustomErrorStatusCode> values() {
         return values(ApplicationGatewayCustomErrorStatusCode.class);
     }

@@ -17,8 +17,7 @@ public final class VerificationStatusRecord {
     private VerificationStatus status;
 
     /*
-     * Error code. This property will only be present if the status is
-     * UnableToVerify.
+     * Error code. This property will only be present if the status is UnableToVerify.
      */
     @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;

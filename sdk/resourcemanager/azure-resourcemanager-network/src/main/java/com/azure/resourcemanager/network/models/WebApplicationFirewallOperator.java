@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallOperator. */
+/** The operator to be matched. */
 public final class WebApplicationFirewallOperator extends ExpandableStringEnum<WebApplicationFirewallOperator> {
     /** Static value IPMatch for WebApplicationFirewallOperator. */
     public static final WebApplicationFirewallOperator IPMATCH = fromString("IPMatch");
@@ -43,6 +43,9 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
     /** Static value GeoMatch for WebApplicationFirewallOperator. */
     public static final WebApplicationFirewallOperator GEO_MATCH = fromString("GeoMatch");
 
+    /** Static value Any for WebApplicationFirewallOperator. */
+    public static final WebApplicationFirewallOperator ANY = fromString("Any");
+
     /**
      * Creates or finds a WebApplicationFirewallOperator from its string representation.
      *
@@ -54,7 +57,11 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
         return fromString(name, WebApplicationFirewallOperator.class);
     }
 
-    /** @return known WebApplicationFirewallOperator values. */
+    /**
+     * Gets known WebApplicationFirewallOperator values.
+     *
+     * @return known WebApplicationFirewallOperator values.
+     */
     public static Collection<WebApplicationFirewallOperator> values() {
         return values(WebApplicationFirewallOperator.class);
     }

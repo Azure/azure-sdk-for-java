@@ -1549,7 +1549,8 @@
               "Automation"
             ],
             "mentionees": [
-              "zjalexander"
+              "jaspkaur28",
+              "omairabdullah"
             ]
           },
           {
@@ -1652,7 +1653,7 @@
             ],
             "mentionees": [
               "ctstone",
-              "anrothMSFT"
+              "vkurpad"
             ]
           },
           {
@@ -1920,8 +1921,8 @@
             ],
             "mentionees": [
               "kushagraThapar",
-              "simplynaveen20",
-              "abinav2307"
+              "TheovanKraay",
+              "pjohari-ms"
             ]
           },
           {
@@ -2618,7 +2619,8 @@
             ],
             "mentionees": [
               "pvrk",
-              "adityabalaji-msft"
+              "adityabalaji-msft",
+              "Daya-Patil"
             ]
           },
           {
@@ -3016,12 +3018,9 @@
               "Monitor - Exporter"
             ],
             "mentionees": [
-              "@cijothomas",
-              "@reyang",
-              "@rajkumar-rangaraj",
-              "@TimothyMothra",
-              "@vishweshbankwar",
-              "@ramthi"
+              "@trask",
+              "@ramthi",
+              "@heyams"
             ]
           },
           {
@@ -3816,12 +3815,12 @@
           "issues",
           "project_card"
         ],
-        "taskName": "[Hack for Josh :)] Mention Cosmos manually when Cosmos label is added.",
+        "taskName": "[Tag Cosmos Owners] Mention Cosmos manually when Cosmos label is added.",
         "actions": [
           {
             "name": "addReply",
             "parameters": {
-              "comment": "Thanks for the feedback! We are routing this to the appropriate team for follow-up. cc  @kushagraThapar, @simplynaveen20, @abinav2307"
+              "comment": "Thanks for the feedback! We are routing this to the appropriate team for follow-up. cc  @kushagraThapar, @TheovanKraay"
             }
           }
         ]

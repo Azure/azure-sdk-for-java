@@ -10,15 +10,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import com.azure.resourcemanager.netapp.models.CheckAvailabilityResponse;
 import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
+import com.azure.resourcemanager.netapp.models.RegionInfo;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetAppResourcesImpl implements NetAppResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppResourcesImpl.class);
 
     private final NetAppResourcesClient innerClient;
 
@@ -97,6 +98,28 @@ public final class NetAppResourcesImpl implements NetAppResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegionInfo queryRegionInfo(String location) {
+        RegionInfoInner inner = this.serviceClient().queryRegionInfo(location);
+        if (inner != null) {
+            return new RegionInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<RegionInfo> queryRegionInfoWithResponse(String location, Context context) {
+        Response<RegionInfoInner> inner = this.serviceClient().queryRegionInfoWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new RegionInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

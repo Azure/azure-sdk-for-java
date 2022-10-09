@@ -23,6 +23,7 @@ import com.azure.resourcemanager.sql.models.ExtensionName;
 import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
 import com.azure.resourcemanager.sql.models.ImportRequest;
 import com.azure.resourcemanager.sql.models.ReplicaType;
+import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,11 +36,12 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
@@ -51,13 +53,13 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethodAsync(
         String resourceGroupName, String serverName, ImportRequest parameters);
 
@@ -67,13 +69,13 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
         String resourceGroupName, String serverName, ImportRequest parameters);
 
@@ -83,14 +85,14 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
         String resourceGroupName, String serverName, ImportRequest parameters, Context context);
 
@@ -100,11 +102,11 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ImportExportResponseInner> importMethodAsync(
@@ -116,7 +118,7 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,7 +133,7 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,11 +152,12 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createImportOperationWithResponseAsync(
@@ -172,13 +175,13 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperationAsync(
         String resourceGroupName,
         String serverName,
@@ -194,13 +197,13 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
         String resourceGroupName,
         String serverName,
@@ -216,14 +219,14 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
         String resourceGroupName,
         String serverName,
@@ -240,11 +243,11 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ImportExportResponseInner> createImportOperationAsync(
@@ -262,7 +265,7 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -284,7 +287,7 @@ public interface DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,11 +310,12 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
@@ -324,13 +328,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExportAsync(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters);
 
@@ -341,13 +345,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters);
 
@@ -358,14 +362,14 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context);
 
@@ -376,11 +380,11 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ImportExportResponseInner> exportAsync(
@@ -393,7 +397,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -410,7 +414,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,7 +436,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MetricInner> listMetricsAsync(
@@ -449,7 +453,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricInner> listMetrics(
@@ -467,7 +471,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricInner> listMetrics(
@@ -483,7 +487,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
@@ -499,7 +503,8 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricDefinitionInner> listMetricDefinitions(
@@ -516,7 +521,8 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricDefinitionInner> listMetricDefinitions(
@@ -531,7 +537,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -545,7 +551,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName);
@@ -560,7 +566,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context);
@@ -575,7 +581,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DatabaseInner>> getWithResponseAsync(
@@ -591,7 +597,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName);
@@ -622,7 +628,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(
@@ -635,11 +641,11 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -652,13 +658,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
 
@@ -669,13 +675,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
 
@@ -686,14 +692,14 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
 
@@ -704,11 +710,11 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> createOrUpdateAsync(
@@ -721,7 +727,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -738,7 +744,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -759,7 +765,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -775,9 +781,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -791,9 +797,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName);
 
     /**
@@ -807,9 +813,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context);
 
@@ -823,7 +829,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName);
@@ -864,11 +870,11 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -881,13 +887,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
 
@@ -898,13 +904,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
 
@@ -915,14 +921,14 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context);
 
@@ -933,11 +939,11 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> updateAsync(
@@ -950,7 +956,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,7 +972,7 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -987,7 +993,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DatabaseInner> listByElasticPoolAsync(
@@ -1003,7 +1009,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByElasticPool(String resourceGroupName, String serverName, String elasticPoolName);
@@ -1019,7 +1025,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseInner> listByElasticPool(
@@ -1035,7 +1041,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
@@ -1051,9 +1057,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginPauseAsync(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1067,9 +1073,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1084,9 +1090,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName, Context context);
 
@@ -1100,7 +1106,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> pauseAsync(String resourceGroupName, String serverName, String databaseName);
@@ -1146,7 +1152,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -1162,9 +1168,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginResumeAsync(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1178,9 +1184,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1195,9 +1201,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName, Context context);
 
@@ -1211,7 +1217,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseInner> resumeAsync(String resourceGroupName, String serverName, String databaseName);
@@ -1257,7 +1263,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouseWithResponseAsync(
@@ -1273,9 +1279,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1289,9 +1295,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName);
 
@@ -1306,9 +1312,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName, Context context);
 
@@ -1322,7 +1328,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName);
@@ -1363,15 +1369,15 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String id);
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters);
 
     /**
      * Renames a database.
@@ -1380,14 +1386,15 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id);
+    Mono<Void> renameAsync(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters);
 
     /**
      * Renames a database.
@@ -1396,13 +1403,13 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void rename(String resourceGroupName, String serverName, String databaseName, String id);
+    void rename(String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters);
 
     /**
      * Renames a database.
@@ -1411,16 +1418,20 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> renameWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String id, Context context);
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ResourceMoveDefinition parameters,
+        Context context);
 
     /**
      * Failovers a database.
@@ -1433,7 +1444,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -1450,9 +1461,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
 
@@ -1467,9 +1478,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
 
@@ -1485,9 +1496,9 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context);
 
@@ -1502,7 +1513,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
@@ -1517,7 +1528,7 @@ public interface DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName);
@@ -1544,6 +1555,20 @@ public interface DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void failover(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1553,18 +1578,4 @@ public interface DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void failover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context);
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void failover(String resourceGroupName, String serverName, String databaseName);
 }

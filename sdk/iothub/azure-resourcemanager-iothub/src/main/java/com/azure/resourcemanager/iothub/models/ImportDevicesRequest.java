@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Use to provide parameters when requesting an import of all devices in the hub. */
 @Fluent
 public final class ImportDevicesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportDevicesRequest.class);
-
     /*
      * The input blob container URI.
      */
@@ -27,8 +24,7 @@ public final class ImportDevicesRequest {
     private String outputBlobContainerUri;
 
     /*
-     * The blob name to be used when importing from the provided input blob
-     * container.
+     * The blob name to be used when importing from the provided input blob container.
      */
     @JsonProperty(value = "inputBlobName")
     private String inputBlobName;
@@ -40,8 +36,7 @@ public final class ImportDevicesRequest {
     private String outputBlobName;
 
     /*
-     * Specifies authentication type being used for connecting to the storage
-     * account.
+     * Specifies authentication type being used for connecting to the storage account.
      */
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
@@ -59,8 +54,7 @@ public final class ImportDevicesRequest {
     private Boolean includeConfigurations;
 
     /*
-     * The blob name to be used when importing configurations from the provided
-     * input blob container.
+     * The blob name to be used when importing configurations from the provided input blob container.
      */
     @JsonProperty(value = "configurationsBlobName")
     private String configurationsBlobName;
@@ -236,13 +230,13 @@ public final class ImportDevicesRequest {
      */
     public void validate() {
         if (inputBlobContainerUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property inputBlobContainerUri in model ImportDevicesRequest"));
         }
         if (outputBlobContainerUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
@@ -251,4 +245,6 @@ public final class ImportDevicesRequest {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportDevicesRequest.class);
 }

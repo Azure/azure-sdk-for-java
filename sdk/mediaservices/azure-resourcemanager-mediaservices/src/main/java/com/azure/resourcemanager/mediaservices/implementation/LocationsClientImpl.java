@@ -69,9 +69,11 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
      *
-     * @param locationName The name of the location.
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -120,9 +122,11 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
      *
-     * @param locationName The name of the location.
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +158,7 @@ public final class LocationsClientImpl implements LocationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -169,9 +173,11 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
      *
-     * @param locationName The name of the location.
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,20 +188,15 @@ public final class LocationsClientImpl implements LocationsClient {
     private Mono<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityAsync(
         String locationName, CheckNameAvailabilityInput parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
-            .flatMap(
-                (Response<EntityNameAvailabilityCheckOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
      *
-     * @param locationName The name of the location.
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -209,9 +210,11 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
      *
-     * @param locationName The name of the location.
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
