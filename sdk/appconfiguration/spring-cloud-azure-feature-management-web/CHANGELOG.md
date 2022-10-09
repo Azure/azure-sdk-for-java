@@ -1,16 +1,21 @@
 # Release History
 
+## 4.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.0.0-beta.2 (2022-10-06)
 
 - Dynamic Feature release with:
   - Geo-replication
   - Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
   - Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
-
-## 4.0.0-beta.1 (2022-06-21)
-
-- Adds Support for Dynamic Features.
-- Updated to use both the old and new Feature Management schema.
 
 ## 2.8.0 (2022-09-22)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
@@ -25,6 +30,11 @@
 
 ### Dependency Upgrades
 - Upgrade azure-sdk's version to latest released version.
+
+## 4.0.0-beta.1 (2022-06-21)
+
+- Adds Support for Dynamic Features.
+- Updated to use both the old and new Feature Management schema.
 
 ## 2.6.0 (2022-05-24)
 - This release is compatible with Spring Boot 2.5.0-2.5.13, 2.6.0-2.6.7. (Note: 2.5.x (x>13) and 2.6.y (y>7) should be supported, but they aren't tested with this release.)
