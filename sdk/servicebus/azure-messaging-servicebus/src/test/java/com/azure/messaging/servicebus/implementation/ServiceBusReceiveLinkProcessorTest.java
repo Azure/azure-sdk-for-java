@@ -119,6 +119,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void createNewLink() throws InterruptedException {
         // Arrange
         final CountDownLatch countDownLatch = new CountDownLatch(2);
+        // Add PREFETCH credits when publisher is subscribed
         when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
             countDownLatch.countDown();
             return Mono.empty();
