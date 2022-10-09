@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed a bug that `DiagnosticSettings.get()` throws NPE when it has no metrics or logs configured.
+- Fixed a bug that `ActivityLogAlerts.list()` throws NPE when there are `ActivityLogAlert`s with condition of null `field` and `equals`.
 
 ## 2.19.0 (2022-09-23)
 

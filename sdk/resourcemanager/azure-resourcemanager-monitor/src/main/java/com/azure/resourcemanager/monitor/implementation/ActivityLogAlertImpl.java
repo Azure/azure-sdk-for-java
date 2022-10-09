@@ -37,7 +37,11 @@ class ActivityLogAlertImpl
         this.conditions = new TreeMap<>();
         if (innerModel.condition() != null && innerModel.condition().allOf() != null) {
             for (ActivityLogAlertLeafCondition aac : innerModel.condition().allOf()) {
-                this.conditions.put(aac.field(), aac.equals());
+                // May contain conditions with null fields and equals, not sure why.
+                // https://github.com/Azure/azure-sdk-for-java/issues/30684
+                if (aac.field() != null && aac.equals() != null) {
+                    this.conditions.put(aac.field(), aac.equals());
+                }
             }
         }
     }
