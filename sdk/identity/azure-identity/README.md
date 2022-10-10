@@ -407,7 +407,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable">VisualStudioCodeCredential</a></code></td>
       <td>Authenticate in a development environment with the account in Visual Studio Azure Account extension. </td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
-      <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure extension</a></td>
+      <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure Account extension</a></td>
     </tr>
   </tbody>
 </table>
