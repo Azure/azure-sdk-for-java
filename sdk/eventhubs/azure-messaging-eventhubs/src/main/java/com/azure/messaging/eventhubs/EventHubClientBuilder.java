@@ -160,6 +160,9 @@ public class EventHubClientBuilder implements
     // So, limit the prefetch to just 1 by default.
     static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
 
+    static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
+        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -182,8 +185,6 @@ public class EventHubClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
-        .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);

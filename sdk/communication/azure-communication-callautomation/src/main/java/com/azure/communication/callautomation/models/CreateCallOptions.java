@@ -45,6 +45,11 @@ public class CreateCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
+
+    /**
      * Constructor
      *
      * @param source The source property.
@@ -112,6 +117,15 @@ public class CreateCallOptions {
     }
 
     /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
      * Set the subject.
      *
      * @param subject the subject.
@@ -142,6 +156,17 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

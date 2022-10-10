@@ -178,7 +178,7 @@ public class BarrierRequestHelperTest {
                 false,
                 null,
                 null,
-                new CosmosClientTelemetryConfig(),
+                new CosmosClientTelemetryConfig().sendClientTelemetryToService(false),
                 null,
                 EnumSet.allOf(TagName.class));
 
