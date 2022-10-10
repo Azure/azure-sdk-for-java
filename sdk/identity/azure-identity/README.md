@@ -8,7 +8,7 @@ The Azure Identity library provides [Azure Active Directory (Azure AD)](https://
 
 #### Include the BOM file
 
-Include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+Include the `azure-sdk-bom` in your project to take a dependency on GA version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
 To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
