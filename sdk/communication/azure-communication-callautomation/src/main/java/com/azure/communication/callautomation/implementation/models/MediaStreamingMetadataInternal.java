@@ -36,7 +36,7 @@ public final class MediaStreamingMetadataInternal {
      * The length.
      */
     @JsonProperty(value = "length")
-    private double length;
+    private int length;
 
     /**
      * Get the mediaSubscriptionId property.
@@ -79,7 +79,7 @@ public final class MediaStreamingMetadataInternal {
      *
      * @return the length value.
      */
-    public double getLength() {
+    public int getLength() {
         return length;
     }
 }

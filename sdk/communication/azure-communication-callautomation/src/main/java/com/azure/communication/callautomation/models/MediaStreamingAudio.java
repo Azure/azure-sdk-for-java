@@ -12,7 +12,7 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
     /*
      * The audio data.
      */
-    private final byte[] audioData;
+    private final String audioData;
 
     /*
      * The timestamp of when the media was sourced.
@@ -37,8 +37,8 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      * @param participant The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    public MediaStreamingAudio(byte[] audioData, OffsetDateTime timestamp, CommunicationIdentifier participant, boolean silent) {
-        this.audioData = audioData.clone();
+    public MediaStreamingAudio(String audioData, OffsetDateTime timestamp, CommunicationIdentifier participant, boolean silent) {
+        this.audioData = audioData;
         this.timestamp = timestamp;
         this.participant = participant;
         this.silent = silent;
@@ -49,8 +49,8 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      *
      * @return the data value.
      */
-    public byte[] getAudioData() {
-        return audioData.clone();
+    public String getAudioData() {
+        return audioData;
     }
 
     /**

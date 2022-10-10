@@ -15,7 +15,6 @@ import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MediaStreamingPackageParserUnitTests {
     @Test
@@ -23,7 +22,7 @@ public class MediaStreamingPackageParserUnitTests {
         String audioJson = "{"
             + "\"timestamp\": \"2022-08-23T11:48:05Z\","
             + "\"participantRawID\": \"participantId\","
-            + "\"data\": \"AQIDBAU=\","      // [1, 2, 3, 4, 5]
+            + "\"data\": \"AQIDBAU=\","
             + "\"silent\": false"
             + "}";
         MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(audioJson);
@@ -38,7 +37,7 @@ public class MediaStreamingPackageParserUnitTests {
             + "\"encoding\": \"PCM\","
             + "\"sampleRate\": 8,"
             + "\"channels\": 2,"
-            + "\"length\": 100.1"
+            + "\"length\": 100"
             + "}";
         MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(metadataJson);
         assertNotNull(mediaStreamingMetadata);
@@ -76,7 +75,7 @@ public class MediaStreamingPackageParserUnitTests {
     private void checkAudioData(MediaStreamingAudio mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-08-23T11:48:05Z"), mediaStreamingAudio.getTimestamp());
         assertEquals("participantId", mediaStreamingAudio.getParticipant().getRawId());
-        assertArrayEquals(new byte[] {1, 2, 3, 4, 5}, mediaStreamingAudio.getAudioData());
+        assertEquals("AQIDBAU=", mediaStreamingAudio.getAudioData());
         assertEquals(false, mediaStreamingAudio.isSilent());
     }
 
@@ -85,7 +84,7 @@ public class MediaStreamingPackageParserUnitTests {
         assertEquals("PCM", mediaStreamingMetadata.getEncoding());
         assertEquals(8, mediaStreamingMetadata.getSampleRate());
         assertEquals(2, mediaStreamingMetadata.getChannels());
-        assertEquals(100.1, mediaStreamingMetadata.getLength());
+        assertEquals(100, mediaStreamingMetadata.getLength());
     }
 
     private String createJsonMetadata() {
@@ -96,7 +95,7 @@ public class MediaStreamingPackageParserUnitTests {
             audioMetadata.put("encoding", "PCM");
             audioMetadata.put("sampleRate", 8);
             audioMetadata.put("channels", 2);
-            audioMetadata.put("length", 100.1);
+            audioMetadata.put("length", 100);
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(audioMetadata);
         } catch (Exception e) {
             throw new RuntimeException();
