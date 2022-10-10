@@ -224,7 +224,7 @@ public final class AzureBlobStorageImplBuilder
             this.pipeline = createHttpPipeline();
         }
         if (version == null) {
-            this.version = "2021-08-06";
+            this.version = "2021-12-02";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
