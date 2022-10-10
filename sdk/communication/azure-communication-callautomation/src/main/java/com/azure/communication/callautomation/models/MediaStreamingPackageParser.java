@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Parser of the different packages received as part of Media streaming.
@@ -56,12 +54,12 @@ public class MediaStreamingPackageParser {
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             JsonNode jsonData = mapper.readTree(stringJson);
-            if (stringJson.contains("data")) {
-                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData, MediaStreamingAudioInternal.class);
-                return new MediaStreamingAudio(audioInternal.getAudioData(), OffsetDateTime.parse(audioInternal.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), new CommunicationUserIdentifier(audioInternal.getParticipantRawID()), audioInternal.isSilent());
+            if (stringJson.contains("AudioData")) {
+                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData.get("audioData"), MediaStreamingAudioInternal.class);
+                return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), new CommunicationUserIdentifier(audioInternal.getParticipantRawID()), audioInternal.isSilent());
             }
-            if (stringJson.contains("encoding")) {
-                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData, MediaStreamingMetadataInternal.class);
+            if (stringJson.contains("AudioMetadata")) {
+                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), MediaStreamingMetadataInternal.class);
                 return new MediaStreamingMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
             }
             return null;

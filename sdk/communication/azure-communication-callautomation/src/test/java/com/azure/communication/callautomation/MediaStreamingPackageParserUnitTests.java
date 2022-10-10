@@ -20,10 +20,13 @@ public class MediaStreamingPackageParserUnitTests {
     @Test
     public void parseAudioData() {
         String audioJson = "{"
-            + "\"timestamp\": \"2022-08-23T11:48:05Z\","
+            + "\"kind\": \"AudioData\","
+            + "\"audioData\": {"
+            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\","
             + "\"participantRawID\": \"participantId\","
             + "\"data\": \"AQIDBAU=\","
             + "\"silent\": false"
+            + "}"
             + "}";
         MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(audioJson);
         assertNotNull(mediaStreamingAudio);
@@ -33,11 +36,14 @@ public class MediaStreamingPackageParserUnitTests {
     @Test
     public void parseAudioMetadata() {
         String metadataJson = "{"
+            + " \"kind\": \"AudioMetadata\","
+            + "\"audioMetadata\": {"
             + "\"subscriptionId\": \"subscriptionId\","
             + "\"encoding\": \"PCM\","
             + "\"sampleRate\": 8,"
             + "\"channels\": 2,"
             + "\"length\": 100"
+            + "}"
             + "}";
         MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(metadataJson);
         assertNotNull(mediaStreamingMetadata);
@@ -73,7 +79,7 @@ public class MediaStreamingPackageParserUnitTests {
     }
 
     private void checkAudioData(MediaStreamingAudio mediaStreamingAudio) {
-        assertEquals(OffsetDateTime.parse("2022-08-23T11:48:05Z"), mediaStreamingAudio.getTimestamp());
+        assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertEquals("participantId", mediaStreamingAudio.getParticipant().getRawId());
         assertEquals("AQIDBAU=", mediaStreamingAudio.getAudioData());
         assertEquals(false, mediaStreamingAudio.isSilent());
@@ -96,7 +102,10 @@ public class MediaStreamingPackageParserUnitTests {
             audioMetadata.put("sampleRate", 8);
             audioMetadata.put("channels", 2);
             audioMetadata.put("length", 100);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(audioMetadata);
+            ObjectNode root = objectMapper.createObjectNode();
+            root.put("kind", "AudioMetadata");
+            root.put("audioMetadata", audioMetadata);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -106,11 +115,14 @@ public class MediaStreamingPackageParserUnitTests {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode audioData = objectMapper.createObjectNode();
-            audioData.put("timestamp", "2022-08-23T11:48:05Z");
+            audioData.put("timestamp", "2022-10-03T19:16:12.925Z");
             audioData.put("participantRawID", "participantId");
             audioData.put("data", "AQIDBAU=");
             audioData.put("silent", false);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(audioData);
+            ObjectNode root = objectMapper.createObjectNode();
+            root.put("kind", "AudioData");
+            root.put("audioData", audioData);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
         } catch (Exception e) {
             throw new RuntimeException();
         }
