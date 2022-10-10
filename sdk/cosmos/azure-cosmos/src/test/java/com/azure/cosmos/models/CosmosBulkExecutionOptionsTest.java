@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class BulkProcessingOptionsTest {
+public class CosmosBulkExecutionOptionsTest {
 
     private static final Random rnd = new Random();
 
@@ -61,5 +61,18 @@ public class BulkProcessingOptionsTest {
                 ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                     .getBulkExecutionThresholdsAccessor()
                     .getPartitionScopeThresholds(optionsWithThresholds.getThresholdsState()));
+    }
+
+    @Test(groups = { "unit" })
+    public void throughputControlGroup() {
+        CosmosBulkExecutionOptions options = new CosmosBulkExecutionOptions();
+        assertThat(options.getThroughputControlGroupName()).isNull();
+
+        options.setThroughputControlGroupName("HelloWorld");
+        assertThat(options.getThroughputControlGroupName()).isNotNull();
+        assertThat(options.getThroughputControlGroupName()).isEqualTo("HelloWorld");
+
+        options.setThroughputControlGroupName(null);
+        assertThat(options.getThroughputControlGroupName()).isNull();
     }
 }

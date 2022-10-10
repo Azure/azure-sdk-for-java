@@ -12,6 +12,7 @@ public final class CosmosBatchItemRequestOptions {
 
     private String ifMatchETag;
     private String ifNoneMatchETag;
+    private String throughputControlGroupName;
 
     /**
      * Creates a new {@link CosmosBatchItemRequestOptions} object.
@@ -59,10 +60,20 @@ public final class CosmosBatchItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the throughput control group name.
+     *
+     * @param throughputControlGroupName the throughput control group name.
+     */
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
+        requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         return requestOptions;
     }
 }
