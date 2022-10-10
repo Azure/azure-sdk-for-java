@@ -363,6 +363,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.(EventHubConsumerClient|EventHubConsumerAsyncClient|EventHubProducerClient|EventHubProducerAsyncClient).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.(EventHubBufferedProducerClient|EventHubBufferedProducerAsyncClient).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.messaging.eventhubs.EventDataBatch.java"/>
 
   <!-- ### begin: Spring related suppression -->

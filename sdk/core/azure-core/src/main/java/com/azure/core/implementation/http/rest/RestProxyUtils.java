@@ -57,8 +57,7 @@ public final class RestProxyUtils {
             long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
                 "content-length"));
             if (content instanceof InputStreamContent) {
-                InputStream validatingInputStream = new LengthValidatingInputStream(
-                    content.toStream(), expectedLength);
+                InputStream validatingInputStream = new LengthValidatingInputStream(content.toStream(), expectedLength);
                 request.setBody(BinaryData.fromStream(validatingInputStream));
             } else if (content instanceof FluxByteBufferContent) {
                 request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
