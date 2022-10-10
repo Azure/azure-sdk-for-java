@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.web.implementation.config;
+package com.azure.spring.cloud.config.web;
 
 import static com.azure.spring.cloud.config.web.implementation.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.web.implementation.TestConstants.STORE_ENDPOINT_PROP;
@@ -22,6 +22,7 @@ import org.springframework.cloud.endpoint.RefreshEndpoint;
 
 import com.azure.spring.cloud.config.implementation.config.AppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.config.implementation.config.AppConfigurationBootstrapConfiguration;
+import com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration;
 
 public class AppConfigurationWebAutoConfigurationTest {
 
