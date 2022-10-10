@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
 import com.azure.communication.callautomation.models.ChannelAffinity;
-import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RecordingChannel;
 import com.azure.communication.callautomation.models.RecordingContent;
@@ -61,7 +60,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // create call and assert response
             CreateCallResult createCallResult = client.createCall(
-                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+                source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId)
             );
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
@@ -138,7 +137,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // create call and assert response
             CreateCallResult createCallResult = client.createCall(
-                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
+                source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId)
             );
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
