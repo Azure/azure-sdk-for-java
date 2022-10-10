@@ -13,6 +13,9 @@ public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedR
     /** Static value Disabled for ManagedRuleEnabledState. */
     public static final ManagedRuleEnabledState DISABLED = fromString("Disabled");
 
+    /** Static value Enabled for ManagedRuleEnabledState. */
+    public static final ManagedRuleEnabledState ENABLED = fromString("Enabled");
+
     /**
      * Creates or finds a ManagedRuleEnabledState from its string representation.
      *

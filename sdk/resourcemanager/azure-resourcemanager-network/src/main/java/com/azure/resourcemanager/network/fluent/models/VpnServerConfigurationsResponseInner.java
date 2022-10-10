@@ -17,6 +17,10 @@ public final class VpnServerConfigurationsResponseInner {
     @JsonProperty(value = "vpnServerConfigurationResourceIds")
     private List<String> vpnServerConfigurationResourceIds;
 
+    /** Creates an instance of VpnServerConfigurationsResponseInner class. */
+    public VpnServerConfigurationsResponseInner() {
+    }
+
     /**
      * Get the vpnServerConfigurationResourceIds property: List of VpnServerConfigurations associated with VirtualWan.
      *

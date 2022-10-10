@@ -22,6 +22,10 @@ public final class ConnectionMonitorSuccessThreshold {
     @JsonProperty(value = "roundTripTimeMs")
     private Float roundTripTimeMs;
 
+    /** Creates an instance of ConnectionMonitorSuccessThreshold class. */
+    public ConnectionMonitorSuccessThreshold() {
+    }
+
     /**
      * Get the checksFailedPercent property: The maximum percentage of failed checks permitted for a test to evaluate as
      * successful.

@@ -17,6 +17,10 @@ public final class VirtualNetworkConnectionGatewayReference {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of VirtualNetworkConnectionGatewayReference class. */
+    public VirtualNetworkConnectionGatewayReference() {
+    }
+
     /**
      * Get the id property: The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
      *

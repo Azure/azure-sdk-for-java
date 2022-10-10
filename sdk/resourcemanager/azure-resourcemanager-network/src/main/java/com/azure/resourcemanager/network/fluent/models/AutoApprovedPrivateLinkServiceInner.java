@@ -16,6 +16,10 @@ public final class AutoApprovedPrivateLinkServiceInner {
     @JsonProperty(value = "privateLinkService")
     private String privateLinkService;
 
+    /** Creates an instance of AutoApprovedPrivateLinkServiceInner class. */
+    public AutoApprovedPrivateLinkServiceInner() {
+    }
+
     /**
      * Get the privateLinkService property: The id of the private link service resource.
      *

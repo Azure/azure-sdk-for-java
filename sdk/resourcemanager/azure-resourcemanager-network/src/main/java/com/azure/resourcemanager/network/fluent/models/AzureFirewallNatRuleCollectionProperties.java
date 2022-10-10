@@ -38,6 +38,10 @@ public final class AzureFirewallNatRuleCollectionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AzureFirewallNatRuleCollectionProperties class. */
+    public AzureFirewallNatRuleCollectionProperties() {
+    }
+
     /**
      * Get the priority property: Priority of the NAT rule collection resource.
      *

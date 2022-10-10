@@ -31,6 +31,10 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat class. */
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat() {
+    }
+
     /**
      * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.
      *

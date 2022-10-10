@@ -23,6 +23,10 @@ public final class TroubleshootingProperties {
     @JsonProperty(value = "storagePath", required = true)
     private String storagePath;
 
+    /** Creates an instance of TroubleshootingProperties class. */
+    public TroubleshootingProperties() {
+    }
+
     /**
      * Get the storageId property: The ID for the storage account to save the troubleshoot result.
      *

@@ -23,6 +23,10 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
     @JsonProperty(value = "statusCodes")
     private List<String> statusCodes;
 
+    /** Creates an instance of ApplicationGatewayProbeHealthResponseMatch class. */
+    public ApplicationGatewayProbeHealthResponseMatch() {
+    }
+
     /**
      * Get the body property: Body that must be contained in the health response. Default value is empty.
      *

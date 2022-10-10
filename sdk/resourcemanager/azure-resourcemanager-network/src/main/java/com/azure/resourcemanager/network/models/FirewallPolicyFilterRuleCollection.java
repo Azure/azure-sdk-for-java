@@ -27,6 +27,10 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
     @JsonProperty(value = "rules")
     private List<FirewallPolicyRule> rules;
 
+    /** Creates an instance of FirewallPolicyFilterRuleCollection class. */
+    public FirewallPolicyFilterRuleCollection() {
+    }
+
     /**
      * Get the action property: The action type of a Filter rule collection.
      *

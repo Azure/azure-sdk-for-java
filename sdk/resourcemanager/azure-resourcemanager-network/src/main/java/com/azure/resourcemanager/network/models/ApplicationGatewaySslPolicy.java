@@ -41,6 +41,10 @@ public final class ApplicationGatewaySslPolicy {
     @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
+    /** Creates an instance of ApplicationGatewaySslPolicy class. */
+    public ApplicationGatewaySslPolicy() {
+    }
+
     /**
      * Get the disabledSslProtocols property: Ssl protocols to be disabled on application gateway.
      *

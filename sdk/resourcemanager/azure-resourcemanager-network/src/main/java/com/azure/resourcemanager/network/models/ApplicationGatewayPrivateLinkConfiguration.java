@@ -37,6 +37,10 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayPrivateLinkConfiguration class. */
+    public ApplicationGatewayPrivateLinkConfiguration() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway private link configuration.
      *
