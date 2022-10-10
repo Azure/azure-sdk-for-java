@@ -17,7 +17,9 @@ public final class CosmosBatchItemRequestOptionsTests  {
         RequestOptions internalRequestOptions = batchRequestOptions.toRequestOptions();
         assertThat(internalRequestOptions.getThroughputControlGroupName()).isNull();
 
-        batchRequestOptions.setThroughputControlGroupName("SomeThroughputControlGroup");
+        CosmosBatchItemRequestOptions batchRequestOptionsReturned =
+            batchRequestOptions.setThroughputControlGroupName("SomeThroughputControlGroup");
+        assertThat(batchRequestOptionsReturned).isSameAs(batchRequestOptions);
 
         internalRequestOptions = batchRequestOptions.toRequestOptions();
         assertThat(internalRequestOptions.getThroughputControlGroupName()).isNotNull();

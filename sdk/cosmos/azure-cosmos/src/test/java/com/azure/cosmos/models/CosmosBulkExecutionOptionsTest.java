@@ -68,7 +68,8 @@ public class CosmosBulkExecutionOptionsTest {
         CosmosBulkExecutionOptions options = new CosmosBulkExecutionOptions();
         assertThat(options.getThroughputControlGroupName()).isNull();
 
-        options.setThroughputControlGroupName("HelloWorld");
+        CosmosBulkExecutionOptions optionsReturned = options.setThroughputControlGroupName("HelloWorld");
+        assertThat(optionsReturned).isSameAs(options);
         assertThat(options.getThroughputControlGroupName()).isNotNull();
         assertThat(options.getThroughputControlGroupName()).isEqualTo("HelloWorld");
 
