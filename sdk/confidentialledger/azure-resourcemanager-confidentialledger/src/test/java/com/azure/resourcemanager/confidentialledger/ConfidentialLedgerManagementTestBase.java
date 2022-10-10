@@ -41,7 +41,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     public static void cleanUp() {
         // Delete the created resource group in LIVE and RECORD modes only
         String testMode = System.getenv("AZURE_TEST_MODE");
-        if (testMode != null && !testMode.equals("PLAYBACK")) {
+        if (testMode != null && !"PLAYBACK".equals(testMode)) {
             ResourceManager
                 .authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()

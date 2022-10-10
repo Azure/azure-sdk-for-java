@@ -21,8 +21,7 @@ public class ConfidentialLedgerManagementOperations {
             Map<String, String> tags,
             LedgerType ledgerType,
             List<AadBasedSecurityPrincipal> aadBasedMembers,
-            List<CertBasedSecurityPrincipal> certBasedMembers)
-    {
+            List<CertBasedSecurityPrincipal> certBasedMembers) {
         ledgerManager
                 .ledgers()
                 .define(ledgerName)
@@ -40,8 +39,7 @@ public class ConfidentialLedgerManagementOperations {
     public void createLedger(
         String ledgerName,
         String resourceGroupName,
-        String location)
-    {
+        String location) {
         ledgerManager
             .ledgers()
             .define(ledgerName)
