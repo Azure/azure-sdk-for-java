@@ -107,6 +107,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
                 @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+                @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -146,6 +147,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
                 @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+                @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
                 @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -366,6 +368,7 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -396,6 +399,7 @@ public final class BlockBlobsImpl {
             OffsetDateTime immutabilityPolicyExpiry,
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
+            byte[] transactionalContentCrc64,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScopeParam,
@@ -460,6 +464,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted =
                 immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.upload(
                 this.client.getUrl(),
                 containerName,
@@ -492,6 +497,7 @@ public final class BlockBlobsImpl {
                 immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode,
                 legalHold,
+                transactionalContentCrc64Converted,
                 body,
                 accept,
                 context);
@@ -532,6 +538,7 @@ public final class BlockBlobsImpl {
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -562,6 +569,7 @@ public final class BlockBlobsImpl {
             OffsetDateTime immutabilityPolicyExpiry,
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
+            byte[] transactionalContentCrc64,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScopeParam,
@@ -626,6 +634,7 @@ public final class BlockBlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted =
                 immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.upload(
                 this.client.getUrl(),
                 containerName,
@@ -658,6 +667,7 @@ public final class BlockBlobsImpl {
                 immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode,
                 legalHold,
+                transactionalContentCrc64Converted,
                 body,
                 accept,
                 context);

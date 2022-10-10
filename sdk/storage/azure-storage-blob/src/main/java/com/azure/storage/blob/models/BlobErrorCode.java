@@ -200,9 +200,9 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value IncrementalCopyBlobMismatch for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_BLOB_MISMATCH = fromString("IncrementalCopyBlobMismatch");
 
-    /** Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode. */
-    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED =
-            fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+    /** Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for BlobErrorCode. */
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED =
+            fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 
     /** Static value IncrementalCopySourceMustBeSnapshot for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_SOURCE_MUST_BE_SNAPSHOT =
