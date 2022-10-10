@@ -1,5 +1,5 @@
 # Azure Identity client library for Java
-The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations which can be used to construct Azure SDK clients which support Azure AD token authentication.
+The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations which can be used to construct Azure SDK clients which support Azure AD token authentication.
 
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][azuread_doc]
 
@@ -392,10 +392,10 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
       <td><a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
-      <td><code><a href="https://learn.microsoft.com/en-us/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure PowerShell</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-powershell">example</a></td>
-      <td><a href="https://learn.microsoft.com/en-us/powershell/azure/?view=azps-8.3.0">Azure PowerShell documentation</a></td>
+      <td><a href="https://learn.microsoft.com/powershell/azure/?view=azps-8.3.0">Azure PowerShell documentation</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable">IntelliJCredential</a></code></td>

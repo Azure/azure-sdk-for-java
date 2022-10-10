@@ -68,7 +68,7 @@ This error contains several pieces of information:
 
 ### Enable and configure logging
 
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging](https://learn.microsoft.com/en-us/azure/developer/java/sdk/logging-overview) documentation for guidance to enable logging.
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging](https://learn.microsoft.com/azure/developer/java/sdk/logging-overview) documentation for guidance to enable logging.
 
 > CAUTION: Requests and responses in the Azure Identity library contain sensitive information. Precaution must be taken to protect logs when customizing the output to avoid compromising account security.
 
