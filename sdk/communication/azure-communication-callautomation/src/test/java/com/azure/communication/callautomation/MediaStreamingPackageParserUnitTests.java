@@ -26,8 +26,7 @@ public class MediaStreamingPackageParserUnitTests {
             + "\"data\": \"AQIDBAU=\","      // [1, 2, 3, 4, 5]
             + "\"silent\": false"
             + "}";
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) packageParser.parse(audioJson);
+        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(audioJson);
         assertNotNull(mediaStreamingAudio);
         checkAudioData(mediaStreamingAudio);
     }
@@ -41,8 +40,7 @@ public class MediaStreamingPackageParserUnitTests {
             + "\"channels\": 2,"
             + "\"length\": 100.1"
             + "}";
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) packageParser.parse(metadataJson);
+        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(metadataJson);
         assertNotNull(mediaStreamingMetadata);
         checkAudioMetadata(mediaStreamingMetadata);
     }
@@ -50,39 +48,35 @@ public class MediaStreamingPackageParserUnitTests {
     @Test
     public void parseBinaryAudioData() {
         String jsonData = createJsonData();
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) packageParser.parse(BinaryData.fromString(jsonData));
+        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(BinaryData.fromString(jsonData));
         checkAudioData(mediaStreamingAudio);
     }
 
     @Test
     public void parseBinaryAudioMetadata() {
         String jsonMetadata = createJsonMetadata();
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) packageParser.parse(BinaryData.fromString(jsonMetadata));
+        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(BinaryData.fromString(jsonMetadata));
         checkAudioMetadata(mediaStreamingMetadata);
     }
 
     @Test
     public void parseBinaryArrayAudioData() {
         String jsonData = createJsonData();
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) packageParser.parse(jsonData.getBytes(StandardCharsets.UTF_8));
+        MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(jsonData.getBytes(StandardCharsets.UTF_8));
         checkAudioData(mediaStreamingAudio);
     }
 
     @Test
     public void parseBinaryArrayAudioMetadata() {
         String jsonMetadata = createJsonMetadata();
-        MediaStreamingPackageParser packageParser = new MediaStreamingPackageParser();
-        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) packageParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
+        MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
         checkAudioMetadata(mediaStreamingMetadata);
     }
 
     private void checkAudioData(MediaStreamingAudio mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-08-23T11:48:05Z"), mediaStreamingAudio.getTimestamp());
         assertEquals("participantId", mediaStreamingAudio.getParticipant().getRawId());
-        assertArrayEquals(new byte[] {1, 2, 3, 4, 5}, mediaStreamingAudio.getData());
+        assertArrayEquals(new byte[] {1, 2, 3, 4, 5}, mediaStreamingAudio.getAudioData());
         assertEquals(false, mediaStreamingAudio.isSilent());
     }
 

@@ -12,33 +12,33 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
     /*
      * The audio data.
      */
-    private byte[] data;
+    private final byte[] audioData;
 
     /*
      * The timestamp of when the media was sourced.
      */
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The participantId.
      */
-    private CommunicationIdentifier participant;
+    private final CommunicationIdentifier participant;
 
     /*
      * Indicates if the received audio buffer contains only silence.
      */
-    private boolean silent;
+    private final boolean silent;
 
     /**
      * The constructor
      *
-     * @param data
-     * @param timestamp
-     * @param participant
-     * @param silent
+     * @param audioData The audio data.
+     * @param timestamp The timestamp of when the media was sourced.
+     * @param participant The participantId.
+     * @param silent Indicates if the received audio buffer contains only silence.
      */
-    public MediaStreamingAudio(byte[] data, OffsetDateTime timestamp, CommunicationIdentifier participant, boolean silent) {
-        this.data = data;
+    public MediaStreamingAudio(byte[] audioData, OffsetDateTime timestamp, CommunicationIdentifier participant, boolean silent) {
+        this.audioData = audioData.clone();
         this.timestamp = timestamp;
         this.participant = participant;
         this.silent = silent;
@@ -49,8 +49,8 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      *
      * @return the data value.
      */
-    public byte[] getData() {
-        return data;
+    public byte[] getAudioData() {
+        return audioData.clone();
     }
 
     /**

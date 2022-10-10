@@ -3,41 +3,42 @@
 
 package com.azure.communication.callautomation.models;
 
+/** The MediaStreamingMetadata model. */
 public class MediaStreamingMetadata extends MediaStreamingPackageBase {
 
     /*
      * The mediaSubscriptionId.
      */
-    private String mediaSubscriptionId;
+    private final String mediaSubscriptionId;
 
     /*
      * The encoding.
      */
-    private String encoding;
+    private final String encoding;
 
     /*
      * The sampleRate.
      */
-    private int sampleRate;
+    private final int sampleRate;
 
     /*
      * The channels.
      */
-    private int channels;
+    private final int channels;
 
     /*
      * The length.
      */
-    private double length;
+    private final double length;
 
     /**
      * The constructor
      *
-     * @param mediaSubscriptionId
-     * @param encoding
-     * @param sampleRate
-     * @param channels
-     * @param length
+     * @param mediaSubscriptionId The mediaSubscriptionId.
+     * @param encoding The encoding.
+     * @param sampleRate The sampleRate.
+     * @param channels The channels.
+     * @param length The length.
      */
     public MediaStreamingMetadata(String mediaSubscriptionId, String encoding, int sampleRate, int channels, double length) {
         this.mediaSubscriptionId = mediaSubscriptionId;

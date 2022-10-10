@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.EventHandler;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingMetadataInternal;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -21,7 +20,7 @@ import java.time.format.DateTimeFormatter;
  * Parser of the different packages received as part of Media streaming.
  */
 public class MediaStreamingPackageParser {
-    private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MediaStreamingPackageParser.class);
 
     /***
      * Parses a Media Streaming package from BinaryData.
@@ -59,7 +58,7 @@ public class MediaStreamingPackageParser {
             JsonNode jsonData = mapper.readTree(stringJson);
             if (stringJson.contains("data")) {
                 MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData, MediaStreamingAudioInternal.class);
-                return new MediaStreamingAudio(audioInternal.getData(), OffsetDateTime.parse(audioInternal.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), new CommunicationUserIdentifier(audioInternal.getParticipantRawID()), audioInternal.isSilent());
+                return new MediaStreamingAudio(audioInternal.getAudioData(), OffsetDateTime.parse(audioInternal.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME), new CommunicationUserIdentifier(audioInternal.getParticipantRawID()), audioInternal.isSilent());
             }
             if (stringJson.contains("encoding")) {
                 MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData, MediaStreamingMetadataInternal.class);

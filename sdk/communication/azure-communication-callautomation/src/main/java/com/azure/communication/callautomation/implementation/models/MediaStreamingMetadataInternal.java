@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MediaStreamingMetadataInternal model. */
-public class MediaStreamingMetadataInternal {
+public final class MediaStreamingMetadataInternal {
 
     /*
      * The mediaSubscriptionId.
@@ -43,7 +43,9 @@ public class MediaStreamingMetadataInternal {
      *
      * @return the mediaSubscriptionId value.
      */
-    public String getMediaSubscriptionId() { return mediaSubscriptionId; }
+    public String getMediaSubscriptionId() {
+        return mediaSubscriptionId;
+    }
 
     /**
      * Get the encoding property.

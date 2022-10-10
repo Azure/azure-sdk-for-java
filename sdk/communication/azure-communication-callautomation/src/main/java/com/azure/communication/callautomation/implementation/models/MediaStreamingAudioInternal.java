@@ -12,7 +12,7 @@ public final class MediaStreamingAudioInternal {
      * The audio data.
      */
     @JsonProperty(value = "data")
-    private byte[] data;
+    private byte[] audioData;
 
     /*
      * The timestamp of when the media was sourced.
@@ -37,8 +37,8 @@ public final class MediaStreamingAudioInternal {
      *
      * @return the data value.
      */
-    public byte[] getData() {
-        return data;
+    public byte[] getAudioData() {
+        return audioData.clone();
     }
 
     /**
