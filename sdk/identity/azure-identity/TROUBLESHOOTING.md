@@ -239,7 +239,7 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 ```
 >Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
 
-## Troubleshoot multi tenant authentication issues
+## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`
 
 | Error Message |Description| Mitigation |

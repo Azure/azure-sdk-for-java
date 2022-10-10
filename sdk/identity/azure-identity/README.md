@@ -8,7 +8,7 @@ The Azure Identity library provides [Azure Active Directory (Azure AD)](https://
 
 #### Include the BOM file
 
-Include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+Include the `azure-sdk-bom` in your project to take a dependency on GA version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
 To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
@@ -121,8 +121,8 @@ public void createDefaultAzureCredential() {
 
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
-### Authenticate a user assigned Managed Identity with `DefaultAzureCredential`
-To Authenticate using User Assigned Managed Identity, ensure that configuration instructions for your supported Azure Resource [here](#managed-identity-support) have been successfully completed.
+### Authenticate a user-assigned Managed Identity with `DefaultAzureCredential`
+To authenticate using User-Assigned Managed Identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
 
@@ -148,7 +148,7 @@ public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
 In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using the `DefaultAzureCredential`.
 
 ### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
-To Authenticate using IntelliJ, ensure that configuration instructions [here](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
+To authenticate using IntelliJ, ensure that configuration instructions [here](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
 
@@ -407,7 +407,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable">VisualStudioCodeCredential</a></code></td>
       <td>Authenticate in a development environment with the account in Visual Studio Azure Account extension. </td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
-      <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure extension</a></td>
+      <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure Account extension</a></td>
     </tr>
   </tbody>
 </table>
