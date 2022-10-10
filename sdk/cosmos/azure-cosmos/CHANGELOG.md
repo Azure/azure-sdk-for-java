@@ -3,7 +3,7 @@
 ### 4.38.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+* Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
 #### Breaking Changes
 
 #### Bugs Fixed
