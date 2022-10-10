@@ -122,7 +122,7 @@ public void createDefaultAzureCredential() {
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
 ### Authenticate a user assigned Managed Identity with `DefaultAzureCredential`
-To Authenticate using User Assigned Managed Identity, ensure that configuration instructions for your supported Azure Resource [here](#managed-identity-support) have been successfully completed.
+To authenticate using User-Assigned Managed Identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
 
