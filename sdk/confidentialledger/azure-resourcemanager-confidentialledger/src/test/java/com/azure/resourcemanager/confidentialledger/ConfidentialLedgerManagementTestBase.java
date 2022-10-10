@@ -39,9 +39,14 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     }
     @AfterAll
     public static void cleanUp() {
-        // Delete the created resource group in LIVE and RECORD modes only
+        // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
         String testMode = System.getenv("AZURE_TEST_MODE");
-        if (testMode != null && !"PLAYBACK".equals(testMode)) {
+        if (testMode == null) {
+            testMode = "PLAYBACK";
+        }
+
+        // Delete the created resource group in LIVE and RECORD modes only
+        if (!("PLAYBACK".equals(testMode))) {
             ResourceManager
                 .authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
@@ -73,7 +78,14 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         return testResourceGroup;
     }
     public static void setTestResourceGroup(String testResourceGroupName) {
-        if (!System.getenv("AZURE_TEST_MODE").equals("PLAYBACK")) {
+        String testMode = System.getenv("AZURE_TEST_MODE");
+
+        // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
+        if (testMode == null) {
+            testMode = "PLAYBACK";
+        }
+        // Create a resource group in LIVE and RECORD modes only, Mock it otherwise
+        if (!("PLAYBACK".equals(testMode))) {
             testResourceGroup = ResourceManager
                 .authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
@@ -82,7 +94,6 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
                 .withRegion("eastus")
                 .create();
         } else {
-            // Mock the test resource group
             testResourceGroup = mock(ResourceGroup.class);
             when(testResourceGroup.name()).thenReturn(testResourceGroupName);
         }
