@@ -260,6 +260,7 @@ public final class CosmosBulkExecutionOptions {
      * Sets the throughput control group name.
      *
      * @param throughputControlGroupName the throughput control group name.
+     * @return the CosmosBulkExecutionOptions.
      */
     public CosmosBulkExecutionOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
