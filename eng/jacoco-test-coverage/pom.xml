@@ -529,6 +529,16 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
+      <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
+      <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
       <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
     </dependency>
