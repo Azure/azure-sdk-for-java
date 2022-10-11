@@ -3,6 +3,9 @@
 ## 4.5.0-beta.2 (Unreleased)
 Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
 
+#### Bugs Fixed
+- Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
+
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
