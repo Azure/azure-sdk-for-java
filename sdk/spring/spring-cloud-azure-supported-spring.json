@@ -5,7 +5,15 @@
     "snapshot" : true,
     "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-SNAPSHOT",
-    "spring-cloud-version" : "2022.0.0-M4"
+    "spring-cloud-version" : "2022.0.0-M5"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "PRERELEASE",
+    "snapshot" : false,
+    "supportStatus" : "TODO",
+    "spring-boot-version" : "3.0.0-M5",
+    "spring-cloud-version" : "2022.0.0-M5"
   },
   {
     "current" : true,
