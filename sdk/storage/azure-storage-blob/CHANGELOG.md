@@ -10,6 +10,12 @@
 ### Breaking Changes
 - `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
 
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-common` from `12.18.1` to version `12.19.0`.
+- Upgraded `azure-storage-internal-avro` from `12.5.0-beta.2` to version `12.5.0`.
+
 ## 12.19.1 (2022-09-12)
 
 ### Other Changes
