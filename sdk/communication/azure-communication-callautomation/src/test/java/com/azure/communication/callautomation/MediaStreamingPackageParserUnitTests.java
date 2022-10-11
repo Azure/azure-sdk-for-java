@@ -21,12 +21,10 @@ public class MediaStreamingPackageParserUnitTests {
     public void parseAudioData() {
         String audioJson = "{"
             + "\"kind\": \"AudioData\","
-            + "\"audioData\": {"
             + "\"timestamp\": \"2022-10-03T19:16:12.925Z\","
             + "\"participantRawID\": \"participantId\","
             + "\"data\": \"AQIDBAU=\","
             + "\"silent\": false"
-            + "}"
             + "}";
         MediaStreamingAudio mediaStreamingAudio = (MediaStreamingAudio) MediaStreamingPackageParser.parse(audioJson);
         assertNotNull(mediaStreamingAudio);
@@ -36,14 +34,12 @@ public class MediaStreamingPackageParserUnitTests {
     @Test
     public void parseAudioMetadata() {
         String metadataJson = "{"
-            + " \"kind\": \"AudioMetadata\","
-            + "\"audioMetadata\": {"
+            + "\"kind\": \"AudioMetadata\","
             + "\"subscriptionId\": \"subscriptionId\","
             + "\"encoding\": \"PCM\","
             + "\"sampleRate\": 8,"
             + "\"channels\": 2,"
             + "\"length\": 100"
-            + "}"
             + "}";
         MediaStreamingMetadata mediaStreamingMetadata = (MediaStreamingMetadata) MediaStreamingPackageParser.parse(metadataJson);
         assertNotNull(mediaStreamingMetadata);
@@ -97,15 +93,16 @@ public class MediaStreamingPackageParserUnitTests {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode audioMetadata = objectMapper.createObjectNode();
+            audioMetadata.put("kind", "AudioMetadata");
             audioMetadata.put("subscriptionId", "subscriptionId");
             audioMetadata.put("encoding", "PCM");
             audioMetadata.put("sampleRate", 8);
             audioMetadata.put("channels", 2);
             audioMetadata.put("length", 100);
-            ObjectNode root = objectMapper.createObjectNode();
+            /*ObjectNode root = objectMapper.createObjectNode();
             root.put("kind", "AudioMetadata");
-            root.put("audioMetadata", audioMetadata);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+            root.put("audioMetadata", audioMetadata);*/
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(audioMetadata);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -115,14 +112,15 @@ public class MediaStreamingPackageParserUnitTests {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode audioData = objectMapper.createObjectNode();
+            audioData.put("kind", "AudioData");
             audioData.put("timestamp", "2022-10-03T19:16:12.925Z");
             audioData.put("participantRawID", "participantId");
             audioData.put("data", "AQIDBAU=");
             audioData.put("silent", false);
-            ObjectNode root = objectMapper.createObjectNode();
+            /*ObjectNode root = objectMapper.createObjectNode();
             root.put("kind", "AudioData");
-            root.put("audioData", audioData);
-            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+            root.put("audioData", audioData);*/
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(audioData);
         } catch (Exception e) {
             throw new RuntimeException();
         }

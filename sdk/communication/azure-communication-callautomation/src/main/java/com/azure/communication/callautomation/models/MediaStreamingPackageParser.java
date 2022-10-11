@@ -54,11 +54,11 @@ public class MediaStreamingPackageParser {
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             JsonNode jsonData = mapper.readTree(stringJson);
             if (stringJson.contains("AudioData")) {
-                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData.get("audioData"), MediaStreamingAudioInternal.class);
+                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData, MediaStreamingAudioInternal.class);
                 return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
             }
             if (stringJson.contains("AudioMetadata")) {
-                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), MediaStreamingMetadataInternal.class);
+                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData, MediaStreamingMetadataInternal.class);
                 return new MediaStreamingMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
             }
             return null;

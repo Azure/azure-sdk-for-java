@@ -37,13 +37,13 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      *
      * @param audioData The audio data.
      * @param timestamp The timestamp of when the media was sourced.
-     * @param participant The participantId.
+     * @param participantRawID The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    MediaStreamingAudio(String audioData, String timestamp, String participant, boolean silent) {
+    MediaStreamingAudio(String audioData, String timestamp, String participantRawID, boolean silent) {
         this.audioData = audioData;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.participant = new CommunicationUserIdentifier(participant);
+        this.participant = new CommunicationUserIdentifier(participantRawID);
         this.silent = silent;
     }
 
