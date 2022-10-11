@@ -29,7 +29,7 @@ public class Utility {
         return stringPointsList;
     }
 
-    public static List<Double> geoBoundingBoxToFloat(GeoBoundingBox boundingBox) {
+    public static List<Double> geoBoundingBoxAsList(GeoBoundingBox boundingBox) {
         return Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(), boundingBox.getNorth());
     }
 }

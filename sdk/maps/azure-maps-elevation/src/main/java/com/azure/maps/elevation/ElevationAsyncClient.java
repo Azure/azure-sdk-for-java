@@ -432,7 +432,7 @@ public final class ElevationAsyncClient {
      * @return the response from a successful Get Data for Bounding Box API.
      */
     Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows, Integer columns, Context context) {
-        return this.serviceClient.getDataForBoundingBoxWithResponseAsync(JsonFormat.JSON, Utility.geoBoundingBoxToFloat(bounds), rows, columns, context).onErrorMap(throwable -> {
+        return this.serviceClient.getDataForBoundingBoxWithResponseAsync(JsonFormat.JSON, Utility.geoBoundingBoxAsList(bounds), rows, columns, context).onErrorMap(throwable -> {
             if (!(throwable instanceof ErrorResponseException)) {
                 return throwable;
             }
