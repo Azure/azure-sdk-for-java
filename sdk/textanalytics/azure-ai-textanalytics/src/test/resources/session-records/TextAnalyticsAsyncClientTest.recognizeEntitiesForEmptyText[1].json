@@ -1,23 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "007ac48c-597e-44b6-8778-f607848f8c19",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5872e3ed-bf03-4685-8601-063ad1398f7f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "264",
-      "x-envoy-upstream-service-time" : "3",
+      "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "208208eb-5b0e-4169-b995-190d4047e0a7",
+      "apim-request-id" : "679758e7-bad4-4e7b-8fc7-da569c33f0f6",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Fri, 05 Aug 2022 20:47:17 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:14:51 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5872e3ed-bf03-4685-8601-063ad1398f7f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b8c038e3-936b-4c2d-81ec-a2e9ec39171e",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:15:02 GMT",
+      "Content-Type" : "text/plain"
     },
     "Exception" : null
   } ],

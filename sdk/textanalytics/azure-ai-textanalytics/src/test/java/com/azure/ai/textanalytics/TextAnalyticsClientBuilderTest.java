@@ -34,6 +34,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -195,6 +196,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default language in client builder for single document
      */
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -207,6 +210,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default language in client builder for single document
      */
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -218,6 +222,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default language in client builder for a batch of documents
      */
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguageForBatchOperation(HttpClient httpClient,
@@ -237,6 +243,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default language in client builder for a batch of documents
      */
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguageForBatchOperation(HttpClient httpClient,
@@ -251,6 +259,8 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
             }
         });
     }
+
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/31390")
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")

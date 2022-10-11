@@ -1,24 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9b2f88d7-558f-4f3c-aa1b-3bc6f865afc5",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8669a9f2-8982-4a04-ab53-6ab49ad8d626",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "205",
-      "x-envoy-upstream-service-time" : "9",
+      "content-length" : "165",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "1455f874-29bf-47e0-b9d7-ce0a6da936c5",
+      "apim-request-id" : "dcd9de10-ac20-4dd1-84f3-1e4887baa2bd",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
-      "Date" : "Fri, 05 Aug 2022 20:49:54 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "StatusCode" : "401",
+      "Body" : "{ \"statusCode\": 401, \"message\": \"Unauthorized. Access token is missing, invalid, audience is incorrect (https://ppe.cognitiveservices.azure.com), or have expired.\" }",
+      "Date" : "Tue, 11 Oct 2022 19:19:35 GMT",
+      "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],

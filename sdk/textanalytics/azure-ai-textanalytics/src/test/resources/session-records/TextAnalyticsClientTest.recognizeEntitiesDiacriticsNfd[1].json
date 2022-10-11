@@ -1,24 +1,82 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5e00713c-8aa7-4efe-b423-207d23c359c3",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba117cd0-09f3-4bff-8d88-dfdc523220be",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "232",
-      "x-envoy-upstream-service-time" : "24",
+      "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "cabe9785-6eaf-4b13-8c3f-c86545348581",
+      "apim-request-id" : "b70d4a07-d9e7-434b-aa15-ad805c45b813",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":15,\"length\":9,\"confidenceScore\":0.99}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Fri, 05 Aug 2022 20:39:29 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 20:05:09 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba117cd0-09f3-4bff-8d88-dfdc523220be",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7a70edb4-f380-4b6e-9fb4-a0c32e540b41",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 20:05:20 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba117cd0-09f3-4bff-8d88-dfdc523220be",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dc530db3-83fd-4f5b-a128-38f1341ed1ec",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 20:05:32 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba117cd0-09f3-4bff-8d88-dfdc523220be",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "52120b3c-1334-43f6-bc80-41f2ad94c116",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 20:05:46 GMT",
+      "Content-Type" : "text/plain"
     },
     "Exception" : null
   } ],

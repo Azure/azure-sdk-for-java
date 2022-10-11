@@ -1,61 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-05-01",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.5 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "456ce0a0-27a0-4abd-b56b-d0b3bf189bc6",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb054d0a-4962-496d-baca-03d80e6f55bf",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "293",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/51d567f9-77dc-499e-97cb-8a345af208c0?api-version=2022-05-01",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "eb073f13-ff34-40d9-a9af-90e9f7baab61",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Tue, 06 Sep 2022 06:14:56 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/51d567f9-77dc-499e-97cb-8a345af208c0?api-version=2022-05-01&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.5 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b51c19e7-4b48-4b1b-8f13-8febf0771111"
-    },
-    "Response" : {
-      "content-length" : "636",
-      "x-envoy-upstream-service-time" : "33",
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "76",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4c5cf4db-60f4-4c93-bd19-a58390f61dd6",
+      "apim-request-id" : "724b0161-b4b2-43a7-a0aa-725b8445186d",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"51d567f9-77dc-499e-97cb-8a345af208c0\",\"lastUpdatedDateTime\":\"2022-09-06T06:14:57Z\",\"createdDateTime\":\"2022-09-06T06:14:56Z\",\"expirationDateTime\":\"2022-09-07T06:14:56Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomSingleLabelClassificationLROResults\",\"lastUpdateDateTime\":\"2022-09-06T06:14:57.0545929Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"class\":[{\"category\":\"RateBook\",\"confidenceScore\":0.76}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"659c1851-be0b-4142-b12a-087da9785926\",\"deploymentName\":\"659c1851-be0b-4142-b12a-087da9785926\"}}]}}",
-      "Date" : "Tue, 06 Sep 2022 06:15:26 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/51d567f9-77dc-499e-97cb-8a345af208c0?api-version=2022-05-01&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.5 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b6c70c2e-0544-467e-88ca-829b0ce98765"
-    },
-    "Response" : {
-      "content-length" : "636",
-      "x-envoy-upstream-service-time" : "171",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "82a7e5f4-948e-4ba7-a11d-6dfc30e19615",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"51d567f9-77dc-499e-97cb-8a345af208c0\",\"lastUpdatedDateTime\":\"2022-09-06T06:14:57Z\",\"createdDateTime\":\"2022-09-06T06:14:56Z\",\"expirationDateTime\":\"2022-09-07T06:14:56Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomSingleLabelClassificationLROResults\",\"lastUpdateDateTime\":\"2022-09-06T06:14:57.0545929Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"class\":[{\"category\":\"RateBook\",\"confidenceScore\":0.76}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"659c1851-be0b-4142-b12a-087da9785926\",\"deploymentName\":\"659c1851-be0b-4142-b12a-087da9785926\"}}]}}",
-      "Date" : "Tue, 06 Sep 2022 06:15:26 GMT",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'CustomSingleClassification' failed with validation errors: ['Cannot find published project: 659c1851-be0b-4142-b12a-087da9785926 and deployment: 659c1851-be0b-4142-b12a-087da9785926 under provided APIM subscription id.']\"}}}",
+      "Date" : "Tue, 11 Oct 2022 18:47:56 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

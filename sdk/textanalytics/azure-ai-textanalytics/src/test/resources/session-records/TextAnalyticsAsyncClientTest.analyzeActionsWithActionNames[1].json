@@ -1,62 +1,157 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-05-01",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2436672c-b3d3-4c5b-9749-efc2af7bd808",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "30f5cd79-86d3-4601-89bc-f62fecc9cd6b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "cb9c5deb-701f-46d8-b46d-cf1cd95e94e1",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:10:06 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "30f5cd79-86d3-4601-89bc-f62fecc9cd6b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "255",
+      "x-envoy-upstream-service-time" : "254",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/406be97b-d2c9-477c-915c-c9a335a06cce?api-version=2022-05-01",
+      "operation-location" : "https://language-dogfood.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1e0542e1-26c3-43a9-956c-87024d3e7197",
+      "apim-request-id" : "f5f42dd5-0850-4ffa-b122-1780e479c13d",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Fri, 05 Aug 2022 20:45:46 GMT"
+      "Date" : "Tue, 11 Oct 2022 19:10:07 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/406be97b-d2c9-477c-915c-c9a335a06cce?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c1baa1cd-565f-4a09-b609-da5c592c1abc"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57fcef2c-1562-477f-bcb0-96f430f4f0b7"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "7ad504ad-fd94-48ce-84dd-444ac097bb26",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:10:47 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "57fcef2c-1562-477f-bcb0-96f430f4f0b7"
     },
     "Response" : {
       "content-length" : "2519",
-      "x-envoy-upstream-service-time" : "89",
+      "x-envoy-upstream-service-time" : "164",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5ec520c7-94c4-482d-9805-1b67dd675e04",
+      "apim-request-id" : "29dcc50c-59db-4111-882d-e6ff82c8ed11",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"406be97b-d2c9-477c-915c-c9a335a06cce\",\"lastUpdatedDateTime\":\"2022-08-05T20:45:49Z\",\"createdDateTime\":\"2022-08-05T20:45:46Z\",\"expirationDateTime\":\"2022-08-06T20:45:46Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":5,\"failed\":0,\"inProgress\":0,\"total\":5,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:47.873435Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"PiiEntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:48.0422391Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle *********.\",\"id\":\"0\",\"entities\":[{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}},{\"kind\":\"KeyPhraseExtractionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:47.8870218Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-07-01\"}},{\"kind\":\"EntityLinkingLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:49.2658471Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"SentimentAnalysisLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:48.2446151Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":44,\"text\":\"I had a wonderful trip to Seattle last week.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-06-01\"}}]}}",
-      "Date" : "Fri, 05 Aug 2022 20:46:16 GMT",
+      "Body" : "{\"jobId\":\"03b4138e-9091-4c5a-81e7-263be3c57590\",\"lastUpdateDateTime\":\"2022-10-11T19:10:15Z\",\"createdDateTime\":\"2022-10-11T19:10:07Z\",\"expirationDateTime\":\"2022-10-12T19:10:07Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":5,\"failed\":0,\"inProgress\":0,\"total\":5,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-10-11T19:10:15.5247303Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"PiiEntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-10-11T19:10:09.4830424Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle *********.\",\"id\":\"0\",\"entities\":[{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}},{\"kind\":\"KeyPhraseExtractionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-10-11T19:10:09.2346189Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}},{\"kind\":\"EntityLinkingLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-10-11T19:10:09.3624446Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"SentimentAnalysisLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-10-11T19:10:09.1633419Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":44,\"text\":\"I had a wonderful trip to Seattle last week.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}]}}",
+      "Date" : "Tue, 11 Oct 2022 19:10:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/406be97b-d2c9-477c-915c-c9a335a06cce?api-version=2022-05-01&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7d9c62bd-085d-4d68-bd1c-5feb0770595a"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ced814e3-35af-4c57-965a-8a2bc15f65f9"
     },
     "Response" : {
-      "content-length" : "2519",
-      "x-envoy-upstream-service-time" : "107",
+      "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d35358bf-8b9f-4174-9ca5-c58ca0701468",
+      "apim-request-id" : "6c9401c6-496e-44b9-87d5-9dce2b128aa1",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"406be97b-d2c9-477c-915c-c9a335a06cce\",\"lastUpdatedDateTime\":\"2022-08-05T20:45:49Z\",\"createdDateTime\":\"2022-08-05T20:45:46Z\",\"expirationDateTime\":\"2022-08-06T20:45:46Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":5,\"failed\":0,\"inProgress\":0,\"total\":5,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:47.873435Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"PiiEntityRecognitionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:48.0422391Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle *********.\",\"id\":\"0\",\"entities\":[{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}},{\"kind\":\"KeyPhraseExtractionLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:47.8870218Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-07-01\"}},{\"kind\":\"EntityLinkingLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:49.2658471Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"SentimentAnalysisLROResults\",\"taskName\":\"customActionName\",\"lastUpdateDateTime\":\"2022-08-05T20:45:48.2446151Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":44,\"text\":\"I had a wonderful trip to Seattle last week.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-06-01\"}}]}}",
-      "Date" : "Fri, 05 Aug 2022 20:46:15 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:10:59 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ced814e3-35af-4c57-965a-8a2bc15f65f9"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "daa53261-fee0-4f65-9175-623d03e1530d",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:11:10 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ced814e3-35af-4c57-965a-8a2bc15f65f9"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c2d9463a-3364-400c-b7cf-ffc0c3d543cc",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:11:21 GMT",
+      "Content-Type" : "text/plain"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/03b4138e-9091-4c5a-81e7-263be3c57590?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ced814e3-35af-4c57-965a-8a2bc15f65f9"
+    },
+    "Response" : {
+      "content-length" : "19",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "adab70d1-8a7b-4454-9675-7f42866f2836",
+      "retry-after" : "0",
+      "StatusCode" : "503",
+      "Body" : "no healthy upstream",
+      "Date" : "Tue, 11 Oct 2022 19:11:35 GMT",
+      "Content-Type" : "text/plain"
     },
     "Exception" : null
   } ],
