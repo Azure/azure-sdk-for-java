@@ -30,6 +30,8 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
@@ -84,13 +86,13 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         RedisCache redisCache = batchRedisCaches.get(redisCacheDefinition1.key());
         Assertions.assertEquals(rgName, redisCache.resourceGroupName());
         Assertions.assertEquals(SkuName.BASIC, redisCache.sku().name());
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(redisCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
 
         // Premium SKU Functionality
         RedisCache redisCachePremium = batchRedisCaches.get(redisCacheDefinition3.key());
         RedisCachePremium premiumCache = redisCachePremium.asPremium();
         Assertions.assertEquals(SkuFamily.P, premiumCache.sku().family());
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(premiumCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, premiumCache.redisVersion());
         Assertions.assertEquals(2, premiumCache.firewallRules().size());
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule1"));
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
@@ -227,7 +229,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRedisVersion(redisVersion)
                 .create();
 
-        Assertions.assertEquals(RedisCache.RedisVersion.V4, RedisCache.RedisVersion.fromVersion(redisCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V4, redisCache.redisVersion());
 
         redisVersion = RedisCache.RedisVersion.V6;
         redisCache = redisCache.update()
@@ -237,7 +239,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         ResourceManagerUtils.sleep(Duration.ofSeconds(300)); // let redis cache take its time
 
         redisCache = redisCache.refresh();
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(redisCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
 
         RedisCache redisCacheLocal = redisCache;
 
@@ -279,7 +281,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertNotNull(rggLinked);
 
         RedisCachePremium premiumRgg = rgg.asPremium();
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(premiumRgg.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, premiumRgg.redisVersion());
 
         String llName = premiumRgg.addLinkedServer(rggLinked.id(), rggLinked.regionName(), ReplicationRole.PRIMARY);
 
@@ -334,7 +336,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
         Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(redisCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
 
         redisManager.redisCaches().deleteById(redisCache.id());
 
@@ -355,6 +357,17 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
 
-        Assertions.assertEquals(RedisCache.RedisVersion.V6, RedisCache.RedisVersion.fromVersion(redisCache.redisVersion()));
+        assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
+    }
+
+    // e.g 6.xxxx
+    private static final Pattern MINOR_VERSION_REGEX = Pattern.compile("([1-9]+)\\..*");
+
+    private static void assertSameVersion(RedisCache.RedisVersion majorVersion, String minorVersion) {
+        Matcher matcher = MINOR_VERSION_REGEX.matcher(minorVersion);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException(String.format("Invalid redis minor version: %s", minorVersion));
+        }
+        Assertions.assertEquals(matcher.group(1), majorVersion.getValue());
     }
 }

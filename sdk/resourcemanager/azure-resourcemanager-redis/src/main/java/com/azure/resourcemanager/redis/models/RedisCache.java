@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -585,23 +584,5 @@ public interface RedisCache
         public String getValue() {
             return value;
         }
-
-        /**
-         * Gets the major version from the given redis version.
-         * @param redisVersion valid redis version, e.g. 6.0.14
-         * @return the major redis version, or null if the given redisVersion is invalid
-         */
-        public static RedisVersion fromVersion(String redisVersion) {
-            if (CoreUtils.isNullOrEmpty(redisVersion)) {
-                return null;
-            }
-            for (RedisVersion version : values()) {
-                if (redisVersion.startsWith(version.getValue())) {
-                    return version;
-                }
-            }
-            return null;
-        }
     }
-
 }
