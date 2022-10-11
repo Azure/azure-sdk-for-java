@@ -40,10 +40,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     @AfterAll
     public static void cleanUp() {
         // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
-        String testMode = System.getenv("AZURE_TEST_MODE");
-        if (testMode == null) {
-            testMode = "PLAYBACK";
-        }
+        String testMode = getTestModeForStaticMethods();
 
         // Delete the created resource group in LIVE and RECORD modes only
         if (!("PLAYBACK".equals(testMode))) {
@@ -78,12 +75,8 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         return testResourceGroup;
     }
     public static void setTestResourceGroup(String testResourceGroupName) {
-        String testMode = System.getenv("AZURE_TEST_MODE");
+        String testMode = getTestModeForStaticMethods();
 
-        // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
-        if (testMode == null) {
-            testMode = "PLAYBACK";
-        }
         // Create a resource group in LIVE and RECORD modes only, Mock it otherwise
         if (!("PLAYBACK".equals(testMode))) {
             testResourceGroup = ResourceManager
@@ -102,7 +95,12 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         return azureProfile;
     }
     public static void setAzureProfile() {
-        azureProfile = new AzureProfile(AzureEnvironment.AZURE);
+        String testMode = getTestModeForStaticMethods();
+        if ("PLAYBACK".equals(testMode)) {
+            azureProfile = new AzureProfile(null, "027da7f8-2fc6-46d4-9be9-560706b60fec", AzureEnvironment.AZURE);
+        } else {
+            azureProfile = new AzureProfile(AzureEnvironment.AZURE);
+        }
     }
 
     public static TokenCredential getCredential() {
@@ -115,6 +113,16 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
 
     public ConfidentialLedgerManagementOperations getLedgerOperationsInstance() {
         return ledgerOperationsInstance;
+    }
+
+    public static String getTestModeForStaticMethods() {
+        String testMode = System.getenv("AZURE_TEST_MODE");
+
+        // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
+        if (testMode == null) {
+            testMode = "PLAYBACK";
+        }
+        return testMode;
     }
     protected Map<String, String> mapOf(String... inputs) {
         Map<String, String> map = new HashMap<>();
