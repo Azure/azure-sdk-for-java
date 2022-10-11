@@ -721,9 +721,8 @@ public final class LoadTestAdministrationClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return fileUrl Model along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadTestFileWithResponse(
+    Response<BinaryData> uploadTestFileWithResponse(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         return this.client.uploadTestFileWithResponse(testId, fileId, file, requestOptions).block();
     }

@@ -733,9 +733,8 @@ public final class LoadTestAdministrationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return fileUrl Model along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadTestFileWithResponse(
+    Mono<Response<BinaryData>> uploadTestFileWithResponse(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         return this.serviceClient.uploadTestFileWithResponseAsync(testId, fileId, file, requestOptions);
     }
