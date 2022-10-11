@@ -8,7 +8,7 @@ The Azure Identity library provides [Azure Active Directory (Azure AD)](https://
 
 #### Include the BOM file
 
-Include the `azure-sdk-bom` in your project to take a dependency on GA version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
+Include the `azure-sdk-bom` in your project to take a dependency on the GA version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
 To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
@@ -222,6 +222,7 @@ public void createManagedIdentityCredential() {
 ```
 
 ### Define a custom authentication flow with the `ChainedTokenCredential`
+
 While the `DefaultAzureCredential` is generally the quickest way to get started developing applications for Azure, more advanced users may want to customize the credentials considered when authenticating. The `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential` which will attempt to authenticate using managed identity, and fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment.
 
 ```C# Snippet:CustomChainedTokenCredential
@@ -405,7 +406,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.visualstudiocodecredential?view=azure-java-stable">VisualStudioCodeCredential</a></code></td>
-      <td>Authenticate in a development environment with the account in Visual Studio Azure Account extension. </td>
+      <td>Authenticate in a development environment with the account in Visual Studio Code Azure Account extension. </td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
       <td><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">VS Code Azure Account extension</a></td>
     </tr>
