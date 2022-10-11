@@ -226,6 +226,6 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
-[quick_start_mysql]: https://aka.ms/passwordless/quickstart-mysql
+[quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql
 [Azure Active Directory for authenticating with MySQL]:https://docs.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/

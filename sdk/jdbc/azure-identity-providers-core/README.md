@@ -19,7 +19,7 @@ use the token as a password. For example, to connect Azure hosted MySQL, get a t
 token as a password to connect with MySQL.
 
 ## Examples
-For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/quickstart-jdbc-mysql) and .
+For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).
 
 
 ## Troubleshooting
