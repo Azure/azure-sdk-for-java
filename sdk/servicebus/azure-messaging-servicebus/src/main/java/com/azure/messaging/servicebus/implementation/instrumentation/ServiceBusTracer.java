@@ -234,7 +234,9 @@ public class ServiceBusTracer {
                     Context builder = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
                     if (signal.hasValue()) {
                         ServiceBusReceivedMessage message = signal.get();
-                        addLink(message.getApplicationProperties(), message.getEnqueuedTime(), builder, Context.NONE);
+                        if (message != null) {
+                            addLink(message.getApplicationProperties(), message.getEnqueuedTime(), builder, Context.NONE);
+                        }
                     } else if (signal.isOnComplete() || signal.isOnError()) {
                         Context span = tracer.start(spanName, builder, ProcessKind.SEND);
                         endSpan(signal.getThrowable(), span, null);
