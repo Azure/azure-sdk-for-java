@@ -41,7 +41,7 @@ public final class CreateOrUpdateTestTests extends LoadTestingClientTestBase {
     public void createOrUpdateTestString() {
         BinaryData body = BinaryData.fromString(createTestBodyJson);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestAdministration().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
+        Response<BinaryData> response = client.getLoadTestAdministrationClient().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
@@ -49,7 +49,7 @@ public final class CreateOrUpdateTestTests extends LoadTestingClientTestBase {
     public void createOrUpdateTestDictDict() {
         BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestAdministration().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
+        Response<BinaryData> response = client.getLoadTestAdministrationClient().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 }

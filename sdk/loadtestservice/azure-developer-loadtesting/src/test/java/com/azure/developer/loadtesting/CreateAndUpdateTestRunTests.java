@@ -28,7 +28,7 @@ public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase
     public void createAndUpdateTestRunString() {
         BinaryData file = BinaryData.fromString(createTestRunBodyJson);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestRun().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRunClient().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
@@ -36,7 +36,7 @@ public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase
     public void createAndUpdateTestRunDict() {
         BinaryData file = BinaryData.fromObject(getTestRunBodyFromDict());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestRun().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRunClient().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }
