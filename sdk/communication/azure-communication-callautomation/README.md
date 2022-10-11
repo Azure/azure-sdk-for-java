@@ -39,6 +39,42 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 `EventHandler` provides the functionality to handle events from the ACS resource.
 
+### Idempotent Requests
+An operation is idempotent if it can be performed multiple times and have the same result as a single execution.
+
+The following operations are idempotent:
+- `answerCall`
+- `redirectCall`
+- `rejectCall`
+- `createCall`
+- `hangUp` when terminating the call for everyone, ie. `forEveryone` parameter is set to `true`.
+- `transferToParticipantCall`
+- `addParticipants`
+- `removeParticipants`
+
+By default, SDK generates a new `RepeatabilityHeaders` object every time the above operation is called. If you would
+like to provide your own `RepeatabilityHeaders` for your application (eg. for your own retry mechanism), you can do so by specifying
+the `RepeatabilityHeaders` in the operation's `Options` object. If this is not set by user, then the SDK will generate
+it.
+
+The parameters for the `RepeatabilityHeaders` class are `repeatabilityRequestId` and `repeatabilityFirstSent`. Two or
+more requests are considered the same request **if and only if** both repeatability parameters are the same.
+- `repeatabilityRequestId`: an opaque string representing a client-generated unique identifier for the request.
+  It is a version 4 (random) UUID.
+- `repeatabilityFirstSent`: The value should be the date and time at which the request was **first** created.
+
+To set repeatability parameters, see below Java code snippet as an example:
+```java
+CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets, callbackUrl)
+    .setRepeatabilityHeaders(new RepeatabilityHeaders(UUID.randomUUID(), Instant.now()));
+Response<CreateCallResult> response1 = callAsyncClient.createCallWithResponse(createCallOptions).block();
+
+await Task.Delay(5000);
+
+Response<CreateCallResult> response2 = callAsyncClient.createCallWithResponse(createCallOptions).block();
+// response1 and response2 will have the same callConnectionId as they have the same reapeatability parameters which means that the CreateCall operation was only executed once.
+```
+
 ## Examples
 
 To be determined.

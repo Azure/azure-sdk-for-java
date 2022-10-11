@@ -47,7 +47,7 @@ HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.of
 
 ### Create a Client with Proxy
 
-Create an Vert.x client that is using a proxy.
+Create a Vert.x client that is using a proxy.
 
 ```java readme-sample-createProxyClient
 HttpClient client = new VertxAsyncHttpClientBuilder()
