@@ -59,8 +59,10 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             }
             confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder
                     .buildClient();
-            
+
             String ledgerId = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "java-sdk-test");
+            System.out.println("ledgerId = " + ledgerId);
+            System.out.println("ledgerUri = " + Configuration.getGlobalConfiguration().get("LEDGER_URI"));
 
             confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
                     .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
@@ -122,7 +124,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(httpClient);
         }
-        
+
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
     }
 
