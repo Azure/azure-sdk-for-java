@@ -198,12 +198,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -526,6 +526,16 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
       <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
+      <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
+      <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
