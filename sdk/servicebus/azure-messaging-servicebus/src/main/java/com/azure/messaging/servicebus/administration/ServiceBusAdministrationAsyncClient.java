@@ -79,13 +79,13 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateTopicBody;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueuePropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueues;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesSimpleResponse;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRules;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesSimpleResponse;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTitleValue;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopicPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTracingContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
@@ -192,8 +192,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws NullPointerException if {@code queueName} is null.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@code queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -217,14 +216,13 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} or {@code queueOptions} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueProperties> createQueue(String queueName, CreateQueueOptions queueOptions) {
-        return createQueueWithResponse(queueName, queueOptions).map(Response::getValue);
+        return createQueueWithResponse(queueName, queueOptions).map(response -> response.getValue());
     }
 
     /**
@@ -238,8 +236,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} or {@code queueOptions} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -260,8 +257,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are empty strings.
-     * @throws NullPointerException if {@code topicName} or {@code ruleName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
      * @throws ResourceExistsException if a rule exists with the same topic, subscription, and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -286,9 +282,8 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
-     *     are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
+     * @throws NullPointerException {@code ruleOptions} are null.
      * @throws ResourceExistsException if a rule exists with the same topic and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -296,7 +291,7 @@ public final class ServiceBusAdministrationAsyncClient {
         CreateRuleOptions ruleOptions) {
 
         return createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions)
-            .map(Response::getValue);
+            .map(response -> response.getValue());
     }
 
     /**
@@ -312,9 +307,8 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code ruleName}, or {@code ruleOptions}
-     *     are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
+     * @throws NullPointerException if {@code ruleOptions} is null.
      * @throws ResourceExistsException if a rule exists with the same topic and rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -335,8 +329,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -361,9 +354,8 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
-     *     are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws NullPointerException if {@code subscriptionOptions} is null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -372,7 +364,7 @@ public final class ServiceBusAdministrationAsyncClient {
         CreateSubscriptionOptions subscriptionOptions) {
 
         return createSubscriptionWithResponse(topicName, subscriptionName, subscriptionOptions)
-            .map(Response::getValue);
+            .map(response -> response.getValue());
     }
 
     /**
@@ -387,9 +379,8 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      *     processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code subscriptionOptions}
-     *     are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
+     * @throws NullPointerException if {@code subscriptionOptions} is null.
      * @throws ResourceExistsException if a subscription exists with the same topic and subscription name.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -410,8 +401,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws NullPointerException if {@code topicName} is null.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -435,14 +425,14 @@ public final class ServiceBusAdministrationAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
+     * @throws NullPointerException if {@code topicOptions} is null.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicProperties> createTopic(String topicName, CreateTopicOptions topicOptions) {
-        return createTopicWithResponse(topicName, topicOptions).map(Response::getValue);
+        return createTopicWithResponse(topicName, topicOptions).map(response -> response.getValue());
     }
 
     /**
@@ -458,7 +448,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *     occurred processing the request.
      * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
-     * @throws NullPointerException if {@code topicName} or {@code topicOptions} is null.
+     * @throws NullPointerException if {@code topicOptions} is null.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -476,8 +466,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws NullPointerException if {@code queueName} is null.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
@@ -495,8 +484,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws NullPointerException if {@code queueName} is null.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
@@ -516,8 +504,8 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} is an empty string.
-     * @throws NullPointerException if {@code topicName} or {@code ruleName} is null.
+     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null or
+     *      an empty string.
      * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -536,9 +524,8 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is an
-     *     empty string.
-     * @throws NullPointerException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null.
+     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null or
+     *     an empty string.
      * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -557,8 +544,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
      */
@@ -577,8 +563,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-subscription">Delete Subscription</a>
      */
@@ -596,8 +581,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
      */
@@ -615,8 +599,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-topic">Delete Topic</a>
      */
@@ -634,14 +617,13 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueProperties> getQueue(String queueName) {
-        return getQueueWithResponse(queueName).map(Response::getValue);
+        return getQueueWithResponse(queueName).map(response -> response.getValue());
     }
 
     /**
@@ -653,8 +635,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -664,7 +645,7 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets whether a queue with {@code queueName} exists in the Service Bus namespace.
+     *  Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
      *
      * @param queueName Name of the queue.
      *
@@ -672,25 +653,23 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      * namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> getQueueExists(String queueName) {
-        return getQueueExistsWithResponse(queueName).map(Response::getValue);
+        return getQueueExistsWithResponse(queueName).map(response -> response.getValue());
     }
 
     /**
-     * Gets whether a queue with {@code queueName} exists in the Service Bus namespace.
+     *  Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
      *
      * @param queueName Name of the queue.
      *
-     * @return A Mono that completes indicating whether the queue exists along with its HTTP response.
+     * @return A Mono that completes indicating whether or not the queue exists along with its HTTP response.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getQueueExistsWithResponse(String queueName) {
@@ -706,14 +685,13 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueRuntimeProperties> getQueueRuntimeProperties(String queueName) {
-        return getQueueRuntimePropertiesWithResponse(queueName).map(Response::getValue);
+        return getQueueRuntimePropertiesWithResponse(queueName).map(response -> response.getValue());
     }
 
     /**
@@ -725,8 +703,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -744,7 +721,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NamespaceProperties> getNamespaceProperties() {
-        return getNamespacePropertiesWithResponse().map(Response::getValue);
+        return getNamespacePropertiesWithResponse().map(response -> response.getValue());
     }
 
     /**
@@ -774,7 +751,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleProperties> getRule(String topicName, String subscriptionName, String ruleName) {
-        return getRuleWithResponse(topicName, subscriptionName, ruleName).map(Response::getValue);
+        return getRuleWithResponse(topicName, subscriptionName, ruleName).map(response -> response.getValue());
     }
 
     /**
@@ -805,14 +782,13 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist in the {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionProperties> getSubscription(String topicName, String subscriptionName) {
-        return getSubscriptionWithResponse(topicName, subscriptionName).map(Response::getValue);
+        return getSubscriptionWithResponse(topicName, subscriptionName).map(response -> response.getValue());
     }
 
     /**
@@ -825,8 +801,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -838,25 +813,24 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets whether a subscription within a topic exists.
+     * Gets whether or not a subscription within a topic exists.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      *
-     * @return A Mono that completes indicating whether the subscription exists.
+     * @return A Mono that completes indicating whether or not the subscription exists.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> getSubscriptionExists(String topicName, String subscriptionName) {
-        return getSubscriptionExistsWithResponse(topicName, subscriptionName).map(Response::getValue);
+        return getSubscriptionExistsWithResponse(topicName, subscriptionName).map(response -> response.getValue());
     }
 
     /**
-     * Gets whether a subscription within a topic exists.
+     * Gets whether or not a subscription within a topic exists.
      *
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of the subscription.
@@ -865,8 +839,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getSubscriptionExistsWithResponse(String topicName, String subscriptionName) {
@@ -883,8 +856,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -892,7 +864,7 @@ public final class ServiceBusAdministrationAsyncClient {
     public Mono<SubscriptionRuntimeProperties> getSubscriptionRuntimeProperties(
         String topicName, String subscriptionName) {
         return getSubscriptionRuntimePropertiesWithResponse(topicName, subscriptionName)
-            .map(Response::getValue);
+            .map(response -> response.getValue());
     }
 
     /**
@@ -905,8 +877,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
-     * @throws NullPointerException if {@code subscriptionName} is null.
+     * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -926,14 +897,13 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicProperties> getTopic(String topicName) {
-        return getTopicWithResponse(topicName).map(Response::getValue);
+        return getTopicWithResponse(topicName).map(response -> response.getValue());
     }
 
     /**
@@ -945,8 +915,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -956,24 +925,23 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Gets whether a topic with {@code topicName} exists in the Service Bus namespace.
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
      *
      * @param topicName Name of the topic.
      *
-     * @return A Mono that completes indicating whether the topic exists.
+     * @return A Mono that completes indicating whether or not the topic exists.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> getTopicExists(String topicName) {
-        return getTopicExistsWithResponse(topicName).map(Response::getValue);
+        return getTopicExistsWithResponse(topicName).map(response -> response.getValue());
     }
 
     /**
-     * Gets whether a topic with {@code topicName} exists in the Service Bus namespace.
+     * Gets whether or not a topic with {@code topicName} exists in the Service Bus namespace.
      *
      * @param topicName Name of the topic.
      *
@@ -981,8 +949,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or  an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> getTopicExistsWithResponse(String topicName) {
@@ -998,14 +965,13 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicRuntimeProperties> getTopicRuntimeProperties(String topicName) {
-        return getTopicRuntimePropertiesWithResponse(topicName).map(Response::getValue);
+        return getTopicRuntimePropertiesWithResponse(topicName).map(response -> response.getValue());
     }
 
     /**
@@ -1017,8 +983,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
-     * @throws NullPointerException if {@code topicName} is null.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
@@ -1051,8 +1016,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Flux of {@link RuleProperties rules} for the {@code topicName} and {@code subscriptionName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
+     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is null or an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, rules, or
      *     authorization rules</a>
      */
@@ -1077,8 +1041,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Flux of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws NullPointerException if {@code topicName} is null.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
@@ -1107,13 +1070,13 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopicProperties> listTopics() {
         return new PagedFlux<>(
-            () -> withContext(this::listTopicsFirstPage),
+            () -> withContext(context -> listTopicsFirstPage(context)),
             token -> withContext(context -> listTopicsNextPage(token, context)));
     }
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -1146,12 +1109,12 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueProperties> updateQueue(QueueProperties queue) {
-        return updateQueueWithResponse(queue).map(Response::getValue);
+        return updateQueueWithResponse(queue).map(response -> response.getValue());
     }
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -1213,7 +1176,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleProperties> updateRule(String topicName, String subscriptionName, RuleProperties rule) {
-        return updateRuleWithResponse(topicName, subscriptionName, rule).map(Response::getValue);
+        return updateRuleWithResponse(topicName, subscriptionName, rule).map(response -> response.getValue());
     }
 
     /**
@@ -1250,7 +1213,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all the properties are replaced. If a property is not set the service default value is
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -1283,12 +1246,12 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionProperties> updateSubscription(SubscriptionProperties subscription) {
-        return updateSubscriptionWithResponse(subscription).map(Response::getValue);
+        return updateSubscriptionWithResponse(subscription).map(response -> response.getValue());
     }
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all the properties are replaced. If a property is not set the service default value is
+     * fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
      * The suggested flow is:
@@ -1328,7 +1291,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -1361,12 +1324,12 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicProperties> updateTopic(TopicProperties topic) {
-        return updateTopicWithResponse(topic).map(Response::getValue);
+        return updateTopicWithResponse(topic).map(response -> response.getValue());
     }
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -1413,7 +1376,7 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<QueueProperties>> createQueueWithResponse(String queueName, CreateQueueOptions createQueueOptions,
         Context context) {
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be null or empty."));
         }
         if (createQueueOptions == null) {
             return monoError(LOGGER, new NullPointerException("'createQueueOptions' cannot be null."));
@@ -1454,15 +1417,15 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<RuleProperties>> createRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         CreateRuleOptions ruleOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(subscriptionName)) {
-            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(ruleName)) {
-            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be null or empty."));
         }
 
         if (ruleOptions == null) {
@@ -1491,11 +1454,11 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(subscriptionName)) {
-            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be null or empty."));
         }
 
         if (subscriptionOptions == null) {
@@ -1538,7 +1501,7 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<TopicProperties>> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
         Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
         if (topicOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
@@ -1588,15 +1551,15 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<Void>> deleteRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(subscriptionName)) {
-            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(ruleName)) {
-            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be null or empty."));
         }
         try {
 
@@ -1620,11 +1583,11 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(subscriptionName)) {
-            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be null or empty."));
         }
 
         try {
@@ -1649,7 +1612,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteTopicWithResponse(String topicName, Context context) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
         try {
             return entityClient.deleteWithResponseAsync(topicName, getTracingContext(context))
@@ -1697,7 +1660,7 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getQueueWithResponse(String queueName, Context context,
         Function<QueueProperties, T> mapper) {
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be null or empty."));
         }
         try {
             return entityClient.getWithResponseAsync(queueName, true, getTracingContext(context))
@@ -1745,11 +1708,11 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
         Function<SubscriptionProperties, T> mapper) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
 
         if (CoreUtils.isNullOrEmpty(subscriptionName)) {
-            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be null or empty."));
         }
         try {
 
@@ -1811,7 +1774,7 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getTopicWithResponse(String topicName, Context context,
         Function<TopicProperties, T> mapper) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null or empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
         try {
 
@@ -1833,6 +1796,81 @@ public final class ServiceBusAdministrationAsyncClient {
                 });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+    /**
+     * Gets the first page of queues with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of queues.
+     */
+    Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
+
+        try {
+            return listQueues(0, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the next page of queues with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of queues or empty if there are no items left.
+     */
+    Mono<PagedResponse<QueueProperties>> listQueuesNextPage(String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listQueues(skip, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the first page of rules with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
+        try {
+            return listRules(topicName, subscriptionName, 0, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the next page of rules with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules or empty if there are no items left.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesNextPage(String topicName, String subscriptionName,
+                                                          String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listRules(topicName, subscriptionName, skip, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1976,82 +2014,6 @@ public final class ServiceBusAdministrationAsyncClient {
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Gets the first page of queues with context.
-     *
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with a page of queues.
-     */
-    Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
-
-        try {
-            return listQueues(0, getTracingContext(context));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
-    }
-
-    /**
-     * Gets the next page of queues with context.
-     *
-     * @param continuationToken Number of items to skip in feed.
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with a page of queues or empty if there are no items left.
-     */
-    Mono<PagedResponse<QueueProperties>> listQueuesNextPage(String continuationToken, Context context) {
-        if (continuationToken == null || continuationToken.isEmpty()) {
-            return Mono.empty();
-        }
-
-        try {
-            final int skip = Integer.parseInt(continuationToken);
-
-            return listQueues(skip, getTracingContext(context));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
-    }
-
-    /**
-     * Gets the first page of rules with context.
-     *
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with a page of rules.
-     */
-    Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
-        try {
-            return listRules(topicName, subscriptionName, 0, getTracingContext(context));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
-    }
-
-    /**
-     * Gets the next page of rules with context.
-     *
-     * @param continuationToken Number of items to skip in feed.
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with a page of rules or empty if there are no items left.
-     */
-    Mono<PagedResponse<RuleProperties>> listRulesNextPage(String topicName, String subscriptionName,
-                                                          String continuationToken, Context context) {
-        if (continuationToken == null || continuationToken.isEmpty()) {
-            return Mono.empty();
-        }
-
-        try {
-            final int skip = Integer.parseInt(continuationToken);
-
-            return listRules(topicName, subscriptionName, skip, getTracingContext(context));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
         }
     }
 
@@ -2269,7 +2231,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<QueueProperties> entities = getQueuePropertiesList(feed);
+                final List<QueueProperties> entities = getQueues(feed);
 
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
@@ -2304,7 +2266,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<RuleProperties> entities = getRulePropertiesList(feed);
+                final List<RuleProperties> entities = getRules(feed);
 
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
@@ -2338,7 +2300,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<SubscriptionProperties> entities = getSubscriptionPropertiesList(topicName, feed);
+                final List<SubscriptionProperties> entities = getSubscriptions(topicName, feed);
 
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
@@ -2369,7 +2331,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<TopicProperties> entities = getTopicPropertiesList(feed);
+                final List<TopicProperties> entities = getTopics(feed);
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
                 } catch (MalformedURLException | UnsupportedEncodingException error) {

@@ -753,14 +753,14 @@ public final class EntityHelper {
         return new CreateRuleBody().setContent(content);
     }
 
-    public static List<TopicProperties> getTopicPropertiesList(TopicDescriptionFeed feed) {
+    public static List<TopicProperties> getTopics(TopicDescriptionFeed feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
             .map(EntityHelper::getTopicProperties)
             .collect(Collectors.toList());
     }
 
-    public static List<QueueProperties> getQueuePropertiesList(QueueDescriptionFeed feed) {
+    public static List<QueueProperties> getQueues(QueueDescriptionFeed feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
             .map(EntityHelper::getQueueProperties)
@@ -777,15 +777,15 @@ public final class EntityHelper {
         return queueProperties;
     }
 
-    public static List<RuleProperties> getRulePropertiesList(RuleDescriptionFeed feed) {
+    public static List<RuleProperties> getRules(RuleDescriptionFeed feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
             .map(e -> EntityHelper.toModel(e.getContent().getRuleDescription()))
             .collect(Collectors.toList());
     }
 
-    public static List<SubscriptionProperties> getSubscriptionPropertiesList(String topicName,
-                                                                             SubscriptionDescriptionFeed feed) {
+    public static List<SubscriptionProperties> getSubscriptions(String topicName,
+                                                                SubscriptionDescriptionFeed feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
             .map(e -> getSubscriptionProperties(topicName, e))
