@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Removed unused classes `DdosCustomPolicyProtocol`, `DdosCustomPolicyTriggerSensitivityOverride`, `DdosSettingsProtectionCoverage` and `ProtocolCustomSettingsFormat`.
+- Remove unused methods in `DdosSettings`.
+
 ### Bugs Fixed
 
 ### Other Changes
