@@ -44,14 +44,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <src.dir>src/main</src.dir>
-    <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.2</jacoco.min.branchcoverage>
-    <jacoco.skip>false</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
   <dependencies>
     <dependency>

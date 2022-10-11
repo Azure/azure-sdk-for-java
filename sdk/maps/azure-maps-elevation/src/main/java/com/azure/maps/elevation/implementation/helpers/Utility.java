@@ -14,7 +14,7 @@ import com.azure.maps.elevation.implementation.models.LatLongPairAbbreviated;
 public class Utility {
     
     public static List<LatLongPairAbbreviated> toLatLongPairAbbreviated(List<GeoPosition> points) {
-        List<LatLongPairAbbreviated> latLongPairList = new ArrayList<>();
+        List<LatLongPairAbbreviated> latLongPairList = new ArrayList<>((points.size()));
         for (GeoPosition point : points) {
             latLongPairList.add(new LatLongPairAbbreviated().setLat(point.getLatitude()).setLon(point.getLongitude()));
         }

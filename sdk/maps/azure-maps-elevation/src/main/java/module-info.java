@@ -7,7 +7,7 @@ module com.azure.maps.elevation {
     exports com.azure.maps.elevation;
     exports com.azure.maps.elevation.models;
 
-    opens com.azure.maps.elevation.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.maps.elevation.models to com.fasterxml.jackson.databind;
+    opens com.azure.maps.elevation.implementation to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.maps.elevation.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.maps.elevation.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 }

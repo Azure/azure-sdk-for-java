@@ -2,7 +2,7 @@
 
 Azure Maps SDK Elevation client library for Java.
 
-This package contains the Azure Maps SDK Elevation client library which contains Azure Maps Elevation APIs. For documentation on how to use this package, please see [Azure Maps Elevation SDK for Java](https://docs.microsoft.com/rest/api/maps/elevation).
+This package contains the Azure Maps SDK Elevation client library which contains Azure Maps Elevation APIs. For documentation on how to use this package, please see [Azure Maps Elevation REST APIs](https://docs.microsoft.com/rest/api/maps/elevation).
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
