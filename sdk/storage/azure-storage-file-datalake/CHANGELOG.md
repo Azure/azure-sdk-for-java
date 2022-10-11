@@ -3,15 +3,13 @@
 ## 12.13.0 (2022-10-11)
 
 ### Features Added
+- Added support for 2021-10-04 service version.
 - Added support for flush parameter to `DataLakeFileClient.appendWithResponse()`
 - Added support for encryption scopes.
 - Added support for encryption scope SAS.
 - Added new method `DataLakeFileSystemClient.exists()` to determine whether file system exists.
 - Added `DataLakeServiceClientBuilder.connectionString()` to allow connection string to be set on the client builder.
 - Added `DataLakeFileClient.uploadFromFileWithResponse()` which returns a response of `PathItem` upon completion.
-
-### Other Changes
-- Added support for 2021-10-04 service version.
 
 ## 12.12.1 (2022-09-12)
 

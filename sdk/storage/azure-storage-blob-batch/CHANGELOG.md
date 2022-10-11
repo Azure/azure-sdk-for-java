@@ -2,7 +2,7 @@
 
 ## 12.16.0 (2022-10-11)
 
-### Other Changes
+### Features Added
 - Added support for 2021-10-04 service version.
 
 ## 12.15.1 (2022-09-12)
