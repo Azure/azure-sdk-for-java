@@ -71,9 +71,9 @@
                   <mainClass>${perf.test.mainClass}</mainClass>
                 </manifest>
               </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
+              <descriptors>
+                <descriptor>${project.parent.relativePath}/jar-with-dependencies-merged-meta-inf.xml</descriptor>
+              </descriptors>
             </configuration>
           </execution>
         </executions>
