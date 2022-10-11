@@ -2,6 +2,9 @@
 
 ## 1.2.2 (2022-10-11)
 
+### Bug Fixes
+- Fixed the logic of `PhoneNumberIdentifier` to always maintain the original phone number string whether it included the leading `+` sign or not.
+
 ### Other Changes
 
 #### Dependency Updates
