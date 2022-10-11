@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "@odata.type",
         visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity")
+@JsonTypeName("#Microsoft.Azure.Search.DataUserAssignedIdentity")
 @Fluent
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
     /*
@@ -27,7 +27,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      */
     @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity";
+    private String odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
 
     /*
      * The fully qualified Azure resource Id of a user assigned managed identity typically in the form
