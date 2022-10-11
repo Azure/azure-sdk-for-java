@@ -21,6 +21,8 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Implementation for {@link PartitionProcessorFactory}.
  */
@@ -38,25 +40,11 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
             CosmosAsyncContainer collectionSelfLink,
             String collectionResourceId) {
 
-        if (documentClient == null) {
-            throw new IllegalArgumentException("documentClient");
-        }
-
-        if (changeFeedProcessorOptions == null) {
-            throw new IllegalArgumentException("changeFeedProcessorOptions");
-        }
-
-        if (leaseCheckpointer == null) {
-            throw new IllegalArgumentException("leaseCheckpointer");
-        }
-
-        if (collectionSelfLink == null) {
-            throw new IllegalArgumentException("collectionSelfLink");
-        }
-
-        if (collectionResourceId == null) {
-            throw new IllegalArgumentException("collectionResourceId");
-        }
+        checkNotNull(documentClient, "Argument 'documentClient' can not be null");
+        checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
+        checkNotNull(leaseCheckpointer, "Argument 'leaseCheckpointer' can not be null");
+        checkNotNull(collectionSelfLink, "Argument 'collectionSelfLink' can not be null");
+        checkNotNull(collectionResourceId, "Argument 'collectionResourceId' can not be null");
 
         this.documentClient = documentClient;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
@@ -89,13 +77,8 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
 
     @Override
     public PartitionProcessor create(Lease lease, ChangeFeedObserver<JsonNode> observer) {
-        if (observer == null) {
-            throw new IllegalArgumentException("observer");
-        }
-
-        if (lease == null) {
-            throw new IllegalArgumentException("lease");
-        }
+        checkNotNull(observer, "Argument 'observer' can not be null");
+        checkNotNull(lease, "Argument 'lease' can not be null");
 
         FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
         ChangeFeedState state;

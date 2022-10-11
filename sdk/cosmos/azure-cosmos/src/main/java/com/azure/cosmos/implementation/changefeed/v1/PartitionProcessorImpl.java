@@ -73,7 +73,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        logger.info("Partition {}: processing task started with owner {}.",
+        logger.info("Lease with token {}: processing task started with owner {}.",
             this.lease.getLeaseToken(), this.lease.getOwner());
         this.isFirstQueryForChangeFeeds = true;
         this.checkpointer.setCancellationToken(cancellationToken);
@@ -119,12 +119,14 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     .getToken();
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
-                    logger.info("Partition {}: processing {} feeds with owner {}.",
+                    logger.info("Lease with token {}: processing {} feeds with owner {}.",
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.debug(
-                            "Exception was thrown from thread {}",
-                            Thread.currentThread().getId(), throwable))
+                                "Lease with token {}: Exception was thrown from thread {}",
+                                this.lease.getLeaseToken(),
+                                Thread.currentThread().getId(),
+                                throwable))
                         .doOnSuccess((Void) -> {
                             this.options =
                                 CosmosChangeFeedRequestOptions
@@ -157,8 +159,12 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("CosmosException: Partition {} from thread {} with owner {}",
-                        this.lease.getFeedRange(), this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
+                    logger.warn(
+                            "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            clientException);
                     StatusCodeErrorType docDbError =
                         ExceptionClassifier.classifyClientException(clientException);
 
@@ -169,9 +175,9 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 this.lastServerContinuationToken);
                         }
                         break;
-                        case PARTITION_SPLIT: {
+                        case PARTITION_SPLIT_OR_MERGE: {
                             this.resultException = new FeedRangeGoneException(
-                                "Partition split.",
+                                "Partition split or merge.",
                                 this.lastServerContinuationToken);
                         }
                         break;
@@ -207,21 +213,36 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         }
                         break;
                         default: {
-                            logger.error("Unrecognized Cosmos exception returned error code {}", docDbError, clientException);
+                            logger.error(
+                                    "Lease with token {}: Unrecognized Cosmos exception returned error code {}",
+                                    this.lease.getLeaseToken(),
+                                    docDbError,
+                                    clientException);
                             this.resultException = new RuntimeException(clientException);
                         }
                     }
                 } else if (throwable instanceof LeaseLostException) {
-                    logger.info("LeaseLoseException with Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner());
+                    logger.info(
+                            "Lease with token {}: LeaseLoseException was thrown from thread {} for lease with owner {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner());
                     this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
-                    logger.debug("Task cancelled exception: Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
+                    logger.debug(
+                            "Lease with token {}: Task cancelled exception was thrown from thread {} for lease with owner {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            throwable);
                     this.resultException = (TaskCancelledException) throwable;
                 } else {
-                    logger.warn("Unexpected exception: Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
+                    logger.warn(
+                            "Lease with token {}: Unexpected exception was thrown from thread {} for lease with owner {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            throwable);
                     this.resultException = new RuntimeException(throwable);
                 }
                 return Flux.error(throwable);
@@ -243,8 +264,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             })
             .then()
             .doFinally( any -> {
-                logger.info("Partition {}: processing task exited with owner {}.",
-                    this.lease.getLeaseToken(), this.lease.getOwner());
+                logger.info(
+                        "Lease with token {}: processing task exited with owner {}.",
+                        this.lease.getLeaseToken(),
+                        this.lease.getOwner());
             });
     }
 

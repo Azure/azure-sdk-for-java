@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -18,17 +17,14 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
     private static final Logger logger = LoggerFactory.getLogger(FeedRangeGoneMergeHandler.class);
     private final Lease lease;
     private final PartitionKeyRange overlappingRange;
-    private final LeaseManager leaseManager;
     private final AtomicBoolean removeCurrentLease;
 
-    public FeedRangeGoneMergeHandler(Lease lease, PartitionKeyRange overlappingRange, LeaseManager leaseManager) {
+    public FeedRangeGoneMergeHandler(Lease lease, PartitionKeyRange overlappingRange) {
         checkNotNull(lease, "Argument 'lease' can not be null");
         checkNotNull(overlappingRange, "Argument 'overlappingRange' can not be null");
-        checkNotNull(leaseManager, "Argument 'leaseManager' can not be null");
 
         this.lease = lease;
         this.overlappingRange = overlappingRange;
-        this.leaseManager = leaseManager;
 
         // A flag to indicate to upstream whether the current lease which we get FeedRangeGoneException should be removed.
         this.removeCurrentLease = new AtomicBoolean();

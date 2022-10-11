@@ -5,13 +5,10 @@ package com.azure.cosmos.implementation.changefeed.v0;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
-import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
-import com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler.FeedRangeGoneHandler;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -127,11 +124,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 logger.info("Partition {} split into new partition and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
                 return newLease;
             });
-    }
-
-    @Override
-    public Mono<FeedRangeGoneHandler> getFeedRangeGoneHandler(Lease lease) {
-        throw new NotImplementedException("GetFeedRangeGoneHandler is not implemented in change feed v0");
     }
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {

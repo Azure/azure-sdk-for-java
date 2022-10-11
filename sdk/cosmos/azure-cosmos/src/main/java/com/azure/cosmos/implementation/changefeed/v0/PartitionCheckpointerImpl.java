@@ -31,7 +31,7 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
     @Override
     public Mono<Lease> checkpointPartition(ChangeFeedState continuationState) {
-        checkNotNull(continuationState, "Argument 'continuationSttae' must not be null.");
+        checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
         checkArgument(
             continuationState.getContinuation().getContinuationTokenCount() == 1,
             "For ChangeFeedProcessor the continuation state should always have one range/continuation");

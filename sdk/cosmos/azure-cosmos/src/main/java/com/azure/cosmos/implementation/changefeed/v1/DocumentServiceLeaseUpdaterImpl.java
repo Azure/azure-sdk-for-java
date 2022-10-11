@@ -42,8 +42,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     @Override
-    public Mono<Lease> updateLease(final Lease cachedLease, String itemId, PartitionKey partitionKey,
-                                   CosmosItemRequestOptions requestOptions, Function<Lease, Lease> updateLease) {
+    public Mono<Lease> updateLease(
+            final Lease cachedLease,
+            String itemId,
+            PartitionKey partitionKey,
+            CosmosItemRequestOptions requestOptions,
+            Function<Lease, Lease> updateLease) {
         Lease localLease = updateLease.apply(cachedLease);
 
         if (localLease == null) {
@@ -72,7 +76,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
                             if (Exceptions.isNotFound(ex)) {
-                                logger.info("Partition {} could not be found.", cachedLease.getLeaseToken());
+                                logger.info("Lease with token {}: Failed to update. Lease could not be found.", cachedLease.getLeaseToken());
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
@@ -83,7 +87,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLeaseV1 serverLease = ServiceItemLeaseV1.fromDocument(document);
                         logger.info(
-                            "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
+                            "Lease with token {}: Failed to update. Lease with concurrency token '{}' was updated by owner '{}' with concurrency token '{}'.",
                             cachedLease.getLeaseToken(),
                             cachedLease.getConcurrencyToken(),
                             serverLease.getOwner(),
@@ -91,21 +95,23 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                         // Check if we still have the expected ownership on the target lease.
                         if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(cachedLease.getOwner())) {
-                            logger.info("Partition {} lease was acquired already by owner '{}'",
-                                serverLease.getLeaseToken(), serverLease.getOwner());
+                            logger.info(
+                                    "Lease with token {}: Failed to update. Lease was acquired already by owner '{}'",
+                                    serverLease.getLeaseToken(),
+                                    serverLease.getOwner());
                             throw new LeaseLostException(serverLease);
                         }
 
                         cachedLease.setTimestamp(Instant.now());
                         cachedLease.setConcurrencyToken(serverLease.getConcurrencyToken());
 
-                        throw new LeaseConflictException(cachedLease, "Partition update failed");
+                        throw new LeaseConflictException(cachedLease, "Lease update failed");
                     });
             })
             .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.info(
-                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
+                        "Lease with token {}: Failed to update lease with concurrency token '{}', owner '{}'; will retry",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner());
@@ -116,7 +122,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
+                        "Lease with token {}: Failed to update lease with concurrency token '{}', owner '{}', continuationToken '{}'.",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
@@ -128,8 +134,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             });
     }
 
-    private Mono<InternalObjectNode> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
-                                                                                        throws LeaseLostException {
+    private Mono<InternalObjectNode> tryReplaceLease(
+            Lease lease,
+            String itemId,
+            PartitionKey partitionKey) throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
             .onErrorResume(re -> {

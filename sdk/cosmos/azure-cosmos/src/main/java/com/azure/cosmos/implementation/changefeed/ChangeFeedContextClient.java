@@ -164,5 +164,12 @@ public interface ChangeFeedContextClient {
      */
     void setScheduler(Scheduler scheduler);
 
+    /**
+     * Get the overlapping partition key ranges.
+     *
+     * @param range the range.
+     *
+     * @return The list of partition key ranges.
+     */
     Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
 }

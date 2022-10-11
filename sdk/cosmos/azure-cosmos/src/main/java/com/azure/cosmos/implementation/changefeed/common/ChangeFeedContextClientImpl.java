@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Implementation for ChangeFeedDocumentClient.
@@ -49,13 +50,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param cosmosContainer existing client.
      */
     public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer) {
-        if (cosmosContainer == null) {
-            throw new IllegalArgumentException("cosmosContainer");
-        }
-
-        this.cosmosContainer = cosmosContainer;
-        this.documentClient = getContextClient(cosmosContainer);
-        this.scheduler = Schedulers.boundedElastic();
+        this(cosmosContainer, Schedulers.boundedElastic());
     }
 
     /**
@@ -64,9 +59,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param scheduler the RX Java scheduler to observe on.
      */
     public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer, Scheduler scheduler) {
-        if (cosmosContainer == null) {
-            throw new IllegalArgumentException("cosmosContainer");
-        }
+        checkNotNull(cosmosContainer, "Argument 'cosmosContainer' can not be null");
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);

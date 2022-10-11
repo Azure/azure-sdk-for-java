@@ -8,15 +8,12 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
-import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
 import com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler.FeedRangeGoneHandler;
 import com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler.FeedRangeGoneMergeHandler;
 import com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler.FeedRangeGoneSplitHandler;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -24,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -57,63 +53,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        return this.enumPartitionKeyRanges()
-                   .collectList()
-                   .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
-                   .onErrorResume(throwable -> {
-                       logger.error("Create lease failed", throwable);
-                       return Mono.empty();
-                   });
-    }
-
-    @Override
-    public Flux<Lease> splitPartition(Lease lease) {
-        checkNotNull(lease, "Argument 'lease' can not be null");
-
-        final String leaseToken = lease.getLeaseToken();
-        final Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-
-        // TODO fabianm - this needs more elaborate processing in case the initial
-        // FeedRangeContinuation has continuation state for multiple feed Ranges
-        // and with merge multiple CompositeContinuationItems
-        // Means Split/Merge needs to be pushed into the FeedRangeContinuation
-        // Will be necessary for merge anyway
-        // but efficient testing only works if at least EPK filtering is available in Emulator
-        // or at least Service - this will be part of the next set of changes
-        // For now - no merge just simple V0 of lease contract
-        // this simplification will work
-        //
-        //ChangeFeedState lastContinuationState = lease.getContinuationState(
-        //    this.collectionResourceId,
-        //    new FeedRangePartitionKeyRangeImpl(leaseToken)
-        //);
-        //
-        //final String lastContinuationToken = lastContinuationState.getContinuation() != null ?
-        //    lastContinuationState.getContinuation().getCurrentContinuationToken().getToken() :
-        //    null;
-
-        // "Push" ChangeFeedProcessor is not merge-proof currently. For such cases we need a specific handler that can
-        // take multiple leases and "converge" them in a thread safe manner while also merging the various continuation
-        // tokens for each merged lease.
-        // We will directly reuse the original/parent continuation token as the seed for the new leases until then.
-        final String lastContinuationToken = lease.getContinuationToken();
-
-        logger.info("Partition {} with feed range {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, epkRange, lastContinuationToken);
-
-        // After a split, the children are either all or none available
-        return this.enumPartitionKeyRanges()
-                   .filter(pkRange -> {
-                       //  This lease exists, no need to create one for this pkRange
-                       return !epkRange.getMin().equals(pkRange.getMinInclusive()) && !epkRange.getMax().equals(pkRange.getMaxExclusive());
-                   })
-                    .flatMap(pkRange -> {
-                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-                        return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
-                    }, this.degreeOfParallelism)
-                    .map(newLease -> {
-                        logger.info("Partition {} split into new partition and continuation token {}.", newLease.getLeaseToken(), lastContinuationToken);
-                        return newLease;
-                    });
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
+                .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
+                .onErrorResume(throwable -> {
+                    logger.error("Create lease failed", throwable);
+                    return Mono.empty();
+                });
     }
 
     @Override
@@ -144,26 +89,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     }
 
                     // Merge
-                    return Mono.just(new FeedRangeGoneMergeHandler(lease, pkRangeList.get(0), this.leaseManager));
+                    return Mono.just(new FeedRangeGoneMergeHandler(lease, pkRangeList.get(0)));
                 });
     }
 
-    private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
-        String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
-
-        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
-            .map(FeedResponse::getResults)
-            .flatMap(Flux::fromIterable)
-            .onErrorResume(throwable -> {
-                logger.warn("Exception occurred while reading partition key range feed", throwable);
-                return Flux.empty();
-            });
-    }
-
     /**
-     * Creates leases if they do not exist. This might happen on initial start or if some lease was unexpectedly lost.
+     * Creates leases if they do not exist. This might happen on initial start or if some leases was unexpectedly lost.
      * <p>
      * Leases are created without the continuation token. It means partitions will be read according to
      *   'From Beginning' or 'From current time'.

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.changefeed.v0;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
-import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

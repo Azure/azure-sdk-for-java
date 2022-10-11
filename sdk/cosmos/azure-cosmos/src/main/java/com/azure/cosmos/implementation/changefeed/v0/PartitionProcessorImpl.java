@@ -167,7 +167,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                 this.lastServerContinuationToken);
                         }
                         break;
-                        case PARTITION_SPLIT: {
+                        case PARTITION_SPLIT_OR_MERGE: {
                             this.resultException = new FeedRangeGoneException(
                                 "Partition split.",
                                 this.lastServerContinuationToken);

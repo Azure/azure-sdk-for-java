@@ -51,20 +51,21 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor, AutoCloseable{
-    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBase.class);
-
-    private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
-    private static final int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
-
+    private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBase.class);
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
+    private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
+    private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
+
 
     private final String hostName;
     private final ChangeFeedContextClient feedContextClient;
     private final ChangeFeedContextClient leaseContextClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private final ChangeFeedMode changeFeedMode;
     private final ChangeFeedObserverFactory<T> observerFactory;
+    private final ChangeFeedMode changeFeedMode;
+    private final Scheduler scheduler;
+
     private volatile String databaseResourceId;
     private volatile String collectionResourceId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
@@ -72,7 +73,6 @@ public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor,
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
 
-    private Scheduler scheduler;
 
     public ChangeFeedProcessorBase(
             String hostName,
@@ -255,14 +255,14 @@ public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor,
     private Mono<ChangeFeedProcessor> initializeCollectionPropertiesForBuild() {
         return this.feedContextClient
                 .readDatabase(this.feedContextClient.getDatabaseClient(), null)
-                .map(databaseResourceResponse -> {
-                    this.databaseResourceId = databaseResourceResponse.getProperties().getId();
+                .map( databaseResourceResponse -> {
+                    this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
                     return this.databaseResourceId;
                 })
-                .flatMap(id -> this.feedContextClient
+                .flatMap( id -> this.feedContextClient
                         .readContainer(this.feedContextClient.getContainerClient(), null)
                         .map(documentCollectionResourceResponse -> {
-                            this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
+                            this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
                             return this;
                         }));
     }
@@ -330,8 +330,7 @@ public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor,
                 leaseStoreManager,
                 leaseStoreManager,
                 DEFAULT_DEGREE_OF_PARALLELISM,
-                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE
-        );
+                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE);
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<T>(
