@@ -210,6 +210,8 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
+## Next steps
+
 ## Contributing
 
 For details on contributing to this repository, see
