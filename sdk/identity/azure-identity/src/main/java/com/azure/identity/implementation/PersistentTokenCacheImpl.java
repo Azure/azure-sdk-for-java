@@ -52,14 +52,14 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     }
 
     Boolean registerCache() {
-            try {
-                PersistenceSettings persistenceSettings = getPersistenceSettings();
-                cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
-                return true;
-            } catch (Throwable t) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t));
-            }
+        try {
+            PersistenceSettings persistenceSettings = getPersistenceSettings();
+            cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
+            return true;
+        } catch (Throwable t) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                "Shared token cache is unavailable in this environment.", null, t));
+        }
     }
 
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {

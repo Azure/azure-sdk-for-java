@@ -7,7 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -19,10 +23,27 @@ import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.TokenProviderResult;
+import com.microsoft.aad.msal4j.ClaimsRequest;
 import reactor.core.publisher.Mono;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
@@ -32,9 +53,20 @@ import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Random;
+
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -115,199 +147,199 @@ public abstract class IdentityClientBase {
     }
 
     ConfidentialClientApplication getConfidentialClient() {
-            if (clientId == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "A non-null value for client ID must be provided for user authentication."));
-            }
-            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
-                + tenantId;
-            IClientCredential credential;
-            if (clientSecret != null) {
-                credential = ClientCredentialFactory.createFromSecret(clientSecret);
-            } else if (certificate != null || certificatePath != null) {
-                try {
-                    if (certificatePassword == null) {
-                        byte[] pemCertificateBytes = getCertificateBytes();
-
-                        List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-                        PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
-                        if (x509CertificateList.size() == 1) {
-                            credential = ClientCredentialFactory.createFromCertificate(
-                                privateKey, x509CertificateList.get(0));
-                        } else {
-                            credential = ClientCredentialFactory.createFromCertificateChain(
-                                privateKey, x509CertificateList);
-                        }
-                    } else {
-                        try (InputStream pfxCertificateStream = getCertificateInputStream()) {
-                            credential = ClientCredentialFactory.createFromCertificate(pfxCertificateStream,
-                                certificatePassword);
-                        }
-                    }
-                } catch (IOException | GeneralSecurityException e) {
-                     throw LOGGER.logExceptionAsError(new RuntimeException(
-                        "Failed to parse the certificate for the credential: " + e.getMessage(), e));
-                }
-            } else if (clientAssertionSupplier != null) {
-                credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
-            } else {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Must provide client secret or client certificate path."
-                        +  " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                        + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot"));
-            }
-
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId, credential);
+        if (clientId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "A non-null value for client ID must be provided for user authentication."));
+        }
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
+            + tenantId;
+        IClientCredential credential;
+        if (clientSecret != null) {
+            credential = ClientCredentialFactory.createFromSecret(clientSecret);
+        } else if (certificate != null || certificatePath != null) {
             try {
-                applicationBuilder = applicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
-            }
+                if (certificatePassword == null) {
+                    byte[] pemCertificateBytes = getCertificateBytes();
 
-            applicationBuilder.sendX5c(options.isIncludeX5c());
-
-            initializeHttpPipelineAdapter();
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
-            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
-            PersistentTokenCacheImpl tokenCache = null;
-            if (tokenCachePersistenceOptions != null) {
-                try {
-                    tokenCache = new PersistentTokenCacheImpl()
-                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
-                        .setName(tokenCachePersistenceOptions.getName());
-                    applicationBuilder.setTokenCacheAccessAspect(tokenCache);
-                } catch (Throwable t) {
-                    throw  LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                        "Shared token cache is unavailable in this environment.", null, t));
-                }
-            }
-            if (options.getRegionalAuthority() != null) {
-                if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
-                    applicationBuilder.autoDetectRegion(true);
+                    List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                    if (x509CertificateList.size() == 1) {
+                        credential = ClientCredentialFactory.createFromCertificate(
+                            privateKey, x509CertificateList.get(0));
+                    } else {
+                        credential = ClientCredentialFactory.createFromCertificateChain(
+                            privateKey, x509CertificateList);
+                    }
                 } else {
-                    applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
+                    try (InputStream pfxCertificateStream = getCertificateInputStream()) {
+                        credential = ClientCredentialFactory.createFromCertificate(pfxCertificateStream,
+                            certificatePassword);
+                    }
                 }
+            } catch (IOException | GeneralSecurityException e) {
+                 throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Failed to parse the certificate for the credential: " + e.getMessage(), e));
             }
-            ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+        } else if (clientAssertionSupplier != null) {
+            credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
+        } else {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Must provide client secret or client certificate path."
+                    +  " To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                    + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot"));
+        }
 
-            if (tokenCache != null) {
-                tokenCache.registerCache();
+        ConfidentialClientApplication.Builder applicationBuilder =
+            ConfidentialClientApplication.builder(clientId, credential);
+        try {
+            applicationBuilder = applicationBuilder.authority(authorityUrl);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        applicationBuilder.sendX5c(options.isIncludeX5c());
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            applicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            applicationBuilder.executorService(options.getExecutorService());
+        }
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+        PersistentTokenCacheImpl tokenCache = null;
+        if (tokenCachePersistenceOptions != null) {
+            try {
+                tokenCache = new PersistentTokenCacheImpl()
+                    .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
+                    .setName(tokenCachePersistenceOptions.getName());
+                applicationBuilder.setTokenCacheAccessAspect(tokenCache);
+            } catch (Throwable t) {
+                throw  LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t));
             }
+        }
+        if (options.getRegionalAuthority() != null) {
+            if (options.getRegionalAuthority() == RegionalAuthority.AUTO_DISCOVER_REGION) {
+                applicationBuilder.autoDetectRegion(true);
+            } else {
+                applicationBuilder.azureRegion(options.getRegionalAuthority().toString());
+            }
+        }
+        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+
+        if (tokenCache != null) {
+            tokenCache.registerCache();
+        }
         return confidentialClientApplication;
     }
 
     PublicClientApplication getPublicClient(boolean sharedTokenCacheCredential) {
-            if (clientId == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "A non-null value for client ID must be provided for user authentication."));
-            }
-            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
-                + tenantId;
-            PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
+        if (clientId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "A non-null value for client ID must be provided for user authentication."));
+        }
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
+            + tenantId;
+        PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
+        try {
+            builder = builder.authority(authorityUrl);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            builder.httpClient(httpPipelineAdapter);
+        } else {
+            builder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            builder.executorService(options.getExecutorService());
+        }
+
+        if (!options.isCp1Disabled()) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            builder.clientCapabilities(set);
+        }
+
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+        PersistentTokenCacheImpl tokenCache = null;
+        if (tokenCachePersistenceOptions != null) {
             try {
-                builder = builder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+                tokenCache = new PersistentTokenCacheImpl()
+                    .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
+                    .setName(tokenCachePersistenceOptions.getName());
+                builder.setTokenCacheAccessAspect(tokenCache);
+            } catch (Throwable t) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                    "Shared token cache is unavailable in this environment.", null, t));
             }
+        }
+        PublicClientApplication publicClientApplication = builder.build();
 
-            initializeHttpPipelineAdapter();
-            if (httpPipelineAdapter != null) {
-                builder.httpClient(httpPipelineAdapter);
-            } else {
-                builder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
-
-            if (options.getExecutorService() != null) {
-                builder.executorService(options.getExecutorService());
-            }
-
-            if (!options.isCp1Disabled()) {
-                Set<String> set = new HashSet<>(1);
-                set.add("CP1");
-                builder.clientCapabilities(set);
-            }
-
-            TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
-            PersistentTokenCacheImpl tokenCache = null;
-            if (tokenCachePersistenceOptions != null) {
-                try {
-                    tokenCache = new PersistentTokenCacheImpl()
-                        .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
-                        .setName(tokenCachePersistenceOptions.getName());
-                    builder.setTokenCacheAccessAspect(tokenCache);
-                } catch (Throwable t) {
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                        "Shared token cache is unavailable in this environment.", null, t));
-                }
-            }
-            PublicClientApplication publicClientApplication = builder.build();
-
-            if (tokenCache != null) {
-                tokenCache.registerCache();
-            }
-            return publicClientApplication;
+        if (tokenCache != null) {
+            tokenCache.registerCache();
+        }
+        return publicClientApplication;
     }
 
     ConfidentialClientApplication getManagedIdentityConfidentialClient() {
-            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
-                + "/" + tenantId;
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+            + "/" + tenantId;
 
-            // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
-            IClientCredential credential = ClientCredentialFactory
-                .createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
-            ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
-                    : clientId, credential);
-            try {
-                applicationBuilder = applicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
-            }
+        // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
+        IClientCredential credential = ClientCredentialFactory
+            .createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
+        ConfidentialClientApplication.Builder applicationBuilder =
+            ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
+                : clientId, credential);
+        try {
+            applicationBuilder = applicationBuilder.authority(authorityUrl);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
 
-            if (options.getManagedIdentityType() == null) {
-                throw LOGGER.logExceptionAsError(
-                    new CredentialUnavailableException("Managed Identity type not configured, authentication not available."));
-            }
-            applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
-                TokenRequestContext trc = new TokenRequestContext()
-                    .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
-                    .setClaims(appTokenProviderParameters.claims)
-                    .setTenantId(appTokenProviderParameters.tenantId);
+        if (options.getManagedIdentityType() == null) {
+            throw LOGGER.logExceptionAsError(
+                new CredentialUnavailableException("Managed Identity type not configured, authentication not available."));
+        }
+        applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
+            TokenRequestContext trc = new TokenRequestContext()
+                .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
+                .setClaims(appTokenProviderParameters.claims)
+                .setTenantId(appTokenProviderParameters.tenantId);
 
-                Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
+            Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
 
-                return accessTokenAsync.map(accessToken -> {
-                    TokenProviderResult result =  new TokenProviderResult();
-                    result.setAccessToken(accessToken.getToken());
-                    result.setTenantId(trc.getTenantId());
-                    result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                    return result;
-                }).toFuture();
-            });
+            return accessTokenAsync.map(accessToken -> {
+                TokenProviderResult result =  new TokenProviderResult();
+                result.setAccessToken(accessToken.getToken());
+                result.setTenantId(trc.getTenantId());
+                result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                return result;
+            }).toFuture();
+        });
 
 
-            initializeHttpPipelineAdapter();
-            if (httpPipelineAdapter != null) {
-                applicationBuilder.httpClient(httpPipelineAdapter);
-            } else {
-                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-            }
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            applicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
 
-            if (options.getExecutorService() != null) {
-                applicationBuilder.executorService(options.getExecutorService());
-            }
+        if (options.getExecutorService() != null) {
+            applicationBuilder.executorService(options.getExecutorService());
+        }
 
-            ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
-            return confidentialClientApplication;
+        ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+        return confidentialClientApplication;
     }
 
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request, Consumer<DeviceCodeInfo> deviceCodeConsumer) {

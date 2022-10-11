@@ -64,7 +64,7 @@ class HttpPipelineAdapter implements IHttpClient {
         HttpResponse response = httpPipeline.sendSync(request, Context.NONE);
         String body =  response.getBodyAsBinaryData().toString();
 
-        if (CoreUtils.isNullOrEmpty(body)) {
+        if (!CoreUtils.isNullOrEmpty(body)) {
             logAccountIdentifiersIfConfigured(body);
             com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                 .body(body)

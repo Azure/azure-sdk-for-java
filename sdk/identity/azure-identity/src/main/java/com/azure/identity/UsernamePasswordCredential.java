@@ -8,7 +8,12 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.*;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -77,21 +82,21 @@ public class UsernamePasswordCredential implements TokenCredential {
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
-            if (cachedToken.get() != null) {
-                try {
-                    return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
-                } catch (Exception e) { }
-            }
-
+        if (cachedToken.get() != null) {
             try {
-                MsalToken accessToken = identitySyncClient.authenticateWithUsernamePassword(request, username, password);
-                updateCache(accessToken);
-                LoggingUtil.logTokenSuccess(LOGGER, request);
-                return accessToken;
-            } catch (Exception e) {
-                LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-                throw e;
-            }
+                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+            } catch (Exception e) { }
+        }
+
+        try {
+            MsalToken accessToken = identitySyncClient.authenticateWithUsernamePassword(request, username, password);
+            updateCache(accessToken);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return accessToken;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
     }
 
     /**
