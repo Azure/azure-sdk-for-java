@@ -228,21 +228,21 @@ public class ServiceBusTracer {
      *
      * Creates a single span with links to each message being received.
      */
-    public Flux<ServiceBusReceivedMessage> traceSyncReceive(String name, Flux<ServiceBusReceivedMessage> messages) {
+    public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
         if (tracer != null) {
-            AtomicLong startTime = new AtomicLong();
-            List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
             return messages
                 .doOnEach(signal -> {
+                    Context builder = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
                     if (signal.hasValue()) {
                         ServiceBusReceivedMessage message = signal.get();
-                        messageList.add(message);
+                        addLink(message.getApplicationProperties(), message.getEnqueuedTime(), builder, Context.NONE);
                     } else if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = startReceiverSpanWithLinks(name, messageList, new Context(START_TIME_KEY, startTime.get()));
+                        Context span = tracer.start(spanName, builder, ProcessKind.SEND);
                         endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .doOnSubscribe(s -> startTime.set(Instant.now().toEpochMilli()));
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
+                    getBuilder(spanName, new Context(START_TIME_KEY, Instant.now().toEpochMilli()))));
         }
         return messages;
     }
@@ -285,25 +285,6 @@ public class ServiceBusTracer {
 
         return parent;
     }
-
-    /**
-     * Traces receive, peek, receiveDeferred that return a flux of messages, but has a limited lifetime - such as sync receive case or peek many
-     * or receive deferred.
-     */
-    private Context startReceiverSpanWithLinks(String name, List<ServiceBusReceivedMessage> batch, Context parent) {
-        if (tracer != null) {
-            Context spanBuilder = getBuilder(name, parent);
-            for (ServiceBusReceivedMessage message : batch) {
-                addLink(message.getApplicationProperties(), message.getEnqueuedTime(), spanBuilder, Context.NONE);
-            }
-
-            // TODO: need to refactor tracing in core. Currently we use ProcessKind.SEND as
-            // SpanKind.CLIENT
-            return tracer.start(name, spanBuilder, ProcessKind.SEND);
-        }
-        return parent;
-    }
-
 
     private Context startSpanWithLink(String name, ServiceBusMessage message, Context messageContext, Context parent) {
         if (tracer != null) {
