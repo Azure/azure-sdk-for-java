@@ -4,6 +4,8 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -38,10 +40,10 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      * @param participant The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    MediaStreamingAudio(String audioData, String timestamp, CommunicationIdentifier participant, boolean silent) {
+    MediaStreamingAudio(String audioData, String timestamp, String participant, boolean silent) {
         this.audioData = audioData;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.participant = participant;
+        this.participant = new CommunicationUserIdentifier(participant);
         this.silent = silent;
     }
 

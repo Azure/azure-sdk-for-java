@@ -40,7 +40,7 @@ public class MediaStreamingMetadata extends MediaStreamingPackageBase {
      * @param channels The channels.
      * @param length The length.
      */
-    public MediaStreamingMetadata(String mediaSubscriptionId, String encoding, int sampleRate, int channels, int length) {
+    MediaStreamingMetadata(String mediaSubscriptionId, String encoding, int sampleRate, int channels, int length) {
         this.mediaSubscriptionId = mediaSubscriptionId;
         this.encoding = encoding;
         this.sampleRate = sampleRate;

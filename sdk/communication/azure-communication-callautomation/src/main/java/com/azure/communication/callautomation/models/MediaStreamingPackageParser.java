@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingMetadataInternal;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,7 +55,7 @@ public class MediaStreamingPackageParser {
             JsonNode jsonData = mapper.readTree(stringJson);
             if (stringJson.contains("AudioData")) {
                 MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData.get("audioData"), MediaStreamingAudioInternal.class);
-                return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), new CommunicationUserIdentifier(audioInternal.getParticipantRawID()), audioInternal.isSilent());
+                return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
             }
             if (stringJson.contains("AudioMetadata")) {
                 MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), MediaStreamingMetadataInternal.class);
