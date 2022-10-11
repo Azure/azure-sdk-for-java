@@ -155,7 +155,7 @@
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.1.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.3.6]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

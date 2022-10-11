@@ -338,7 +338,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.6</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.7</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -382,7 +382,7 @@
                 <include>org.springframework.security:spring-security-config:[5.7.3]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.23]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.3.6]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[5.3.23]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>

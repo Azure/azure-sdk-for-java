@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.6</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.7</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.postgresql:postgresql:[42.3.6]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
