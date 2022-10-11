@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+  <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
 
   <name>Microsoft Azure identity client library for communication</name>
   <description>
@@ -55,6 +55,7 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.identity/com.azure.communication.identity=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -120,7 +121,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

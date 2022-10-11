@@ -37,7 +37,7 @@ parameters:
 - name: release_azureresourcemanagerconfidentialledger
   displayName: 'azure-resourcemanager-confidentialledger'
   type: boolean
-  default: true
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

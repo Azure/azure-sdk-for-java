@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.29.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.28.1 (2022-10-07)
 > [!IMPORTANT]
 > We strongly recommend our customers to use version 3.28.1 and above.
