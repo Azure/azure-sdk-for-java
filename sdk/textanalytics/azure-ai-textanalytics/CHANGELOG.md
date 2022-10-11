@@ -3,7 +3,7 @@
 ## 5.3.0-beta.1 (Unreleased)
 
 ### Features Added
-- This version of the client library marks a stable release and defaults to the service API version `2022-10-01-preview`.
+- This version of the client library marks a preview release and defaults to the service API version `2022-10-01-preview`.
 
 ### Breaking Changes
 
