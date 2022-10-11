@@ -55,7 +55,7 @@ With above configuration, `azure` client can be authenticated by following code:
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Creates a client
-TimezoneClient client = new TimezoneClientBuilder()
+TimeZoneClient client = new TimeZoneClientBuilder()
     .credential(tokenCredential)
     .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
     .buildClient();

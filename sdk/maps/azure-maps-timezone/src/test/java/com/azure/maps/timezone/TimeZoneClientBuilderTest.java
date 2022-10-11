@@ -10,12 +10,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import org.junit.jupiter.api.Test;
 
-public class TimezoneClientBuilderTest {
+public class TimeZoneClientBuilderTest {
     // Test for null timezoneClientId, the client ID value
     @Test
     public void missingtimezoneClientId() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.timezoneClientId(null);
         });
     }
@@ -24,7 +24,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingEndpoint() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.endpoint(null);
         });
     }
@@ -33,7 +33,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingConfiguration() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.configuration(null);
         });
     }
@@ -42,7 +42,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingHttpLogOptions() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.httpLogOptions(null);
         });
     }
@@ -51,7 +51,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingRetryPolicy() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.retryPolicy(null);
         });
     }
@@ -60,7 +60,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingClientOptions() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.clientOptions(null);
         });
     }
@@ -69,16 +69,16 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingAddPolicy() {
         assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.addPolicy(null);
         });
     }
 
     // Test for null timezone id, valid token credential
     @Test
-    public void missingTimezoneClientIdValidTokenCredential() {
+    public void missingTimeZoneClientIdValidTokenCredential() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
             builder.credential(tokenCredential);
             builder.buildClient();
@@ -89,7 +89,7 @@ public class TimezoneClientBuilderTest {
     @Test
     public void missingCredentials() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
+            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
             builder.timezoneClientId("timezoneClientId");
             builder.buildClient();
         });

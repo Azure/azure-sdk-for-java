@@ -21,7 +21,7 @@ import com.azure.maps.timezone.models.TimezoneWindows;
 import java.util.List;
 
 /**
- * {@link TimezoneClient} instances are created via the {@link TimezoneClientBuilder}, as shown below.
+ * {@link TimeZoneClient} instances are created via the {@link TimeZoneClientBuilder}, as shown below.
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
  * <pre>
@@ -29,23 +29,23 @@ import java.util.List;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * TimezoneClient client = new TimezoneClientBuilder&#40;&#41; 
+ * TimeZoneClient client = new TimeZoneClientBuilder&#40;&#41; 
  *     .credential&#40;keyCredential&#41;
  *     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
  */
-@ServiceClient(builder = TimezoneClientBuilder.class)
-public final class TimezoneClient {
-    private final TimezoneAsyncClient asyncClient;
+@ServiceClient(builder = TimeZoneClientBuilder.class)
+public final class TimeZoneClient {
+    private final TimeZoneAsyncClient asyncClient;
 
     /**
-     * Initializes an instance of TimezoneClient client.
+     * Initializes an instance of TimeZoneClient client.
      *
      * @param serviceClient the service client implementation.
      */
-    TimezoneClient(TimezoneAsyncClient asyncClient) {
+    TimeZoneClient(TimeZoneAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 

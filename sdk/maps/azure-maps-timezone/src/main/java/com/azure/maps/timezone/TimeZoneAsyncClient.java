@@ -23,7 +23,7 @@ import com.azure.maps.timezone.models.TimezoneWindows;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous TimezoneClient type. 
+/** Initializes a new instance of the asynchronous TimeZoneClient type. 
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.timezone.async.builder.key.instantiation -->
 * <pre>
@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
 * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
 *
 * &#47;&#47; Creates a client
-* TimezoneAsyncClient asyncClient = new TimezoneClientBuilder&#40;&#41;
+* TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder&#40;&#41;
 *     .credential&#40;keyCredential&#41;
 *     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
 *     .buildAsyncClient&#40;&#41;;
@@ -39,16 +39,16 @@ import reactor.core.publisher.Mono;
 * </pre>
 * <!-- end com.azure.maps.timezone.async.builder.key.instantiation -->
 */
-@ServiceClient(builder = TimezoneClientBuilder.class, isAsync = true)
-public final class TimezoneAsyncClient {
+@ServiceClient(builder = TimeZoneClientBuilder.class, isAsync = true)
+public final class TimeZoneAsyncClient {
     private final TimezonesImpl serviceClient;
 
     /**
-     * Initializes an instance of TimezoneClient client.
+     * Initializes an instance of TimeZoneClient client.
      *
      * @param serviceClient the service client implementation.
      */
-    TimezoneAsyncClient(TimezonesImpl serviceClient) {
+    TimeZoneAsyncClient(TimezonesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

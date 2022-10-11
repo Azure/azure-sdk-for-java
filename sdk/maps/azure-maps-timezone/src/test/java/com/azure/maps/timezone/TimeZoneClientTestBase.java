@@ -30,7 +30,7 @@ import com.azure.maps.timezone.models.TimezoneIanaVersionResult;
 import com.azure.maps.timezone.models.TimezoneResult;
 import com.azure.maps.timezone.models.TimezoneWindows;
 
-public class TimezoneClientTestBase extends TestBase {
+public class TimeZoneClientTestBase extends TestBase {
     static final String FAKE_API_KEY = "1234567890";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
@@ -47,8 +47,8 @@ public class TimezoneClientTestBase extends TestBase {
         interceptorManagerTestBase = interceptorManager;
     }
 
-    TimezoneClientBuilder getTimezoneAsyncClientBuilder(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
-        TimezoneClientBuilder builder = new TimezoneClientBuilder()
+    TimeZoneClientBuilder getTimeZoneAsyncClientBuilder(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+        TimeZoneClientBuilder builder = new TimeZoneClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         String endpoint = getEndpoint();

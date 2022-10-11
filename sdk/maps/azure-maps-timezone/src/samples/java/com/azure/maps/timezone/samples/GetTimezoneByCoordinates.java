@@ -6,9 +6,9 @@ package com.azure.maps.timezone.samples;
 import com.azure.core.models.GeoPosition;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.maps.timezone.TimezoneAsyncClient;
-import com.azure.maps.timezone.TimezoneClient;
-import com.azure.maps.timezone.TimezoneClientBuilder;
+import com.azure.maps.timezone.TimeZoneAsyncClient;
+import com.azure.maps.timezone.TimeZoneClient;
+import com.azure.maps.timezone.TimeZoneClientBuilder;
 import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
 import com.azure.maps.timezone.models.TimezoneOptions;
 
@@ -22,7 +22,7 @@ public class GetTimezoneByCoordinates {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        TimezoneClient client = new TimezoneClientBuilder() 
+        TimeZoneClient client = new TimeZoneClientBuilder() 
             .credential(tokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -45,7 +45,7 @@ public class GetTimezoneByCoordinates {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+        TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder()
             .credential(asyncClientTokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();
