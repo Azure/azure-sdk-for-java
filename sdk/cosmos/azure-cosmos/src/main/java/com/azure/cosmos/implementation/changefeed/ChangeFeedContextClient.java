@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * The interface that captures the APIs required to handle change feed processing logic.
@@ -161,4 +163,6 @@ public interface ChangeFeedContextClient {
      * @param scheduler a {@link Scheduler} that hosts a pool of ExecutorService-based workers.
      */
     void setScheduler(Scheduler scheduler);
+
+    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
 }

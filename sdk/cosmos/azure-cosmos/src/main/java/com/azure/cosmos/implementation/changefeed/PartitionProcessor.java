@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
+import com.azure.cosmos.implementation.changefeed.v1.PartitionProcessorFactory;
 import reactor.core.publisher.Mono;
 
 /**

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
+import com.azure.cosmos.implementation.changefeed.v1.feedRangeGoneHandler.FeedRangeGoneHandler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,4 +24,6 @@ public interface PartitionSynchronizer {
      * @return the split partition documents.
      */
     Flux<Lease> splitPartition(Lease lease);
+
+    Mono<FeedRangeGoneHandler> getFeedRangeGoneHandler(Lease lease);
 }

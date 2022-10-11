@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedProcessorBuilderImpl;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.implementation.changefeed.v0.IncrementalChangeFeedProcessorImpl;
+import com.azure.cosmos.implementation.changefeed.v1.FullFidelityChangeFeedProcessorImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.util.Beta;
@@ -11,6 +14,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Helper class to build a {@link ChangeFeedProcessor} instance.
@@ -54,9 +60,10 @@ public class ChangeFeedProcessorBuilder {
     private CosmosAsyncContainer feedContainer;
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private Consumer<List<JsonNode>> partitionKeyBasedLeaseConsumer;
-    private Consumer<List<ChangeFeedProcessorItem>> epkRangeBasedLeaseConsumer;
+    private Consumer<List<JsonNode>> incrementalModeLeaseConsumer;
+    private Consumer<List<ChangeFeedProcessorItem>> fullFidelityModeLeaseConsumer;
     private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
+    private LeaseVersion leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
@@ -117,8 +124,39 @@ public class ChangeFeedProcessorBuilder {
      * @return current Builder.
      */
     public ChangeFeedProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
-        this.partitionKeyBasedLeaseConsumer = consumer;
+        checkNotNull(consumer, "Argument 'consumer' can not be null");
+        checkArgument(this.incrementalModeLeaseConsumer == null, "consumer has already been defined");
+
+        this.incrementalModeLeaseConsumer = consumer;
         this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
+        this.leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
+        return this;
+    }
+
+    /**
+     * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
+     *
+     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleLatestVersionChanges -->
+     * <pre>
+     * .handleLatestVersionChanges&#40;docs -&gt; &#123;
+     *     for &#40;JsonNode item : docs&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+     *     &#125;
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.changeFeedProcessor.handleLatestVersionChanges -->
+     *
+     * @param consumer the {@link Consumer} to call for handling the feeds.
+     * @return current Builder.
+     */
+    @Beta(value = Beta.SinceVersion.V4_38_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorBuilder handleLatestVersionChanges(Consumer<List<JsonNode>> consumer) {
+        checkNotNull(consumer, "Argument 'consumer' can not be null");
+        checkArgument(this.incrementalModeLeaseConsumer == null, "consumer has already been defined");
+
+        this.incrementalModeLeaseConsumer = consumer;
+        this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
         return this;
     }
 
@@ -140,8 +178,9 @@ public class ChangeFeedProcessorBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
-        this.epkRangeBasedLeaseConsumer = consumer;
+        this.fullFidelityModeLeaseConsumer = consumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
         return this;
     }
 
@@ -174,44 +213,50 @@ public class ChangeFeedProcessorBuilder {
     public ChangeFeedProcessor buildChangeFeedProcessor() {
         validateChangeFeedProcessorBuilder();
 
-        if (ChangeFeedMode.INCREMENTAL.equals(changeFeedMode)) {
-            ChangeFeedProcessorBuilderImpl builder = new ChangeFeedProcessorBuilderImpl()
-                .hostName(this.hostName)
-                .feedContainer(this.feedContainer)
-                .leaseContainer(this.leaseContainer)
-                .handleChanges(this.partitionKeyBasedLeaseConsumer);
-
-            if (this.changeFeedProcessorOptions != null) {
-                builder.options(this.changeFeedProcessorOptions);
+        ChangeFeedProcessor changeFeedProcessor = null;
+        // Lease version will decide which version of the changeFeed processor we are going to use internally
+        // PARTITION_KEY_BASED_LEASE -> ChangeFeedProcessor V0
+        // EPK_RANGE_BASED_LEASE -> ChangeFeedProcessor V1
+        if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
+            switch (this.changeFeedMode) {
+                case FULL_FIDELITY:
+                    changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.fullFidelityModeLeaseConsumer,
+                            this.changeFeedProcessorOptions);
+                    break;
+                case INCREMENTAL:
+                    changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.v1.IncrementalChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.incrementalModeLeaseConsumer,
+                            this.changeFeedProcessorOptions);
+                    break;
+                default:
+                    throw new IllegalStateException("ChangeFeed mode " + this.changeFeedMode + " is not supported");
             }
-
-            return builder.build();
         } else {
-            com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl builder =
-                new com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl()
-                    .hostName(this.hostName)
-                    .feedContainer(this.feedContainer)
-                    .leaseContainer(this.leaseContainer)
-                    .handleChanges(this.epkRangeBasedLeaseConsumer);
-            if (this.changeFeedProcessorOptions != null) {
-                builder.options(this.changeFeedProcessorOptions);
-            }
-            return builder.build();
+            changeFeedProcessor = new IncrementalChangeFeedProcessorImpl(
+                    this.hostName,
+                    this.feedContainer,
+                    this.leaseContainer,
+                    this.incrementalModeLeaseConsumer,
+                    this.changeFeedProcessorOptions);
         }
+
+        return changeFeedProcessor;
     }
 
     private void validateChangeFeedProcessorBuilder() {
-        if (hostName == null || hostName.isEmpty()) {
-            throw new IllegalArgumentException("hostName cannot be null or empty");
-        }
-        if (feedContainer == null) {
-            throw new IllegalArgumentException("feedContainer cannot be null");
-        }
-        if (leaseContainer == null) {
-            throw new IllegalArgumentException("leaseContainer cannot be null");
-        }
-        if ((partitionKeyBasedLeaseConsumer == null && epkRangeBasedLeaseConsumer == null)
-            || (partitionKeyBasedLeaseConsumer != null && epkRangeBasedLeaseConsumer != null)) {
+        checkArgument(StringUtils.isNotEmpty(hostName), "hostName cannot be null or empty");
+        checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
+        checkNotNull(leaseContainer, "Argument 'leaseContainer' can not be null");
+
+        if ((incrementalModeLeaseConsumer == null && fullFidelityModeLeaseConsumer == null)
+            || (incrementalModeLeaseConsumer != null && fullFidelityModeLeaseConsumer != null)) {
             throw new IllegalArgumentException("expecting either LatestVersion or AllVersionsAndDeletes consumer for handling change feed processor changes");
         }
         validateChangeFeedProcessorOptions();

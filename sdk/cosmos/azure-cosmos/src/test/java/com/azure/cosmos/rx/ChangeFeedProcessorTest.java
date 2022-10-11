@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.v0.ServiceItemLease;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosContainerProperties;

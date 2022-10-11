@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -29,6 +30,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +82,35 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
+    }
+
+    @Override
+    public Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range) {
+        AsyncDocumentClient clientWrapper =
+                CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosContainer.getDatabase());
+
+        return clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(
+                        null,
+                        BridgeInternal.extractContainerSelfLink(this.cosmosContainer),
+                        null)
+                .flatMap(collection -> {
+                    return clientWrapper.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
+                            null,
+                            collection.getResourceId(),
+                            range,
+                            true,
+                            null);
+                })
+                .flatMap(pkRangesValueHolder -> {
+                    if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
+                        return Mono.just(new ArrayList<PartitionKeyRange>());
+                    }
+
+                    return Mono.just(pkRangesValueHolder.v);
+                })
+                .publishOn(this.scheduler);
     }
 
     @Override
