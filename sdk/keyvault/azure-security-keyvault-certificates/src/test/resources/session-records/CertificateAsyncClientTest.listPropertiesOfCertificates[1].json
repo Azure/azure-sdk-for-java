@@ -1,0 +1,931 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/create?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Thu, 06 Oct 2022 17:45:52 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "777bb1bf-2768-4467-b728-bd9d3acda499",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3&request_id=cc8c8ea7b74544a8b69c71446afa6dbf"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "807dc729-487a-4968-99d5-2e1dbdc55e40",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:54 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "891d7b3d-2dc2-484b-9d8f-d90f222816d9",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:56 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "06a939b4-3279-457f-b183-2c7b7ad39819",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "58169bd3-ba93-42b8-8b4b-dceffd46a567",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:58 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "98966fb7-7660-4e53-af37-660bf7e4db09",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:45:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "55a7964d-77ee-4fdd-a8c2-c6df066d02d8",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b75f86a4-a70f-49b5-835e-f90ef22d1fb9",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:01 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1caa95c7-0c60-4cf1-9320-aeb13c79a296",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey17391b903/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1239",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:02 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "325ef5b7-9baa-468a-aab9-62ffce4919bb",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL8WS8n2RcTvbk/fv4PtOwnd7L0KTOuMK2Cqag5MNtO5kVRaY3MBL5szDSzjtF+p7Unubd8I/zEFAWakE9FJ2Uylqehrs7fC9ABajc/+hertavb+uDOvTW/HN9th4TD0bCXADT087Gi/++xtqxVIMw8dJIpvEk04byQnKG1TzZfJXUXlXUA5dIPjr0BNKQl5LlRsCXgKnyXd6tmT6zIUprIMnplIJFNow02VBXJMhFVmI4gg3xLW6J6wn/zF8LrtZhHBbsE+P986bMnXr4CMwVhBC7hzdw/ieRgJxFLYmpNYsyP8eUVwn6wDQm7+7ND2hRTmVLpnLEjDlTxjaQ0WtUUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAZ8hY7pEJcwBvlqwJ8V3+QrPQMBVaTvYk3brS6lvLZwLZOxyQg8RdmidnNjCAjy9IW1Ir+K6vwyK2o4nO0ofwH0AfnnofxLhCjBJvCh+rzHciph4oBC73yT8sd0w9pht6UYNMTuiiL3RGeuuW3d/SbjU5vYDvOFnShRgR9v0WLgGjZWh8XX1XgHpIJR5nO5Dz+G6TUSFNU57iPr7PSe4uwZ5QoRbPRb+QUNa09WmQz6LBhFNHnjDrYotP4xtzCrp/FO95Kzk09aUG4Nt0qxexRvN9Is79PVEOo1lTcWdfFER5i1Uy6yQ9AzYOLspE4HhFxOf7PyKyK/yUt269i9UQn\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903\",\"request_id\":\"cc8c8ea7b74544a8b69c71446afa6dbf\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/create?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Thu, 06 Oct 2022 17:46:03 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1b942d2e-803f-4dda-8657-7211923eee4f",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3&request_id=babd07d656034a50ba79f442d10fb0d3"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:04 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "ab07b160-ee0f-4092-82ac-b2f1dcf32667",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:05 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a21eba1d-8c6d-4269-afc4-6b6e28da4dcf",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:06 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f509c188-754a-45cd-9b51-9c8aa97f8833",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a5e813ef-4232-4683-ae52-e2f13e85f1d1",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:08 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6ae803d2-a758-426b-9aa7-f0fa2327f637",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4d2881bb-56b6-4941-9647-eee95c452bd3",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "86373086-517f-4654-a6fa-b8ac208efc34",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c3a8cd47-5164-4bb7-b6ec-279da1311e1d",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1310",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a438cb1a-c5c9-4f94-8c59-a9ac4d9d4e58",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/listcertkey101604227/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1239",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "dff3dfb1-7981-406a-a022-3ea61d26ad4c",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALXV9OXlZDRjWbCp0LZ5C/Bg4wkAh1wuRI43rhah7VNGdPeHysY48j0fZi/Vhc0Kpj9Pp43r67tcPrSQYFbnBgXkstqUKvJBgZ1Z0hHGHTJxMdH04uOSYVqYlUjDg2ob8c6jyjmit730rJA1/hCESHjZ6M/k29gzuYIT7hrKf11D+UR+8KAXV3S+MjaFNN5L9mQIvwYFpQe/iy+lNqsDn1kM+6ohDYg0f2NwWLCs39x72wnTF7f9tSCTVgeij5lPOX4GR/Odw/GDdIOJ5Od2DVdu2ZXSmf41lJvFdO8Yq9jhw0PX9pRzPiHadda4zUCj1nzitR+XEPf6vH1zK7GWcTUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBsilMHc5LG3bzkhkxIIMXEMwPjpEobR8Sr+oYj8BHV9VYZ1236ViqkXT7/yY5H2wS3ZWtSplH7P2xDRPra5ZbxISRFetAivkkUCI6BKo/NyZLK9KeN3dYQusBznpmbLDPTXl6wBrJfy9BSVGBOBsr3W2EQZE511AjIGzuWz1YDjPDzdsrMGXDQBEK490bKBQbtjBSyAQZ9z5Qecy63+3Ze8sYfWvl+c211pRh7VXNSLOgdvMXxOpFWXvKkdjr5xZexC44lQAZ7FEE9X+IJ5qpGMw51pYSMaY0g83M+rEa1XrW9l0a0Uf7d59G/VBvt89EeDM+9AfQ2OZTzMMF+voCF\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227\",\"request_id\":\"babd07d656034a50ba79f442d10fb0d3\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates?maxresults=25&includePending=false&api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "6902",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "bf6f1aa9-9c5e-474b-bd55-46f897aaba0d",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpem283335ff\",\"x5t\":\"FukEr19FKd5SGDH1Iv-3Tiec9-I\",\"attributes\":{\"enabled\":true,\"nbf\":1581722236,\"exp\":1739402236,\"created\":1665007742,\"updated\":1665007742},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpem291630d0\",\"x5t\":\"FukEr19FKd5SGDH1Iv-3Tiec9-I\",\"attributes\":{\"enabled\":true,\"nbf\":1581722236,\"exp\":1739402236,\"created\":1665007192,\"updated\":1665007192},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs0694046f\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1661550263,\"updated\":1661550263},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs097003ed\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1661541947,\"updated\":1661541947},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs098319b1\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664826995,\"updated\":1664826995},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs25606e9f\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664769193,\"updated\":1664769193},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs32119d63\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1661549019,\"updated\":1661549019},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs43896226\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664821475,\"updated\":1664821475},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs4975180d\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1661547227,\"updated\":1661547227},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs8076594a\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1665008072,\"updated\":1665008072},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs818049c5\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664777108,\"updated\":1664777108},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs82492d9c\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664825136,\"updated\":1664825136},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs862033d3\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1665007277,\"updated\":1665007277},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs8698316e\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664783236,\"updated\":1664783236},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs877666aa\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664783019,\"updated\":1664783019},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs91478ace\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664771559,\"updated\":1664771559},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/importcertpkcs95342152\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1664826160,\"updated\":1664826160},\"tags\":{\"key\":\"val\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey026167138\",\"x5t\":\"oO-oHphiZLqn0dfshmZt6RrRuZI\",\"attributes\":{\"enabled\":true,\"nbf\":1661541249,\"exp\":1693077849,\"created\":1661541849,\"updated\":1661541849},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey0557556b3\",\"x5t\":\"dQ6t0iFJhLXpbBhl8DW0GhLSSG0\",\"attributes\":{\"enabled\":true,\"nbf\":1665007193,\"exp\":1696543793,\"created\":1665007793,\"updated\":1665007793},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey060302deb\",\"x5t\":\"31fDQAIpEiiAZ_r14TQ29-FA8n4\",\"attributes\":{\"enabled\":true,\"nbf\":1664820765,\"exp\":1696357365,\"created\":1664821365,\"updated\":1664821365},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey06380d3ca\",\"x5t\":\"Q-euN9T7l28E5PMG64czsxzy2w8\",\"attributes\":{\"enabled\":true,\"nbf\":1661549417,\"exp\":1693086017,\"created\":1661550017,\"updated\":1661550017},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey101604227\",\"x5t\":\"kjSlVuKZOVUvk4l_m2pHjSXYV5Q\",\"attributes\":{\"enabled\":true,\"nbf\":1665077774,\"exp\":1696614374,\"created\":1665078374,\"updated\":1665078374},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey129100c22\",\"x5t\":\"gRujZ1HuKoarWtPyIG9qsCclgOo\",\"attributes\":{\"enabled\":true,\"nbf\":1661549543,\"exp\":1693086143,\"created\":1661550143,\"updated\":1661550143},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey143874370\",\"x5t\":\"BIZpCXGDgFNYZge5xUp2Kjgc1w4\",\"attributes\":{\"enabled\":true,\"nbf\":1665076711,\"exp\":1696613311,\"created\":1665077311,\"updated\":1665077311},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey15516ff11\",\"x5t\":\"22qDSgM6M2M0EdVi5BL0coQZeLY\",\"attributes\":{\"enabled\":true,\"nbf\":1661546510,\"exp\":1693083110,\"created\":1661547110,\"updated\":1661547110},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTVJV05sY25ScFptbGpZWFJsTDB4SlUxUkRSVkpVUzBWWk1UVTFNVFpHUmpFeEwxQlBURWxEV1NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTVJV05sY25ScFptbGpZWFJsTDB4SlUxUkRSVkpVUzBWWk1UVTFNVFpHUmpFeEwxQlBURWxEV1NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "6024",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fa2ebf25-fa57-4308-b900-3e855cc70327",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey17391b903\",\"x5t\":\"GWQ17XTMaUbclnPGWYnxuPGpS3E\",\"attributes\":{\"enabled\":true,\"nbf\":1665077762,\"exp\":1696614362,\"created\":1665078362,\"updated\":1665078362},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey190647ac6\",\"x5t\":\"CDgSlEmjo3COPawVuJq4EHujqfc\",\"attributes\":{\"enabled\":true,\"nbf\":1661548201,\"exp\":1693084801,\"created\":1661548801,\"updated\":1661548801},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey27076259e\",\"x5t\":\"YRnKlzvPEYNSJkDzrCH8QJPzAvk\",\"attributes\":{\"enabled\":true,\"nbf\":1661541118,\"exp\":1693077718,\"created\":1661541718,\"updated\":1661541718},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey31370acda\",\"x5t\":\"oKnt4ANEwmp2YVbb_j9xZ1Ew3vs\",\"attributes\":{\"enabled\":true,\"nbf\":1661543853,\"exp\":1693080453,\"created\":1661544453,\"updated\":1661544453},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey314012bbc\",\"x5t\":\"mWJZh2JNNpuu7fDV4cS3yTGDca4\",\"attributes\":{\"enabled\":true,\"nbf\":1661543846,\"exp\":1693080446,\"created\":1661544446,\"updated\":1661544446},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey316274273\",\"x5t\":\"r6QanVRIlZvlIB7-fxBrBhqtMuE\",\"attributes\":{\"enabled\":true,\"nbf\":1665076904,\"exp\":1696613504,\"created\":1665077504,\"updated\":1665077504},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey33740b9df\",\"x5t\":\"7QJfWZ8b1iYV1dlJQL1KXYMgwQQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661546521,\"exp\":1693083121,\"created\":1661547121,\"updated\":1661547121},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey349524dd4\",\"x5t\":\"l0Vt9gAzNBOowkCMzYz86fX93gQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661549559,\"exp\":1693086159,\"created\":1661550160,\"updated\":1661550160},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey394746d5e\",\"x5t\":\"sVYTpAexsqWjRf5e-TLwsIrvcus\",\"attributes\":{\"enabled\":true,\"nbf\":1664820596,\"exp\":1696357196,\"created\":1664821196,\"updated\":1664821196},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey41866a67b\",\"x5t\":\"kbmF_kzFCZu2sJg9LiHTYhdB_EY\",\"attributes\":{\"enabled\":true,\"nbf\":1665007206,\"exp\":1696543806,\"created\":1665007806,\"updated\":1665007806},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey48356942b\",\"x5t\":\"wbpRATPcIZH6aVY543L6sezp-fg\",\"attributes\":{\"enabled\":true,\"nbf\":1661548321,\"exp\":1693084921,\"created\":1661548922,\"updated\":1661548922},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey50060bfc1\",\"x5t\":\"IMPTKuoOF5Z-r4HR_uJv--Xn1TQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661541244,\"exp\":1693077844,\"created\":1661541844,\"updated\":1661541844},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey533595ecc\",\"x5t\":\"iSjeAzNXctzYK2qhzAwT8yV190Q\",\"attributes\":{\"enabled\":true,\"nbf\":1661548195,\"exp\":1693084795,\"created\":1661548796,\"updated\":1661548796},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey61004178b\",\"x5t\":\"ZV6RO_8H2piyP0A6kZUnu8bEECU\",\"attributes\":{\"enabled\":true,\"nbf\":1661549407,\"exp\":1693086007,\"created\":1661550007,\"updated\":1661550007},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey68442fcf2\",\"x5t\":\"6FqVaumXMuoAD6d4mU9BPWPJzPk\",\"attributes\":{\"enabled\":true,\"nbf\":1661546396,\"exp\":1693082996,\"created\":1661546997,\"updated\":1661546997},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey69797c16f\",\"x5t\":\"e0ESKJYlmxNjP_Y4eI5Y-6dlaPg\",\"attributes\":{\"enabled\":true,\"nbf\":1665076884,\"exp\":1696613484,\"created\":1665077484,\"updated\":1665077484},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey70925d36f\",\"x5t\":\"GeB7MvpzNJ9ZJ_4sGTWQqgBIRoI\",\"attributes\":{\"enabled\":true,\"nbf\":1661548316,\"exp\":1693084916,\"created\":1661548916,\"updated\":1661548916},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey76578cef4\",\"x5t\":\"KxpARZ6SgWaRPr4EIXuMeSGWqT8\",\"attributes\":{\"enabled\":true,\"nbf\":1665007362,\"exp\":1696543962,\"created\":1665007962,\"updated\":1665007962},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey77710aa9d\",\"x5t\":\"lC6hxRubXUumusjS5uE5YjHfarQ\",\"attributes\":{\"enabled\":true,\"nbf\":1665007349,\"exp\":1696543949,\"created\":1665007950,\"updated\":1665007950},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey953563cc1\",\"x5t\":\"KZuSEntlyJzilbtDnw9Edn5vBDA\",\"attributes\":{\"enabled\":true,\"nbf\":1661541123,\"exp\":1693077723,\"created\":1661541723,\"updated\":1661541723},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey95447c7ef\",\"x5t\":\"n6cN2DFJlZ8b7d9HN7xBw8NkmIk\",\"attributes\":{\"enabled\":true,\"nbf\":1661546389,\"exp\":1693082989,\"created\":1661546990,\"updated\":1661546990},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey9661106ec\",\"x5t\":\"WoGzxc3168ozixodpCgvT9jz5W0\",\"attributes\":{\"enabled\":true,\"nbf\":1664820584,\"exp\":1696357184,\"created\":1664821184,\"updated\":1664821184},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listcertkey973296538\",\"x5t\":\"qafe8fgyF-cNX0ofQ20JAgrwnPY\",\"attributes\":{\"enabled\":true,\"nbf\":1664820752,\"exp\":1696357352,\"created\":1664821352,\"updated\":1664821352},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWREEyTlRnMVFqa3ZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWREEyTlRnMVFqa3ZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1339",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "92c57648-6015-48bb-8726-19f9443a1d21",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert0992190\",\"x5t\":\"kEju8wLReiMyLPhvhXA86t5wkwc\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1696307606,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert249359c\",\"x5t\":\"3gES4r-zOFLx86WaxHbulIg88Wk\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1696307606,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert2679756\",\"x5t\":\"wDMSmw8W9Z2pQxB3ABKRy8Pmx8o\",\"attributes\":{\"enabled\":true,\"nbf\":1661546019,\"exp\":1693082619,\"created\":1661546619,\"updated\":1661546619},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert35855a0\",\"x5t\":\"v0IBcmTI_4D0WA9pEXvIaz1-ryc\",\"attributes\":{\"enabled\":true,\"nbf\":1664776539,\"exp\":1696313139,\"created\":1664777139,\"updated\":1664777139},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWRE0xT0RVMVFUQXZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWRE0xT0RVMVFUQXZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "2086",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f4517ebd-466f-4e76-9f88-d5b55897c308",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert4093308\",\"x5t\":\"dHFrJWGhPtZH2idoDqPNTvR8G1E\",\"attributes\":{\"enabled\":true,\"nbf\":1664776539,\"exp\":1696313139,\"created\":1664777139,\"updated\":1664777139},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert4966200\",\"x5t\":\"W90RKOiXS18xDiXonwPuVS7GNiI\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1696305215,\"created\":1664769215,\"updated\":1664769215},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert529627e\",\"x5t\":\"UWj34NO0B9anoeONfsTBh116Am4\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1696305215,\"created\":1664769216,\"updated\":1664769216},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert558463f\",\"x5t\":\"eGDquBFz6r42Xk3yQP8SsTNTs-0\",\"attributes\":{\"enabled\":true,\"nbf\":1664781091,\"exp\":1696317691,\"created\":1664781691,\"updated\":1664781691},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert6392516\",\"x5t\":\"94JmN1qK5-OGRJv26z_QhV-yNjM\",\"attributes\":{\"enabled\":true,\"nbf\":1661546034,\"exp\":1693082634,\"created\":1661546635,\"updated\":1661546635},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert6556043\",\"x5t\":\"YrDdkH3BgRLtCESERW42tEwImJQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661546004,\"exp\":1693082604,\"created\":1661546604,\"updated\":1661546604},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert69213c8\",\"x5t\":\"Z8zjOmqMwMcdF_e8SmnqtX2LFvg\",\"attributes\":{\"enabled\":true,\"nbf\":1664776539,\"exp\":1696313139,\"created\":1664777139,\"updated\":1664777139},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWRFk1TWpFelF6Z3ZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTYhTURBd01EUXhJV05sY25ScFptbGpZWFJsTDB4SlUxUkVSVXhGVkVWRVEwVlNWRFk1TWpFelF6Z3ZVRTlNU1VOWklUQXdNREF5T0NFNU9UazVMVEV5TFRNeFZESXpPalU1T2pVNUxqazVPVGs1T1RsYUlRLS0iLCJUYXJnZXRMb2NhdGlvbiI6MH0&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1823",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "bd75582c-fda5-4ab8-a37b-c2a847460e2f",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert698989b\",\"x5t\":\"i9z3joPnf4HIUc9oua98OoOPnoM\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1696307606,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert7194790\",\"x5t\":\"831o0T82sGmgLsY9dSvKCjX-KC8\",\"attributes\":{\"enabled\":true,\"nbf\":1664781091,\"exp\":1696317691,\"created\":1664781691,\"updated\":1664781691},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert72484fd\",\"x5t\":\"T0BDFToq2zmwjYeS3Pi_nU608TQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664781091,\"exp\":1696317691,\"created\":1664781691,\"updated\":1664781691},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/listdeletedcert930711b\",\"x5t\":\"UT1-ocx9PJW5ZHZcJn305VMEqfE\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1696305215,\"created\":1664769216,\"updated\":1664769216},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01086213\",\"x5t\":\"qckyxaAaVTHaOLeSl7899LZBn_E\",\"attributes\":{\"enabled\":true,\"nbf\":1664776528,\"exp\":1696313128,\"created\":1664777128,\"updated\":1664777128},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01300cb6b14\",\"x5t\":\"t6_3JuXoJ3Jds0tDzHIdVwvaLHw\",\"attributes\":{\"enabled\":true,\"nbf\":1664824627,\"exp\":1727983627,\"created\":1664825227,\"updated\":1664825227},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTURFek1EQkRRalpDTVRRdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTURFek1EQkRRalpDTVRRdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5757",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "43d1d289-3109-433e-8ddb-c7a922c00bdc",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert02114e84\",\"x5t\":\"X11G49iWTgcKCzRRCeOkf7mrzqE\",\"attributes\":{\"enabled\":true,\"nbf\":1661549753,\"exp\":1693086353,\"created\":1661550353,\"updated\":1661550353},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert03015b16994\",\"x5t\":\"ySz66eZIk6XURpcJGJiG5Kb6-xA\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1727927603,\"created\":1664769203,\"updated\":1664769203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert03766cf4d64\",\"x5t\":\"V3oNYH35v0FEmxqmwKyA_DmiPO4\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1696307585,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert037693c4193\",\"x5t\":\"rbU4TIfeTCbEHBsvf5Bc5pAOS4g\",\"attributes\":{\"enabled\":true,\"nbf\":1661546868,\"exp\":1724705868,\"created\":1661547468,\"updated\":1661547468},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert04024fee\",\"x5t\":\"BQi1YzlZ7HpcupS4NNdoEjj6trY\",\"attributes\":{\"enabled\":false,\"nbf\":1661546685,\"exp\":1693083285,\"created\":1661547285,\"updated\":1661547287},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert04116e8d7ec\",\"x5t\":\"Fvvdj1in-KcB-oOEnQJFbejfzrA\",\"attributes\":{\"enabled\":true,\"nbf\":1664826379,\"exp\":1727985379,\"created\":1664826980,\"updated\":1664826980},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert05016e8095b\",\"x5t\":\"SRLOGDV7GCbzeb1eP5oZp4VkFds\",\"attributes\":{\"enabled\":true,\"nbf\":1664824641,\"exp\":1727983641,\"created\":1664825241,\"updated\":1664825241},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert05508245af1\",\"x5t\":\"npwT1o5AkYN4nZ5NAkiOcG7NC_U\",\"attributes\":{\"enabled\":true,\"nbf\":1661546654,\"exp\":1693083254,\"created\":1661547255,\"updated\":1661547255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert0661355a677\",\"x5t\":\"GDuKMI08qFaXOz2wgcZY4RL_xu4\",\"attributes\":{\"enabled\":true,\"nbf\":1664820572,\"exp\":1696357172,\"created\":1664821172,\"updated\":1664821172},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert07616a781f8\",\"x5t\":\"3tKwNlSJre7o7RxVGcEQj4CzHeQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661549725,\"exp\":1724708725,\"created\":1661550325,\"updated\":1661550325},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert07676f57\",\"x5t\":\"cguY3zRS5btYSMUwOYlHJqJl7mg\",\"attributes\":{\"enabled\":true,\"nbf\":1664825716,\"exp\":1696362316,\"created\":1664826316,\"updated\":1664826316},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert07718b8c157\",\"x5t\":\"eg48vztp2IBo0kIWgnP599XBcYQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1727927603,\"created\":1664769203,\"updated\":1664769203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert0927578c5bf\",\"x5t\":\"-Ww0rTc6u_xZyU8olMXojGY5R0I\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1696319036,\"created\":1664783037,\"updated\":1664783037},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert09608d7779a\",\"x5t\":\"Rl68ppju0dORf6MIsYNb0FGu7y0\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1727941436,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert1015902c848\",\"x5t\":\"L0snCv5lixa55o-kXJtP9kc0s0c\",\"attributes\":{\"enabled\":true,\"nbf\":1664776370,\"exp\":1727935370,\"created\":1664776970,\"updated\":1664776970},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert10587e5c\",\"x5t\":\"9KZDAQdO5FsbeRRt1RKBWsGz_cE\",\"attributes\":{\"enabled\":true,\"nbf\":1665006848,\"exp\":1696543448,\"created\":1665007448,\"updated\":1665007448},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert11212d3fb3f\",\"x5t\":\"ZvZS_LRviBM25Y-z09CZ6UiExeQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1727927603,\"created\":1664769203,\"updated\":1664769203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert11797207ccf\",\"x5t\":\"z9fkmvAc5VUtzkjcLSnM0NEolyY\",\"attributes\":{\"enabled\":true,\"nbf\":1664824464,\"exp\":1696361064,\"created\":1664825064,\"updated\":1664825064},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert118316deb50\",\"x5t\":\"TquaQ8iaCsDCUHXt8hOQ8B7vqE0\",\"attributes\":{\"enabled\":true,\"nbf\":1664776515,\"exp\":1727935515,\"created\":1664777115,\"updated\":1664777115},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert121836fb\",\"x5t\":\"GjMzOLBa6_ql3lHLieIsj9RdzJY\",\"attributes\":{\"enabled\":false,\"nbf\":1665006811,\"exp\":1696543411,\"created\":1665007411,\"updated\":1665007412},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert122708328b8\",\"x5t\":\"xSrM-XsQ9Zd92fMt0r3q-oT_vlM\",\"attributes\":{\"enabled\":true,\"nbf\":1661541353,\"exp\":1724700353,\"created\":1661541953,\"updated\":1661541953},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert123350c6906\",\"x5t\":\"pb_jVFWLqD8Dveg-8mNARwK_8yE\",\"attributes\":{\"enabled\":true,\"nbf\":1665007182,\"exp\":1696543782,\"created\":1665007782,\"updated\":1665007782},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTVRJek16VXdRelk1TURZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTVRJek16VXdRelk1TURZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5273",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "8b66d0d7-6129-4417-ae4c-86461a37f830",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert12874777\",\"x5t\":\"ZIgEJyIxanupjBF_DOX_t9DjptU\",\"attributes\":{\"enabled\":false,\"nbf\":1664825690,\"exp\":1696362290,\"created\":1664826291,\"updated\":1664826292},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert13513be31a6\",\"x5t\":\"7CZcsGljyAx8eY_GqTVJH4JBmkU\",\"attributes\":{\"enabled\":true,\"nbf\":1664776528,\"exp\":1696313128,\"created\":1664777128,\"updated\":1664777128},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert148346bc0f9\",\"x5t\":\"BmuIzGn029LQluCZGXBR5Fbukzc\",\"attributes\":{\"enabled\":true,\"nbf\":1664825873,\"exp\":1727984873,\"created\":1664826473,\"updated\":1664826473},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert15378de9\",\"x5t\":\"ujrrQaBoYj1GtjsG4X5FQT7dDBI\",\"attributes\":{\"enabled\":true,\"nbf\":1664821015,\"exp\":1696357615,\"created\":1664821615,\"updated\":1664821615},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert15906c75b11\",\"x5t\":\"_bgLx_u2ULup2A4XuDNj_pNx9ow\",\"attributes\":{\"enabled\":true,\"nbf\":1664782438,\"exp\":1727941438,\"created\":1664783038,\"updated\":1664783038},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert165498c6aeb\",\"x5t\":\"IKOKOBHNu3epooGG2OoibSS3SZc\",\"attributes\":{\"enabled\":true,\"nbf\":1661549850,\"exp\":1724708850,\"created\":1661550450,\"updated\":1661550450},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert171188dda81\",\"x5t\":\"qCSNAmCo2X2FrGPrnxm4VBXP94w\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1727941655,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert18000073050\",\"x5t\":\"ROufW8G_ZnTH0LgBLhbyFuOYijE\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1727927615,\"created\":1664769215,\"updated\":1664769215},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert1802848a32b\",\"x5t\":\"WvQhn2ReX45WY1kPrbkcnVp0MK8\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1727930006,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert18195b3b\",\"x5t\":\"J-p6fCZEmVqBTuxMHJmUSMCGJp4\",\"attributes\":{\"enabled\":true,\"nbf\":1661548489,\"exp\":1693085089,\"created\":1661549089,\"updated\":1661549089},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert184474bc8e9\",\"x5t\":\"NoskXINs2Sp5sB4LWXycHyCfTCY\",\"attributes\":{\"enabled\":true,\"nbf\":1664820712,\"exp\":1727979712,\"created\":1664821313,\"updated\":1664821313},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert19131ac857f\",\"x5t\":\"3-Icc9lJuJ3_76NIGrOOD1U550Y\",\"attributes\":{\"enabled\":true,\"nbf\":1661541385,\"exp\":1693077985,\"created\":1661541985,\"updated\":1661541985},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert198801a4fc7\",\"x5t\":\"P5Q_9I_imMbUpIQ66qzohMKqcww\",\"attributes\":{\"enabled\":true,\"nbf\":1664824480,\"exp\":1727983480,\"created\":1664825080,\"updated\":1664825080},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2006471c0f5\",\"x5t\":\"rMd-qN_aeeJz0TMQmxXRbewSUQw\",\"attributes\":{\"enabled\":true,\"nbf\":1664825495,\"exp\":1727984495,\"created\":1664826095,\"updated\":1664826095},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert20395dcd\",\"x5t\":\"QYX-T98p2JLiWJG309ljZdOxv8w\",\"attributes\":{\"enabled\":false,\"nbf\":1664824652,\"exp\":1696361252,\"created\":1664825252,\"updated\":1664825254},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert20462092\",\"x5t\":\"M7J9JE_ii_NcYzyUvrqdpVZJouQ\",\"attributes\":{\"enabled\":false,\"nbf\":1661548483,\"exp\":1693085083,\"created\":1661549083,\"updated\":1661549084},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert20538211ae5\",\"x5t\":\"wuqe01LMhwhflqeRz7ASmJmR0S8\",\"attributes\":{\"enabled\":true,\"nbf\":1661548477,\"exp\":1724707477,\"created\":1661549077,\"updated\":1661549077},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert207169456bc\",\"x5t\":\"qqCmX43zasZvUnuBc7LC_ZPHEMk\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1727941436,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert20763265\",\"x5t\":\"XMbGAiBBLEWtutg48aHQP59-9do\",\"attributes\":{\"enabled\":true,\"nbf\":1661541422,\"exp\":1693078022,\"created\":1661542022,\"updated\":1661542022},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2140298a708\",\"x5t\":\"UeH2f5DP6soLUrHS5SVxCfh1V3A\",\"attributes\":{\"enabled\":true,\"nbf\":1664776515,\"exp\":1727935515,\"created\":1664777115,\"updated\":1664777115},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTWpFME1ESTVPRUUzTURndlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTWpFME1ESTVPRUUzTURndlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5327",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d8dd5a90-9dd1-495f-bf04-aa7bb42c29c7",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2146801e8db\",\"x5t\":\"xiEEwstwPuO6k4FTtRU8xgfa0lo\",\"attributes\":{\"enabled\":true,\"nbf\":1664824835,\"exp\":1727983835,\"created\":1664825435,\"updated\":1664825435},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert215920a9658\",\"x5t\":\"xOI5O0M-FGc5vcztpSnLo1z6o40\",\"attributes\":{\"enabled\":true,\"nbf\":1664768604,\"exp\":1727927604,\"created\":1664769204,\"updated\":1664769204},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert22149d3c6e6\",\"x5t\":\"WDTffxl51G7VGWeMhdByAb-uz_I\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1727941655,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2231373cf35\",\"x5t\":\"_WcuoiPg6DM_hvtwrS6zWr4b7v0\",\"attributes\":{\"enabled\":true,\"nbf\":1664820726,\"exp\":1727979726,\"created\":1664821326,\"updated\":1664821326},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2264637f\",\"x5t\":\"iCrNDI2M9q6OSHihR9bHDh0Jk3g\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1696319255,\"created\":1664783255,\"updated\":1664783257},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert22782c7c\",\"x5t\":\"JZsY0tYYtbq433sTSWtqujMI_A8\",\"attributes\":{\"enabled\":true,\"nbf\":1664782459,\"exp\":1696319059,\"created\":1664783059,\"updated\":1664783059},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2286397e\",\"x5t\":\"eia4jNKW2Ce_Ku3lOPqIwqf771E\",\"attributes\":{\"enabled\":true,\"nbf\":1661541432,\"exp\":1693078032,\"created\":1661542033,\"updated\":1661542033},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert23893db1\",\"x5t\":\"8RjjO0rrUFn-kOFqGpMxO1LehG8\",\"attributes\":{\"enabled\":false,\"nbf\":1664826516,\"exp\":1696363116,\"created\":1664827116,\"updated\":1664827116},\"tags\":{\"second tag\":\"second value\",\"first tag\":\"first value\"},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2453144e6d1\",\"x5t\":\"tWSXJjAUDoXgABHT2QmBkWVSQWA\",\"attributes\":{\"enabled\":true,\"nbf\":1664770984,\"exp\":1727929984,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert247625e7393\",\"x5t\":\"ovm-_HgzMrTbNnqChvpeA6a6uBc\",\"attributes\":{\"enabled\":true,\"nbf\":1661546496,\"exp\":1724705496,\"created\":1661547096,\"updated\":1661547096},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert25759d63050\",\"x5t\":\"gGIKp3a9vblecb6Ki00I-Dqjvyw\",\"attributes\":{\"enabled\":true,\"nbf\":1664782665,\"exp\":1727941665,\"created\":1664783265,\"updated\":1664783265},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert26028408eea\",\"x5t\":\"KfAXnpE_wPLy3bBjsGSL5vkYTSo\",\"attributes\":{\"enabled\":true,\"nbf\":1664826403,\"exp\":1727985403,\"created\":1664827003,\"updated\":1664827003},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert267429f97f1\",\"x5t\":\"bCKmskaZ6DezUVx5CEOa0-1RnrI\",\"attributes\":{\"enabled\":true,\"nbf\":1664782665,\"exp\":1727941665,\"created\":1664783265,\"updated\":1664783265},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert27414879dff\",\"x5t\":\"JKvdtwAD5TreLR6-DzrNjr84rW0\",\"attributes\":{\"enabled\":true,\"nbf\":1661548453,\"exp\":1693085053,\"created\":1661549053,\"updated\":1661549053},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert276082b5ac3\",\"x5t\":\"VDYU5EUAwdvGRR95bwhpNvmfJcY\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1696319036,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert278047a4093\",\"x5t\":\"txC9h2vHHLdqKCohyCumtDwiibw\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1727929985,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert281553c8\",\"x5t\":\"13mD4b7XnXfJzOeneSDZ4DJwSAo\",\"attributes\":{\"enabled\":true,\"nbf\":1661549714,\"exp\":1693086314,\"created\":1661550314,\"updated\":1661550315},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert28217b7850d\",\"x5t\":\"NMrFYPFGxsHm4wF07206--lm1zI\",\"attributes\":{\"enabled\":true,\"nbf\":1661549529,\"exp\":1724708529,\"created\":1661550129,\"updated\":1661550129},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert28259142a9b\",\"x5t\":\"FDT5vCbf5K5WLotVQWtEcFUEaFw\",\"attributes\":{\"enabled\":true,\"nbf\":1665007340,\"exp\":1728166340,\"created\":1665007940,\"updated\":1665007940},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert287320e3d08\",\"x5t\":\"7M4Hhx6Ik0OidUFe20SBeujWKJ4\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1727941436,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTWpnM016SXdSVE5FTURndlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTWpnM016SXdSVE5FTURndlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "6020",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "06fd5e64-dade-420b-b4e7-564a7a8309bf",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert293169b3\",\"x5t\":\"uxxUu7oADsr178MkY7H0nsC4qo4\",\"attributes\":{\"enabled\":true,\"nbf\":1664825702,\"exp\":1696362302,\"created\":1664826302,\"updated\":1664826302},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert29623a85e73\",\"x5t\":\"YpvfpnAknVNE0ID0SgURk2R4ieI\",\"attributes\":{\"enabled\":true,\"nbf\":1664826499,\"exp\":1727985499,\"created\":1664827099,\"updated\":1664827099},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert2976705f\",\"x5t\":\"YjUpWd3lAx6ho6BUS2J9ksOcEbY\",\"attributes\":{\"enabled\":false,\"nbf\":1664782447,\"exp\":1696319047,\"created\":1664783047,\"updated\":1664783047},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert306981c05ec\",\"x5t\":\"U8ROX8eo0dcwosfiQ2wx2jrC7xg\",\"attributes\":{\"enabled\":true,\"nbf\":1664825517,\"exp\":1727984517,\"created\":1664826118,\"updated\":1664826118},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert30818b3bfec\",\"x5t\":\"DXJT2KDU-CcNjdScOTYROgJsOyY\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1696305203,\"created\":1664769204,\"updated\":1664769204},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert30996a45\",\"x5t\":\"AR2P7oJbbx1Zc61gBpja31TTdx8\",\"attributes\":{\"enabled\":false,\"nbf\":1661541417,\"exp\":1693078017,\"created\":1661542017,\"updated\":1661542018},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert31839b3f704\",\"x5t\":\"iTEK4ERxyULYfcGlgg1RqoT1wEo\",\"attributes\":{\"enabled\":true,\"nbf\":1661546682,\"exp\":1724705682,\"created\":1661547282,\"updated\":1661547282},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert319111dc\",\"x5t\":\"dNhwWvtAK0c6QLt3SwvqtmKPRAc\",\"attributes\":{\"enabled\":true,\"nbf\":1665007557,\"exp\":1696544157,\"created\":1665008157,\"updated\":1665008158},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert327623b42bc\",\"x5t\":\"vv76APw6iWlxVDuxwpOkpnYNaeU\",\"attributes\":{\"enabled\":true,\"nbf\":1664824512,\"exp\":1727983512,\"created\":1664825112,\"updated\":1664825112},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert33712429c84\",\"x5t\":\"ScD3dToTu-It-IBVIgKwss_PxFc\",\"attributes\":{\"enabled\":true,\"nbf\":1664825588,\"exp\":1727984588,\"created\":1664826188,\"updated\":1664826188},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert3390184bb14\",\"x5t\":\"U5NCG-8YdTrjyEPdCtR8peOyIhY\",\"attributes\":{\"enabled\":true,\"nbf\":1664825537,\"exp\":1727984537,\"created\":1664826137,\"updated\":1664826137},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert345645f8762\",\"x5t\":\"FzwPpkUQSbJsOCvKTNbz8xjiV6A\",\"attributes\":{\"enabled\":true,\"nbf\":1665007494,\"exp\":1728166494,\"created\":1665008094,\"updated\":1665008094},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert34777f08\",\"x5t\":\"FbvnM7Lw_iq94PMJkFL5jWNNAp0\",\"attributes\":{\"enabled\":true,\"nbf\":1661548464,\"exp\":1693085064,\"created\":1661549064,\"updated\":1661549065},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert35119213963\",\"x5t\":\"g6x0yVuFNlbNseTCz09B0QabZxM\",\"attributes\":{\"enabled\":true,\"nbf\":1661549512,\"exp\":1724708512,\"created\":1661550112,\"updated\":1661550112},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert355673637eb\",\"x5t\":\"l3aIxY0beW0jmei22HL-0BnauWw\",\"attributes\":{\"enabled\":true,\"nbf\":1665007532,\"exp\":1696544132,\"created\":1665008132,\"updated\":1665008132},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert37131ebff1d\",\"x5t\":\"1UC74qNYeoqm9zlBZWifiymNHHE\",\"attributes\":{\"enabled\":true,\"nbf\":1664776515,\"exp\":1727935515,\"created\":1664777115,\"updated\":1664777115},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert373553bd232\",\"x5t\":\"kKVBM_0K74t6dq_wX2FYLslZbJE\",\"attributes\":{\"enabled\":true,\"nbf\":1664776516,\"exp\":1696313116,\"created\":1664777116,\"updated\":1664777116},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert3789366ef81\",\"x5t\":\"n8pGiiDuYKIru9mL8_VliJgQ2FY\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1727941655,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert382280ff095\",\"x5t\":\"ut_jartbWRRRHXwiq4c5YGQHkg0\",\"attributes\":{\"enabled\":true,\"nbf\":1661548300,\"exp\":1724707300,\"created\":1661548900,\"updated\":1661548900},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert38695580d3e\",\"x5t\":\"gpLnoeLP6H2lQ7L-qj-mYGwRDcQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664826415,\"exp\":1727985415,\"created\":1664827015,\"updated\":1664827015},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert39042df0700\",\"x5t\":\"1BPYqMqbVyCiJXwPgr6Hp-kfmvM\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1727941436,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert39070bbe\",\"x5t\":\"_aRG6oIwkBoeDMS3TDrP0EnxuE0\",\"attributes\":{\"enabled\":true,\"nbf\":1665007614,\"exp\":1696544214,\"created\":1665008215,\"updated\":1665008215},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert4046537fe2f\",\"x5t\":\"qEik1YiVKZwC8kNDwaI1tyXbJ-Q\",\"attributes\":{\"enabled\":true,\"nbf\":1664825657,\"exp\":1727984657,\"created\":1664826257,\"updated\":1664826257},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTkRBME5qVXpOMFpGTWtZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTkRBME5qVXpOMFpGTWtZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5539",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "068d21f8-6242-476d-8b52-815995c8583a",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert40826a6224e\",\"x5t\":\"NZCxBBkDZJlec5iz7vD34lIy6zY\",\"attributes\":{\"enabled\":true,\"nbf\":1661549733,\"exp\":1724708733,\"created\":1661550333,\"updated\":1661550333},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert41281264ff9\",\"x5t\":\"7EyjhpbWH18x68BfCOLHb4WH5vg\",\"attributes\":{\"enabled\":true,\"nbf\":1661541233,\"exp\":1724700233,\"created\":1661541833,\"updated\":1661541833},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert4166877a84f\",\"x5t\":\"cpvUFD_lAS1XTH7QT5OnucQXdIA\",\"attributes\":{\"enabled\":true,\"nbf\":1661546631,\"exp\":1724705631,\"created\":1661547231,\"updated\":1661547231},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert41921192\",\"x5t\":\"u94ujo3gkQh7AR6bDcgLj6kt0ZY\",\"attributes\":{\"enabled\":false,\"nbf\":1664771006,\"exp\":1696307606,\"created\":1664771607,\"updated\":1664771608},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert42108a717d0\",\"x5t\":\"-9Epn1-nUjsPK_NIC8MiRphoGNk\",\"attributes\":{\"enabled\":true,\"nbf\":1664824549,\"exp\":1727983549,\"created\":1664825149,\"updated\":1664825149},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert42653c2101c\",\"x5t\":\"6s7GvuZiyY1ytIGpCr7AyRINVLc\",\"attributes\":{\"enabled\":true,\"nbf\":1664820968,\"exp\":1727979968,\"created\":1664821568,\"updated\":1664821568},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert429632164c3\",\"x5t\":\"LkasJpcwiBzkg94v48aBH8RCV3E\",\"attributes\":{\"enabled\":true,\"nbf\":1664824591,\"exp\":1696361191,\"created\":1664825191,\"updated\":1664825191},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert433710e3327\",\"x5t\":\"2fZqOF7CZPb6BcHNUs6Qx3OOFhw\",\"attributes\":{\"enabled\":true,\"nbf\":1661549401,\"exp\":1693086001,\"created\":1661550001,\"updated\":1661550001},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert43949ae88b1\",\"x5t\":\"TpfNNGMkmIfDScNeQxwOc_i9wck\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1696319255,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert442340a969a\",\"x5t\":\"ncuTQ_k_xTpHaXdJvBmFJjF7YEk\",\"attributes\":{\"enabled\":true,\"nbf\":1664820895,\"exp\":1727979895,\"created\":1664821495,\"updated\":1664821495},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert46106f8a72e\",\"x5t\":\"0QuFTWfTn3UmY6lnk-vMYp1N1FQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664782447,\"exp\":1727941447,\"created\":1664783047,\"updated\":1664783047},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert46864e73\",\"x5t\":\"Esj5NEmOhc86xHwz1eOoE_PU1lA\",\"attributes\":{\"enabled\":true,\"nbf\":1661548496,\"exp\":1693085096,\"created\":1661549097,\"updated\":1661549097},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert4704917b703\",\"x5t\":\"FlHgpgUOrP-pkh0e2wQ7Zc-ByfY\",\"attributes\":{\"enabled\":true,\"nbf\":1661544864,\"exp\":1724703864,\"created\":1661545464,\"updated\":1661545464},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert4706112c393\",\"x5t\":\"lCsR1GG1b6Vi_ZMuUgnrGe1IXoM\",\"attributes\":{\"enabled\":true,\"nbf\":1665006700,\"exp\":1728165700,\"created\":1665007300,\"updated\":1665007300},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert472813eaed8\",\"x5t\":\"ZERUKNhAZnILcLsRSXThljXgHFw\",\"attributes\":{\"enabled\":true,\"nbf\":1664782665,\"exp\":1727941665,\"created\":1664783265,\"updated\":1664783265},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert476779ad651\",\"x5t\":\"pJdCfy8AFweiCXIRc-KK8QAAU-w\",\"attributes\":{\"enabled\":true,\"nbf\":1664782448,\"exp\":1727941448,\"created\":1664783048,\"updated\":1664783048},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert480605f0\",\"x5t\":\"BgVpyHnA2PIGAd28WpyOPyuOoQs\",\"attributes\":{\"enabled\":false,\"nbf\":1665007591,\"exp\":1696544191,\"created\":1665008191,\"updated\":1665008192},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert48783d41\",\"x5t\":\"hJP-oztAN-5urpt36S3_z4ho4Ug\",\"attributes\":{\"enabled\":false,\"nbf\":1664820993,\"exp\":1696357593,\"created\":1664821593,\"updated\":1664821594},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert502399c6\",\"x5t\":\"bdfcCTwP-gzjZTFYRmiYBQe09lM\",\"attributes\":{\"enabled\":true,\"nbf\":1664825644,\"exp\":1696362244,\"created\":1664826245,\"updated\":1664826245},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert50667faa\",\"x5t\":\"5UbHRr5tND9X6BDeIWJAUGVBG90\",\"attributes\":{\"enabled\":true,\"nbf\":1664820957,\"exp\":1696357557,\"created\":1664821557,\"updated\":1664821558},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert50704b276a7\",\"x5t\":\"Z6CFYRCHQsvxgGOVRjhnKeKujcA\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1727941655,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTlRBM01EUkNNamMyUVRjdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTlRBM01EUkNNamMyUVRjdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5774",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "adbf375d-c087-4a3f-a179-dacf37009db0",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert51062ccf\",\"x5t\":\"0rdjMGXnvZhwFXwNzoVmX7_2fIs\",\"attributes\":{\"enabled\":true,\"nbf\":1664824615,\"exp\":1696361215,\"created\":1664825215,\"updated\":1664825216},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert514067ac\",\"x5t\":\"durQdibl8M9e3SU4yOURfbnjH7s\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1696307585,\"created\":1664771585,\"updated\":1664771586},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert518845fd\",\"x5t\":\"-F0XACnijJ0KCwPbGirvZSJdHCQ\",\"attributes\":{\"enabled\":false,\"nbf\":1664776528,\"exp\":1696313128,\"created\":1664777128,\"updated\":1664777129},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert524599e7\",\"x5t\":\"flxt7AAh1Jgpl7z-4T6yuSCylpc\",\"attributes\":{\"enabled\":true,\"nbf\":1664768631,\"exp\":1696305231,\"created\":1664769231,\"updated\":1664769231},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert52594f95d64\",\"x5t\":\"Ft5zopTjn2BaYYg71bHUSls-iQQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664775816,\"exp\":1727934816,\"created\":1664776416,\"updated\":1664776416},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert53392ba09e8\",\"x5t\":\"f1g86jgLdC0vBpsFcSM4DZwkXc4\",\"attributes\":{\"enabled\":true,\"nbf\":1661548306,\"exp\":1724707306,\"created\":1661548906,\"updated\":1661548906},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert537465ae\",\"x5t\":\"JMLUPAIGjogb-S9y3oPuWejeFzw\",\"attributes\":{\"enabled\":true,\"nbf\":1664821003,\"exp\":1696357603,\"created\":1664821604,\"updated\":1664821604},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert537737c81e4\",\"x5t\":\"UORpuQk-MDnEhPERoHBIWEchfsQ\",\"attributes\":{\"enabled\":true,\"nbf\":1665006627,\"exp\":1696543227,\"created\":1665007227,\"updated\":1665007227},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert5466103c3e0\",\"x5t\":\"MusXitIadhm05-GnIRVuK41RJlA\",\"attributes\":{\"enabled\":true,\"nbf\":1665007026,\"exp\":1728166026,\"created\":1665007626,\"updated\":1665007626},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert56820ebf\",\"x5t\":\"2AErEGYIlVz2IGfbDsNMGUcJ_8Q\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1696305215,\"created\":1664769216,\"updated\":1664769216},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert56875fd0603\",\"x5t\":\"IihBK6XhyyRiZItPUG_qYBTqpD8\",\"attributes\":{\"enabled\":true,\"nbf\":1661541358,\"exp\":1724700358,\"created\":1661541958,\"updated\":1661541958},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert573416915d4\",\"x5t\":\"1CWlOAYCJX1ABdsXyIqsJ77POgk\",\"attributes\":{\"enabled\":true,\"nbf\":1665007579,\"exp\":1728166579,\"created\":1665008179,\"updated\":1665008179},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert57924897083\",\"x5t\":\"X4CtfyMmnX9R09GsgVAwDgDDBqs\",\"attributes\":{\"enabled\":true,\"nbf\":1661541229,\"exp\":1724700229,\"created\":1661541829,\"updated\":1661541829},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert58077e68034\",\"x5t\":\"x1xaqR_fCIMnyc_76ROTt38451M\",\"attributes\":{\"enabled\":true,\"nbf\":1661548189,\"exp\":1693084789,\"created\":1661548789,\"updated\":1661548789},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert58118298\",\"x5t\":\"Hx56cjU_lu_uHgmu-YIxShkA5SY\",\"attributes\":{\"enabled\":true,\"nbf\":1661549759,\"exp\":1693086359,\"created\":1661550359,\"updated\":1661550359},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert58372ee1\",\"x5t\":\"N8JYAq6WL-LL8IeVoIYrdjEwe44\",\"attributes\":{\"enabled\":true,\"nbf\":1661546669,\"exp\":1693083269,\"created\":1661547270,\"updated\":1661547271},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert5838526821b\",\"x5t\":\"5imohByggwRt7lIaXufu0Xi8UU0\",\"attributes\":{\"enabled\":true,\"nbf\":1664776539,\"exp\":1727935539,\"created\":1664777139,\"updated\":1664777139},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert58518416afa\",\"x5t\":\"qnbU5kSMKYA23QBHkOgpAP4QHTY\",\"attributes\":{\"enabled\":true,\"nbf\":1664820931,\"exp\":1696357531,\"created\":1664821532,\"updated\":1664821532},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert5914805b6a4\",\"x5t\":\"MAtzxFrlfyPLvbTR2I4bDaS-qvQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664824497,\"exp\":1727983497,\"created\":1664825097,\"updated\":1664825097},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert59722c2a\",\"x5t\":\"uJ4i2r2LmrxLUt3SDV-J6y6b7s8\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1696305203,\"created\":1664769204,\"updated\":1664769204},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert60252492c25\",\"x5t\":\"JXr1gtaNwz9DbOOyhjMzmL_DZGA\",\"attributes\":{\"enabled\":true,\"nbf\":1665006777,\"exp\":1728165777,\"created\":1665007377,\"updated\":1665007377},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert602953f318d\",\"x5t\":\"zGBXCBcihdFU_hJ99fvHfkYK6ZQ\",\"attributes\":{\"enabled\":true,\"nbf\":1665006651,\"exp\":1728165651,\"created\":1665007251,\"updated\":1665007251},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTmpBeU9UVXpSak14T0VRdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTmpBeU9UVXpSak14T0VRdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "4774",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "9f61040c-6f6b-41a2-8840-1ec71d6dc117",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert607857241aa\",\"x5t\":\"2jyWeVICMdU_MwJbT_OJOiiqi14\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1727929985,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert622102a4827\",\"x5t\":\"kjJcUwpeo8ByXUzCFth_MbLjmEc\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1727930006,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert6314994c\",\"x5t\":\"6rJfWGTzbthTlavJraIi2wQNb40\",\"attributes\":{\"enabled\":true,\"nbf\":1664824679,\"exp\":1696361279,\"created\":1664825279,\"updated\":1664825279},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert634308c3\",\"x5t\":\"oVAS5sFLPhiESxgq0QXTwnSkYIY\",\"attributes\":{\"enabled\":true,\"nbf\":1664776527,\"exp\":1696313127,\"created\":1664777128,\"updated\":1664777129},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert6360690dd4e\",\"x5t\":\"Wn7uzg5lwmNpR4AiM4_765odDbI\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1727927603,\"created\":1664769203,\"updated\":1664769203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert64857056714\",\"x5t\":\"cgdf6ICAWYH8K9IjynXIRJGX72Q\",\"attributes\":{\"enabled\":true,\"nbf\":1661549698,\"exp\":1693086298,\"created\":1661550299,\"updated\":1661550299},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert65393d6b8d0\",\"x5t\":\"C3ReyrtIV-qmoxNyw8D9tb_D6bg\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1727929985,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert655420c9a16\",\"x5t\":\"F6QP6h95GCsHLyCR-xLP-Mm28cA\",\"attributes\":{\"enabled\":true,\"nbf\":1661549524,\"exp\":1724708524,\"created\":1661550124,\"updated\":1661550124},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert6671161a413\",\"x5t\":\"bA_QKN_BHp9opQPoxZ-1XuSujXY\",\"attributes\":{\"enabled\":true,\"nbf\":1661548423,\"exp\":1724707423,\"created\":1661549023,\"updated\":1661549023},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert679052c9dee\",\"x5t\":\"2dv5vluwm_B6V9pTGaEV2heIbnM\",\"attributes\":{\"enabled\":true,\"nbf\":1665006663,\"exp\":1728165663,\"created\":1665007264,\"updated\":1665007264},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert679595ad0e3\",\"x5t\":\"kvfkPKbBhZmXSHMeuC6baw58KQ0\",\"attributes\":{\"enabled\":true,\"nbf\":1661548576,\"exp\":1724707576,\"created\":1661549176,\"updated\":1661549176},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert681792a879d\",\"x5t\":\"l1ZlE7LeDz_YdaN-vY0WtdJmuSw\",\"attributes\":{\"enabled\":true,\"nbf\":1661541111,\"exp\":1693077711,\"created\":1661541711,\"updated\":1661541711},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert68194203058\",\"x5t\":\"wMWs6fiMdSu4IjtcVnUbuA5OA68\",\"attributes\":{\"enabled\":true,\"nbf\":1664770984,\"exp\":1727929984,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert69864ebc\",\"x5t\":\"AOQTQJhwIvo3P7LbFIPlI9xBKz4\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1696319036,\"created\":1664783037,\"updated\":1664783037},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7036018a677\",\"x5t\":\"LFR_1MQR5XXsbVTqKjNpWKuuUi8\",\"attributes\":{\"enabled\":true,\"nbf\":1664776515,\"exp\":1727935515,\"created\":1664777115,\"updated\":1664777115},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert71045fbe\",\"x5t\":\"cmW7REu4uIyyaWKAi5sE2UQww-s\",\"attributes\":{\"enabled\":true,\"nbf\":1664782675,\"exp\":1696319275,\"created\":1664783275,\"updated\":1664783275},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert72866f2a35b\",\"x5t\":\"vZ4LKxejA1fWDQijQMW3pzw2gnc\",\"attributes\":{\"enabled\":true,\"nbf\":1664825623,\"exp\":1696362223,\"created\":1664826223,\"updated\":1664826223},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert734670aeffe\",\"x5t\":\"LFrHFKl0dgAKwV3JMkA7YK5ZzO4\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1727927615,\"created\":1664769216,\"updated\":1664769216},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTnpRd056ZEVNell6T1RNdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVTnpRd056ZEVNell6T1RNdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5756",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "2605b341-91fc-4a74-8369-8f19a6eaad4f",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert74516ade\",\"x5t\":\"f3fkAS6Gyp5x6hSeu---cY57658\",\"attributes\":{\"enabled\":true,\"nbf\":1664771018,\"exp\":1696307618,\"created\":1664771619,\"updated\":1664771619},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert748320b7be0\",\"x5t\":\"KvF2MG5lCF-IEsoXHKxlJWB2IZo\",\"attributes\":{\"enabled\":true,\"nbf\":1664826451,\"exp\":1696363051,\"created\":1664827051,\"updated\":1664827051},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7504045cc3b\",\"x5t\":\"JYRYmg9vvNCkd5L45eCl36j4ydk\",\"attributes\":{\"enabled\":true,\"nbf\":1665006687,\"exp\":1728165687,\"created\":1665007287,\"updated\":1665007287},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert75423236f1b\",\"x5t\":\"TMwPZOWdHQhCVDqoiei9lQujV9Q\",\"attributes\":{\"enabled\":true,\"nbf\":1664825466,\"exp\":1696362066,\"created\":1664826066,\"updated\":1664826066},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7590781c5d7\",\"x5t\":\"fgWYZJoAYnuou1G41MhMiq0CYd8\",\"attributes\":{\"enabled\":true,\"nbf\":1664825672,\"exp\":1727984672,\"created\":1664826272,\"updated\":1664826272},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert76117e77\",\"x5t\":\"RE_1-SYofaBORpR0WWVKZ9wI2U8\",\"attributes\":{\"enabled\":true,\"nbf\":1664824665,\"exp\":1696361265,\"created\":1664825265,\"updated\":1664825265},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert76212c85e76\",\"x5t\":\"BGDiPADSYd5-yMKdjcWsI1aMdCA\",\"attributes\":{\"enabled\":true,\"nbf\":1661548470,\"exp\":1724707470,\"created\":1661549070,\"updated\":1661549070},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert76668260\",\"x5t\":\"eb6bAE05KFVxfQvZXraWUYMTEgc\",\"attributes\":{\"enabled\":true,\"nbf\":1664826475,\"exp\":1696363075,\"created\":1664827075,\"updated\":1664827077},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert771244250d5\",\"x5t\":\"0cyjCm0ikbXRQ-ZS57m0hZrSe8c\",\"attributes\":{\"enabled\":true,\"nbf\":1664824558,\"exp\":1727983558,\"created\":1664825158,\"updated\":1664825158},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert77860b62\",\"x5t\":\"h22wMVkXsSfcA-8cXWsUcw-NDUc\",\"attributes\":{\"enabled\":true,\"nbf\":1664782665,\"exp\":1696319265,\"created\":1664783265,\"updated\":1664783265},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7813667204b\",\"x5t\":\"OB8pH9Ovk-a8BQXn0xBe1a_GUGU\",\"attributes\":{\"enabled\":true,\"nbf\":1665007855,\"exp\":1728166855,\"created\":1665008455,\"updated\":1665008455},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7829645f4ca\",\"x5t\":\"PcUOv6r8jwSS-FPv9ytsAPBNlkU\",\"attributes\":{\"enabled\":true,\"nbf\":1664768603,\"exp\":1696305203,\"created\":1664769203,\"updated\":1664769203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert7844755f4a4\",\"x5t\":\"CQaLbcuSQYCLa6a43VLE1ureHjs\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1727941655,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert785781c5441\",\"x5t\":\"am-CRA5NoRNBRAmYB4PFA1bN0CM\",\"attributes\":{\"enabled\":true,\"nbf\":1664825571,\"exp\":1727984571,\"created\":1664826171,\"updated\":1664826171},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert78709a0c25c\",\"x5t\":\"mAYTiQ8w_uASwEzVjVNHH48EsRk\",\"attributes\":{\"enabled\":true,\"nbf\":1665006639,\"exp\":1728165639,\"created\":1665007239,\"updated\":1665007239},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert788756b9d58\",\"x5t\":\"rXZoVLolrXzL012z2ppLqmvU5jM\",\"attributes\":{\"enabled\":true,\"nbf\":1665006735,\"exp\":1696543335,\"created\":1665007335,\"updated\":1665007335},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert79802f52f6b\",\"x5t\":\"S_j9UnscO2ns0kzHOagHhZ4gCy4\",\"attributes\":{\"enabled\":true,\"nbf\":1661548310,\"exp\":1724707310,\"created\":1661548910,\"updated\":1661548910},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert8089631fe68\",\"x5t\":\"Hi_ESsVcMq553Xj19xjh2zH-SGA\",\"attributes\":{\"enabled\":true,\"nbf\":1661546676,\"exp\":1724705676,\"created\":1661547276,\"updated\":1661547276},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert810030d0\",\"x5t\":\"6gog-hLYtk3HJXhj5XrK26MpRLA\",\"attributes\":{\"enabled\":false,\"nbf\":1664768616,\"exp\":1696305216,\"created\":1664769216,\"updated\":1664769217},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert81189694df3\",\"x5t\":\"fKUP6Mdm93mpZC2Sayg5_vIZ7v4\",\"attributes\":{\"enabled\":true,\"nbf\":1664782436,\"exp\":1727941436,\"created\":1664783036,\"updated\":1664783036},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert81726e1a457\",\"x5t\":\"FaLSeVcuOgkbu4qemLlUNYcrvM4\",\"attributes\":{\"enabled\":true,\"nbf\":1665007326,\"exp\":1728166326,\"created\":1665007927,\"updated\":1665007927},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert817459ee687\",\"x5t\":\"Ku_4xt3kad68OIzHGNJtj9wzwCQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664782655,\"exp\":1696319255,\"created\":1664783255,\"updated\":1664783255},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT0RFNE1EUkVNRU15TkVZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTRJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT0RFNE1EUkVNRU15TkVZdlVFOU1TVU5aSVRBd01EQXlPQ0U1T1RrNUxURXlMVE14VkRJek9qVTVPalU1TGprNU9UazVPVGxhSVEtLSIsIlRhcmdldExvY2F0aW9uIjowfQ&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5750",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "bc41f476-ebb9-4fd9-973b-efa7faa94a56",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert81888cd679c\",\"x5t\":\"V6nNvpVuXbnV5zCBswDJh_G9BWA\",\"attributes\":{\"enabled\":true,\"nbf\":1664776528,\"exp\":1727935528,\"created\":1664777128,\"updated\":1664777128},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert826637d79b3\",\"x5t\":\"Xr_oHR1p_xbpc1hXDJPvoqep4S0\",\"attributes\":{\"enabled\":true,\"nbf\":1661541221,\"exp\":1724700221,\"created\":1661541821,\"updated\":1661541821},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert84298a00ff3\",\"x5t\":\"hCuz14ISvKxP3iIrrpl8Bkd8CWo\",\"attributes\":{\"enabled\":true,\"nbf\":1661546491,\"exp\":1724705491,\"created\":1661547091,\"updated\":1661547091},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert845194ec429\",\"x5t\":\"brLNwlOz7ErB89z_7Xcbs7IdUYw\",\"attributes\":{\"enabled\":true,\"nbf\":1665007482,\"exp\":1728166482,\"created\":1665008082,\"updated\":1665008082},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert8453781b59d\",\"x5t\":\"jhH84LsL7b9ABEzsDdAv1ujY2UE\",\"attributes\":{\"enabled\":true,\"nbf\":1664820884,\"exp\":1727979884,\"created\":1664821484,\"updated\":1664821484},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert84921e9417f\",\"x5t\":\"xeBcCAjTEpgIvKXpcHMxsHCMRfg\",\"attributes\":{\"enabled\":true,\"nbf\":1664821173,\"exp\":1727980173,\"created\":1664821773,\"updated\":1664821773},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert85064e5dcb6\",\"x5t\":\"U1r-TLMc0-wm4M2g3FT3oLu4BIY\",\"attributes\":{\"enabled\":true,\"nbf\":1661541410,\"exp\":1724700410,\"created\":1661542010,\"updated\":1661542010},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert85895a402f9\",\"x5t\":\"Oe6BRG9mxJstw8bgtDWXg7eUMsw\",\"attributes\":{\"enabled\":true,\"nbf\":1664826368,\"exp\":1727985368,\"created\":1664826968,\"updated\":1664826968},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert86264b15940\",\"x5t\":\"R-MwpM9jLzNcvmzOq52XJPJI-Rg\",\"attributes\":{\"enabled\":true,\"nbf\":1664768615,\"exp\":1727927615,\"created\":1664769215,\"updated\":1664769215},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert86303782\",\"x5t\":\"6DFn7ES6vluJoB3HBl9B98SHyrY\",\"attributes\":{\"enabled\":true,\"nbf\":1665006868,\"exp\":1696543468,\"created\":1665007468,\"updated\":1665007468},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert8632884e786\",\"x5t\":\"HjdD8M0EvbAVWOQcRYBZSctWFwg\",\"attributes\":{\"enabled\":true,\"nbf\":1664826344,\"exp\":1696362944,\"created\":1664826944,\"updated\":1664826944},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert8729701c65c\",\"x5t\":\"VMZ-1uvPZpUi7nDa2MfbsI-AoLY\",\"attributes\":{\"enabled\":true,\"nbf\":1664776515,\"exp\":1727935515,\"created\":1664777115,\"updated\":1664777115},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert87974c146b8\",\"x5t\":\"ni4PlB0owS2w_wPyldpgKBFtbJE\",\"attributes\":{\"enabled\":true,\"nbf\":1661549676,\"exp\":1724708676,\"created\":1661550276,\"updated\":1661550276},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert88104fe8\",\"x5t\":\"oJreyX8BPmDcTL5fMVbhp0owJLw\",\"attributes\":{\"enabled\":true,\"nbf\":1664776539,\"exp\":1696313139,\"created\":1664777139,\"updated\":1664777139},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert881398f5e12\",\"x5t\":\"LXMnUPFXiXem6t5pMi2QTwM9QJE\",\"attributes\":{\"enabled\":true,\"nbf\":1664826486,\"exp\":1727985486,\"created\":1664827086,\"updated\":1664827086},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert88723fbe\",\"x5t\":\"UUC77ZqN3ZdL9uBVtAP7TgGfUnM\",\"attributes\":{\"enabled\":true,\"nbf\":1665006762,\"exp\":1696543362,\"created\":1665007362,\"updated\":1665007363},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert88759837088\",\"x5t\":\"L5k4W-WFw3rkXycws8OnSi-9doM\",\"attributes\":{\"enabled\":true,\"nbf\":1664820980,\"exp\":1727979980,\"created\":1664821581,\"updated\":1664821581},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert88853f9be47\",\"x5t\":\"3g1jJqx5RDgvNOIKbA25wGK0kjI\",\"attributes\":{\"enabled\":true,\"nbf\":1665007567,\"exp\":1728166567,\"created\":1665008167,\"updated\":1665008167},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert890590fa8e2\",\"x5t\":\"sa_fzaD9gPAxfA8p02lxm85rJjQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664776528,\"exp\":1727935528,\"created\":1664777128,\"updated\":1664777128},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert89224c6776c\",\"x5t\":\"83jPLwE6Emz6PuqZ__owwiTdYKE\",\"attributes\":{\"enabled\":true,\"nbf\":1665007314,\"exp\":1728166314,\"created\":1665007914,\"updated\":1665007914},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert90122a31\",\"x5t\":\"lV3btja6V0_Z_xDXyaFuaUWnjiU\",\"attributes\":{\"enabled\":true,\"nbf\":1664782447,\"exp\":1696319047,\"created\":1664783047,\"updated\":1664783047},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert90301ec9\",\"x5t\":\"gDilHsfPzTSOIyHPvZcuBOuBNBg\",\"attributes\":{\"enabled\":false,\"nbf\":1661549740,\"exp\":1693086340,\"created\":1661550340,\"updated\":1661550341},\"tags\":{},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDghTURBd01ETTFJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT1RBek1ERkZRemt2VUU5TVNVTlpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDghTURBd01ETTFJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT1RBek1ERkZRemt2VUU5TVNVTlpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "4264",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d7dac2e3-aaac-4ba9-a534-0dc2452ca22a",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert90714869\",\"x5t\":\"p05Bek3JsdBMt6go1Z9AoyZe5mg\",\"attributes\":{\"enabled\":true,\"nbf\":1664771006,\"exp\":1696307606,\"created\":1664771606,\"updated\":1664771606},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert91283f94\",\"x5t\":\"3ZujMFXz9aHIHU20yzR0e2w7vwU\",\"attributes\":{\"enabled\":true,\"nbf\":1661546697,\"exp\":1693083297,\"created\":1661547298,\"updated\":1661547298},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert91815552b22\",\"x5t\":\"my5g-oz4f6rVelM0ylpyRPOIkxs\",\"attributes\":{\"enabled\":true,\"nbf\":1661548428,\"exp\":1724707428,\"created\":1661549028,\"updated\":1661549028},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert92930f8d6a7\",\"x5t\":\"ZNbdp-2fVYZqgXktTDHrqf26b98\",\"attributes\":{\"enabled\":true,\"nbf\":1661541640,\"exp\":1724700640,\"created\":1661542240,\"updated\":1661542240},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert93500fc5cd7\",\"x5t\":\"xrb9hRQh_9ApQxvA3k6acLDuetY\",\"attributes\":{\"enabled\":true,\"nbf\":1661546503,\"exp\":1724705503,\"created\":1661547103,\"updated\":1661547103},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert93813a9f\",\"x5t\":\"-i--fXvJ7mu9ivUy3sEhZREZEG4\",\"attributes\":{\"enabled\":true,\"nbf\":1665007603,\"exp\":1696544203,\"created\":1665008203,\"updated\":1665008203},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert94209c1b540\",\"x5t\":\"xYc0XQ8TOtJJQnkNqFrrcylKeUY\",\"attributes\":{\"enabled\":true,\"nbf\":1664826356,\"exp\":1727985356,\"created\":1664826956,\"updated\":1664826956},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert947427491ee\",\"x5t\":\"ZqJ_XFaZDdfwxKqNxi61DSOEBhk\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1727929985,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert9475350d79d\",\"x5t\":\"C8TtAiqO5vciCUWYzQzZiiKgxAs\",\"attributes\":{\"enabled\":true,\"nbf\":1664770985,\"exp\":1696307585,\"created\":1664771585,\"updated\":1664771585},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert95956eb5dd7\",\"x5t\":\"J_rvKWkRe-yYmpy3z9F1DcBRv_U\",\"attributes\":{\"enabled\":true,\"nbf\":1661549668,\"exp\":1724708668,\"created\":1661550268,\"updated\":1661550268},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert9628777a64a\",\"x5t\":\"OCsmJ9sco2P7TFZ3Yufp7KWWGjI\",\"attributes\":{\"enabled\":true,\"nbf\":1661546639,\"exp\":1724705639,\"created\":1661547239,\"updated\":1661547239},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert96463f4b\",\"x5t\":\"hut_VsMNdUQaEJJyJeuc0PYqTZo\",\"attributes\":{\"enabled\":true,\"nbf\":1661546691,\"exp\":1693083291,\"created\":1661547291,\"updated\":1661547291},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert97296c794a1\",\"x5t\":\"YNFn14XIJlrhguHSQaDwkQyTExQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661546383,\"exp\":1693082983,\"created\":1661546983,\"updated\":1661546983},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert97422f2bf46\",\"x5t\":\"faJ3gNjXy-FzYP_YEok6-ZzqJnw\",\"attributes\":{\"enabled\":true,\"nbf\":1664820740,\"exp\":1727979740,\"created\":1664821340,\"updated\":1664821340},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert98551526256\",\"x5t\":\"-kZLn8zIuluVkNBO9brqom1FJFI\",\"attributes\":{\"enabled\":true,\"nbf\":1665006799,\"exp\":1728165799,\"created\":1665007399,\"updated\":1665007399},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert99414856\",\"x5t\":\"j2xvznnJqNA7Q0-H073oNADya88\",\"attributes\":{\"enabled\":false,\"nbf\":1664782665,\"exp\":1696319265,\"created\":1664783265,\"updated\":1664783266},\"tags\":{},\"subject\":\"\"}],\"nextLink\":\"https://vigera-identity-keyvault.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDghTURBd01ETTFJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT1RrME1UUTROVFl2VUU5TVNVTlpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/certificates?api-version=7.3&$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDghTURBd01ETTFJV05sY25ScFptbGpZWFJsTDFSRlUxUkRSVkpVT1RrME1UUTROVFl2VUU5TVNVTlpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "4798",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 06 Oct 2022 17:46:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "79825efd-35c7-45a1-ab4a-1390813422de",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"value\":[{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert99841181\",\"x5t\":\"kNFVe1NVCyjjgmBthJQz7PZCSIM\",\"attributes\":{\"enabled\":true,\"nbf\":1661541401,\"exp\":1693078001,\"created\":1661542001,\"updated\":1661542003},\"tags\":{},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion08605\",\"x5t\":\"sA23hQg1cpQO_4-pZaIgbN_Eowc\",\"attributes\":{\"enabled\":true,\"nbf\":1665006928,\"exp\":1696543528,\"created\":1665007528,\"updated\":1665007528},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion10104\",\"x5t\":\"k-Dl_HlYdZaKhO5hy-samwyN3qI\",\"attributes\":{\"enabled\":true,\"nbf\":1661547596,\"exp\":1693084196,\"created\":1661548196,\"updated\":1661548196},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion13457\",\"x5t\":\"j6i42J26PcY8FphRpsQqc3qcwx8\",\"attributes\":{\"enabled\":true,\"nbf\":1661547687,\"exp\":1693084287,\"created\":1661548287,\"updated\":1661548287},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion13984\",\"x5t\":\"wmXFYCaW1-M0y0Mad-bj9QgzTvQ\",\"attributes\":{\"enabled\":true,\"nbf\":1661549799,\"exp\":1693086399,\"created\":1661550399,\"updated\":1661550399},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion14280\",\"x5t\":\"3q9d8KJJn-mBsV5-aOJpQBzc_J8\",\"attributes\":{\"enabled\":true,\"nbf\":1664779597,\"exp\":1696316197,\"created\":1664780197,\"updated\":1664780197},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion15813\",\"x5t\":\"t3K767b2q8QK4htWy5E-X7LiuTU\",\"attributes\":{\"enabled\":true,\"nbf\":1664782498,\"exp\":1696319098,\"created\":1664783098,\"updated\":1664783098},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion21024\",\"x5t\":\"oinCs9vd2xyDsoV_A0rXrH0LKu8\",\"attributes\":{\"enabled\":true,\"nbf\":1664779995,\"exp\":1696316595,\"created\":1664780595,\"updated\":1664780595},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion27637\",\"x5t\":\"l1f-s4vVLo27kltWkl_5RRthzuI\",\"attributes\":{\"enabled\":true,\"nbf\":1665007674,\"exp\":1696544274,\"created\":1665008274,\"updated\":1665008274},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion33864\",\"x5t\":\"9gkuoRJXiwO0Nz6tqIwRr9EY4jY\",\"attributes\":{\"enabled\":true,\"nbf\":1661548528,\"exp\":1693085128,\"created\":1661549129,\"updated\":1661549129},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion35534\",\"x5t\":\"3chNBmzT1WMHGJ-YIL64gG2Zadc\",\"attributes\":{\"enabled\":true,\"nbf\":1661541480,\"exp\":1693078080,\"created\":1661542080,\"updated\":1661542080},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion36079\",\"x5t\":\"ABY7SfaT3-MDQp5qYGHyzUNLbkI\",\"attributes\":{\"enabled\":true,\"nbf\":1664821076,\"exp\":1696357676,\"created\":1664821677,\"updated\":1664821677},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion43317\",\"x5t\":\"1fj4gBct8Bp8X7ClXgay8BRmkqQ\",\"attributes\":{\"enabled\":true,\"nbf\":1664825775,\"exp\":1696362375,\"created\":1664826375,\"updated\":1664826375},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion45031\",\"x5t\":\"52_TyQF9ZtvTnkdQJ-zj0MFxRLE\",\"attributes\":{\"enabled\":true,\"nbf\":1664824737,\"exp\":1696361337,\"created\":1664825337,\"updated\":1664825337},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion63594\",\"x5t\":\"0qkXVcMJ10KNUX9Pel5UtDIPbT0\",\"attributes\":{\"enabled\":true,\"nbf\":1661547284,\"exp\":1693083884,\"created\":1661547885,\"updated\":1661547885},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion70387\",\"x5t\":\"diLtMKjsfTARTPHrC160yFqyxUg\",\"attributes\":{\"enabled\":true,\"nbf\":1664782713,\"exp\":1696319313,\"created\":1664783313,\"updated\":1664783313},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion71469\",\"x5t\":\"isIMNp2Stv8wyndE5soFIQQTIh4\",\"attributes\":{\"enabled\":true,\"nbf\":1664782619,\"exp\":1696319219,\"created\":1664783220,\"updated\":1664783220},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion79831\",\"x5t\":\"wFpSx0hNfxaM3qkMI-bInG5HFs8\",\"attributes\":{\"enabled\":true,\"nbf\":1661546722,\"exp\":1693083322,\"created\":1661547322,\"updated\":1661547322},\"subject\":\"\"},{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testlistcertversion83306\",\"x5t\":\"ueqsV1Y9Ri6kW4vR74x8G-Pg_Hg\",\"attributes\":{\"enabled\":true,\"nbf\":1661547058,\"exp\":1693083658,\"created\":1661547658,\"updated\":1661547658},\"subject\":\"\"}],\"nextLink\":null}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listcertkey101604227", "listcertkey17391b903" ]
+}
