@@ -3,7 +3,7 @@
 ## 12.15.0 (2022-10-11)
 
 ### Other Changes
-- GA for all features from `12.15.0-beta.1`.
+- Added support for 2021-10-04 service version.
 
 ## 12.14.2 (2022-09-12)
 

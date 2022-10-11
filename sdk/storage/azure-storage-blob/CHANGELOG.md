@@ -4,9 +4,13 @@
 
 ### Features Added
 - Added ability to rename existing containers with `BlobContainerClient.rename()`.
+- Added new overload for `BlobClient.upload()` that takes in `InputStream` without specifying length.
+
+### Breaking Changes
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
 
 ### Other Changes
-- GA for all features from `12.20.0-beta.1`.
+- Added support for 2021-10-04 service version.
 
 ## 12.19.1 (2022-09-12)
 
