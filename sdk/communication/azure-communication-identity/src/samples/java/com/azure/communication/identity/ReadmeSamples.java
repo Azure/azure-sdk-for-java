@@ -3,6 +3,7 @@
 package com.azure.communication.identity;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -116,6 +117,28 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for creating a user together with token with custom expiration
+     *
+     * @return the result with the created user and token with custom expiration
+     */
+    public CommunicationUserIdentifierAndToken createNewUserAndTokenWithCustomExpiration() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
+        // BEGIN: readme-sample-createNewUserAndTokenWithCustomExpiration
+        // Define a list of communication token scopes
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        // Set custom validity period of the Communication Identity access token within [1,24]
+        // hours range. If not provided, the default value of 24 hours will be used.
+        Duration tokenExpiresIn = Duration.ofHours(1);
+        CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes, tokenExpiresIn);
+        System.out.println("User id: " + result.getUser().getId());
+        System.out.println("User token value: " + result.getUserToken().getToken());
+        // END: readme-sample-createNewUserAndTokenWithCustomExpiration
+
+        return result;
+    }
+
+    /**
      * Sample code for creating a user with token
      *
      * @return the result with the created user and token
@@ -152,6 +175,29 @@ public class ReadmeSamples {
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
         // END: readme-sample-issueUserToken
+
+        return userToken;
+    }
+
+    /**
+     * Sample code for issuing a Communication Identity access token with custom expiration
+     *
+     * @return the Communication Identity access token
+     */
+    public AccessToken issueTokenWithCustomExpiration() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+
+        // BEGIN: readme-sample-issueTokenWithCustomExpiration
+        // Define a list of Communication Identity access token scopes
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        // Set custom validity period of the Communication Identity access token within [1,24]
+        // hours range. If not provided, the default value of 24 hours will be used.
+        Duration tokenExpiresIn = Duration.ofHours(1);
+        AccessToken userToken = communicationIdentityClient.getToken(user, scopes, tokenExpiresIn);
+        System.out.println("User token value: " + userToken.getToken());
+        System.out.println("Expires at: " + userToken.getExpiresAt());
+        // END: readme-sample-issueTokenWithCustomExpiration
 
         return userToken;
     }

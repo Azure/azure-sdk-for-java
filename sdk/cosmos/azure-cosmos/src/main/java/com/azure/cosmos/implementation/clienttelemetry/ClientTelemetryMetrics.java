@@ -308,7 +308,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(true)
                 .tags(operationTags)
                 .register(compositeRegistry);
-            requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
+            requestChargeMeter.record(Math.min(requestCharge, 10_000_000d));
 
             DistributionSummary regionsContactedMeter = DistributionSummary
                 .builder(nameOf("op.regionsContacted"))
@@ -320,7 +320,7 @@ public final class ClientTelemetryMetrics {
                 .tags(operationTags)
                 .register(compositeRegistry);
             if (contactedRegions != null && contactedRegions.size() > 0) {
-                regionsContactedMeter.record(Math.max(contactedRegions.size(), 100d));
+                regionsContactedMeter.record(Math.min(contactedRegions.size(), 100d));
             }
 
             Timer latencyMeter = Timer
@@ -657,7 +657,7 @@ public final class ClientTelemetryMetrics {
                     .publishPercentileHistogram(true)
                     .tags(requestTags)
                     .register(compositeRegistry);
-                requestChargeMeter.record(Math.max(requestCharge, 1_000_000d));
+                requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
 
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
@@ -739,7 +739,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(true)
                 .tags(requestTags)
                 .register(compositeRegistry);
-            requestChargeMeter.record(Math.max(requestCharge, 1_000_000d));
+            requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
 
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
