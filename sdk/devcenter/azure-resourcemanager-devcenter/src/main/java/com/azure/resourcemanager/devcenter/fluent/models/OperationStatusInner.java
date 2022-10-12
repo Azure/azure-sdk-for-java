@@ -31,6 +31,12 @@ public final class OperationStatusInner {
     private String status;
 
     /*
+     * The id of the resource.
+     */
+    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceId;
+
+    /*
      * The start time of the operation
      */
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
@@ -60,6 +66,10 @@ public final class OperationStatusInner {
     @JsonProperty(value = "error")
     private OperationStatusError error;
 
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
+
     /**
      * Get the id property: Fully qualified ID for the operation status.
      *
@@ -85,6 +95,15 @@ public final class OperationStatusInner {
      */
     public String status() {
         return this.status;
+    }
+
+    /**
+     * Get the resourceId property: The id of the resource.
+     *
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
     }
 
     /**

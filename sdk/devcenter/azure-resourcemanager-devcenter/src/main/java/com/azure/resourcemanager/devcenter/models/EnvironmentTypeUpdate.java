@@ -19,6 +19,10 @@ public final class EnvironmentTypeUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of EnvironmentTypeUpdate class. */
+    public EnvironmentTypeUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

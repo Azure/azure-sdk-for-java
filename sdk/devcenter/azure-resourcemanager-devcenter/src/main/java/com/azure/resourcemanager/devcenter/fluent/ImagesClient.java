@@ -80,21 +80,6 @@ public interface ImagesClient {
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName);
-
-    /**
-     * Gets a gallery image.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
-     * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,4 +89,19 @@ public interface ImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ImageInner> getWithResponse(
         String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context);
+
+    /**
+     * Gets a gallery image.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gallery image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName);
 }

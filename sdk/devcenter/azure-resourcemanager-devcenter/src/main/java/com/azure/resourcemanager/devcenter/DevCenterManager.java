@@ -37,6 +37,7 @@ import com.azure.resourcemanager.devcenter.implementation.NetworkConnectionsImpl
 import com.azure.resourcemanager.devcenter.implementation.OperationStatusesImpl;
 import com.azure.resourcemanager.devcenter.implementation.OperationsImpl;
 import com.azure.resourcemanager.devcenter.implementation.PoolsImpl;
+import com.azure.resourcemanager.devcenter.implementation.ProjectAllowedEnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.ProjectEnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.ProjectsImpl;
 import com.azure.resourcemanager.devcenter.implementation.SchedulesImpl;
@@ -54,6 +55,7 @@ import com.azure.resourcemanager.devcenter.models.NetworkConnections;
 import com.azure.resourcemanager.devcenter.models.OperationStatuses;
 import com.azure.resourcemanager.devcenter.models.Operations;
 import com.azure.resourcemanager.devcenter.models.Pools;
+import com.azure.resourcemanager.devcenter.models.ProjectAllowedEnvironmentTypes;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypes;
 import com.azure.resourcemanager.devcenter.models.Projects;
 import com.azure.resourcemanager.devcenter.models.Schedules;
@@ -83,6 +85,8 @@ public final class DevCenterManager {
     private Catalogs catalogs;
 
     private EnvironmentTypes environmentTypes;
+
+    private ProjectAllowedEnvironmentTypes projectAllowedEnvironmentTypes;
 
     private ProjectEnvironmentTypes projectEnvironmentTypes;
 
@@ -267,7 +271,7 @@ public final class DevCenterManager {
                 .append("-")
                 .append("com.azure.resourcemanager.devcenter")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -418,6 +422,19 @@ public final class DevCenterManager {
             this.environmentTypes = new EnvironmentTypesImpl(clientObject.getEnvironmentTypes(), this);
         }
         return environmentTypes;
+    }
+
+    /**
+     * Gets the resource collection API of ProjectAllowedEnvironmentTypes.
+     *
+     * @return Resource collection API of ProjectAllowedEnvironmentTypes.
+     */
+    public ProjectAllowedEnvironmentTypes projectAllowedEnvironmentTypes() {
+        if (this.projectAllowedEnvironmentTypes == null) {
+            this.projectAllowedEnvironmentTypes =
+                new ProjectAllowedEnvironmentTypesImpl(clientObject.getProjectAllowedEnvironmentTypes(), this);
+        }
+        return projectAllowedEnvironmentTypes;
     }
 
     /**
