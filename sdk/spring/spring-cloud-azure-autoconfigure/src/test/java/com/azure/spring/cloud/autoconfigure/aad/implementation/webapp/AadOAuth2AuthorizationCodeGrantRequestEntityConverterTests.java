@@ -62,6 +62,23 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     }
 
     @Test
+    void onlyAddScopeOnceEvenConvertMethodExecutedMultipleTimes() {
+        getContextRunner().run(context -> {
+            AadClientRegistrationRepository repository =
+                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
+                    new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
+            ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
+            OAuth2AuthorizationCodeGrantRequest request = createCodeGrantRequest(azure);
+            // Convert method execute 2 times
+            converter.convert(request);
+            RequestEntity<?> entity = converter.convert(request);
+            MultiValueMap<String, String> map = WebApplicationContextRunnerUtils.toMultiValueMap(entity);
+            assertEquals(1, map.get("scope").size());
+        });
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     void addHeadersForAzureClient() {
         getContextRunner().run(context -> {
@@ -97,7 +114,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
 
     private Object[] expectedHeaders(AadClientRegistrationRepository repository) {
         return new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes())
-            .getHttpHeaders()
+            .getHttpHeaders(null)
             .entrySet()
             .stream()
             .filter(entry -> !entry.getKey().equals("client-request-id"))
