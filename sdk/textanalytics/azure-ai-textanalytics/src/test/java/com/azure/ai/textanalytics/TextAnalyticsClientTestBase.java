@@ -4,6 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
@@ -12,12 +14,14 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -40,7 +44,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
-import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -668,6 +671,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeHealthcareAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeCustomEntitiesAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -1018,7 +1024,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Healthcare LRO runner
     void healthcareStringInputRunner(BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         testRunner.accept(HEALTHCARE_INPUTS,
-            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true));
+            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true).setFhirVersion(FhirVersion.V4_0_1)
+        );
     }
 
     void healthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
@@ -1232,6 +1239,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
+    void analyzeHealthcareEntitiesRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            HEALTHCARE_INPUTS,
+            new TextAnalyticsActions()
+                .setAnalyzeHealthcareEntitiesActions(
+                    new AnalyzeHealthcareEntitiesAction().setFhirVersion(FhirVersion.V4_0_1)));
+    }
+
     void recognizeCustomEntitiesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_ENTITIES_INPUT,
             new TextAnalyticsActions()
@@ -1394,7 +1409,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 actualItem.getDocumentSentiment()));
     }
 
-    static void validateHealthcareEntitiesResult(boolean showStatistics,
+    static void validateAnalyzeHealthcareEntitiesResultCollection(boolean showStatistics,
         AnalyzeHealthcareEntitiesResultCollection expected, AnalyzeHealthcareEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual,
             (expectedItem, actualItem) -> validateHealthcareEntityDocumentResult(expectedItem, actualItem));
@@ -1681,6 +1696,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
         AnalyzeHealthcareEntitiesResult actual) {
+        if (expected.getFhirBundle() != null) {
+            assertTrue(actual.getFhirBundle() != null && actual.getFhirBundle().size() != 0);
+        } else {
+            assertNull(actual.getFhirBundle());
+        }
         validateHealthcareEntityRelations(expected.getEntityRelations().stream().collect(Collectors.toList()),
             actual.getEntityRelations().stream().collect(Collectors.toList()));
         validateHealthcareEntities(expected.getEntities().stream().collect(Collectors.toList()),
@@ -1724,7 +1744,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         List<AnalyzeHealthcareEntitiesResultCollection> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            validateHealthcareEntitiesResult(showStatistics, expected.get(i), actual.get(i));
+            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
@@ -1762,6 +1782,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateRecognizePiiEntitiesActionResults(showStatistics,
             expected.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()),
             actual.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()));
+        validateAnalyzeHealthcareEntitiesActionResults(showStatistics,
+            expected.getAnalyzeHealthcareEntitiesResults().stream().collect(Collectors.toList()),
+            actual.getAnalyzeHealthcareEntitiesResults().stream().collect(Collectors.toList()));
         validateExtractKeyPhrasesActionResults(showStatistics,
             expected.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()),
             actual.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()));
@@ -1791,6 +1814,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizePiiEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAnalyzeHealthcareEntitiesActionResults(boolean showStatistics,
+        List<AnalyzeHealthcareEntitiesActionResult> expected, List<AnalyzeHealthcareEntitiesActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeHealthcareEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
@@ -1853,6 +1884,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         } else {
             validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
+        }
+    }
+
+    static void validateAnalyzeHealthcareEntitiesActionResult(boolean showStatistics,
+        AnalyzeHealthcareEntitiesActionResult expected, AnalyzeHealthcareEntitiesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
+        if (actual.isError()) {
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
+        } else {
+            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics,
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 

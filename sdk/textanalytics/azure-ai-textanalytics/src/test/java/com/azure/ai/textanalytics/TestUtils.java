@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
@@ -24,6 +25,7 @@ import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelp
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -83,7 +85,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -738,6 +742,17 @@ final class TestUtils {
     }
 
     /**
+     * Helper method that add FHIR expected result to the AnalyzeHealthcareEntitiesResult
+     */
+    static List<AnalyzeHealthcareEntitiesResultCollection>
+        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir() {
+        return asList(
+            getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
+                asList(getRecognizeHealthcareEntitiesResultWithFhir1("1"),
+                    getRecognizeHealthcareEntitiesResultWithFhir2())));
+    }
+
+    /**
      * Helper method that get a multiple-pages {@link AnalyzeHealthcareEntitiesResultCollection} list.
      */
     static List<AnalyzeHealthcareEntitiesResultCollection>
@@ -780,6 +795,15 @@ final class TestUtils {
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(analyzeHealthcareEntitiesResultCollection,
             textDocumentBatchStatistics);
         return analyzeHealthcareEntitiesResultCollection;
+    }
+
+    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir1(String documentId) {
+        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult1 =
+            getRecognizeHealthcareEntitiesResult1(documentId);
+        Map<String, Object> fhir1 = new HashMap<>();
+        fhir1.put("dummyString", "dummyObject");
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult1, fhir1);
+        return recognizeHealthcareEntitiesResult1;
     }
 
     /**
@@ -870,6 +894,14 @@ final class TestUtils {
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult1,
             IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult1;
+    }
+
+    static AnalyzeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResultWithFhir2() {
+        AnalyzeHealthcareEntitiesResult recognizeHealthcareEntitiesResult2 = getRecognizeHealthcareEntitiesResult2();
+        Map<String, Object> fhir2 = new HashMap<>();
+        fhir2.put("dummyString2", "dummyObject2");
+        AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(recognizeHealthcareEntitiesResult2, fhir2);
+        return recognizeHealthcareEntitiesResult2;
     }
 
     /**
@@ -1120,6 +1152,18 @@ final class TestUtils {
         return actionResult;
     }
 
+    static AnalyzeHealthcareEntitiesActionResult getExpectedAnalyzeHealthcareEntitiesActionResult(boolean isError,
+        String actionName, OffsetDateTime completeAt, AnalyzeHealthcareEntitiesResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        AnalyzeHealthcareEntitiesActionResult actionResult = new AnalyzeHealthcareEntitiesActionResult();
+        AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
     /**
      * Helper method that get the expected AnalyzeBatchActionsResult result.
      */
@@ -1127,6 +1171,7 @@ final class TestUtils {
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults,
         IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults,
+        IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
 
@@ -1135,6 +1180,8 @@ final class TestUtils {
             recognizeEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setRecognizePiiEntitiesResults(analyzeActionsResult,
             recognizePiiEntitiesActionResults);
+        AnalyzeActionsResultPropertiesHelper.setAnalyzeHealthcareEntitiesResults(analyzeActionsResult,
+            analyzeHealthcareEntitiesActionResults);
         AnalyzeActionsResultPropertiesHelper.setExtractKeyPhrasesResults(analyzeActionsResult,
             extractKeyPhrasesActionResults);
         AnalyzeActionsResultPropertiesHelper.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
@@ -1244,6 +1291,7 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
@@ -1258,6 +1306,7 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(

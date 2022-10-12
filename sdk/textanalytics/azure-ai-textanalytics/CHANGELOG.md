@@ -4,6 +4,9 @@
 
 ### Features Added
 - This version of the client library marks a beta release and defaults to the service API version `2022-10-01-preview`.
+- Added property `fhirVersion` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`.
+  Use the keyword to indicate the version for the `fhirBundle` contained on the `AnalyzeHealthcareEntitiesResult`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
 
 ### Breaking Changes
 
