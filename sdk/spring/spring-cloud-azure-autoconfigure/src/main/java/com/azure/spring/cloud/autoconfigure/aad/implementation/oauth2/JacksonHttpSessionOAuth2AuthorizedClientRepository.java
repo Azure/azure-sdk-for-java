@@ -22,7 +22,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.Se
 /**
  * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores {@link OAuth2AuthorizedClient}'s in the
  * {@code HttpSession}. To make it compatible with different spring versions. Refs:
- * https://github.com/spring-projects/spring-security/issues/9204
+ * <a href="https://github.com/spring-projects/spring-security/issues/9204">spring-security/issues/9204</a>
  *
  * @see OAuth2AuthorizedClientRepository
  * @see OAuth2AuthorizedClient
