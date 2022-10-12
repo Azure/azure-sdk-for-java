@@ -1,14 +1,15 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.0.1 (2022-10-12)
 
 ### Bugs Fixed
+- Fixed bug when deserializing properties on DocumentField.
 
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.33.0`.
+- Upgraded `azure-core-http-netty` to `1.12.6`.
 
 ## 4.0.0 (2022-09-08)
 This version of the SDK defaults 2022-08-31 going forward.
