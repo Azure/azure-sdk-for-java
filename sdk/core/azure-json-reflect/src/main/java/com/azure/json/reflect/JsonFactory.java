@@ -13,5 +13,4 @@ public interface JsonFactory {
     JsonReader getJsonReader(Reader reader, JsonOptions options) throws IOException;
     JsonWriter getJsonWriter(OutputStream stream, JsonOptions options) throws IOException;
     JsonWriter getJsonWriter(Writer writer, JsonOptions options) throws IOException;
-    String getLibraryInfo();
 }

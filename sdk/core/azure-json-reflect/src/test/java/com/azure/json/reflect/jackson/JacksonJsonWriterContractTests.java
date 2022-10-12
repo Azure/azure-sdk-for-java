@@ -3,12 +3,10 @@ package com.azure.json.reflect.jackson;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
-import com.azure.json.reflect.jackson.JacksonJsonWriter;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**

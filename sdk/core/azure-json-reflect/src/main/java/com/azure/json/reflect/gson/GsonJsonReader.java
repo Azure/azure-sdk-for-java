@@ -177,11 +177,24 @@ public class GsonJsonReader extends JsonReader {
 
             if (!consumed && currentToken != null) {
                 switch (currentToken) {
-                    case FIELD_NAME -> nextNameMethod.invoke(gsonReader);
-                    case BOOLEAN -> nextBooleanMethod.invoke(gsonReader);
-                    case NUMBER -> nextDoubleMethod.invoke(gsonReader);
-                    case STRING -> nextStringMethod.invoke(gsonReader);
-                    default -> {}
+                    case FIELD_NAME:
+                        nextNameMethod.invoke(gsonReader);
+                        break;
+
+                    case BOOLEAN:
+                        nextBooleanMethod.invoke(gsonReader);
+                        break;
+
+                    case NUMBER:
+                        nextDoubleMethod.invoke(gsonReader);
+                        break;
+
+                    case STRING:
+                        nextStringMethod.invoke(gsonReader);
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
@@ -407,18 +420,33 @@ public class GsonJsonReader extends JsonReader {
             throw new IllegalStateException("Unsupported enum, pass a Gson JsonToken");
         }
 
-        return switch (token.name()) {
-            case "BEGIN_OBJECT" -> JsonToken.START_OBJECT;
-            case "END_OBJECT" -> JsonToken.END_OBJECT;
-            case "END_DOCUMENT" -> JsonToken.END_DOCUMENT;
-            case "BEGIN_ARRAY" -> JsonToken.START_ARRAY;
-            case "END_ARRAY" -> JsonToken.END_ARRAY;
-            case "NAME" -> JsonToken.FIELD_NAME;
-            case "STRING" -> JsonToken.STRING;
-            case "NUMBER" -> JsonToken.NUMBER;
-            case "BOOLEAN" -> JsonToken.BOOLEAN;
-            case "NULL" -> JsonToken.NULL;
-            default -> throw new IllegalStateException("Unsupported token type: '" + token + "'.");
-        };
+        switch (token.name()) {
+            case "BEGIN_OBJECT":
+                return JsonToken.START_OBJECT;
+            case "END_OBJECT":
+                return JsonToken.END_OBJECT;
+
+            case "BEGIN_ARRAY":
+                return JsonToken.START_ARRAY;
+            case "END_ARRAY":
+                return JsonToken.END_ARRAY;
+
+            case "NAME":
+                return JsonToken.FIELD_NAME;
+            case "STRING":
+                return JsonToken.STRING;
+            case "NUMBER":
+                return JsonToken.NUMBER;
+            case "BOOLEAN":
+                return JsonToken.BOOLEAN;
+            case "NULL":
+                return JsonToken.NULL;
+
+            case "END_DOCUMENT":
+                return JsonToken.END_DOCUMENT;
+
+            default:
+                throw new IllegalStateException("Unsupported token type: '" + token + "'.");
+        }
     }
 }

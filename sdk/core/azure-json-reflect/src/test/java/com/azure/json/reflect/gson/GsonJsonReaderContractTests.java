@@ -6,7 +6,6 @@ package com.azure.json.reflect.gson;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
-import com.azure.json.reflect.gson.GsonJsonReader;
 
 /**
  * Tests {@link GsonJsonReader} against the contract required by {@link JsonReader}.

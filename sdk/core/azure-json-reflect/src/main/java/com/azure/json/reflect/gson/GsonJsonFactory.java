@@ -45,9 +45,4 @@ public class GsonJsonFactory implements JsonFactory {
     public JsonWriter getJsonWriter(Writer writer, JsonOptions options) {
         return GsonJsonWriter.toWriter(writer, options);
     }
-
-    @Override
-    public String getLibraryInfo() {
-        return null;
-    }
 }
