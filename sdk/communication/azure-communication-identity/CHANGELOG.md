@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (Unreleased)
+## 1.4.0 (2022-10-12)
 
 ### Features Added
 - Added support to customize the Communication Identity access token’s validity period:
@@ -16,6 +16,11 @@
         - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
         - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
 - Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`.
 
 ## 1.3.1 (2022-09-08)
 
