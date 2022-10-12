@@ -53,7 +53,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                 new HashMap<>(this.getAuthorizedClients(request));
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
         request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-            serializeOAuth2AuthorizedClientMap(Collections.unmodifiableMap(authorizedClients)));
+            serializeOAuth2AuthorizedClientMap(authorizedClients));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                 request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
             } else {
                 request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                    serializeOAuth2AuthorizedClientMap(Collections.unmodifiableMap(authorizedClients)));
+                    serializeOAuth2AuthorizedClientMap(authorizedClients));
             }
         }
 
