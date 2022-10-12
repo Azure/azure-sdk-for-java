@@ -21,6 +21,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonWriter extends JsonWriter {
     private static boolean initialized = false;
+    private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 
     private JsonWriteContext context = JsonWriteContext.ROOT;
@@ -85,9 +86,7 @@ public class JacksonJsonWriter extends JsonWriter {
 
     private JacksonJsonWriter(Writer writer, JsonOptions options) throws IOException {
         try {
-            if (!initialized) {
-                initialize();
-            }
+            initialize();
 
             jacksonGenerator = createGeneratorMethod.invoke(FACTORY, writer);
             // Configure Jackson to support non-numeric numbers
@@ -99,14 +98,21 @@ public class JacksonJsonWriter extends JsonWriter {
             } else if (e instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             } else {
-                throw new IOException(e);
-//                throw new IllegalStateException("Incorrect Library Present");
+                throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
             }
         }
 
     }
 
-    static void initialize() throws ReflectiveOperationException {
+    static synchronized void initialize() throws ReflectiveOperationException {
+        if (initialized) {
+            return;
+        } else if (attemptedInitialization) {
+            throw new ReflectiveOperationException("Initialization of JacksonJsonWriter has failed in the past.");
+        }
+
+        attemptedInitialization = true;
+
         Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
         Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
         jacksonFeatureEnum = (Class) Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
@@ -141,6 +147,7 @@ public class JacksonJsonWriter extends JsonWriter {
 
         initialized = true;
     }
+
     @Override
     public JsonWriteContext getWriteContext() {
         return context;

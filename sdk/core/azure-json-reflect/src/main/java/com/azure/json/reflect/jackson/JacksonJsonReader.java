@@ -20,6 +20,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonReader extends JsonReader {
     private static boolean initialized = false;
+    private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> jacksonTokenEnum = null;
     private static Class jacksonFeatureEnum;
@@ -101,11 +102,10 @@ public class JacksonJsonReader extends JsonReader {
 
     private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) throws IOException {
         try {
-            if (!initialized) {
-                initialize();
-            }
+            initialize();
 
             jacksonParser = createParserMethod.invoke(jsonFactory, reader);
+            // Configure Jackson to support non-numeric numbers
             configureMethod.invoke(jacksonParser, Enum.valueOf(jacksonFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
 
         } catch (Throwable e) {
@@ -114,7 +114,7 @@ public class JacksonJsonReader extends JsonReader {
             } else if (e instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             } else {
-                throw new IllegalStateException("Incorrect Library Present");
+                throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
             }
         }
         this.resetSupported = resetSupported;
@@ -123,8 +123,16 @@ public class JacksonJsonReader extends JsonReader {
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
 
     }
+    
+    static synchronized void initialize() throws ReflectiveOperationException {
+        if (initialized) {
+            return;
+        } else if (attemptedInitialization) {
+            throw new ReflectiveOperationException("Initialization of JacksonJsonReader has failed in the past.");
+        }
 
-    static void initialize() throws ReflectiveOperationException {
+        attemptedInitialization = true;
+
         jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
 
         // The jacksonParserClass is made via the JsonFactory

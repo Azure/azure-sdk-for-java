@@ -16,6 +16,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 public class GsonJsonReader extends JsonReader {
     private static boolean initialized = false;
+    private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> gsonTokenEnum = null;
 
@@ -105,16 +106,15 @@ public class GsonJsonReader extends JsonReader {
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
         try {
-            if (!initialized) {
-                initialize();
-            }
+            initialize();
+
             gsonReader = gsonReaderConstructor.invoke(reader);
             setLenientMethod.invoke(gsonReader, nonNumericNumbersSupported);
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             } else {
-                throw new IllegalStateException("Incorrect library present.");
+                throw new IllegalStateException("Gson is not present or an incorrect version is present.");
             }
         }
 
@@ -124,7 +124,15 @@ public class GsonJsonReader extends JsonReader {
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
     }
 
-    static void initialize() throws ReflectiveOperationException {
+    static synchronized void initialize() throws ReflectiveOperationException {
+        if (initialized) {
+            return;
+        } else if (attemptedInitialization) {
+            throw new ReflectiveOperationException("Initialization of GsonJsonReader has failed in the past.");
+        }
+
+        attemptedInitialization = true;
+
         gsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
         Class<?> gsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
 
