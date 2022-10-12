@@ -51,7 +51,7 @@ public final class SerializerUtils {
     /**
      * Deserialize {@link String} to Map<String, OAuth2AuthorizedClient>.
      * @param authorizedClientsString the String to be deserialized
-     * @return The deserialized {@link Map}.
+     * @return The deserialized {@link Map}. Return {@link Collections#emptyMap()} if authorizedClientsString is null.
      */
     public static Map<String, OAuth2AuthorizedClient> deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
         if (authorizedClientsString == null) {
