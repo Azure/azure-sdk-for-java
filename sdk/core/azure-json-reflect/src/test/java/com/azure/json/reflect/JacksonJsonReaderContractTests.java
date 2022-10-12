@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json.reflect.jackson;
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
@@ -15,6 +15,6 @@ import java.io.IOException;
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
 	@Override
 	public JsonReader getJsonReader(String json) throws IOException {
-        return JacksonJsonReader.fromString(json, new JsonOptions());
+        return JsonFactory.getJacksonInstance().getJsonReader(json, new JsonOptions());
     }
 }

@@ -1,4 +1,4 @@
-package com.azure.json.reflect.jackson;
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 import static java.lang.invoke.MethodType.methodType;
 
-public class JacksonJsonReader extends JsonReader {
+class JacksonJsonReader extends JsonReader {
     private static boolean initialized = false;
     private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
@@ -123,7 +123,7 @@ public class JacksonJsonReader extends JsonReader {
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
 
     }
-    
+
     static synchronized void initialize() throws ReflectiveOperationException {
         if (initialized) {
             return;

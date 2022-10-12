@@ -1,4 +1,7 @@
-package com.azure.json.reflect.jackson;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
@@ -10,16 +13,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Tests {@link JacksonJsonWriter} against the contract required by {@link JsonWriter}.
+ * Tests {@link GsonJsonWriter} against the contract required by {@link JsonWriter}.
  */
-public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
+public class GsonJsonWriterContractTests extends JsonWriterContractTests {
     private ByteArrayOutputStream outputStream;
     private JsonWriter writer;
 
     @BeforeEach
     public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = JacksonJsonWriter.toStream(outputStream, new JsonOptions());
+        this.writer = JsonFactory.getGsonInstance().getJsonWriter(outputStream, new JsonOptions());
     }
 
     @Override
