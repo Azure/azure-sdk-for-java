@@ -6,7 +6,8 @@ You can find documentation on these resources [here](https://azure.microsoft.com
 The minimum requirements to create Dev Box resources using this SDK are to create DevCenter, Project, and Pool resources.
 The minimum requirements to create Environment resources using this SDK are to create DevCenter, Project, EnvironmentType, and CatalogItem resources.
 
-# Dev Box samples
+# Examples
+## Dev Box samples
 
 ## Setup
 Set the following environment variables for easy consumption in client code:
@@ -15,7 +16,7 @@ Set the following environment variables for easy consumption in client code:
 - `DEVCENTER_NAME`: Name of the DevCenter resource
 
 
-## Creating clients
+### Creating clients
 
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
@@ -47,7 +48,7 @@ DevCenterClient devCenterClient =
                         .buildClient();
 ```
 
-## Fetching resources
+### Fetching resources
 
 Now we'll fetch available project and pool resources.
 
@@ -88,16 +89,16 @@ SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
 devBoxDeleteResponse.waitForCompletion();        
 ```
 
-# Environment samples
+## Environment samples
 
-## Setup
+### Setup
 Set the following environment variables for easy consumption in client code:
 
 - `AZURE_TENANT_ID`: GUID identifier for the Azure tenant
 - `DEVCENTER_NAME`: Name of the DevCenter resource
 
 
-## Creating clients
+### Creating clients
 
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
@@ -126,7 +127,7 @@ EnvironmentsClient environmentsClient =
                         .buildClient();
 ```
 
-## Fetching resources
+### Fetching resources
 
 Now we'll fetch available catalog item, and environment type resources.
 ```java com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
@@ -160,8 +161,8 @@ SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
 environmentDeleteResponse.waitForCompletion();
 ```
 
-# Full Examples
-## Dev Boxes
+## Full Examples
+### Dev Boxes
 ```java com.azure.developer.devcenter.readme.devboxes
 String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
@@ -209,7 +210,7 @@ SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
 devBoxDeleteResponse.waitForCompletion();        
 ```
 
-## Environments
+### Environments
 ```java com.azure.developer.devcenter.readme.environments
 EnvironmentsClient environmentsClient =
                 new EnvironmentsClientBuilder()
@@ -249,6 +250,14 @@ SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
 environmentDeleteResponse.waitForCompletion();
 ```
 
+# Troubleshooting
+
+Errors will be returned on the long running operation (LRO) with a descriptive code and message indicating how to resolve the problem.
+
 # Next Steps
 
 Start using the SDK! 
+
+# Contributing
+
+You can learn more about contributing to the SDK [here](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
