@@ -49,7 +49,7 @@ public final class SerializerUtils {
         }
         Map<String, OAuth2AuthorizedClient> authorizedClients;
         try {
-            authorizedClients = Collections.unmodifiableMap(OBJECT_MAPPER.readValue(authorizedClientsString, TYPE_REFERENCE));
+            authorizedClients = OBJECT_MAPPER.readValue(authorizedClientsString, TYPE_REFERENCE);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
         }
