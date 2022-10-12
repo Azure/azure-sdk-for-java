@@ -128,5 +128,4 @@ public final class AnalyzeHealthcareEntitiesAction {
         this.documentType = documentType;
         return this;
     }
-
 }
