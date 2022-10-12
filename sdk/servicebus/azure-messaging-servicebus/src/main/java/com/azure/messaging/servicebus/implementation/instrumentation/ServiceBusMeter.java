@@ -186,54 +186,31 @@ public class ServiceBusMeter {
         private final AtomicLong[] lastSeqNoFailure = new AtomicLong[DISPOSITION_STATUSES_COUNT];
         private final AutoCloseable[] subscriptionsSuccess = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
         private final AutoCloseable[] subscriptionsFailure = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
-        private final Object lock = new Object();
 
         CompositeSubscription() {
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
                 lastSeqNoSuccess[i] = new AtomicLong();
                 lastSeqNoFailure[i] = new AtomicLong();
+                final int fi = i;
+                subscriptionsSuccess[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoSuccess[fi].get(), settleSuccessAttributes[i]);
+                subscriptionsFailure[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoFailure[fi].get(), settleFailureAttributes[i]);
             }
         }
 
         public void set(long value, DispositionStatus status, boolean success) {
-            getOrCreate(status, success).set(value);
+            AtomicLong valueSetter = success ? lastSeqNoSuccess[status.ordinal()] : lastSeqNoFailure[status.ordinal()];
+            valueSetter.set(value);
         }
 
         @Override
         public void close() {
-            for (int i = 0; i < subscriptionsSuccess.length; i++) {
-                if (subscriptionsSuccess[i] != null) {
-                    try {
-                        subscriptionsSuccess[i].close();
-                        subscriptionsFailure[i].close();
-                    } catch (Exception ex) {
-                        LOGGER.info("Unable to close settlement sequence number subscription.", ex);
-                    }
+            for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
+                try {
+                    subscriptionsSuccess[i].close();
+                    subscriptionsFailure[i].close();
+                } catch (Exception ex) {
+                    LOGGER.info("Unable to close settlement sequence number subscription.", ex);
                 }
-            }
-        }
-
-        private AtomicLong getOrCreate(DispositionStatus status, boolean success) {
-            final int i = status.ordinal();
-            if (success) {
-                if (subscriptionsSuccess[i] == null) {
-                    synchronized (lock) {
-                        if (subscriptionsSuccess[i] == null) {
-                            subscriptionsSuccess[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoSuccess[i].get(), settleSuccessAttributes[i]);
-                        }
-                    }
-                }
-                return lastSeqNoSuccess[i];
-            } else {
-                if (subscriptionsFailure[i] == null) {
-                    synchronized (lock) {
-                        if (subscriptionsFailure[i] == null) {
-                            subscriptionsFailure[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoFailure[i].get(), settleFailureAttributes[i]);
-                        }
-                    }
-                }
-
-                return lastSeqNoFailure[i];
             }
         }
     }

@@ -323,7 +323,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertConsumerSpan(processed.get(0), receivedMessage.get(), "ServiceBus.process");
 
         List<ReadableSpan> completed = findSpans(spans, "ServiceBus.complete").stream()
-            .filter(c -> c.toSpanData().getLinks().get(0).getSpanContext().getSpanId().equals(message1SpanId))
+            .filter(c -> {
+                List<LinkData> links = c.toSpanData().getLinks();
+                return links.size() > 0 && links.get(0).getSpanContext().getSpanId().equals(message1SpanId);
+            })
             .collect(Collectors.toList());
         assertEquals(1, completed.size());
         assertSendSpan(completed.get(0), Collections.singletonList(message), "ServiceBus.complete");

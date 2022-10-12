@@ -89,6 +89,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -1409,17 +1410,31 @@ class ServiceBusReceiverAsyncClientTest {
         assertEquals("ok", attributes.get("status"));
 
         TestGauge settlementSeqNo = meter.getGauges().get("messaging.servicebus.settlement.sequence_number");
-        assertEquals(1, settlementSeqNo.getSubscriptions().size());
 
-        TestGauge.Subscription subs = settlementSeqNo.getSubscriptions().get(0);
-        subs.measure();
-        assertEquals(1, subs.getMeasurements().size());
+        // one for each disposition status
+        assertEquals(10, settlementSeqNo.getSubscriptions().size());
 
-        TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
-        assertEquals(42, seqNoMeasurement.getValue());
-        assertEquals(5, seqNoMeasurement.getAttributes().size());
-        assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
-        assertEquals(status.getValue(), seqNoMeasurement.getAttributes().get("dispositionStatus"));
+        settlementSeqNo.getSubscriptions().forEach(s -> s.measure());
+
+        boolean measurementFound = false;
+        for (TestGauge.Subscription subs : settlementSeqNo.getSubscriptions()) {
+            assertEquals(1, subs.getMeasurements().size());
+            TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
+
+            if (seqNoMeasurement.getAttributes().get("dispositionStatus").equals(status.getValue())
+                && seqNoMeasurement.getAttributes().get("status").equals("ok")) {
+                measurementFound = true;
+                assertEquals(42, seqNoMeasurement.getValue());
+                assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
+            } else {
+                assertEquals(0, seqNoMeasurement.getValue());
+                assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
+            }
+        }
+
+        assertTrue(measurementFound);
     }
 
     @Test
