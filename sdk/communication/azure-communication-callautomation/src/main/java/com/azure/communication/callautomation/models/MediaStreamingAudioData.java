@@ -10,12 +10,12 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /** The MediaStreamingAudio model. */
-public class MediaStreamingAudio extends MediaStreamingPackageBase {
+public class MediaStreamingAudioData extends MediaStreamingPackageBase {
 
     /*
      * The audio data.
      */
-    private final String audioData;
+    private final String data;
 
     /*
      * The timestamp of when the media was sourced.
@@ -35,13 +35,13 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
     /**
      * The constructor
      *
-     * @param audioData The audio data.
+     * @param data The audio data.
      * @param timestamp The timestamp of when the media was sourced.
      * @param participantRawID The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    MediaStreamingAudio(String audioData, String timestamp, String participantRawID, boolean silent) {
-        this.audioData = audioData;
+    MediaStreamingAudioData(String data, String timestamp, String participantRawID, boolean silent) {
+        this.data = data;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         this.participant = new CommunicationUserIdentifier(participantRawID);
         this.silent = silent;
@@ -52,8 +52,8 @@ public class MediaStreamingAudio extends MediaStreamingPackageBase {
      *
      * @return the data value.
      */
-    public String getAudioData() {
-        return audioData;
+    public String getData() {
+        return data;
     }
 
     /**
