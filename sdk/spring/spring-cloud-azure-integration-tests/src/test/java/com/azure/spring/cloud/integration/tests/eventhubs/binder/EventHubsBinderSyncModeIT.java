@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
@@ -53,11 +54,16 @@ class EventHubsBinderSyncModeIT {
         @Bean
         Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
+                LOGGER.info("EventHubBinderSyncModeIT: New message received: '{}'", message.getPayload());
                 if (message.getPayload().equals(EventHubsBinderSyncModeIT.MESSAGE) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
                     LATCH.countDown();
                 }
             };
+        }
+
+        @ServiceActivator(inputChannel = "errorChannel")
+        public void processError(Message sendFailedMsg) {
+            LOGGER.info("receive error message: '{}'", sendFailedMsg.getPayload());
         }
     }
 

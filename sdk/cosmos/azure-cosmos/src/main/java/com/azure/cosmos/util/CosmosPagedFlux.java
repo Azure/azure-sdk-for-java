@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -249,7 +250,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                             diagnostics,
                                             cosmosException.getStatusCode(),
                                             //cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
-                                            pagedFluxOptions.getMaxItemCount(),
+                                            pagedFluxOptions.getMaxItemCount() != null ?
+                                                pagedFluxOptions.getMaxItemCount() :
+                                                Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
                                             0,
                                             pagedFluxOptions.getContainerId(),
                                             pagedFluxOptions.getDatabaseId(),
@@ -338,7 +341,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                             diagnostics,
                                             HttpConstants.StatusCodes.OK,
                                             //cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
-                                            pagedFluxOptions.getMaxItemCount(),
+                                            pagedFluxOptions.getMaxItemCount() != null ?
+                                                pagedFluxOptions.getMaxItemCount() :
+                                                Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
                                             feedResponse.getResults().size(),
                                             pagedFluxOptions.getContainerId(),
                                             pagedFluxOptions.getDatabaseId(),

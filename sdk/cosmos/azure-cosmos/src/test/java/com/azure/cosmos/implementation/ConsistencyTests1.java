@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -35,10 +36,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -48,10 +48,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         User userDefinition = getUserDefinition();
         userDefinition.setId(userDefinition.getId() + "validateStrongConsistencyOnSyncReplication");
@@ -71,10 +70,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -83,10 +81,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         validateConsistentLSN();
     }
@@ -100,10 +97,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -112,10 +108,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         validateConsistentLSN();
     }
@@ -131,10 +126,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -143,10 +137,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
@@ -178,10 +171,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -190,10 +182,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
@@ -235,10 +226,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -248,10 +238,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         User user = safeCreateUser(this.initClient, createdDatabase.getId(), getUserDefinition());
         boolean readLagging = validateConsistentPrefix(user);
@@ -272,10 +261,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
 
         this.readClient =
@@ -285,10 +273,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         Document documentDefinition = getDocumentDefinition();
         Document document = createDocument(this.initClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
@@ -338,10 +325,9 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
         try {
             DocumentCollection documentCollection = new DocumentCollection();

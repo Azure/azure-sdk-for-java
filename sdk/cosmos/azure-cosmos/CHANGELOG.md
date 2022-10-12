@@ -1,16 +1,36 @@
 ## Release History
 
-### 4.37.0-beta.1 (Unreleased)
+### 4.38.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
-
+* Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.37.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.37.1 and above.
+#### Bugs Fixed
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+* Enabled failover to preferred locations in the case of single-write/multi-read region enabled account for read in Gateway mode and for metadata requests in Direct mode. - More details about the [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421). - See [PR 31314](https://github.com/Azure/azure-sdk-for-java/pull/31314)
+
+#### Other Changes
+* Added SslHandshakeTimeout minimum duration config - See [PR 31298](https://github.com/Azure/azure-sdk-for-java/pull/31298)
+
+### 4.37.0 (2022-09-30)
+
+#### Features Added
+* Added new preview APIs to `ChangeFeedProcessor` for handling all versions and deletes changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
 
 #### Bugs Fixed
 * Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
 
 #### Other Changes
+* Enable replica validation by default - See [PR 31159](https://github.com/Azure/azure-sdk-for-java/pull/31159)
 
 ### 4.36.0 (2022-09-15)
 
@@ -65,13 +85,11 @@
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.31.0 and above.
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
 #### Other Changes
-* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
 
 ### 4.30.1 (2022-06-01)
 #### Other Changes

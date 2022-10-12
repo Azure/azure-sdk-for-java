@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.15.1</version>
+  <version>12.16.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -291,7 +291,7 @@ shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}`](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share-with-sastoken).
+Taking the shareClient initialized above, [`${shareClient}`](#share).
 
 ```java readme-sample-createDirectory
 String dirName = "testdir";

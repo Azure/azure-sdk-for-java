@@ -33,16 +33,14 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             = StorageConnectionString.create(connectionString, null);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
 
-        dataLakeServiceClient = new DataLakeServiceClientBuilder()
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(endpoint.getPrimaryUri())
             .credential(new StorageSharedKeyCredential(storageConnectionString.getAccountName(),
-                storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()))
-            .buildClient();
+                storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()));
 
-        dataLakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(endpoint.getPrimaryUri())
-            .credential(new StorageSharedKeyCredential(storageConnectionString.getAccountName(),
-                storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()))
-            .buildAsyncClient();
+        configureClientBuilder(builder);
+
+        dataLakeServiceClient = builder.buildClient();
+        dataLakeServiceAsyncClient = builder.buildAsyncClient();
     }
 }
