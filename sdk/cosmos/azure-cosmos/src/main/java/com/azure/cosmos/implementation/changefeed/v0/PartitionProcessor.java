@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.changefeed.v0;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
-import com.azure.cosmos.implementation.changefeed.v1.PartitionProcessorFactory;
 import reactor.core.publisher.Mono;
 
 /**

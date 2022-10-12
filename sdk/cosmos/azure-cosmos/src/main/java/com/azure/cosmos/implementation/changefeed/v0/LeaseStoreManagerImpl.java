@@ -104,7 +104,6 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
         checkNotNull(this.settings, "settings can not be null");
         checkNotNull(this.settings.getContainerNamePrefix(), "settings.containerNamePrefix can not be null");
         checkNotNull(this.settings.getLeaseCollectionLink(), "settings.leaseCollectionLink can not be null");
-        checkNotNull(this.settings.getLeaseCollectionLink(), "settings.leaseCollectionLink can not be null");
         checkArgument(StringUtils.isNotEmpty(this.settings.getHostName()), "settings.getHostName can not be null nor empty");
         checkNotNull(this.leaseDocumentClient, "leaseDocumentClient can not be null");
         checkNotNull(this.requestOptionsFactory, "requestOptionsFactory can not be null");

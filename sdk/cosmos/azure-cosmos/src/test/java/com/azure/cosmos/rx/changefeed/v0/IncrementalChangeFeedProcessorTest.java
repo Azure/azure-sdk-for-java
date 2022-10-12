@@ -150,11 +150,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (JsonNode item : docs) {
                         processItem(item, receivedDocuments);
                     }
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -216,11 +216,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (JsonNode item : docs) {
                         processItem(item, receivedDocuments);
                     }
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -352,11 +352,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (JsonNode item : docs) {
                         processItem(item, receivedDocuments);
                     }
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -493,8 +493,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .handleChanges(docs -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+                    log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+                    log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -506,11 +506,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
                 .handleChanges((List<JsonNode> docs) -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
+                    log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                     for (JsonNode item : docs) {
                         processItem(item, receivedDocuments);
                     }
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
+                    log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -541,7 +541,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                         } catch (InterruptedException e) {
                             throw new RuntimeException("Interrupted exception", e);
                         }
-                        IncrementalChangeFeedProcessorTest.log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
+                        log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
 
                         SqlParameter param = new SqlParameter();
                         param.setName("@PartitionLeasePrefix");
@@ -562,12 +562,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                     .map(CosmosItemResponse::getItem);
                             })
                             .map(leaseDocument -> {
-                                IncrementalChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
+                                log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
                                 return leaseDocument;
                             })
                                               .last()
                                               .flatMap(leaseDocument -> {
-                                IncrementalChangeFeedProcessorTest.log.info("Start creating documents");
+                                log.info("Start creating documents");
                                 List<InternalObjectNode> docDefList = new ArrayList<>();
 
                                 for (int i = 0; i < FEED_COUNT; i++) {
@@ -578,7 +578,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                     .last()
                                     .delayElement(Duration.ofMillis(1000))
                                     .flatMap(cosmosItemResponse -> {
-                                        IncrementalChangeFeedProcessorTest.log.info("Start second Change feed processor");
+                                        log.info("Start second Change feed processor");
                                         return changeFeedProcessorSecond.start().subscribeOn(Schedulers.boundedElastic())
                                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                                     });
@@ -630,7 +630,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .handleChanges(docs -> {
-                    IncrementalChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+                    log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     for (JsonNode item : docs) {
                         try {
                             Thread.sleep(1000);
@@ -638,7 +638,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                         }
                         processItem(item, receivedDocuments);
                     }
-                    IncrementalChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
+                    log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
@@ -653,7 +653,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                IncrementalChangeFeedProcessorTest.log.info("Start more creating documents");
+                log.info("Start more creating documents");
                 List<InternalObjectNode> docDefList = new ArrayList<>();
 
                 for (int i = 0; i < FEED_COUNT; i++) {
@@ -663,20 +663,21 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
                     .last()
                     .flatMap(cosmosItemResponse -> {
-                        IncrementalChangeFeedProcessorTest.log.info("Start first Change feed processor");
+                        log.info("Start first Change feed processor");
                         return changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
+
                     })
                     .then(
                         Mono.just(changeFeedProcessorFirst)
                             .flatMap( value -> {
-                                IncrementalChangeFeedProcessorTest.log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
+                                log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
                                 try {
                                     Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
                                 } catch (InterruptedException ignored) {
                                 }
 
-                                IncrementalChangeFeedProcessorTest.log.info("QueryItems before Change feed processor processing");
+                                log.info("QueryItems before Change feed processor processing");
 
                                 SqlParameter param1 = new SqlParameter();
                                 param1.setName("@PartitionLeasePrefix");
@@ -700,12 +701,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                                             .map(CosmosItemResponse::getItem);
                                     })
                                     .map(leaseDocument -> {
-                                        IncrementalChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; current Owner is'{}'", leaseDocument.getOwner());
+                                        log.info("QueryItems after Change feed processor processing; current Owner is'{}'", leaseDocument.getOwner());
                                         return leaseDocument;
                                     })
                                     .last()
                                     .flatMap(leaseDocument -> {
-                                        IncrementalChangeFeedProcessorTest.log.info("Start creating more documents");
+                                        log.info("Start creating more documents");
                                         List<InternalObjectNode> docDefList1 = new ArrayList<>();
 
                                         for (int i = 0; i < FEED_COUNT; i++) {
@@ -994,7 +995,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .flatMap(leaseDocument -> createdLeaseCollection.readItem(leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), InternalObjectNode.class))
                 .map(doc -> {
                     ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc.getItem());
-                    IncrementalChangeFeedProcessorTest.log.info("Change feed processor current Owner is'{}'", leaseDocument.getOwner());
+                    log.info("Change feed processor current Owner is'{}'", leaseDocument.getOwner());
                     return leaseDocument;
                 })
                 .blockLast();
@@ -1058,11 +1059,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
     private Consumer<List<JsonNode>> changeFeedProcessorHandler(Map<String, JsonNode> receivedDocuments) {
         return docs -> {
-            IncrementalChangeFeedProcessorTest.log.info("START processing from thread in test {}", Thread.currentThread().getId());
+            log.info("START processing from thread in test {}", Thread.currentThread().getId());
             for (JsonNode item : docs) {
                 processItem(item, receivedDocuments);
             }
-            IncrementalChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
+            log.info("END processing from thread {}", Thread.currentThread().getId());
         };
     }
 

@@ -169,7 +169,6 @@ class PartitionControllerImpl implements PartitionController {
                     return partitionGoneHandler.handlePartitionGone()
                             .flatMap(l -> {
                                 l.setProperties(lease.getProperties());
-                                logger.info("Adding child lease {}, continuationToken null {} ", l.getId(), l.getContinuationToken() !=null);
                                 return this.addOrUpdateLease(l);
                             })
                             .then(this.tryDeleteGoneLease(lease, partitionGoneHandler.shouldDeleteCurrentLease()));

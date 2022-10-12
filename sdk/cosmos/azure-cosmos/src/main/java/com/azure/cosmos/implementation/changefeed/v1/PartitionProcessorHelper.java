@@ -54,7 +54,7 @@ public class PartitionProcessorHelper {
         }
     }
 
-    public static class IncrementalPartitionProcessorHelper {
+    private static class IncrementalPartitionProcessorHelper {
         public static ChangeFeedStartFromInternal getStartFromSettings(
                 FeedRangeInternal feedRange,
                 ChangeFeedProcessorOptions processorOptions) {
@@ -90,7 +90,7 @@ public class PartitionProcessorHelper {
         }
     }
 
-    public static class FullFidelityPartitionProcessorHelper {
+    private static class FullFidelityPartitionProcessorHelper {
         public static ChangeFeedStartFromInternal getStartFromSettings(
                 FeedRangeInternal feedRange,
                 ChangeFeedProcessorOptions processorOptions) {
