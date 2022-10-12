@@ -748,7 +748,7 @@ final class TestUtils {
         getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir() {
         return asList(
             getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
-                asList(getRecognizeHealthcareEntitiesResultWithFhir1("1"),
+                asList(getRecognizeHealthcareEntitiesResultWithFhir1("0"),
                     getRecognizeHealthcareEntitiesResultWithFhir2())));
     }
 
