@@ -6,7 +6,6 @@ package com.azure.json.reflect.jackson;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
-import com.azure.json.reflect.jackson.JacksonJsonReader;
 
 import java.io.IOException;
 

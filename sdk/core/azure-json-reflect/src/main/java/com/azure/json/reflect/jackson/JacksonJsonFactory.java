@@ -42,9 +42,4 @@ public class JacksonJsonFactory implements JsonFactory {
     public JsonWriter getJsonWriter(Writer writer, JsonOptions options) throws IOException {
         return JacksonJsonWriter.toWriter(writer, options);
     }
-
-    @Override
-    public String getLibraryInfo() {
-        return null;
-    }
 }
