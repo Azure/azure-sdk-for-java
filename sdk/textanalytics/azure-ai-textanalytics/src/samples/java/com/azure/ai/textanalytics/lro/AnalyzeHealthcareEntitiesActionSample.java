@@ -97,6 +97,7 @@ public class AnalyzeHealthcareEntitiesActionSample {
                             System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                                 entity.getText(), entity.getCategory(), role.getName());
                         }
+                        System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
                     }
 
                     // FHIR bundle in JSON format

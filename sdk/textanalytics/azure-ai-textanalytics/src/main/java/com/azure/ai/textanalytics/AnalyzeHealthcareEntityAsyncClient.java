@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
+import com.azure.ai.textanalytics.implementation.models.DocumentType;
 import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
@@ -112,6 +113,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
+            final DocumentType finalDocumentType = options.getDocumentType() == null ? null
+                : DocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
@@ -126,6 +129,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         new HealthcareTaskParameters()
+                                            .setDocumentType(finalDocumentType)
                                             .setFhirVersion(finalFhirVersion)
                                             .setStringIndexType(finalStringIndexType)
                                             .setModelVersion(finalModelVersion)
@@ -194,6 +198,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
+            final DocumentType finalDocumentType = options.getDocumentType() == null ? null
+                : DocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
@@ -209,6 +215,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                     new HealthcareLROTask().setParameters(
                                         new HealthcareTaskParameters()
                                             .setFhirVersion(finalFhirVersion)
+                                            .setDocumentType(finalDocumentType)
                                             .setStringIndexType(finalStringIndexType)
                                             .setModelVersion(finalModelVersion)
                                             .setLoggingOptOut(finalLoggingOptOut)))),

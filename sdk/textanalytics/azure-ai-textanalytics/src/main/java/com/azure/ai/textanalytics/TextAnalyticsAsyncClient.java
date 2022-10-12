@@ -1735,6 +1735,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;
@@ -1826,6 +1828,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;
@@ -1935,6 +1939,8 @@ public final class TextAnalyticsAsyncClient {
      *                             System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
      *                                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
      *                         &#125;&#41;;
+     *                         System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+     *                             entityRelation.getConfidenceScore&#40;&#41;&#41;;
      *                     &#125;&#41;;
      *                 &#125;&#41;;
      *             &#125;&#41;&#41;;

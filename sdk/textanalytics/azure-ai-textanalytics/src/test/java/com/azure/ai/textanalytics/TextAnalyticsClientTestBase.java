@@ -1719,6 +1719,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         final List<HealthcareEntityRelationRole> expectedRoles = expected.getRoles().stream().collect(Collectors.toList());
         final List<HealthcareEntityRelationRole> actualRoles = actual.getRoles().stream().collect(Collectors.toList());
         assertEquals(expected.getRelationType(), actual.getRelationType());
+        assertNotNull(actual.getConfidenceScore());
         for (int i = 0; i < expectedRoles.size(); i++) {
             validateHealthcareEntityRelationRole(expectedRoles.get(i), actualRoles.get(i));
         }

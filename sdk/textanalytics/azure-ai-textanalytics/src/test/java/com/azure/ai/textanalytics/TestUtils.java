@@ -881,6 +881,7 @@ final class TestUtils {
             HealthcareEntityRelationType.fromString("CourseOfCondition"));
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
+        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation1, 1.0);
 
         final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
@@ -890,6 +891,7 @@ final class TestUtils {
             HealthcareEntityRelationType.TIME_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
             IterableStream.of(asList(role2, role3)));
+        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation2, 1.0);
 
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult1,
             IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
@@ -990,6 +992,8 @@ final class TestUtils {
             HealthcareEntityRelationType.TIME_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
+        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation1,
+            1.0);
 
         final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role3 = new HealthcareEntityRelationRole();
@@ -999,6 +1003,9 @@ final class TestUtils {
             HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
             IterableStream.of(asList(role3, role2)));
+        HealthcareEntityRelationPropertiesHelper.setConfidenceScore(healthcareEntityRelation2,
+            1.0);
+
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult,
             IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult;

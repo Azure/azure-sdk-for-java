@@ -940,6 +940,8 @@ public final class Utility {
                                     }).collect(Collectors.toList());
                             HealthcareEntityRelationPropertiesHelper.setRoles(entityRelation,
                                 IterableStream.of(relationRoles));
+                            HealthcareEntityRelationPropertiesHelper.setConfidenceScore(entityRelation,
+                                healthcareRelation.getConfidenceScore());
 
                             return entityRelation;
                         }).collect(Collectors.toList());

@@ -12,8 +12,8 @@ import com.azure.core.annotation.Fluent;
 public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequestOptions {
     private String displayName;
     private Boolean disableServiceLogs;
-
     private FhirVersion fhirVersion;
+    private DocumentType documentType;
 
     /**
      * Gets display name of the operation.
@@ -58,6 +58,27 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
         return this;
     }
 
+    /**
+     * Get the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @return the documentType value.
+     */
+    public DocumentType getDocumentType() {
+        return this.documentType;
+    }
+
+    /**
+     * Set the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @param documentType the documentType value to set.
+     * @return The {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     */
+    public AnalyzeHealthcareEntitiesOptions setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+        return this;
+    }
 
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".

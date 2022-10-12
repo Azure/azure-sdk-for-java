@@ -14,8 +14,9 @@ public final class AnalyzeHealthcareEntitiesAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
-
     private FhirVersion fhirVersion;
+    private DocumentType documentType;
+
     /**
      * Get the name of action.
      *
@@ -105,4 +106,27 @@ public final class AnalyzeHealthcareEntitiesAction {
         this.fhirVersion = fhirVersion;
         return this;
     }
+
+    /**
+     * Get the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @return the documentType value.
+     */
+    public DocumentType getDocumentType() {
+        return this.documentType;
+    }
+
+    /**
+     * Set the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
+     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
+     *
+     * @param documentType the documentType value to set.
+     * @return the AnalyzeHealthcareEntitiesAction object itself.
+     */
+    public AnalyzeHealthcareEntitiesAction setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+        return this;
+    }
+
 }
