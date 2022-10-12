@@ -19,6 +19,7 @@ import os
 import unittest
 import argparse
 from itertools import takewhile
+from packaging import version
 
 from log import log
 
@@ -101,23 +102,8 @@ def sync_external_dependencies(source_file, target_file):
             file.write('\n')
 
 
-def version_bigger_than(version1, version2):
-    v1 = version1.split('.')
-    v2 = version2.split('.')
-    len_1 = len(v1)
-    len_2 = len(v2)
-    max_len = max(len_1, len_1)
-    for i in range(max_len):
-        if i < len_1 and i < len_2:
-            int_1 = int('0' + ''.join(takewhile(str.isdigit, v1[i])))
-            int_2 = int('0' + ''.join(takewhile(str.isdigit, v2[i])))
-            if int_1 != int_2:
-                return int_1 > int_2
-        elif i < len_1:
-            return True
-        else:
-            return False
-    return False
+def version_bigger_than(source_version, target_version):
+    return version.parse(source_version) > version.parse(target_version)
 
 
 class Tests(unittest.TestCase):
