@@ -1,14 +1,29 @@
 # Release History
 
-## 11.6.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 11.6.0-beta.2 (2022-10-12)
 
 ### Bugs Fixed
 
+- [Bug fix for incorrect JSON property names](https://github.com/Azure/azure-sdk-for-java/pull/30774)
+- 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
+- 
+## 11.5.1 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
+
 
 ## 11.6.0-beta.1 (2022-09-06)
 
