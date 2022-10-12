@@ -33,8 +33,7 @@
       "ProfileFlag": "-Pe2e",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -44,8 +43,7 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
@@ -55,8 +53,7 @@
       "ProfileFlag": "-Pfast",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCY": "BoundedStaleness",
@@ -66,8 +63,7 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
@@ -77,8 +73,7 @@
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -97,8 +92,7 @@
       "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pnon-emulator" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -113,8 +107,7 @@
       "PREFERRED_LOCATIONS": null,
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.11"
+      }
     }
   ]
 }

@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Simple constant holder for a {@link SimpleTypeHolder} enriched with Cosmos specific simple types.
+ */
 public final class CosmosSimpleTypes {
 
     private static final Set<Class<?>> COSMOS_SIMPLE_TYPES;
@@ -33,7 +36,5 @@ public final class CosmosSimpleTypes {
             return super.isSimpleType(type);
         }
     };
-
-
 
 }
