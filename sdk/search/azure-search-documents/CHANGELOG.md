@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- [Bug fix for incorrect JSON property names](https://github.com/Azure/azure-sdk-for-java/pull/30774)
+- [Bug fix for incorrect JSON property names](https://github.com/Azure/azure-sdk-for-java/pull/31388)
 - 
 ### Other Changes
 
