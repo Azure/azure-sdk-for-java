@@ -5,36 +5,34 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the virtual machine. */
 @Fluent
 public class PrivateCloudIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudIdentity.class);
-
     /*
-     * The principal ID of private cloud identity. This property will only be
-     * provided for a system assigned identity.
+     * The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant ID associated with the private cloud. This property will only
-     * be provided for a system assigned identity.
+     * The tenant ID associated with the private cloud. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for the private cloud. The type
-     * 'SystemAssigned' refers to an implicitly created identity. The type
-     * 'None' will remove any identities from the Private Cloud.
+     * The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created
+     * identity. The type 'None' will remove any identities from the Private Cloud.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /** Creates an instance of PrivateCloudIdentity class. */
+    public PrivateCloudIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of private cloud identity. This property will only be provided for

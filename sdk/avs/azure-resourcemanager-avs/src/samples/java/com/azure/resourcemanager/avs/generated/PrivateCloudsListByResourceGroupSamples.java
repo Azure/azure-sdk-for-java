@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateClouds ListByResourceGroup. */
 public final class PrivateCloudsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_List.json
      */
     /**
      * Sample code: PrivateClouds_List.
@@ -21,7 +21,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_List_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_List_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_List_Stretched.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GlobalReachConnectionProvisioningState. */
+/** The state of the ExpressRoute Circuit Authorization provisioning. */
 public final class GlobalReachConnectionProvisioningState
     extends ExpandableStringEnum<GlobalReachConnectionProvisioningState> {
     /** Static value Succeeded for GlobalReachConnectionProvisioningState. */
@@ -19,6 +19,9 @@ public final class GlobalReachConnectionProvisioningState
 
     /** Static value Updating for GlobalReachConnectionProvisioningState. */
     public static final GlobalReachConnectionProvisioningState UPDATING = fromString("Updating");
+
+    /** Static value Canceled for GlobalReachConnectionProvisioningState. */
+    public static final GlobalReachConnectionProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates or finds a GlobalReachConnectionProvisioningState from its string representation.
@@ -31,7 +34,11 @@ public final class GlobalReachConnectionProvisioningState
         return fromString(name, GlobalReachConnectionProvisioningState.class);
     }
 
-    /** @return known GlobalReachConnectionProvisioningState values. */
+    /**
+     * Gets known GlobalReachConnectionProvisioningState values.
+     *
+     * @return known GlobalReachConnectionProvisioningState values.
+     */
     public static Collection<GlobalReachConnectionProvisioningState> values() {
         return values(GlobalReachConnectionProvisioningState.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadNetworks GetVirtualMachine. */
 public final class WorkloadNetworksGetVirtualMachineSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_GetVirtualMachine.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetVirtualMachine.json
      */
     /**
      * Sample code: WorkloadNetworks_GetVirtualMachine.

@@ -35,6 +35,10 @@ public final class HcxEnterpriseSiteImpl
         return this.innerModel().status();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HcxEnterpriseSiteInner innerModel() {
         return this.innerObject;
     }

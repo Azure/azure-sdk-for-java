@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -124,6 +126,19 @@ public final class AvsManager {
     }
 
     /**
+     * Creates an instance of Avs service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Avs service API instance.
+     */
+    public static AvsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new AvsManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create AvsManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -134,13 +149,14 @@ public final class AvsManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -202,15 +218,30 @@ public final class AvsManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -232,7 +263,7 @@ public final class AvsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -250,10 +281,15 @@ public final class AvsManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -284,7 +320,11 @@ public final class AvsManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -292,7 +332,11 @@ public final class AvsManager {
         return operations;
     }
 
-    /** @return Resource collection API of Locations. */
+    /**
+     * Gets the resource collection API of Locations.
+     *
+     * @return Resource collection API of Locations.
+     */
     public Locations locations() {
         if (this.locations == null) {
             this.locations = new LocationsImpl(clientObject.getLocations(), this);
@@ -300,7 +344,11 @@ public final class AvsManager {
         return locations;
     }
 
-    /** @return Resource collection API of PrivateClouds. */
+    /**
+     * Gets the resource collection API of PrivateClouds. It manages PrivateCloud.
+     *
+     * @return Resource collection API of PrivateClouds.
+     */
     public PrivateClouds privateClouds() {
         if (this.privateClouds == null) {
             this.privateClouds = new PrivateCloudsImpl(clientObject.getPrivateClouds(), this);
@@ -308,7 +356,11 @@ public final class AvsManager {
         return privateClouds;
     }
 
-    /** @return Resource collection API of Clusters. */
+    /**
+     * Gets the resource collection API of Clusters. It manages Cluster.
+     *
+     * @return Resource collection API of Clusters.
+     */
     public Clusters clusters() {
         if (this.clusters == null) {
             this.clusters = new ClustersImpl(clientObject.getClusters(), this);
@@ -316,7 +368,11 @@ public final class AvsManager {
         return clusters;
     }
 
-    /** @return Resource collection API of Datastores. */
+    /**
+     * Gets the resource collection API of Datastores. It manages Datastore.
+     *
+     * @return Resource collection API of Datastores.
+     */
     public Datastores datastores() {
         if (this.datastores == null) {
             this.datastores = new DatastoresImpl(clientObject.getDatastores(), this);
@@ -324,7 +380,11 @@ public final class AvsManager {
         return datastores;
     }
 
-    /** @return Resource collection API of HcxEnterpriseSites. */
+    /**
+     * Gets the resource collection API of HcxEnterpriseSites. It manages HcxEnterpriseSite.
+     *
+     * @return Resource collection API of HcxEnterpriseSites.
+     */
     public HcxEnterpriseSites hcxEnterpriseSites() {
         if (this.hcxEnterpriseSites == null) {
             this.hcxEnterpriseSites = new HcxEnterpriseSitesImpl(clientObject.getHcxEnterpriseSites(), this);
@@ -332,7 +392,11 @@ public final class AvsManager {
         return hcxEnterpriseSites;
     }
 
-    /** @return Resource collection API of Authorizations. */
+    /**
+     * Gets the resource collection API of Authorizations. It manages ExpressRouteAuthorization.
+     *
+     * @return Resource collection API of Authorizations.
+     */
     public Authorizations authorizations() {
         if (this.authorizations == null) {
             this.authorizations = new AuthorizationsImpl(clientObject.getAuthorizations(), this);
@@ -340,7 +404,11 @@ public final class AvsManager {
         return authorizations;
     }
 
-    /** @return Resource collection API of GlobalReachConnections. */
+    /**
+     * Gets the resource collection API of GlobalReachConnections. It manages GlobalReachConnection.
+     *
+     * @return Resource collection API of GlobalReachConnections.
+     */
     public GlobalReachConnections globalReachConnections() {
         if (this.globalReachConnections == null) {
             this.globalReachConnections =
@@ -349,7 +417,13 @@ public final class AvsManager {
         return globalReachConnections;
     }
 
-    /** @return Resource collection API of WorkloadNetworks. */
+    /**
+     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkSegment, WorkloadNetworkDhcp,
+     * WorkloadNetworkPortMirroring, WorkloadNetworkVMGroup, WorkloadNetworkDnsService, WorkloadNetworkDnsZone,
+     * WorkloadNetworkPublicIp.
+     *
+     * @return Resource collection API of WorkloadNetworks.
+     */
     public WorkloadNetworks workloadNetworks() {
         if (this.workloadNetworks == null) {
             this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
@@ -357,7 +431,11 @@ public final class AvsManager {
         return workloadNetworks;
     }
 
-    /** @return Resource collection API of CloudLinks. */
+    /**
+     * Gets the resource collection API of CloudLinks. It manages CloudLink.
+     *
+     * @return Resource collection API of CloudLinks.
+     */
     public CloudLinks cloudLinks() {
         if (this.cloudLinks == null) {
             this.cloudLinks = new CloudLinksImpl(clientObject.getCloudLinks(), this);
@@ -365,7 +443,11 @@ public final class AvsManager {
         return cloudLinks;
     }
 
-    /** @return Resource collection API of Addons. */
+    /**
+     * Gets the resource collection API of Addons. It manages Addon.
+     *
+     * @return Resource collection API of Addons.
+     */
     public Addons addons() {
         if (this.addons == null) {
             this.addons = new AddonsImpl(clientObject.getAddons(), this);
@@ -373,7 +455,11 @@ public final class AvsManager {
         return addons;
     }
 
-    /** @return Resource collection API of VirtualMachines. */
+    /**
+     * Gets the resource collection API of VirtualMachines.
+     *
+     * @return Resource collection API of VirtualMachines.
+     */
     public VirtualMachines virtualMachines() {
         if (this.virtualMachines == null) {
             this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
@@ -381,7 +467,11 @@ public final class AvsManager {
         return virtualMachines;
     }
 
-    /** @return Resource collection API of PlacementPolicies. */
+    /**
+     * Gets the resource collection API of PlacementPolicies. It manages PlacementPolicy.
+     *
+     * @return Resource collection API of PlacementPolicies.
+     */
     public PlacementPolicies placementPolicies() {
         if (this.placementPolicies == null) {
             this.placementPolicies = new PlacementPoliciesImpl(clientObject.getPlacementPolicies(), this);
@@ -389,7 +479,11 @@ public final class AvsManager {
         return placementPolicies;
     }
 
-    /** @return Resource collection API of ScriptPackages. */
+    /**
+     * Gets the resource collection API of ScriptPackages.
+     *
+     * @return Resource collection API of ScriptPackages.
+     */
     public ScriptPackages scriptPackages() {
         if (this.scriptPackages == null) {
             this.scriptPackages = new ScriptPackagesImpl(clientObject.getScriptPackages(), this);
@@ -397,7 +491,11 @@ public final class AvsManager {
         return scriptPackages;
     }
 
-    /** @return Resource collection API of ScriptCmdlets. */
+    /**
+     * Gets the resource collection API of ScriptCmdlets.
+     *
+     * @return Resource collection API of ScriptCmdlets.
+     */
     public ScriptCmdlets scriptCmdlets() {
         if (this.scriptCmdlets == null) {
             this.scriptCmdlets = new ScriptCmdletsImpl(clientObject.getScriptCmdlets(), this);
@@ -405,7 +503,11 @@ public final class AvsManager {
         return scriptCmdlets;
     }
 
-    /** @return Resource collection API of ScriptExecutions. */
+    /**
+     * Gets the resource collection API of ScriptExecutions. It manages ScriptExecution.
+     *
+     * @return Resource collection API of ScriptExecutions.
+     */
     public ScriptExecutions scriptExecutions() {
         if (this.scriptExecutions == null) {
             this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
