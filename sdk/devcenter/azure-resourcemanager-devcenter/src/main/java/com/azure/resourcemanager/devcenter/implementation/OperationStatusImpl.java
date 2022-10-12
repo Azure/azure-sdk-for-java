@@ -32,6 +32,10 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerModel().status();
     }
 
+    public String resourceId() {
+        return this.innerModel().resourceId();
+    }
+
     public OffsetDateTime startTime() {
         return this.innerModel().startTime();
     }
