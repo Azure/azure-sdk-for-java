@@ -614,9 +614,9 @@ public final class TestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAndUpdateTestRunWithResponse(
+    public Response<BinaryData> createOrUpdateTestRunWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createAndUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
+        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**

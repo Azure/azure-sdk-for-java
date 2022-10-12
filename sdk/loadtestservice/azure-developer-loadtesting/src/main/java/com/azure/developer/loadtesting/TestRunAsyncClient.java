@@ -618,9 +618,9 @@ public final class TestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAndUpdateTestRunWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateTestRunWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createAndUpdateTestRunWithResponseAsync(testRunId, body, requestOptions);
+        return this.serviceClient.createOrUpdateTestRunWithResponseAsync(testRunId, body, requestOptions);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase {
+public final class CreateOrUpdateTestRunTests extends LoadTestingClientTestBase {
     private final String createTestRunBodyJson = "{\"testId\":\"" + defaultTestId + "\""
         + ",\"description\":\"Sample Test Run\",\"displayName\":\"Java SDK Sample Test Run\"}";
 
@@ -25,18 +25,18 @@ public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase
     }
 
     @Test
-    public void createAndUpdateTestRunString() {
+    public void createOrUpdateTestRunString() {
         BinaryData file = BinaryData.fromString(createTestRunBodyJson);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestRunClient().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRunClient().createOrUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
     @Test
-    public void createAndUpdateTestRunDict() {
+    public void createOrUpdateTestRunDict() {
         BinaryData file = BinaryData.fromObject(getTestRunBodyFromDict());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getLoadTestRunClient().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRunClient().createOrUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

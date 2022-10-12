@@ -6,7 +6,7 @@ java: true
 regenerate-pom: false
 title: LoadTestingClient
 security: AADToken
-security-scopes: https://loadtest.azure-dev.com/.default
+security-scopes: https://cnt-prod.loadtesting.azure.com/.default
 data-plane: true
 generate-models: false
 generate-samples: false
@@ -21,7 +21,7 @@ directive:
 - from: swagger-document
   where: '$.paths["/testruns/{testRunId}"].patch'
   transform: >
-    $["operationId"] = "TestRun_CreateAndUpdateTestRun";
+    $["operationId"] = "TestRun_CreateOrUpdateTestRun";
 - from: swagger-document
   where: '$.paths.*[?(@.tags=="AppComponent")]'
   transform: >

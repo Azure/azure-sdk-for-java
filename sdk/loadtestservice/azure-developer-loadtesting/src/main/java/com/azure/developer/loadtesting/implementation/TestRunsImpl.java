@@ -95,7 +95,7 @@ public final class TestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createAndUpdateTestRun(
+        Mono<Response<BinaryData>> createOrUpdateTestRun(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -518,12 +518,12 @@ public final class TestRunsImpl {
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAndUpdateTestRunWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateTestRunWithResponseAsync(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createAndUpdateTestRun(
+                        service.createOrUpdateTestRun(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -741,10 +741,10 @@ public final class TestRunsImpl {
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAndUpdateTestRunWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateTestRunWithResponseAsync(
             String testRunId, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createAndUpdateTestRun(
+        return service.createOrUpdateTestRun(
                 this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
@@ -961,9 +961,9 @@ public final class TestRunsImpl {
      * @return load test run model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAndUpdateTestRunWithResponse(
+    public Response<BinaryData> createOrUpdateTestRunWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return createAndUpdateTestRunWithResponseAsync(testRunId, body, requestOptions).block();
+        return createOrUpdateTestRunWithResponseAsync(testRunId, body, requestOptions).block();
     }
 
     /**
