@@ -90,7 +90,7 @@ public final class ContentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
-                @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
+                @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecordingRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -396,7 +396,7 @@ public final class ContentsImpl {
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -412,7 +412,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
         final String accept = "application/json";
@@ -423,7 +423,7 @@ public final class ContentsImpl {
                                 this.client.getApiVersion(),
                                 repeatabilityRequestID,
                                 repeatabilityFirstSent,
-                                startCallRecording,
+                                startCallRecordingRequest,
                                 accept,
                                 context));
     }
@@ -431,7 +431,7 @@ public final class ContentsImpl {
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -448,7 +448,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
@@ -458,7 +458,7 @@ public final class ContentsImpl {
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
                 repeatabilityFirstSent,
-                startCallRecording,
+                startCallRecordingRequest,
                 accept,
                 context);
     }
@@ -466,7 +466,7 @@ public final class ContentsImpl {
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -482,10 +482,10 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> recordingAsync(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
-        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent)
+        return recordingWithResponseAsync(startCallRecordingRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -499,7 +499,7 @@ public final class ContentsImpl {
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -516,11 +516,12 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> recordingAsync(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
-        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
+        return recordingWithResponseAsync(
+                        startCallRecordingRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -534,7 +535,7 @@ public final class ContentsImpl {
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -550,16 +551,16 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecordingStateResponseInternal recording(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent) {
-        return recordingAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent).block();
+        return recordingAsync(startCallRecordingRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
     }
 
     /**
      * Start recording the call.
      *
-     * @param startCallRecording The request body of start call recording request.
+     * @param startCallRecordingRequest The request body of start call recording request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
      *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
@@ -576,11 +577,12 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResponseInternal> recordingWithResponse(
-            StartCallRecordingRequestInternal startCallRecording,
+            StartCallRecordingRequestInternal startCallRecordingRequest,
             UUID repeatabilityRequestID,
             String repeatabilityFirstSent,
             Context context) {
-        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
+        return recordingWithResponseAsync(
+                        startCallRecordingRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .block();
     }
 }
