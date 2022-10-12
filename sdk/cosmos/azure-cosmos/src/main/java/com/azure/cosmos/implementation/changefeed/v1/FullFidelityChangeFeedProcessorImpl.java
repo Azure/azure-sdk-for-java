@@ -34,7 +34,7 @@ public class FullFidelityChangeFeedProcessorImpl extends ChangeFeedProcessorImpl
     }
 
     @Override
-    Class getPartitionProcessorItemType() {
+    Class<ChangeFeedProcessorItem> getPartitionProcessorItemType() {
         return ChangeFeedProcessorItem.class;
     }
 }

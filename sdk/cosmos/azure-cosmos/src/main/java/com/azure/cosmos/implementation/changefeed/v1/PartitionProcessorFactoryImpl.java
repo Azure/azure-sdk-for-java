@@ -77,6 +77,6 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 
-        return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer, lease, classType, this.changeFeedMode);
+        return new PartitionProcessorImpl<>(observer, this.documentClient, settings, checkpointer, lease, classType, this.changeFeedMode);
     }
 }

@@ -333,10 +333,10 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE);
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
-        PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<T>(
+        PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,
-                new PartitionProcessorFactoryImpl(
+                new PartitionProcessorFactoryImpl<>(
                         this.feedContextClient,
                         this.changeFeedProcessorOptions,
                         leaseStoreManager,
