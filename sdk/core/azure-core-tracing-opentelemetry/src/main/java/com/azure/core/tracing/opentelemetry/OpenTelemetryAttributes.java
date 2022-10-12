@@ -80,7 +80,7 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
             return ATTRIBUTE_MAPPING_V1_12_0;
         }
 
-        // TODO log warning
+        // TODO (limolkova) log warning
         // return latest mappings if version is not found.
         return ATTRIBUTE_MAPPING_V1_12_0;
     }

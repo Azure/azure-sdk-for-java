@@ -33,10 +33,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides helper methods for operations on a given repository in Azure Container Registry.
@@ -150,7 +148,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
-            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
                 .flatMap(UtilsImpl::deleteResponseToSuccess)
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
@@ -273,7 +271,7 @@ public final class ContainerRepositoryAsync {
             }
 
             final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context)
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
@@ -283,7 +281,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
@@ -345,7 +343,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
         try {
-            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -417,7 +415,7 @@ public final class ContainerRepositoryAsync {
                 .setReadEnabled(repositoryProperties.isReadEnabled());
 //                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
-            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);

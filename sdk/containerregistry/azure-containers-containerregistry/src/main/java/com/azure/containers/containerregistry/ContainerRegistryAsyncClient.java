@@ -20,10 +20,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client that exposes operations to managing container images and artifacts.
@@ -128,7 +126,7 @@ public final class ContainerRegistryAsyncClient {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res))
                 .onErrorMap(UtilsImpl::mapException);
             return pagedResponseMono;
@@ -140,7 +138,7 @@ public final class ContainerRegistryAsyncClient {
 
     Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE));
+            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context);
             return pagedResponseMono.map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -183,7 +181,7 @@ public final class ContainerRegistryAsyncClient {
                 return monoError(logger, new IllegalArgumentException("'repositoryName' cannot be empty."));
             }
 
-            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
                 .flatMap(UtilsImpl::deleteResponseToSuccess)
                 .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {

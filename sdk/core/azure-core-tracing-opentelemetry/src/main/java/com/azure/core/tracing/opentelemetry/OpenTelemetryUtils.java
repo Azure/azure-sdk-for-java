@@ -47,21 +47,21 @@ class OpenTelemetryUtils {
         } else if (value instanceof Long[]) {
             attributesBuilder.put(AttributeKey.longArrayKey(key), (Long[]) value);
         } else if (value instanceof long[]) {
-            long[] array = (long[])value;
+            long[] array = (long[]) value;
             List<Long> boxed = new ArrayList<>(array.length);
             for (int i = 0; i < array.length; i++) {
                 boxed.add(array[i]);
             }
             attributesBuilder.put(AttributeKey.longArrayKey(key), boxed);
         } else if (value instanceof double[]) {
-            double[] array = (double[])value;
+            double[] array = (double[]) value;
             List<Double> boxed = new ArrayList<>(array.length);
             for (int i = 0; i < array.length; i++) {
                 boxed.add(array[i]);
             }
             attributesBuilder.put(AttributeKey.doubleArrayKey(key), boxed);
         } else if (value instanceof boolean[]) {
-            boolean[] array = (boolean[])value;
+            boolean[] array = (boolean[]) value;
             List<Boolean> boxed = new ArrayList<>(array.length);
             for (int i = 0; i < array.length; i++) {
                 boxed.add(array[i]);

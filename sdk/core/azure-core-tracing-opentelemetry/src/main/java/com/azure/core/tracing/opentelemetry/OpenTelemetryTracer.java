@@ -51,9 +51,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
-    @Deprecated
     public OpenTelemetryTracer() {
-        this("azure-core", null, null, null);
+        this("azure-core", "!", "?", null);
     }
 
     /**
@@ -393,7 +392,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         } else {
             currentSpan.addEvent(
                 eventName,
-                traceEventAttributes == null ? Attributes.empty() : new OpenTelemetryAttributes(traceEventAttributes,schemaVersion).get(),
+                traceEventAttributes == null ? Attributes.empty() : new OpenTelemetryAttributes(traceEventAttributes, schemaVersion).get(),
                 timestamp.toInstant());
         }
     }
@@ -487,7 +486,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         // if some attributes are provided, set them
-        spanBuilder.setAllAttributes(beforeSamplingAttributes);
+        if (beforeSamplingAttributes != null) {
+            spanBuilder.setAllAttributes(beforeSamplingAttributes);
+        }
 
         return spanBuilder;
     }

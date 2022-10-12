@@ -80,7 +80,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
                 .flatMap(ignored -> next.process())
                 .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
                 .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context,
-                    ((OpenTelemetryTracer)context.getData("tracer").get()))));
+                    ((OpenTelemetryTracer) context.getData("tracer").get()))));
     }
 
     private Context startSpan(HttpPipelineCallContext azContext, OpenTelemetryTracer tracer) {

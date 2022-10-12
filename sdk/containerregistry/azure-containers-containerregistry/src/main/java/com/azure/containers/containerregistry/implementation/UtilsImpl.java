@@ -159,7 +159,6 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
-                .tracer(TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions))
                 .build(),
             JacksonAdapter.createDefaultSerializerAdapter());
 
@@ -171,6 +170,7 @@ public final class UtilsImpl {
             new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .tracer(TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE, tracingOptions))
                 .build();
         return httpPipeline;
     }

@@ -6,7 +6,6 @@ package com.azure.core.implementation.http.rest;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +20,6 @@ public final class SwaggerInterfaceParser {
 
     private final String host;
     private final String serviceName;
-    private final String moduleName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
 
     /**
@@ -46,25 +44,12 @@ public final class SwaggerInterfaceParser {
             throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
         }
 
-        String moduleNameTmp = null;
         ServiceInterface serviceAnnotation = swaggerInterface.getAnnotation(ServiceInterface.class);
         if (serviceAnnotation != null && !serviceAnnotation.name().isEmpty()) {
             serviceName = serviceAnnotation.name();
-            try {
-                Method method = swaggerInterface.getClass().getMethod("getModule");
-                Object module = method.invoke(swaggerInterface);
-                Method getModuleName = module.getClass().getMethod("getName");
-                Object moduleNameObj = getModuleName.invoke(module);
-                if (moduleNameObj instanceof String) {
-                    moduleNameTmp = (String) moduleNameObj;
-                }
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            }
         } else {
             throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
         }
-
-        moduleName = moduleNameTmp == null ? "com.azure.core" : moduleNameTmp;
     }
 
     /**
@@ -90,8 +75,5 @@ public final class SwaggerInterfaceParser {
 
     public String getServiceName() {
         return serviceName;
-    }
-    public String getModuleName() {
-        return moduleName;
     }
 }
