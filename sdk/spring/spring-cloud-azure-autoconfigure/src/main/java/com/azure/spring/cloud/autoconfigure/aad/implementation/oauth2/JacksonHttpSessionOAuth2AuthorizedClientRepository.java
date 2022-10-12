@@ -67,7 +67,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                 request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
             } else {
                 request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                    serializeOAuth2AuthorizedClientMap(authorizedClients));
+                    serializeOAuth2AuthorizedClientMap(Collections.unmodifiableMap(authorizedClients)));
             }
         }
 
