@@ -18,6 +18,10 @@ public final class PoolProperties extends PoolUpdateProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of PoolProperties class. */
+    public PoolProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

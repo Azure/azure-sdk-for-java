@@ -24,6 +24,10 @@ public final class GalleryListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GalleryListResult class. */
+    public GalleryListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *
