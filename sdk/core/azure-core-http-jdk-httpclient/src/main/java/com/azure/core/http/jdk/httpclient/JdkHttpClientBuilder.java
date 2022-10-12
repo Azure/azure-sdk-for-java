@@ -196,7 +196,9 @@ public class JdkHttpClientBuilder {
                         buildProxyOptions.getPassword()));
             }
         }
-        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()));
+
+        return new JdkHttpClient(httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1).build(),
+            Collections.unmodifiableSet(getRestrictedHeaders()));
     }
 
     Set<String> getRestrictedHeaders() {

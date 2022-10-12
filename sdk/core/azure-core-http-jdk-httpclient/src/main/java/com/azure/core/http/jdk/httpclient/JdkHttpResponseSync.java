@@ -45,7 +45,7 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     @Override
     public Flux<ByteBuffer> getBody() {
         if (bodyBytes != null) {
-            return Mono.fromSupplier(() -> ByteBuffer.wrap(bodyBytes)).flux();
+            return bodyBytes.length == 0 ? Flux.empty() : Flux.just(ByteBuffer.wrap(bodyBytes));
         } else {
             return FluxUtil.toFluxByteBuffer(bodyStream).doFinally(ignored -> close());
         }
@@ -54,7 +54,7 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         if (bodyBytes != null) {
-            return Mono.just(bodyBytes);
+            return bodyBytes.length == 0 ? Mono.empty() : Mono.just(bodyBytes);
         } else {
             return super.getBodyAsByteArray();
         }
