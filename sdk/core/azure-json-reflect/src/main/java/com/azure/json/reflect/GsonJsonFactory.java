@@ -1,17 +1,16 @@
-package com.azure.json.reflect.gson;
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonReader;
-import com.azure.json.reflect.JsonFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-public class GsonJsonFactory implements JsonFactory {
-    public GsonJsonFactory() throws ReflectiveOperationException {
+class GsonJsonFactory extends JsonFactory {
+    GsonJsonFactory() throws ReflectiveOperationException {
         GsonJsonReader.initialize();
         GsonJsonWriter.initialize();
     }

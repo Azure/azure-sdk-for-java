@@ -1,4 +1,4 @@
-package com.azure.json.reflect.gson;
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
 
-public class GsonJsonWriter extends JsonWriter {
+class GsonJsonWriter extends JsonWriter {
     private static boolean initialized = false;
     private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();

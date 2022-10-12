@@ -1,14 +1,13 @@
-package com.azure.json.reflect.jackson;
+package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonReader;
-import com.azure.json.reflect.JsonFactory;
 
 import java.io.*;
 
-public class JacksonJsonFactory implements JsonFactory {
-    public JacksonJsonFactory() throws ReflectiveOperationException {
+class JacksonJsonFactory extends JsonFactory {
+    JacksonJsonFactory() throws ReflectiveOperationException {
         JacksonJsonReader.initialize();
         JacksonJsonWriter.initialize();
     }
