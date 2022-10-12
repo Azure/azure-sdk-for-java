@@ -16,7 +16,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     @Test
     public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-    public static final String ALERT_CONFIG_ID = "126d1470-b500-4ef0-b5c0-47f9ca914a75";
+    public static final String ALERT_CONFIG_ID = "83e32897-5156-46f7-9187-e4b2bb47ecab";
 
     // Pre-configured test resource.
     protected static class ListAlertsInput {

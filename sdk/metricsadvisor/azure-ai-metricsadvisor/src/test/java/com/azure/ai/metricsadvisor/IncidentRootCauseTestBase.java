@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class IncidentRootCauseTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String INCIDENT_ROOT_CAUSE_ID = "88ecf25a0e6bd330ef9e7b49b7c5b92b-18001521c00";
+    static final String INCIDENT_ROOT_CAUSE_ID = "88ecf25a0e6bd330ef9e7b49b7c5b92b-183bf30f400";
     static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = DETECTION_CONFIGURATION_ID;
 
     @Override
