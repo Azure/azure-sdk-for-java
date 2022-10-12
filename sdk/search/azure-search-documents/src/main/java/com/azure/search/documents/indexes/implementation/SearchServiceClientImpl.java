@@ -145,18 +145,6 @@ public final class SearchServiceClientImpl {
         return this.indexes;
     }
 
-    /** The AliasesImpl object to access its operations. */
-    private final AliasesImpl aliases;
-
-    /**
-     * Gets the AliasesImpl object to access its operations.
-     *
-     * @return the AliasesImpl object.
-     */
-    public AliasesImpl getAliases() {
-        return this.aliases;
-    }
-
     /**
      * Initializes an instance of SearchServiceClient client.
      *
@@ -203,7 +191,6 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.aliases = new AliasesImpl(this);
         this.service =
                 RestProxy.create(SearchServiceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }

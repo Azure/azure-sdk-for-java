@@ -18,11 +18,18 @@ public final class EdgeNGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        EdgeNGramTokenizer edgeNGramTokenizer = new EdgeNGramTokenizer(obj.getName());
 
-        return new EdgeNGramTokenizer(obj.getName())
-            .setMaxGram(obj.getMaxGram())
-            .setMinGram(obj.getMinGram())
-            .setTokenChars(obj.getTokenChars());
+        Integer maxGram = obj.getMaxGram();
+        edgeNGramTokenizer.setMaxGram(maxGram);
+
+        if (obj.getTokenChars() != null) {
+            edgeNGramTokenizer.setTokenChars(obj.getTokenChars());
+        }
+
+        Integer minGram = obj.getMinGram();
+        edgeNGramTokenizer.setMinGram(minGram);
+        return edgeNGramTokenizer;
     }
 
     /**
@@ -33,11 +40,20 @@ public final class EdgeNGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer edgeNGramTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer(obj.getName());
 
-        return new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer(obj.getName())
-            .setMaxGram(obj.getMaxGram())
-            .setMinGram(obj.getMinGram())
-            .setTokenChars(obj.getTokenChars());
+        Integer maxGram = obj.getMaxGram();
+        edgeNGramTokenizer.setMaxGram(maxGram);
+
+        if (obj.getTokenChars() != null) {
+            edgeNGramTokenizer.setTokenChars(obj.getTokenChars());
+        }
+
+        Integer minGram = obj.getMinGram();
+        edgeNGramTokenizer.setMinGram(minGram);
+
+        return edgeNGramTokenizer;
     }
 
     private EdgeNGramTokenizerConverter() {

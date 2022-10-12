@@ -4,7 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 
 import java.lang.annotation.ElementType;
@@ -53,12 +52,4 @@ public @interface SimpleField {
      * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
      */
     boolean isFilterable() default false;
-
-    /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
 }

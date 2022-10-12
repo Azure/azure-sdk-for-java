@@ -1,31 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexers('indexer')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexers('indexer')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8042bfc3-1895-4c29-82b9-3c6d27d4bd15"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "31a01c90-3849-4c8c-ae97-48cc133ab299"
     },
     "Response" : {
       "content-length" : "93",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8042bfc3-1895-4c29-82b9-3c6d27d4bd15",
+      "request-id" : "31a01c90-3849-4c8c-ae97-48cc133ab299",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:14:38 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "8042bfc3-1895-4c29-82b9-3c6d27d4bd15",
-      "elapsed-time" : "5",
+      "client-request-id" : "31a01c90-3849-4c8c-ae97-48cc133ab299",
+      "elapsed-time" : "15",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "8042bfc3-1895-4c29-82b9-3c6d27d4bd15",
+      "x-ms-client-request-id" : "31a01c90-3849-4c8c-ae97-48cc133ab299",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "8042bfc3-1895-4c29-82b9-3c6d27d4bd15" ]
+  "variables" : [ "31a01c90-3849-4c8c-ae97-48cc133ab299" ]
 }

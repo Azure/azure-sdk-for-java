@@ -24,7 +24,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
@@ -69,19 +68,6 @@ public final class IndexersImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/indexers('{indexerName}')/search.resetdocs")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> resetDocs(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("indexerName") String indexerName,
-                @QueryParam("overwrite") Boolean overwrite,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") DocumentKeysOrIds keysOrIds,
-                Context context);
-
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -104,8 +90,6 @@ public final class IndexersImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
-                @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
                 @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexer indexer,
                 Context context);
@@ -198,44 +182,6 @@ public final class IndexersImpl {
     }
 
     /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param indexerName The name of the indexer to reset documents for.
-     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
-     *     payload will be queued to be re-ingested.
-     * @param keysOrIds The keysOrIds parameter.
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetDocsWithResponseAsync(
-            String indexerName,
-            Boolean overwrite,
-            DocumentKeysOrIds keysOrIds,
-            RequestOptions requestOptions,
-            Context context) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.resetDocs(
-                this.client.getEndpoint(),
-                indexerName,
-                overwrite,
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                keysOrIds,
-                context);
-    }
-
-    /**
      * Runs an indexer on-demand.
      *
      * @param indexerName The name of the indexer to run.
@@ -273,8 +219,6 @@ public final class IndexersImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,8 +232,6 @@ public final class IndexersImpl {
             SearchIndexer indexer,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
-            Boolean disableCacheReprocessingChangeDetection,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -307,8 +249,6 @@ public final class IndexersImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
-                skipIndexerResetRequirementForCache,
-                disableCacheReprocessingChangeDetection,
                 accept,
                 indexer,
                 context);

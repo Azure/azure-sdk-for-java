@@ -14,12 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SearchServiceCounters {
     /*
-     * Total number of aliases.
-     */
-    @JsonProperty(value = "aliasesCount")
-    private ResourceCounter aliasCounter;
-
-    /*
      * Total number of documents across all indexes in the service.
      */
     @JsonProperty(value = "documentCount", required = true)
@@ -85,26 +79,6 @@ public final class SearchServiceCounters {
         this.dataSourceCounter = dataSourceCounter;
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
-    }
-
-    /**
-     * Get the aliasCounter property: Total number of aliases.
-     *
-     * @return the aliasCounter value.
-     */
-    public ResourceCounter getAliasCounter() {
-        return this.aliasCounter;
-    }
-
-    /**
-     * Set the aliasCounter property: Total number of aliases.
-     *
-     * @param aliasCounter the aliasCounter value to set.
-     * @return the SearchServiceCounters object itself.
-     */
-    public SearchServiceCounters setAliasCounter(ResourceCounter aliasCounter) {
-        this.aliasCounter = aliasCounter;
-        return this;
     }
 
     /**

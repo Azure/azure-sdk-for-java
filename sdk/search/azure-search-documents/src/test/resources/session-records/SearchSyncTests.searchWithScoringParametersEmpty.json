@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-instance')/docs/search.post.search?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "52c4fe86-9631-4a22-959d-98d60d57784b",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6afac8cf-ebd9-472c-a5a9-925057125153",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "1469",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "52c4fe86-9631-4a22-959d-98d60d57784b",
+      "request-id" : "6afac8cf-ebd9-472c-a5a9-925057125153",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:21:15 GMT",
+      "Date" : "Thu, 27 May 2021 21:13:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "52c4fe86-9631-4a22-959d-98d60d57784b",
-      "elapsed-time" : "9",
+      "client-request-id" : "6afac8cf-ebd9-472c-a5a9-925057125153",
+      "elapsed-time" : "10",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"@search.score\":1.668863,\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00f4tel en ville si vous aimez les h\\u00f4tels de luxe. Ils ont une magnifique piscine \\u00e0 d\\u00e9bordement, un spa et un concierge tr\\u00e8s utile. L'emplacement est parfait \\u2013 en plein centre, \\u00e0 proximit\\u00e9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00f4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]},{\"@search.score\":0.8567029,\"HotelId\":\"2\",\"HotelName\":\"Roach Motel\",\"Description\":\"Cheapest hotel in town. Infact, a motel.\",\"Description_fr\":\"H\\u00f4tel le moins cher en ville. Infact, un motel.\",\"Category\":\"Budget\",\"Tags\":[\"motel\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1982-04-28T00:00:00Z\",\"Rating\":1,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,49.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
-      "x-ms-client-request-id" : "52c4fe86-9631-4a22-959d-98d60d57784b",
+      "x-ms-client-request-id" : "6afac8cf-ebd9-472c-a5a9-925057125153",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
