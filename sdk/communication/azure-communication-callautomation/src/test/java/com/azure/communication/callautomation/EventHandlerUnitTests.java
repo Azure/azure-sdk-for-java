@@ -3,15 +3,15 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCanceledEvent;
 import com.azure.communication.callautomation.models.events.ReasonCode;
-import com.azure.communication.callautomation.models.events.RecognizeCanceled;
-import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeCanceledEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCompletedEvent;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecognizeFailedEvent;
 import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
 import com.azure.communication.callautomation.models.events.PlayFailedEvent;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
@@ -146,7 +146,7 @@ public class EventHandlerUnitTests {
             + "\"source\": \"calling/callConnections/callConnectionId/PlayCanceled\",\n"
             + "\"type\": \"Microsoft.Communication.PlayCanceled\",\n"
             + "\"data\": {\n"
-            + "\"type\": \"playCanceled\",\n"
+            + "\"type\": \"playCanceledEvent\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -158,9 +158,9 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        PlayCanceled playCanceled = (PlayCanceled) event;
-        assertNotNull(playCanceled);
-        assertEquals("serverCallId", playCanceled.getServerCallId());
+        PlayCanceledEvent playCanceledEvent = (PlayCanceledEvent) event;
+        assertNotNull(playCanceledEvent);
+        assertEquals("serverCallId", playCanceledEvent.getServerCallId());
     }
     @Test
     public void parseRecognizeCompletedEvent() {
@@ -174,7 +174,7 @@ public class EventHandlerUnitTests {
             + "\"subCode\": 0,\n"
             + "\"message\": \"Action completed successfully.\"\n"
             + "},\n"
-            + "\"type\": \"recognizeCompleted\",\n"
+            + "\"type\": \"recognizeCompletedEvent\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -186,11 +186,11 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
-        assertNotNull(recognizeCompleted);
-        assertEquals("serverCallId", recognizeCompleted.getServerCallId());
-        assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCode());
+        RecognizeCompletedEvent recognizeCompletedEvent = (RecognizeCompletedEvent) event;
+        assertNotNull(recognizeCompletedEvent);
+        assertEquals("serverCallId", recognizeCompletedEvent.getServerCallId());
+        assertEquals(200, recognizeCompletedEvent.getResultInformation().getCode());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompletedEvent.getReasonCode());
     }
 
     @Test
@@ -205,7 +205,7 @@ public class EventHandlerUnitTests {
             + "\"subCode\": 8510,\n"
             + "\"message\": \"Action failed, initial silence timeout reached.\"\n"
             + "},\n"
-            + "\"type\": \"recognizeFailed\",\n"
+            + "\"type\": \"recognizeFailedEvent\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -217,11 +217,11 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeFailed recognizeFailed = (RecognizeFailed) event;
-        assertNotNull(recognizeFailed);
-        assertEquals("serverCallId", recognizeFailed.getServerCallId());
-        assertEquals(400, recognizeFailed.getResultInformation().getCode());
-        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCode());
+        RecognizeFailedEvent recognizeFailedEvent = (RecognizeFailedEvent) event;
+        assertNotNull(recognizeFailedEvent);
+        assertEquals("serverCallId", recognizeFailedEvent.getServerCallId());
+        assertEquals(400, recognizeFailedEvent.getResultInformation().getCode());
+        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailedEvent.getReasonCode());
     }
 
     @Test
@@ -231,7 +231,7 @@ public class EventHandlerUnitTests {
             + "\"source\": \"calling/callConnections/callConnectionId/RecognizeCanceled\",\n"
             + "\"type\": \"Microsoft.Communication.RecognizeCanceled\",\n"
             + "\"data\": {\n"
-            + "\"type\": \"recognizeCanceled\",\n"
+            + "\"type\": \"recognizeCanceledEvent\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -243,8 +243,8 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeCanceled recognizeCanceled = (RecognizeCanceled) event;
-        assertNotNull(recognizeCanceled);
-        assertEquals("serverCallId", recognizeCanceled.getServerCallId());
+        RecognizeCanceledEvent recognizeCanceledEvent = (RecognizeCanceledEvent) event;
+        assertNotNull(recognizeCanceledEvent);
+        assertEquals("serverCallId", recognizeCanceledEvent.getServerCallId());
     }
 }
