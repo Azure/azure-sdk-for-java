@@ -6,8 +6,9 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
-- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-core` dependency to `1.33.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.6`.
+- Utilizes `jackson-dataformat-xml` version `2.13.4`
 
 ## 12.3.4 (2022-09-12)
 
