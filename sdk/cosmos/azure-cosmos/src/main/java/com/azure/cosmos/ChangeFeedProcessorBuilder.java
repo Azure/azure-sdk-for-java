@@ -110,16 +110,6 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
      *
-     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleChanges -->
-     * <pre>
-     * .handleChanges&#40;docs -&gt; &#123;
-     *     for &#40;JsonNode item : docs&#41; &#123;
-     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
-     *     &#125;
-     * &#125;&#41;
-     * </pre>
-     * <!-- end com.azure.cosmos.changeFeedProcessor.handleChanges -->
-     *
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
