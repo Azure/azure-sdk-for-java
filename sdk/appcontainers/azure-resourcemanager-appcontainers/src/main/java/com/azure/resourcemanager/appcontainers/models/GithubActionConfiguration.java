@@ -58,6 +58,10 @@ public final class GithubActionConfiguration {
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
+    /** Creates an instance of GithubActionConfiguration class. */
+    public GithubActionConfiguration() {
+    }
+
     /**
      * Get the registryInfo property: Registry configurations.
      *

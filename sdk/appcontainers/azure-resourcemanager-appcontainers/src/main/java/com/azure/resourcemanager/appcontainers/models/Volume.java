@@ -28,6 +28,10 @@ public final class Volume {
     @JsonProperty(value = "storageName")
     private String storageName;
 
+    /** Creates an instance of Volume class. */
+    public Volume() {
+    }
+
     /**
      * Get the name property: Volume name.
      *

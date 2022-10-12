@@ -34,6 +34,16 @@ public final class ScaleRule {
     @JsonProperty(value = "http")
     private HttpScaleRule http;
 
+    /*
+     * Tcp requests based scaling.
+     */
+    @JsonProperty(value = "tcp")
+    private TcpScaleRule tcp;
+
+    /** Creates an instance of ScaleRule class. */
+    public ScaleRule() {
+    }
+
     /**
      * Get the name property: Scale Rule Name.
      *
@@ -115,6 +125,26 @@ public final class ScaleRule {
     }
 
     /**
+     * Get the tcp property: Tcp requests based scaling.
+     *
+     * @return the tcp value.
+     */
+    public TcpScaleRule tcp() {
+        return this.tcp;
+    }
+
+    /**
+     * Set the tcp property: Tcp requests based scaling.
+     *
+     * @param tcp the tcp value to set.
+     * @return the ScaleRule object itself.
+     */
+    public ScaleRule withTcp(TcpScaleRule tcp) {
+        this.tcp = tcp;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -128,6 +158,9 @@ public final class ScaleRule {
         }
         if (http() != null) {
             http().validate();
+        }
+        if (tcp() != null) {
+            tcp().validate();
         }
     }
 }

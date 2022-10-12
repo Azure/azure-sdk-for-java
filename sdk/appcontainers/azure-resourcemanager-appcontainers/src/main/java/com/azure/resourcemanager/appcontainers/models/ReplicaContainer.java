@@ -40,6 +40,22 @@ public final class ReplicaContainer {
     @JsonProperty(value = "restartCount")
     private Integer restartCount;
 
+    /*
+     * Log Stream endpoint
+     */
+    @JsonProperty(value = "logStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String logStreamEndpoint;
+
+    /*
+     * Container exec endpoint
+     */
+    @JsonProperty(value = "execEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String execEndpoint;
+
+    /** Creates an instance of ReplicaContainer class. */
+    public ReplicaContainer() {
+    }
+
     /**
      * Get the name property: The Name of the Container.
      *
@@ -138,6 +154,24 @@ public final class ReplicaContainer {
     public ReplicaContainer withRestartCount(Integer restartCount) {
         this.restartCount = restartCount;
         return this;
+    }
+
+    /**
+     * Get the logStreamEndpoint property: Log Stream endpoint.
+     *
+     * @return the logStreamEndpoint value.
+     */
+    public String logStreamEndpoint() {
+        return this.logStreamEndpoint;
+    }
+
+    /**
+     * Get the execEndpoint property: Container exec endpoint.
+     *
+     * @return the execEndpoint value.
+     */
+    public String execEndpoint() {
+        return this.execEndpoint;
     }
 
     /**

@@ -76,6 +76,13 @@ public interface DaprComponent {
     List<Secret> secrets();
 
     /**
+     * Gets the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+     *
+     * @return the secretStoreComponent value.
+     */
+    String secretStoreComponent();
+
+    /**
      * Gets the metadata property: Component metadata.
      *
      * @return the metadata value.
@@ -133,6 +140,7 @@ public interface DaprComponent {
                 DefinitionStages.WithIgnoreErrors,
                 DefinitionStages.WithInitTimeout,
                 DefinitionStages.WithSecrets,
+                DefinitionStages.WithSecretStoreComponent,
                 DefinitionStages.WithMetadata,
                 DefinitionStages.WithScopes {
             /**
@@ -200,6 +208,16 @@ public interface DaprComponent {
              */
             WithCreate withSecrets(List<Secret> secrets);
         }
+        /** The stage of the DaprComponent definition allowing to specify secretStoreComponent. */
+        interface WithSecretStoreComponent {
+            /**
+             * Specifies the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+             *
+             * @param secretStoreComponent Name of a Dapr component to retrieve component secrets from.
+             * @return the next definition stage.
+             */
+            WithCreate withSecretStoreComponent(String secretStoreComponent);
+        }
         /** The stage of the DaprComponent definition allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -235,6 +253,7 @@ public interface DaprComponent {
             UpdateStages.WithIgnoreErrors,
             UpdateStages.WithInitTimeout,
             UpdateStages.WithSecrets,
+            UpdateStages.WithSecretStoreComponent,
             UpdateStages.WithMetadata,
             UpdateStages.WithScopes {
         /**
@@ -304,6 +323,16 @@ public interface DaprComponent {
              */
             Update withSecrets(List<Secret> secrets);
         }
+        /** The stage of the DaprComponent update allowing to specify secretStoreComponent. */
+        interface WithSecretStoreComponent {
+            /**
+             * Specifies the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+             *
+             * @param secretStoreComponent Name of a Dapr component to retrieve component secrets from.
+             * @return the next definition stage.
+             */
+            Update withSecretStoreComponent(String secretStoreComponent);
+        }
         /** The stage of the DaprComponent update allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -343,22 +372,22 @@ public interface DaprComponent {
     /**
      * List secrets for a dapr component.
      *
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource.
-     */
-    DaprSecretsCollection listSecrets();
-
-    /**
-     * List secrets for a dapr component.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response}.
      */
     Response<DaprSecretsCollection> listSecretsWithResponse(Context context);
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection for ListSecrets Action.
+     */
+    DaprSecretsCollection listSecrets();
 }

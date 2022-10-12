@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Type. */
+/** The type of probe. */
 public final class Type extends ExpandableStringEnum<Type> {
     /** Static value Liveness for Type. */
     public static final Type LIVENESS = fromString("Liveness");

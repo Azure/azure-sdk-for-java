@@ -46,6 +46,14 @@ public interface Revision {
     OffsetDateTime createdTime();
 
     /**
+     * Gets the lastActiveTime property: Timestamp describing when the revision was last active. Only meaningful when
+     * revision is inactive.
+     *
+     * @return the lastActiveTime value.
+     */
+    OffsetDateTime lastActiveTime();
+
+    /**
      * Gets the fqdn property: Fully qualified domain name of the revision.
      *
      * @return the fqdn value.

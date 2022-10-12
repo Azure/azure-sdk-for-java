@@ -242,21 +242,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all storages for a managedEnvironment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedEnvironmentStoragesCollectionInner list(String resourceGroupName, String environmentName) {
-        return listAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Get all storages for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -267,6 +252,21 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     public Response<ManagedEnvironmentStoragesCollectionInner> listWithResponse(
         String resourceGroupName, String environmentName, Context context) {
         return listWithResponseAsync(resourceGroupName, environmentName, context).block();
+    }
+
+    /**
+     * Get all storages for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all storages for a managedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedEnvironmentStoragesCollectionInner list(String resourceGroupName, String environmentName) {
+        return listWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 
     /**
@@ -399,22 +399,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage for a managedEnvironment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedEnvironmentStorageInner get(String resourceGroupName, String environmentName, String storageName) {
-        return getAsync(resourceGroupName, environmentName, storageName).block();
-    }
-
-    /**
-     * Get storage for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -425,6 +409,22 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     public Response<ManagedEnvironmentStorageInner> getWithResponse(
         String resourceGroupName, String environmentName, String storageName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, storageName, context).block();
+    }
+
+    /**
+     * Get storage for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage for a managedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedEnvironmentStorageInner get(String resourceGroupName, String environmentName, String storageName) {
+        return getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE).getValue();
     }
 
     /**
@@ -587,27 +587,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for managedEnvironment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedEnvironmentStorageInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String storageName,
-        ManagedEnvironmentStorageInner storageEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, storageName, storageEnvelope).block();
-    }
-
-    /**
-     * Create or update storage for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
-     * @param storageEnvelope Configuration details of storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -624,6 +603,29 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, environmentName, storageName, storageEnvelope, context)
             .block();
+    }
+
+    /**
+     * Create or update storage for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for managedEnvironment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedEnvironmentStorageInner createOrUpdate(
+        String resourceGroupName,
+        String environmentName,
+        String storageName,
+        ManagedEnvironmentStorageInner storageEnvelope) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, environmentName, storageName, storageEnvelope, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -755,21 +757,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String environmentName, String storageName) {
-        deleteAsync(resourceGroupName, environmentName, storageName).block();
-    }
-
-    /**
-     * Delete storage for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -780,5 +767,20 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String storageName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, storageName, context).block();
+    }
+
+    /**
+     * Delete storage for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String environmentName, String storageName) {
+        deleteWithResponse(resourceGroupName, environmentName, storageName, Context.NONE);
     }
 }
