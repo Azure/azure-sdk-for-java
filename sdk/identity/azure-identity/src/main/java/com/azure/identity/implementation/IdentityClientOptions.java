@@ -68,6 +68,8 @@ public final class IdentityClientOptions implements Cloneable {
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         additionallyAllowedTenants = new HashSet<>();
+        regionalAuthority = RegionalAuthority.fromString(
+            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
     }
 
     /**
