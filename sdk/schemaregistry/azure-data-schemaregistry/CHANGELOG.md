@@ -1,6 +1,16 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2022-10-11)
 
 ### Features Added
 
@@ -12,11 +22,12 @@
     - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
     - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-core-http-netty` dependency to `1.12.6`.
 
 ## 1.2.4 (2022-09-12)
 

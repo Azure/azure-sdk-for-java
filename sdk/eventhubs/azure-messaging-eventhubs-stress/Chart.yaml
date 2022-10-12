@@ -1,0 +1,14 @@
+apiVersion: v2
+name: java-eventhubs-stress-test
+description: stress test for azure event hubs client in java
+version: 0.1.1
+appVersion: v0.1
+annotations:
+  stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
+  example: 'true'  # enable auto-discovery filtering `find-all-stress-packages.ps1 -filters @{example='true'}`
+  namespace: 'java-eh' # kubernetes namespace that stress test package will be installed
+
+dependencies:
+  - name: stress-test-addons
+    version: 0.1.20
+    repository: https://stresstestcharts.blob.core.windows.net/helm/
