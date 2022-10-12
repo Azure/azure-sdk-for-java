@@ -78,7 +78,7 @@ class PartitionControllerImpl implements PartitionController {
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Lease with token {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                logger.warn("Lease with token {}: unexpected error; removing lease from current cache.", lease.getLeaseToken(), throwable);
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
@@ -169,14 +169,7 @@ class PartitionControllerImpl implements PartitionController {
                     return partitionGoneHandler.handlePartitionGone()
                             .flatMap(l -> {
                                 l.setProperties(lease.getProperties());
-
-                                // There is small caveat here:
-                                // In the handling of merge for epkBased lease scenario, we are going to reuse the same lease.
-                                // But if we have ever reached here, then usually it means the processor task and renewer task
-                                // monitored by the partition supervisor have been cancelled.
-                                // addOrUpdateLease(l) will not create new tasks in this case, which means there will be a short
-                                // period there is no processing for the lease epk. But eventually the epk processing will be picked up
-                                // again in the load balancing stage.
+                                logger.info("Adding child lease {}, continuationToken null {} ", l.getId(), l.getContinuationToken() !=null);
                                 return this.addOrUpdateLease(l);
                             })
                             .then(this.tryDeleteGoneLease(lease, partitionGoneHandler.shouldDeleteCurrentLease()));

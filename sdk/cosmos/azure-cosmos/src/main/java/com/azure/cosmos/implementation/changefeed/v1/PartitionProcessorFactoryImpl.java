@@ -10,13 +10,10 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -54,19 +51,6 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
         this.changeFeedMode = changeFeedMode;
     }
 
-    private static ChangeFeedStartFromInternal getStartFromSettings(
-        FeedRangeInternal feedRange,
-        ChangeFeedProcessorOptions processorOptions) {
-
-        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
-            ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(processorOptions.getStartContinuation());
-            return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
-                changeFeedState.getContinuation().getCurrentContinuationToken().getToken(),
-                feedRange);
-        }
-        return ChangeFeedStartFromInternal.createFromNow();
-    }
-
     @Override
     public PartitionProcessor create(Lease lease, ChangeFeedObserver<T> observer, Class<T> classType) {
         checkNotNull(observer, "Argument 'observer' can not be null");
@@ -78,9 +62,10 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 lease.getFeedRange(),
                 this.changeFeedMode,
-                getStartFromSettings(
+                PartitionProcessorHelper.getStartFromSettings(
                     lease.getFeedRange(),
-                    this.changeFeedProcessorOptions),
+                    this.changeFeedProcessorOptions,
+                    this.changeFeedMode),
                 null);
         } else {
             state = lease.getContinuationState(this.collectionResourceId, this.changeFeedMode);
@@ -92,6 +77,6 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 
-        return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer, lease, classType);
+        return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer, lease, classType, this.changeFeedMode);
     }
 }

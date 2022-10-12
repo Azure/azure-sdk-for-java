@@ -24,6 +24,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -41,6 +43,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
+
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
@@ -84,10 +88,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         return clientWrapper
                 .getCollectionCache()
-                .resolveByNameAsync(
-                        null,
-                        BridgeInternal.extractContainerSelfLink(this.cosmosContainer),
-                        null)
+                .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(this.cosmosContainer), null)
                 .flatMap(collection -> {
                     return clientWrapper.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
                             null,
@@ -98,6 +99,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                 })
                 .flatMap(pkRangesValueHolder -> {
                     if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
+                        logger.warn("There is no overlapping ranges found for range {}", range);
                         return Mono.just(new ArrayList<PartitionKeyRange>());
                     }
 

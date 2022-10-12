@@ -13,7 +13,7 @@ import com.azure.cosmos.models.FeedRange;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class FullFidelityChangeFeedProcessorImpl extends ChangeFeedProcessorBase<ChangeFeedProcessorItem> {
+public class FullFidelityChangeFeedProcessorImpl extends ChangeFeedProcessorImplBase<ChangeFeedProcessorItem> {
 
     public FullFidelityChangeFeedProcessorImpl(
             String hostName,

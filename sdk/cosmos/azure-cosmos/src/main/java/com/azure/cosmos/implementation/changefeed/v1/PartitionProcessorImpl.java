@@ -10,8 +10,8 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundEx
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -48,6 +47,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private final ChangeFeedContextClient documentClient;
     private final Lease lease;
     private final Class<T> itemType;
+    private final ChangeFeedMode changeFeedMode;
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
@@ -58,17 +58,20 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                   ProcessorSettings settings,
                                   PartitionCheckpointer checkpointer,
                                   Lease lease,
-                                  Class<T> itemType) {
+                                  Class<T> itemType,
+                                  ChangeFeedMode changeFeedMode) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
         this.checkpointer = checkpointer;
         this.lease = lease;
         this.itemType = itemType;
+        this.changeFeedMode = changeFeedMode;
 
-        ChangeFeedState state = settings.getStartState();
-        this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
-        this.options.setMaxItemCount(settings.getMaxItemCount()).allVersionsAndDeletes();
+        this.options = PartitionProcessorHelper.createChangeFeedRequestOptionsForChangeFeedState(
+                settings.getStartState(),
+                settings.getMaxItemCount(),
+                this.changeFeedMode);
     }
 
     @Override
@@ -79,7 +82,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         this.checkpointer.setCancellationToken(cancellationToken);
 
         return Flux.just(this)
-            .flatMap( value -> {
+            .flatMap(value -> {
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.empty();
                 }
@@ -106,6 +109,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
+
                 final ChangeFeedState continuationState = ChangeFeedState.fromString(continuationToken);
                 checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
                 checkArgument(
@@ -113,10 +117,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         .getContinuation()
                         .getContinuationTokenCount() == 1,
                     "For ChangeFeedProcessor the continuation state should always have one range/continuation");
-                this.lastServerContinuationToken = continuationState
-                    .getContinuation()
-                    .getCurrentContinuationToken()
-                    .getToken();
+
+                this.lastServerContinuationToken = continuationToken;
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",
@@ -128,16 +130,13 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 Thread.currentThread().getId(),
                                 throwable))
                         .doOnSuccess((Void) -> {
-                            this.options =
-                                CosmosChangeFeedRequestOptions
-                                    .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
+                            this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
-                this.options =
-                    CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
+
+                this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());

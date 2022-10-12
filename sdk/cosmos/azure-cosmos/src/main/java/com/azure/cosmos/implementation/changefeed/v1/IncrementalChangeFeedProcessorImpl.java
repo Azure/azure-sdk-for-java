@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorBase<JsonNode> {
+public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorImplBase<JsonNode> {
 
     public IncrementalChangeFeedProcessorImpl(
             String hostName,

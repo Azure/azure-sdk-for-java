@@ -50,8 +50,8 @@ import java.util.function.Consumer;
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor, AutoCloseable{
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBase.class);
+public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProcessor, AutoCloseable{
+    private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorImplBase.class);
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
     private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
@@ -74,7 +74,7 @@ public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor,
     private volatile PartitionManager partitionManager;
 
 
-    public ChangeFeedProcessorBase(
+    public ChangeFeedProcessorImplBase(
             String hostName,
             CosmosAsyncContainer feedContainer,
             CosmosAsyncContainer leaseContainer,
@@ -255,7 +255,7 @@ public abstract class ChangeFeedProcessorBase<T> implements ChangeFeedProcessor,
     private Mono<ChangeFeedProcessor> initializeCollectionPropertiesForBuild() {
         return this.feedContextClient
                 .readDatabase(this.feedContextClient.getDatabaseClient(), null)
-                .map( databaseResourceResponse -> {
+                .map(databaseResourceResponse -> {
                     this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
                     return this.databaseResourceId;
                 })

@@ -36,8 +36,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
         this.leaseManager = leaseManager;
 
         // A flag to indicate to upstream whether the current lease which we get FeedRangeGoneException should be removed.
-        // For split scenario, no matter whether it is partition based lease or epk based lease, it will be replaced by the child leases
-        // so we need to remove the current lease in the end.
+        // For split, the parent lease will be replaced by the child leases. so we need to remove the current lease in the end.
         this.removeCurrentLease = true;
     }
 
@@ -67,7 +66,6 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                     }
 
                     // add the last range with the original max and the last min
-                    // TODO: make sure do not add range with min = max
                     epkRanges.add(new FeedRangeEpkImpl(new Range<>(min.get(), max.get(), true, false)));
                     return epkRanges;
                 })
