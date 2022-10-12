@@ -34,7 +34,7 @@ public final class SerializerUtils {
     }
 
     /**
-     * Serialize Map<String, OAuth2AuthorizedClient> to {@link String}.
+     * Serialize {@link Map} to {@link String}.
      * @param authorizedClients the map to be serialized. It will not be modified in this method.
      * @return The serialized {@link String}.
      */
@@ -49,7 +49,7 @@ public final class SerializerUtils {
     }
 
     /**
-     * Deserialize {@link String} to Map<String, OAuth2AuthorizedClient>.
+     * Deserialize {@link String} to {@link Map}.
      * @param authorizedClientsString the String to be deserialized
      * @return The deserialized {@link Map}. Return {@link Collections#emptyMap()} if authorizedClientsString is null.
      */
