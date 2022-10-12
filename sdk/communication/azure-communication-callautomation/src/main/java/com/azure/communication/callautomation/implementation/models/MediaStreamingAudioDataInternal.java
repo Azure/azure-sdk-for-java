@@ -6,13 +6,13 @@ package com.azure.communication.callautomation.implementation.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MediaStreamingAudioInternal model. */
-public final class MediaStreamingAudioInternal {
+public final class MediaStreamingAudioDataInternal {
 
     /*
      * The audio data.
      */
     @JsonProperty(value = "data")
-    private String audioData;
+    private String data;
 
     /*
      * The timestamp of when the media was sourced.
@@ -37,8 +37,8 @@ public final class MediaStreamingAudioInternal {
      *
      * @return the data value.
      */
-    public String getAudioData() {
-        return audioData;
+    public String getData() {
+        return data;
     }
 
     /**
