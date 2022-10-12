@@ -33,6 +33,11 @@ public final class SerializerUtils {
     private SerializerUtils() {
     }
 
+    /**
+     * Serialize Map<String, OAuth2AuthorizedClient> to {@link String}.
+     * @param authorizedClients the map to be serialized. It will not be modified in this method.
+     * @return The serialized {@link String}.
+     */
     public static String serializeOAuth2AuthorizedClientMap(Map<String, OAuth2AuthorizedClient> authorizedClients) {
         String result;
         try {
@@ -43,6 +48,11 @@ public final class SerializerUtils {
         return result;
     }
 
+    /**
+     * Deserialize {@link String} to Map<String, OAuth2AuthorizedClient>.
+     * @param authorizedClientsString the String to be deserialized
+     * @return The deserialized {@link Map}.
+     */
     public static Map<String, OAuth2AuthorizedClient> deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
         if (authorizedClientsString == null) {
             return Collections.emptyMap();
