@@ -35,7 +35,6 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -56,7 +55,6 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -2139,7 +2137,7 @@ public class ShareDirectoryAsyncClient {
             res.getValue().getSegment().getDirectoryItems()
                 .forEach(directoryItem -> {
                     try {
-                        shareFileItems.add(new ShareFileItem(decodeName(directoryItem.getName()),
+                        shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
                             true,
                             directoryItem.getFileId(),
                             ModelHelper.transformFileProperty(directoryItem.getProperties()),
@@ -2153,7 +2151,7 @@ public class ShareDirectoryAsyncClient {
             res.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> {
                     try {
-                        shareFileItems.add(new ShareFileItem(decodeName(fileItem.getName()),
+                        shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
                             false,
                             fileItem.getFileId(),
                             ModelHelper.transformFileProperty(fileItem.getProperties()),
@@ -2167,14 +2165,6 @@ public class ShareDirectoryAsyncClient {
         }
 
         return new ArrayList<>(shareFileItems);
-    }
-
-    private static String decodeName(StringEncoded stringEncoded) throws UnsupportedEncodingException {
-        if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
-            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
-        } else {
-            return stringEncoded.getContent();
-        }
     }
 
     /**

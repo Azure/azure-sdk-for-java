@@ -16,6 +16,7 @@ import com.azure.storage.file.share.implementation.models.InternalShareFileItemP
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
@@ -25,6 +26,9 @@ import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,10 +212,11 @@ public class ModelHelper {
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 
-    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
+    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem)
+        throws UnsupportedEncodingException {
         return new HandleItem()
             .setHandleId(handleItem.getHandleId())
-            .setPath(handleItem.getPath().getContent())
+            .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
             .setSessionId(handleItem.getSessionId())
             .setClientIp(handleItem.getClientIp())
             .setFileId(handleItem.getFileId())
@@ -223,8 +228,20 @@ public class ModelHelper {
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
         List<HandleItem> result = new ArrayList<>();
         handleItems.forEach(item -> {
-            result.add(transformHandleItem(item));
+            try {
+                result.add(transformHandleItem(item));
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+            }
         });
         return result;
+    }
+
+    public static String decodeName(StringEncoded stringEncoded) throws UnsupportedEncodingException {
+        if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
+            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
+        } else {
+            return stringEncoded.getContent();
+        }
     }
 }
