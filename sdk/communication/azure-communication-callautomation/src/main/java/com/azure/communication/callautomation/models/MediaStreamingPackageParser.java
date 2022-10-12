@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioDataInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingMetadataInternal;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
@@ -54,11 +54,11 @@ public class MediaStreamingPackageParser {
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             JsonNode jsonData = mapper.readTree(stringJson);
             if (stringJson.contains("AudioData")) {
-                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData, MediaStreamingAudioInternal.class);
-                return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
+                MediaStreamingAudioDataInternal audioInternal = mapper.convertValue(jsonData.get("audioData"), MediaStreamingAudioDataInternal.class);
+                return new MediaStreamingAudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
             }
             if (stringJson.contains("AudioMetadata")) {
-                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData, MediaStreamingMetadataInternal.class);
+                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), MediaStreamingMetadataInternal.class);
                 return new MediaStreamingMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
             }
             return null;
