@@ -8,8 +8,8 @@ This package contains Microsoft Azure DevCenter client library.
 
 Various documentation is available to help you get started
 
-- [API reference documentation][docs]
-- [Product documentation](https://azure.microsoft.com/services/dev-box/)
+- [Product documentation: Azure Deployment Environments][environments_documentation]
+- [Product documentation: Microsoft Dev Box][devbox_documentation]
 
 ## Getting started
 
@@ -125,7 +125,6 @@ for (BinaryData p: artifactListResponse) {
 SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
                 environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
 environmentDeleteResponse.waitForCompletion();
-
 ```
 
 ## Troubleshooting
@@ -143,7 +142,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
+[environments_documentation]: https://learn.microsoft.com/azure/deployment-environments/
+[devbox_documentation]: https://learn.microsoft.com/azure/dev-box/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/

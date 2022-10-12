@@ -14,6 +14,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.developer.devcenter.readme.devboxes
+        // BEGIN: com.azure.developer.devcenter.readme.createDevCenterClient
         String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
         String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
@@ -24,14 +25,18 @@ public final class ReadmeSamples {
                                 .tenantId(tenantId)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
-
+        // END: com.azure.developer.devcenter.readme.createDevCenterClient
+        
+        // BEGIN: com.azure.developer.devcenter.readme.createDevBoxClient
         DevBoxesClient devBoxClient =
                         new DevBoxesClientBuilder()
                                 .devCenter(devCenterName)
                                 .tenantId(tenantId)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
-
+        // END: com.azure.developer.devcenter.readme.createDevBoxClient
+        
+        // BEGIN: com.azure.developer.devcenter.readme.getProjectsAndPools
         // Find available Projects and Pools
         PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
         for (BinaryData p: projectListResponse) {
@@ -42,7 +47,9 @@ public final class ReadmeSamples {
         for (BinaryData p: poolListResponse) {
             System.out.println(p);
         }
-
+        // END: com.azure.developer.devcenter.readme.getProjectsAndPools
+        
+        // BEGIN: com.azure.developer.devcenter.readme.createAndConnectToDevBox
         // Provision a Dev Box
         BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
         SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
@@ -53,21 +60,27 @@ public final class ReadmeSamples {
         Response<BinaryData> remoteConnectionResponse =
                         devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
         System.out.println(remoteConnectionResponse.getValue());
-
+        // END: com.azure.developer.devcenter.readme.createAndConnectToDevBox
+        
+        // BEGIN: com.azure.developer.devcenter.readme.deleteDevBox
         // Tear down the Dev Box when we're finished:
         SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
                         devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
         devBoxDeleteResponse.waitForCompletion();        
+        // END: com.azure.developer.devcenter.readme.deleteDevBox
         // END: com.azure.developer.devcenter.readme.devboxes
 
         // BEGIN: com.azure.developer.devcenter.readme.environments
+        // BEGIN: com.azure.developer.devcenter.readme.createEnvironmentsClient
         EnvironmentsClient environmentsClient =
                         new EnvironmentsClientBuilder()
                                 .devCenter(devCenterName)
                                 .tenantId(tenantId)
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
-
+        // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
+        
+        // BEGIN: com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
         // Fetch available catalog items and environment types
         PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
         for (BinaryData p: catalogItemListResponse) {
@@ -78,12 +91,15 @@ public final class ReadmeSamples {
         for (BinaryData p: environmentTypesListResponse) {
             System.out.println(p);
         }
-
+        // END: com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
+        
+        // BEGIN: com.azure.developer.devcenter.readme.createEnvironment
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
         SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
                 environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
         environmentCreateResponse.waitForCompletion();
+        // END: com.azure.developer.devcenter.readme.createEnvironment
 
 
         // Fetch the deployment artifacts:
@@ -92,12 +108,13 @@ public final class ReadmeSamples {
             System.out.println(p);
         }
 
-
+        
+        // BEGIN: com.azure.developer.devcenter.readme.deleteEnvironment
         // Delete the environment when we're finished:
         SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
                         environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
         environmentDeleteResponse.waitForCompletion();
-
+        // END: com.azure.developer.devcenter.readme.deleteEnvironment
         // END: com.azure.developer.devcenter.readme.environments
     }
 }
