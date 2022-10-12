@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.BEARER;
 
-public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
+class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     private final String principalName1 = "principalName-1";
     private final String principalName2 = "principalName-2";
 
@@ -77,37 +77,37 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     private MockHttpServletResponse response;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.request = new MockHttpServletRequest();
         this.response = new MockHttpServletResponse();
     }
 
     @Test
-    public void loadAuthorizedClientWhenClientRegistrationIdIsNullThenThrowIllegalArgumentException() {
+    void loadAuthorizedClientWhenClientRegistrationIdIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.loadAuthorizedClient(null, null, this.request));
     }
 
     @Test
-    public void loadAuthorizedClientWhenPrincipalNameIsNullThenExceptionNotThrown() {
+    void loadAuthorizedClientWhenPrincipalNameIsNullThenExceptionNotThrown() {
         this.authorizedClientRepository.loadAuthorizedClient(this.registrationId1, null, this.request);
     }
 
     @Test
-    public void loadAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
+    void loadAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.loadAuthorizedClient(this.registrationId1, null, null));
     }
 
     @Test
-    public void loadAuthorizedClientWhenClientRegistrationNotFoundThenReturnNull() {
+    void loadAuthorizedClientWhenClientRegistrationNotFoundThenReturnNull() {
         OAuth2AuthorizedClient authorizedClient =
                 this.authorizedClientRepository.loadAuthorizedClient("registration-not-found", null, this.request);
         assertThat(authorizedClient).isNull();
     }
 
     @Test
-    public void loadAuthorizedClientWhenSavedThenReturnAuthorizedClient() {
+    void loadAuthorizedClientWhenSavedThenReturnAuthorizedClient() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
         OAuth2AuthorizedClient loadedAuthorizedClient =
                 this.authorizedClientRepository.loadAuthorizedClient(this.registrationId1, null, this.request);
@@ -115,30 +115,30 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     }
 
     @Test
-    public void saveAuthorizedClientWhenAuthorizedClientIsNullThenThrowIllegalArgumentException() {
+    void saveAuthorizedClientWhenAuthorizedClientIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.saveAuthorizedClient(null, null, this.request, this.response));
     }
 
     @Test
-    public void saveAuthorizedClientWhenAuthenticationIsNullThenExceptionNotThrown() {
+    void saveAuthorizedClientWhenAuthenticationIsNullThenExceptionNotThrown() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
     }
 
     @Test
-    public void saveAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
+    void saveAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, null, this.response));
     }
 
     @Test
-    public void saveAuthorizedClientWhenResponseIsNullThenThrowIllegalArgumentException() {
+    void saveAuthorizedClientWhenResponseIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, null));
     }
 
     @Test
-    public void saveAuthorizedClientWhenSavedThenSavedToSession() {
+    void saveAuthorizedClientWhenSavedThenSavedToSession() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
 
         HttpSession session = this.request.getSession(false);
@@ -153,35 +153,35 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     }
 
     @Test
-    public void removeAuthorizedClientWhenClientRegistrationIdIsNullThenThrowIllegalArgumentException() {
+    void removeAuthorizedClientWhenClientRegistrationIdIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.removeAuthorizedClient(null, null, this.request, this.response));
     }
 
     @Test
-    public void removeAuthorizedClientWhenPrincipalNameIsNullThenExceptionNotThrown() {
+    void removeAuthorizedClientWhenPrincipalNameIsNullThenExceptionNotThrown() {
         this.authorizedClientRepository.removeAuthorizedClient(this.registrationId1, null, this.request, this.response);
     }
 
     @Test
-    public void removeAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
+    void removeAuthorizedClientWhenRequestIsNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() ->
                 this.authorizedClientRepository.removeAuthorizedClient(this.registrationId1, null, null, this.response));
     }
 
     @Test
-    public void removeAuthorizedClientWhenResponseIsNullThenExceptionNotThrown() {
+    void removeAuthorizedClientWhenResponseIsNullThenExceptionNotThrown() {
         this.authorizedClientRepository.removeAuthorizedClient(this.registrationId1, null, this.request, null);
     }
 
     @Test
-    public void removeAuthorizedClientWhenNotSavedThenSessionNotCreated() {
+    void removeAuthorizedClientWhenNotSavedThenSessionNotCreated() {
         this.authorizedClientRepository.removeAuthorizedClient(this.registrationId2, null, this.request, this.response);
         assertThat(this.request.getSession(false)).isNull();
     }
 
     @Test
-    public void removeAuthorizedClientWhenClient1SavedAndClient2RemovedThenClient1NotRemoved() {
+    void removeAuthorizedClientWhenClient1SavedAndClient2RemovedThenClient1NotRemoved() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
         // Remove registrationId2 (never added so is not removed either)
         this.authorizedClientRepository.removeAuthorizedClient(this.registrationId2, null, this.request, this.response);
@@ -192,7 +192,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     }
 
     @Test
-    public void removeAuthorizedClientWhenSavedThenRemoved() {
+    void removeAuthorizedClientWhenSavedThenRemoved() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
         OAuth2AuthorizedClient loadedAuthorizedClient =
                 this.authorizedClientRepository.loadAuthorizedClient(this.registrationId1, null, this.request);
@@ -203,7 +203,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     }
 
     @Test
-    public void removeAuthorizedClientWhenSavedThenRemovedFromSession() {
+    void removeAuthorizedClientWhenSavedThenRemovedFromSession() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
         OAuth2AuthorizedClient loadedAuthorizedClient =
                 this.authorizedClientRepository.loadAuthorizedClient(this.registrationId1, null, this.request);
@@ -215,7 +215,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepositoryTest {
     }
 
     @Test
-    public void removeAuthorizedClientWhenClient1Client2SavedAndClient1RemovedThenClient2NotRemoved() {
+    void removeAuthorizedClientWhenClient1Client2SavedAndClient1RemovedThenClient2NotRemoved() {
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient1, null, this.request, this.response);
         this.authorizedClientRepository.saveAuthorizedClient(authorizedClient2, null, this.request, this.response);
         this.authorizedClientRepository.removeAuthorizedClient(this.registrationId1, null, this.request, this.response);
