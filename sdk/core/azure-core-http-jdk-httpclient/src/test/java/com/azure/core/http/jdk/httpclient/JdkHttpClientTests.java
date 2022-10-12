@@ -4,6 +4,8 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -42,6 +44,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
@@ -54,11 +57,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkHttpClientTests {
-
+    static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
 
@@ -70,6 +74,7 @@ public class JdkHttpClientTests {
     @BeforeAll
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options()
+            .extensions(new JdkHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
             .containerThreads(25)
@@ -79,6 +84,9 @@ public class JdkHttpClientTests {
         server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
         server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
+            .withTransformers()));
+        server.stubFor(get("/empty").willReturn(aResponse().withBody(new byte[0])));
         server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         server.start();
     }
@@ -330,7 +338,7 @@ public class JdkHttpClientTests {
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
-        int repetitions = 1000;
+        int repetitions = 100;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
@@ -351,7 +359,7 @@ public class JdkHttpClientTests {
     public void testRequestBodyEndsInErrorShouldPropagateToResponseSync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
-        int repetitions = 1000;
+        int repetitions = 100;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
@@ -385,7 +393,7 @@ public class JdkHttpClientTests {
     public void testConcurrentRequests() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
+        int numberOfRequests = 100; // 100 = 15.625MB of data
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
@@ -406,10 +414,9 @@ public class JdkHttpClientTests {
 
     @Test
     public void testConcurrentRequestsSync() {
-        int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
+        int numberOfRequests = 100; // 100 = 15.625MB of data
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
@@ -428,9 +435,64 @@ public class JdkHttpClientTests {
             .verify(Duration.ofSeconds(60));
     }
 
-    private Mono<HttpResponse> getResponse(String path) {
+    @Test
+    public void validateHeadersReturnAsIs() {
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        final String singleValueHeaderName = "singleValue";
+        final String singleValueHeaderValue = "value";
+
+        final String multiValueHeaderName = "Multi-value";
+        final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
+
+        HttpHeaders headers = new HttpHeaders()
+            .set(singleValueHeaderName, singleValueHeaderValue)
+            .set(multiValueHeaderName, multiValueHeaderValue);
+
+        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
+                headers, Flux.empty())))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                HttpHeaders responseHeaders = response.getHeaders();
+                HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
+                assertEquals(singleValueHeaderName, singleValueHeader.getName());
+                assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
+
+                HttpHeader multiValueHeader = responseHeaders.get("Multi-value");
+                assertEquals(multiValueHeaderName, multiValueHeader.getName());
+                assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void testEmptyBufferResponse() {
+        StepVerifier.create(getResponse("/empty").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
+            .expectNextCount(0)
+            .thenRequest(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testEmptyBufferedResponse() {
+        Context context = new Context("azure-eagerly-read-response", true);
+
+        StepVerifier.create(getResponse("/empty", context).flatMapMany(HttpResponse::getBody),
+                EMPTY_INITIAL_REQUEST_OPTIONS)
+            .expectNextCount(0)
+            .thenRequest(1)
+            .verifyComplete();
+    }
+
+    private static Mono<HttpResponse> getResponse(String path) {
+        return getResponse(path, Context.NONE);
+    }
+
+    private static Mono<HttpResponse> getResponse(String path, Context context) {
         HttpClient client = new JdkHttpClientBuilder().build();
-        return doRequest(client, path);
+        return doRequest(client, path, context);
     }
 
     private static URL url(WireMockServer server, String path) {
@@ -442,10 +504,11 @@ public class JdkHttpClientTests {
     }
 
     private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
+        int repetitions = 10240;
+        byte[] duplicateBytes = "abcdefghijklmnop".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * repetitions]; // 163840 bytes
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < repetitions; i++) {
             System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
@@ -459,7 +522,7 @@ public class JdkHttpClientTests {
             .verifyComplete();
     }
 
-    private void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, path);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -468,12 +531,16 @@ public class JdkHttpClientTests {
         Assertions.assertArrayEquals(expectedBody, outStream.toByteArray());
     }
 
-    private Mono<HttpResponse> doRequest(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request);
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
+        return doRequest(client, path, Context.NONE);
     }
 
-    private HttpResponse doRequestSync(HttpClient client, String path) {
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path, Context context) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        return client.send(request, context);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.sendSync(request, Context.NONE);
     }

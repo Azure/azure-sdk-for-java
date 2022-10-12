@@ -39,6 +39,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OkHttpAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
@@ -91,6 +92,7 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short").block();
+        assertNotNull(response);
 
         // Subscription:1
         StepVerifier.create(response.getBodyAsByteArray())
@@ -155,7 +157,7 @@ public class OkHttpAsyncHttpClientTests {
             .build();
 
         String contentChunk = "abcdefgh";
-        int repetitions = 1000;
+        int repetitions = 100;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
@@ -190,7 +192,7 @@ public class OkHttpAsyncHttpClientTests {
             .dispatcher(dispatcher)
             .build();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
+        int numberOfRequests = 100; // 100 = 15.625MB of data
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
@@ -260,10 +262,11 @@ public class OkHttpAsyncHttpClientTests {
     }
 
     private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
+        int repetitions = 10240;
+        byte[] duplicateBytes = "abcdefghijklmnop".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * repetitions]; // 163840 bytes
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < repetitions; i++) {
             System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 

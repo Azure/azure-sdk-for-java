@@ -222,7 +222,7 @@ public class NettyAsyncHttpClientTests {
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
-        int repetitions = 1000;
+        int repetitions = 100;
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
@@ -254,7 +254,7 @@ public class NettyAsyncHttpClientTests {
     public void testConcurrentRequests() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
+        int numberOfRequests = 100; // 100 = 15.625MB of data
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
@@ -507,10 +507,11 @@ public class NettyAsyncHttpClientTests {
     }
 
     private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
+        int repetitions = 10240;
+        byte[] duplicateBytes = "abcdefghijklmnop".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * repetitions]; // 163840 bytes
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < repetitions; i++) {
             System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 

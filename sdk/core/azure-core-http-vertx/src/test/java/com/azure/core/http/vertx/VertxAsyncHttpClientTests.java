@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -134,7 +133,7 @@ public class VertxAsyncHttpClientTests {
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
-        int repetitions = 1000;
+        int repetitions = 100;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
@@ -165,7 +164,7 @@ public class VertxAsyncHttpClientTests {
     public void testConcurrentRequests() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
 
-        int numberOfRequests = 100; // 100 = 100MB of data
+        int numberOfRequests = 100; // 100 = 15.625MB of data
         Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
@@ -265,10 +264,11 @@ public class VertxAsyncHttpClientTests {
     }
 
     private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
+        int repetitions = 10240;
+        byte[] duplicateBytes = "abcdefghijklmnop".getBytes(StandardCharsets.UTF_8);
+        byte[] longBody = new byte[duplicateBytes.length * repetitions]; // 163840 bytes
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < repetitions; i++) {
             System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
