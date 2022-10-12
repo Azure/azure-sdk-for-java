@@ -3,10 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -71,6 +73,33 @@ public class UsernamePasswordCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
         }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithUsernamePassword(request1, username, password)).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
+            // test
+           AccessToken accessToken = credential.getTokenSync(request1);
+           Assert.assertEquals(token1, accessToken.getToken());
+           Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+           accessToken = credential.getTokenSync(request2);
+           Assert.assertEquals(token2, accessToken.getToken());
+           Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+           Assert.assertNotNull(identityClientMock);
+        }
     }
 
     @Test
@@ -93,6 +122,23 @@ public class UsernamePasswordCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(t -> t instanceof MsalServiceException && "bad credential".equals(t.getMessage()))
                 .verify();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithUsernamePassword(request, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
+            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
+            when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        })) {
+            // test
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
+            try {
+                credential.getTokenSync(request);
+            } catch (Exception e) {
+                Assert.assertTrue(e instanceof MsalServiceException && "bad credential".equals(e.getMessage()));
+            }
             Assert.assertNotNull(identityClientMock);
         }
     }

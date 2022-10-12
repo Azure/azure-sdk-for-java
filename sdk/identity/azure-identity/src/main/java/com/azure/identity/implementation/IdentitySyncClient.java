@@ -341,6 +341,15 @@ public class IdentitySyncClient extends IdentityClientBase{
         }
     }
 
+    /**
+     * Get the configured identity client options.
+     *
+     * @return the client options.
+     */
+    public IdentityClientOptions getIdentityClientOptions() {
+        return options;
+    }
+
     @Override
     Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
         return null;
