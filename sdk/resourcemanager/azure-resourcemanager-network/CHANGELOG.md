@@ -6,8 +6,8 @@
 
 ### Breaking Changes
 
-- Removed unused classes `DdosCustomPolicyProtocol`, `DdosCustomPolicyTriggerSensitivityOverride`, `DdosSettingsProtectionCoverage` and `ProtocolCustomSettingsFormat`.
-- Remove unused methods in `DdosSettings`.
+- Introduced new top-level properties on the Public Ip Resource which allows customers to enable DDoS Protection as for a new feature called DDoS Per-IP SKU.
+- Removed properties from Legacy Custom Policy Resource.
 
 ### Bugs Fixed
 
