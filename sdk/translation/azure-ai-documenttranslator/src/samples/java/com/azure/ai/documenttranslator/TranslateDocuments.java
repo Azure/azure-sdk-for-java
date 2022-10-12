@@ -32,12 +32,12 @@ public class TranslateDocuments {
 
         // Step 1: Construct the request object
         JsonObject source = Json.createObjectBuilder()
-            .add("sourceUrl", "https://joheredidocs.blob.core.windows.net/samplesrc?sp=racwdl&st=2021-04-06T16:25:21Z&se=2023-04-07T00:25:21Z&spr=https&sv=2020-02-10&sr=c&sig=cx0HiY9hW69MKhT%2FCcbs4tqXfpNSW9Ty0W1hoMmPNaU%3D")
+            .add("sourceUrl", "SOURCE_URL")
             .build();
 
         JsonObject target = Json.createObjectBuilder()
             .add("language", "zh-Hans")
-            .add("targetUrl", "https://jianghaollctest.blob.core.windows.net/target-zh?st=2021-04-20T23%3A21%3A00Z&se=2021-04-21T23%3A21%3A00Z&sp=rwdl&sv=2015-12-11&sr=c&sig=Dw3NaXJR%2BUKzWpdm3eAQItEDN6Vd8HU5hgIGntZCK74%3D")
+            .add("targetUrl", "TARGET_URL")
             .build();
 
         JsonObject input = Json.createObjectBuilder()

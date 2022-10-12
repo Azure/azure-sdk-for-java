@@ -34,6 +34,10 @@ public final class GitCatalog {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of GitCatalog class. */
+    public GitCatalog() {
+    }
+
     /**
      * Get the uri property: Git URI.
      *

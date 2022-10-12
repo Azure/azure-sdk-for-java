@@ -11,6 +11,8 @@ import com.azure.communication.callautomation.models.events.CallDisconnectedEven
 import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
@@ -111,10 +113,14 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, PlayCompletedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
                 ret = mapper.convertValue(eventData, PlayFailedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCanceled")) {
+                ret = mapper.convertValue(eventData, PlayCanceled.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
                 ret = mapper.convertValue(eventData, RecognizeCompleted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeFailed")) {
                 ret = mapper.convertValue(eventData, RecognizeFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCanceled")) {
+                ret = mapper.convertValue(eventData, RecognizeCanceled.class);
             }
 
             return ret;

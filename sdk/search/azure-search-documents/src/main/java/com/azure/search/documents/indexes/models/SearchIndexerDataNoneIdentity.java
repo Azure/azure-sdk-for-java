@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "@odata.type",
         visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity")
+@JsonTypeName("#Microsoft.Azure.Search.DataNoneIdentity")
 @Immutable
 public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdentity {
     /*
@@ -26,5 +26,5 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
      */
     @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity";
+    private String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
 }

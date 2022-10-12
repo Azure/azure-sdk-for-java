@@ -23,6 +23,10 @@ public class CatalogUpdateProperties {
     @JsonProperty(value = "adoGit")
     private GitCatalog adoGit;
 
+    /** Creates an instance of CatalogUpdateProperties class. */
+    public CatalogUpdateProperties() {
+    }
+
     /**
      * Get the gitHub property: Properties for a GitHub catalog type.
      *

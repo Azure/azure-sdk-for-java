@@ -193,14 +193,14 @@ public final class NetworkConnectionImpl
         return this;
     }
 
-    public void runHealthChecks() {
-        serviceManager.networkConnections().runHealthChecks(resourceGroupName, networkConnectionName);
-    }
-
     public Response<Void> runHealthChecksWithResponse(Context context) {
         return serviceManager
             .networkConnections()
             .runHealthChecksWithResponse(resourceGroupName, networkConnectionName, context);
+    }
+
+    public void runHealthChecks() {
+        serviceManager.networkConnections().runHealthChecks(resourceGroupName, networkConnectionName);
     }
 
     public NetworkConnectionImpl withRegion(Region location) {

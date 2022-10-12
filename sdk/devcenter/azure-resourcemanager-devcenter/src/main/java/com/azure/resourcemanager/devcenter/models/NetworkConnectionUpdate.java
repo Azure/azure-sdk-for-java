@@ -21,6 +21,10 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private NetworkConnectionUpdateProperties innerProperties;
 
+    /** Creates an instance of NetworkConnectionUpdate class. */
+    public NetworkConnectionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a network connection resource to be updated.
      *

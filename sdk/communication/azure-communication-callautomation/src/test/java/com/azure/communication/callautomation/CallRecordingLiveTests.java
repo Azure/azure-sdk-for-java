@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
@@ -57,7 +56,7 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
 
             String ngrok = "https://localhost";
 
-            CreateCallResult createCallResult = client.createCall(new CreateCallOptions(sourceUser, targets, ngrok));
+            CreateCallResult createCallResult = client.createCall(sourceUser, targets, ngrok);
 
             assertNotNull(createCallResult);
             waitForOperationCompletion(10000);

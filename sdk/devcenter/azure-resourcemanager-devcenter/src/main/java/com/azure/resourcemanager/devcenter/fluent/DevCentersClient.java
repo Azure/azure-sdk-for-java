@@ -70,19 +70,6 @@ public interface DevCentersClient {
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a devcenter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DevCenterInner getByResourceGroup(String resourceGroupName, String devCenterName);
-
-    /**
-     * Gets a devcenter.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,6 +79,19 @@ public interface DevCentersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DevCenterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String devCenterName, Context context);
+
+    /**
+     * Gets a devcenter.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a devcenter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DevCenterInner getByResourceGroup(String resourceGroupName, String devCenterName);
 
     /**
      * Creates or updates a devcenter resource.
