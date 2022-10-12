@@ -16,6 +16,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 public class GsonJsonWriter extends JsonWriter {
     private static boolean initialized = false;
+    private static boolean attemptedInitialization = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 
     private static MethodHandle gsonWriterConstructor;
@@ -72,21 +73,28 @@ public class GsonJsonWriter extends JsonWriter {
 
     private GsonJsonWriter(Writer writer, JsonOptions options) {
         try {
-            if (!initialized) {
-                initialize();
-            }
+            initialize();
+
             gsonWriter = gsonWriterConstructor.invoke(writer);
             setLenientMethod.invoke(gsonWriter, options.isNonNumericNumbersSupported());
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
             } else {
-                throw new IllegalStateException("Incorrect Library Present");
+                throw new IllegalStateException("Gson is not present or an incorrect version is present.");
             }
         }
     }
 
-    static void initialize() throws ReflectiveOperationException {
+    static synchronized void initialize() throws ReflectiveOperationException {
+        if (initialized) {
+            return;
+        } else if (attemptedInitialization) {
+            throw new ReflectiveOperationException("Initialization of GsonJsonWriter has failed in the past.");
+        }
+
+        attemptedInitialization = true;
+
         Class<?> gsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
 
         gsonWriterConstructor = publicLookup.findConstructor(gsonWriterClass, methodType(void.class, Writer.class));

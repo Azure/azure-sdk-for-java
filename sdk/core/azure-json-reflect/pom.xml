@@ -127,6 +127,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
+          <source>17</source>
+          <target>17</target>
+          <testSource>1.8</testSource>
+          <testTarget>1.8</testTarget>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
