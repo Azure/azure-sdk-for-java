@@ -1,6 +1,15 @@
+- [Azure identity JDBC plugin library for Java](#azure-identity-jdbc-plugin-library-for-java)
+    * [Getting started](#getting-started)
+        + [Prerequisites](#prerequisites)
+    * [Key concepts](#key-concepts)
+    * [Examples](#examples)
+    * [Troubleshooting](#troubleshooting)
+    * [Next steps](#next-steps)
+    * [Contributing](#contributing)
+    
 # Azure identity JDBC plugin library for Java
 
-This package contains a template framework to get a token from Azure AD.
+This package contains a template framework to get a token from Azure Active Directory (Azure AD).
 For now, it is used by `azure-identity-providers-jdbc-mysql` and `azure-identity-providers-jdbc-postgresql` as the common framework
 to get a token as the password for connection.
 
@@ -14,8 +23,8 @@ to get a token as the password for connection.
 
 ## Key concepts
 
-Azure Identity Providers Core contains a common template framework for users to get a token from Azure AD and
-use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
+Azure Identity Providers Core contains a common template framework for users to get a token from Azure Active Directory (Azure AD) and
+use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure Active Directory (Azure AD) and use the
 token as a password to connect with MySQL.
 
 ## Examples
@@ -35,5 +44,5 @@ Other useful packages are:
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 <!-- LINKS -->
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-postgresql
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql

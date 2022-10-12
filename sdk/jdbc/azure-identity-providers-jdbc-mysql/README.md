@@ -1,9 +1,32 @@
+- [Azure identity JDBC MySQL plugin library for Java](#azure-identity-jdbc-mysql-plugin-library-for-java)
+  * [Getting started](#getting-started)
+    + [Prerequisites](#prerequisites)
+    + [Include the package](#include-the-package)
+      - [Include direct dependency](#include-direct-dependency)
+    + [Prepare the Azure Database for MySQL](#prepare-the-azure-database-for-mysql)
+      - [Prepare the working environment](#prepare-the-working-environment)
+      - [Create an Azure Database for MySQL server](#create-an-azure-database-for-mysql-server)
+      - [Configure a firewall rule for your MySQL server](#configure-a-firewall-rule-for-your-mysql-server)
+      - [Enable Azure Active Directory (Azure AD)-based authentication](#enable-azure-active-directory--azure-ad--based-authentication)
+  * [Key concepts](#key-concepts)
+    + [Azure Active Directory (Azure AD) authentication with MySQL](#azure-active-directory--azure-ad--authentication-with-mysql)
+    + [Architecture](#architecture)
+  * [Examples](#examples)
+    + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
+    + [Connect using managed identity](#connect-using-managed-identity)
+    + [Connect using service principal](#connect-using-service-principal)
+    + [Cloud Configuration](#cloud-configuration)
+  * [JDBC Parameters](#jdbc-parameters)
+  * [Troubleshooting](#troubleshooting)
+  * [Next steps](#next-steps)
+  * [Contributing](#contributing)
+  
 # Azure identity JDBC MySQL plugin library for Java
 
-This package contains the jdbc authentication plugin to authenticate with Azure AD for Azure hosted MySQL services.
+This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted MySQL services.
 
 [Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs]
-| [Quick start][quick_start_mysql]
+| [Quickstart][quick_start_mysql]
 
 ## Getting started
 
@@ -17,7 +40,7 @@ This package contains the jdbc authentication plugin to authenticate with Azure 
 
 ### Include the package
 
-Now the package is not included in the `azure-sdk-bom`, so it can only be included via a direct dependency.
+The package is not part of the `azure-sdk-bom` now, so it can only be included via a direct dependency.
 
 #### Include direct dependency
 
@@ -85,10 +108,10 @@ az mysql server firewall-rule create \
    
 ```
 
-#### Enable Azure AD-based authentication
+#### Enable Azure Active Directory (Azure AD)-based authentication
 
-To use Azure Active Directory access with Azure Database for MySQL, you should set the Azure AD admin user first. Only
-an Azure AD Admin user can create/enable users for Azure AD-based authentication.
+To use Azure Active Directory access with Azure Database for MySQL, you should set the Azure Active Directory (Azure AD) admin user first. Only
+an Azure Active Directory (Azure AD) Admin user can create/enable users for Azure Active Directory (Azure AD)-based authentication.
 
 ```Azure CLI
 az mysql server ad-admin create \
@@ -100,18 +123,18 @@ az mysql server ad-admin create \
 
 ## Key concepts
 
-### Azure AD authentication with MySQL
+### Azure Active Directory (Azure AD) authentication with MySQL
 
-Microsoft Azure Active Directory (Azure AD) authentication is a mechanism of connecting to Azure Database for MySQL
-using identities defined in Azure AD. With Azure AD authentication, you can manage database user identities and other
+Microsoft Azure Active Directory (Azure Active Directory (Azure AD)) authentication is a mechanism of connecting to Azure Database for MySQL
+using identities defined in Azure Active Directory (Azure AD). With Azure Active Directory (Azure AD) authentication, you can manage database user identities and other
 Microsoft services in a central location, which simplifies permission management.
 
-The following high-level diagram summarizes how authentication works using Azure AD authentication with Azure Database
+The following high-level diagram summarizes how authentication works using Azure Active Directory (Azure AD) authentication with Azure Database
 for MySQL. The arrows indicate communication pathways.
 
 ![mysql-architecture.png](img/mysql-architecture.png)
 
-To learn more about using Azure AD with MySQL, see Use (Azure Active Directory for authenticating with
+To learn more about using Azure Active Directory (Azure AD) with MySQL, see Use (Azure Active Directory for authenticating with
 MySQL)[Azure Active Directory for authenticating with MySQL]
 
 ### Architecture
@@ -221,9 +244,9 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-postgresql
-[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-core
-[source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql
+[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
 [quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql

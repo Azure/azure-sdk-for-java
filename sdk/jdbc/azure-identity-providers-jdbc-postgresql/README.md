@@ -1,9 +1,32 @@
+- [Azure identity JDBC PostgreSQL plugin library for Java](#azure-identity-jdbc-postgresql-plugin-library-for-java)
+  * [Getting started](#getting-started)
+    + [Prerequisites](#prerequisites)
+    + [Include the package](#include-the-package)
+      - [Include direct dependency](#include-direct-dependency)
+    + [Prepare the Azure Database for PostgreSQL](#prepare-the-azure-database-for-postgresql)
+      - [Prepare the working environment](#prepare-the-working-environment)
+      - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
+      - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
+    + [Enable Azure Active Directory (Azure AD)-based authentication](#enable-azure-active-directory--azure-ad--based-authentication)
+  * [Key concepts](#key-concepts)
+    + [Azure Active Directory (Azure AD) authentication with PostgreSQL](#azure-active-directory--azure-ad--authentication-with-postgresql)
+    + [Architecture](#architecture)
+  * [Examples](#examples)
+    + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
+    + [Connect using managed identity](#connect-using-managed-identity)
+    + [Connect using service principal](#connect-using-service-principal)
+    + [Cloud Configuration](#cloud-configuration)
+  * [JDBC Parameters](#jdbc-parameters)
+  * [Troubleshooting](#troubleshooting)
+  * [Next steps](#next-steps)
+  * [Contributing](#contributing)
+  
 # Azure identity JDBC PostgreSQL plugin library for Java
 
-This package contains the jdbc authentication plugin to authenticate with Azure AD for Azure hosted PostgreSQL services.
+This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted PostgreSQL services.
 
 [Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs]
-| [Quick start][quick_start_postgresql]
+| [Quickstart][quick_start_postgresql]
 
 ## Getting started
 
@@ -17,7 +40,7 @@ This package contains the jdbc authentication plugin to authenticate with Azure 
 
 ### Include the package
 
-Now the package is not included in the `azure-sdk-bom`, so it can only be included via a direct dependency.
+The package is not part of the `azure-sdk-bom` now, so it can only be included via a direct dependency.
 
 #### Include direct dependency
 
@@ -57,7 +80,7 @@ Replace the placeholders with the following values, which are used throughout th
   region closer to where you live. You can have the full list of available regions by entering az account
   list-locations.
 - <YOUR_POSTGRESQL_AD_NON_ADMIN_USERNAME>: The username of your PostgreSQL database server. Make ensure the username is
-  a valid user in your Azure AD tenant.
+  a valid user in your Azure Active Directory (Azure AD) tenant.
 - <YOUR_LOCAL_IP_ADDRESS>: The IP address of your local computer, from which you'll run your Spring Boot application.
   One convenient way to find it is to point your browser to [whatismyip.akamai.com][whatismyip.akamai.com].
 
@@ -88,10 +111,10 @@ az postgres server firewall-rule create \
     --output tsv
 ```
 
-### Enable Azure AD-based authentication
+### Enable Azure Active Directory (Azure AD)-based authentication
 
-To use Azure Active Directory access with Azure Database for PostgreSQL, you should set the Azure AD admin user first.
-Only an Azure AD Admin user can create/enable users for Azure AD-based authentication.
+To use Azure Active Directory access with Azure Database for PostgreSQL, you should set the Azure Active Directory (Azure AD) admin user first.
+Only an Azure Active Directory (Azure AD) Admin user can create/enable users for Azure Active Directory (Azure AD)-based authentication.
 
 ```Azure CLI
 az postgres server ad-admin create \
@@ -103,18 +126,18 @@ az postgres server ad-admin create \
 
 ## Key concepts
 
-### Azure AD authentication with PostgreSQL
+### Azure Active Directory (Azure AD) authentication with PostgreSQL
 
-Microsoft Azure Active Directory (Azure AD) authentication is a mechanism of connecting to Azure Database for PostgreSQL
-using identities defined in Azure AD. With Azure AD authentication, you can manage database user identities and other
+Microsoft Azure Active Directory (Azure Active Directory (Azure AD)) authentication is a mechanism of connecting to Azure Database for PostgreSQL
+using identities defined in Azure Active Directory (Azure AD). With Azure Active Directory (Azure AD) authentication, you can manage database user identities and other
 Microsoft services in a central location, which simplifies permission management.
 
-The following high-level diagram summarizes how authentication works using Azure AD authentication with Azure Database
+The following high-level diagram summarizes how authentication works using Azure Active Directory (Azure AD) authentication with Azure Database
 for PostgreSQL. The arrows indicate communication pathways.
 
 ![postgresql-architecture.png](img/postgresql-architecture.png)
 
-To learn more about using Azure AD with PostgreSQL, see Use (Use Azure Active Directory for authenticating with
+To learn more about using Azure Active Directory (Azure AD) with PostgreSQL, see Use (Use Azure Active Directory for authenticating with
 PostgreSQL)[Use Azure Active Directory for authenticating with PostgreSQL]
 
 ### Architecture
@@ -221,9 +244,9 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 <!-- LINKS -->
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-core
-[source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-postgresql
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-core
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-providers-jdbc-postgresql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
 [quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
