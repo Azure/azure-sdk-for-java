@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,6 +38,8 @@ public class MappingCosmosConverter
     implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty, Object,
     JsonNode>,
     ApplicationContextAware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingCosmosConverter.class);
 
     /**
      * Mapping context
@@ -83,7 +87,13 @@ public class MappingCosmosConverter
             }
 
             Assert.notNull(entity, "Entity is null.");
+            if (type.getSimpleName().contains("Audit")) {
+                LOGGER.error("The response from the Cosmos server is {}", jsonNode.toPrettyString());
+            }
             final ObjectNode objectNode = jsonNode.deepCopy();
+            if (type.getSimpleName().contains("Audit")) {
+                LOGGER.error("The copied json node is {}", objectNode.toPrettyString());
+            }
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
             final JsonNode idValue = jsonNode.get("id");
             if (idProperty != null) {
@@ -131,7 +141,14 @@ public class MappingCosmosConverter
 
         try {
             final String valueAsString = objectMapper.writeValueAsString(sourceEntity);
+            if (sourceEntity.getClass().getName().contains("Audit")) {
+                LOGGER.error("The writeValueAsString of {} is {} ", sourceEntity.getClass().getSimpleName(), valueAsString);
+            }
             cosmosObjectNode = (ObjectNode) objectMapper.readTree(valueAsString);
+
+            if (sourceEntity.getClass().getName().contains("Audit")) {
+                LOGGER.error("The readTree value of {} is {} ", sourceEntity.getClass().getSimpleName(), cosmosObjectNode);
+            }
         } catch (JsonProcessingException e) {
             throw new CosmosAccessException("Failed to map document value.", e);
         }
