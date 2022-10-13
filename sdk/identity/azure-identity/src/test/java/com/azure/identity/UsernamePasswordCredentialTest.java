@@ -91,14 +91,14 @@ public class UsernamePasswordCredentialTest {
             UsernamePasswordCredential credential =
                 new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
             // test
-           AccessToken accessToken = credential.getTokenSync(request1);
-           Assert.assertEquals(token1, accessToken.getToken());
-           Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
-           accessToken = credential.getTokenSync(request2);
-           Assert.assertEquals(token2, accessToken.getToken());
-           Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-           Assert.assertNotNull(identityClientMock);
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 

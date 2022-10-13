@@ -112,8 +112,11 @@ public class ChainedTokenCredential implements TokenCredential {
                         unavailableError + credential.getClass().getSimpleName()
                             + " authentication failed. Error Details: " + e.getMessage(),
                         null, e);
+                } else {
+                    if (e instanceof CredentialUnavailableException) {
+                        exceptions.add((CredentialUnavailableException) e);
+                    }
                 }
-                exceptions.add((CredentialUnavailableException) e);
                 LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
                     credential.getClass().getSimpleName());
             }

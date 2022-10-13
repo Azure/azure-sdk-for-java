@@ -74,7 +74,7 @@ class HttpPipelineAdapter implements IHttpClient {
             httpResponse.body(body);
         }
         httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-        HttpHeader::getValuesList)));
+            HttpHeader::getValuesList)));
         return httpResponse;
     }
 

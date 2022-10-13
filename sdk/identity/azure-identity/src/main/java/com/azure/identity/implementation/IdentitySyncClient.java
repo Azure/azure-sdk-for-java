@@ -86,13 +86,12 @@ public class IdentitySyncClient extends IdentityClientBase {
 
     private String parseClientAssertion() {
         if (clientAssertionFilePath != null) {
-            byte[] encoded = new byte[0];
             try {
-                encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+                byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+                return new String(encoded, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            return new String(encoded, StandardCharsets.UTF_8);
         } else {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Client Assertion File Path is not provided."

@@ -41,8 +41,11 @@ public class SynchronousAccessor<T> {
     public T getValue() {
         if (cache == null || shouldRefreshCache()) {
             lock.lock();
-            cache = cacheSupplier.get();
-            lock.unlock();
+            try {
+                cache = cacheSupplier.get();
+            } finally {
+                lock.unlock();
+            }
         }
         return cache;
     }
