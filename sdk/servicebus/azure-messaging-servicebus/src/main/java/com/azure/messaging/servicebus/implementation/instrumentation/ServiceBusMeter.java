@@ -196,7 +196,7 @@ public class ServiceBusMeter {
         private final AutoCloseable[] subscriptionsFailure = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
 
         CompositeSubscription(LongGauge settledSequenceNumber,
-        TelemetryAttributes[] settleSuccessAttributes, TelemetryAttributes[] settleFailureAttributes) {
+            TelemetryAttributes[] settleSuccessAttributes, TelemetryAttributes[] settleFailureAttributes) {
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
                 lastSeqNoSuccess[i] = new AtomicLong();
                 lastSeqNoFailure[i] = new AtomicLong();
