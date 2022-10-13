@@ -54,6 +54,7 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -121,9 +122,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     PageBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
+        EncryptionScope encryptionScope, String versionId, TransferValidationOptions transferValidation) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+            encryptionScope, versionId, transferValidation);
     }
 
     /**
@@ -140,7 +141,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+            getVersionId(), getValidationOptions());
     }
 
     /**
@@ -161,7 +162,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+            getVersionId(), getValidationOptions());
     }
 
     private static String pageRangeToString(PageRange pageRange) {

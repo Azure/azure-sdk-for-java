@@ -47,6 +47,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -115,6 +116,7 @@ public final class BlobContainerAsyncClient {
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
     private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope;
+    private final TransferValidationOptions transferValidation;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -131,7 +133,7 @@ public final class BlobContainerAsyncClient {
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, TransferValidationOptions transferValidation) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -144,6 +146,7 @@ public final class BlobContainerAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
+        this.transferValidation = transferValidation;
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {

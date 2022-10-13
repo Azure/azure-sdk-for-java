@@ -797,7 +797,7 @@ public class StorageCrc64Calculator {
     //
     // NB: uSizeA and/or uSizeB may be 0s (this trick may be used to "recompute" CRC for another initial value)
     //
-    private static long Concatenate(
+    public static long Concatenate(
         long uInitialCrcAB,
         long uInitialCrcA,
         long uFinalCrcA,

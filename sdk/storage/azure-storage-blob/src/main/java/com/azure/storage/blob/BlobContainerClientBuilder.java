@@ -32,10 +32,12 @@ import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.traits.TransferValidationTrait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,7 +69,8 @@ public final class BlobContainerClientBuilder implements
     AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
     HttpTrait<BlobContainerClientBuilder>,
     ConfigurationTrait<BlobContainerClientBuilder>,
-    EndpointTrait<BlobContainerClientBuilder> {
+    EndpointTrait<BlobContainerClientBuilder>,
+    TransferValidationTrait<BlobContainerClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -81,6 +84,7 @@ public final class BlobContainerClientBuilder implements
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
+    private TransferValidationOptions validationOptions = new TransferValidationOptions();
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -164,7 +168,7 @@ public final class BlobContainerClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
-            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope, validationOptions);
     }
 
     /**
@@ -525,6 +529,20 @@ public final class BlobContainerClientBuilder implements
     @Override
     public BlobContainerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the options for additional transfer validation.
+     *
+     * @param validationOptions A configured instance of {@link TransferValidationOptions}.
+     * @see TransferValidationOptions
+     * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code validationOptions} is {@code null}.
+     */
+    public BlobContainerClientBuilder transferValidationOptions(TransferValidationOptions validationOptions) {
+        this.validationOptions = Objects.requireNonNull(
+            validationOptions, "'validationOptions' cannot be null.");
         return this;
     }
 

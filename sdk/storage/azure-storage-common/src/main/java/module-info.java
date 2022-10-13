@@ -10,6 +10,13 @@ module com.azure.storage.common {
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;
 
+    exports com.azure.storage.common.traits to // FIXME this should not be a long-term solution
+        com.azure.storage.blob,
+        com.azure.storage.blob.cryptography,
+        com.azure.storage.file.share,
+        com.azure.storage.file.datalake,
+        com.azure.storage.queue;
+
     exports com.azure.storage.common.implementation to // FIXME this should not be a long-term solution
         com.azure.data.tables,
         com.azure.storage.internal.avro,

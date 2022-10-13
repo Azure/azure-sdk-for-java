@@ -26,6 +26,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -36,11 +37,13 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TransferValidationOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.traits.TransferValidationTrait;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -75,7 +78,8 @@ public final class SpecializedBlobClientBuilder implements
     AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
     HttpTrait<SpecializedBlobClientBuilder>,
     ConfigurationTrait<SpecializedBlobClientBuilder>,
-    EndpointTrait<SpecializedBlobClientBuilder> {
+    EndpointTrait<SpecializedBlobClientBuilder>,
+    TransferValidationTrait<SpecializedBlobClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -91,6 +95,7 @@ public final class SpecializedBlobClientBuilder implements
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
     private String sasToken;
+    private TransferValidationOptions validationOptions = new TransferValidationOptions();
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -133,7 +138,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            validationOptions);
     }
 
     /**
@@ -168,7 +174,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            validationOptions);
     }
 
     /**
@@ -202,7 +209,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            validationOptions);
     }
 
     /*
@@ -740,6 +748,20 @@ public final class SpecializedBlobClientBuilder implements
     @Override
     public SpecializedBlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the options for additional transfer validation.
+     *
+     * @param validationOptions A configured instance of {@link TransferValidationOptions}.
+     * @see TransferValidationOptions
+     * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code validationOptions} is {@code null}.
+     */
+    public SpecializedBlobClientBuilder transferValidationOptions(TransferValidationOptions validationOptions) {
+        this.validationOptions = Objects.requireNonNull(
+            validationOptions, "'validationOptions' cannot be null.");
         return this;
     }
 

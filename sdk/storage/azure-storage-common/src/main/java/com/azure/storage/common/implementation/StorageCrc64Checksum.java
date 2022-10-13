@@ -1,5 +1,7 @@
 package com.azure.storage.common.implementation;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.zip.Checksum;
 
 public class StorageCrc64Checksum implements Checksum {
@@ -26,6 +28,13 @@ public class StorageCrc64Checksum implements Checksum {
     @Override
     public long getValue() {
         return _uCrc;
+    }
+
+    public static byte[] getCrcBytes(long crc) {
+        ByteBuffer bb = ByteBuffer.allocate(Long.BYTES);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putLong(crc);
+        return bb.array();
     }
 
     @Override
