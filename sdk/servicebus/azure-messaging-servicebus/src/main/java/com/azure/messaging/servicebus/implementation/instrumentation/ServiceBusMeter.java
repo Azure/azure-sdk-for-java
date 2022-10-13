@@ -176,18 +176,27 @@ public class ServiceBusMeter {
             return NOOP_CLOSEABLE;
         }
 
-        CompositeSubscription subs = new CompositeSubscription();
-        lastSeqNoSubscription.set(subs);
-        return subs;
+        CompositeSubscription existingSubscription = lastSeqNoSubscription.get();
+        if (existingSubscription == null) {
+            CompositeSubscription subs = new CompositeSubscription(settledSequenceNumber, settleSuccessAttributes, settleFailureAttributes);
+            if (lastSeqNoSubscription.compareAndSet(null, subs)) {
+                return subs;
+            }
+            subs.close();
+        }
+
+        LOGGER.warning("Sequence number subscription has been already created.");
+        return existingSubscription;
     }
 
-    private class CompositeSubscription implements AutoCloseable {
+    private static class CompositeSubscription implements AutoCloseable {
         private final AtomicLong[] lastSeqNoSuccess = new AtomicLong[DISPOSITION_STATUSES_COUNT];
         private final AtomicLong[] lastSeqNoFailure = new AtomicLong[DISPOSITION_STATUSES_COUNT];
         private final AutoCloseable[] subscriptionsSuccess = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
         private final AutoCloseable[] subscriptionsFailure = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
 
-        CompositeSubscription() {
+        CompositeSubscription(LongGauge settledSequenceNumber,
+        TelemetryAttributes[] settleSuccessAttributes, TelemetryAttributes[] settleFailureAttributes) {
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
                 lastSeqNoSuccess[i] = new AtomicLong();
                 lastSeqNoFailure[i] = new AtomicLong();
