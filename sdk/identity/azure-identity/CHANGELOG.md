@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment in `IdentityClientOptions`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
