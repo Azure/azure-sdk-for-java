@@ -474,6 +474,12 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration sslHandshakeTimeoutMinDuration;
 
+        @JsonProperty()
+        private final Duration transientTimeoutDetectionDuration;
+
+        @JsonProperty()
+        private final int transientTimeoutDetectionThreshold;
+
         // endregion
 
         // region Constructors
@@ -508,6 +514,8 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIdle = builder.tcpKeepIdle;
             this.preferTcpNative = builder.preferTcpNative;
             this.sslHandshakeTimeoutMinDuration = builder.sslHandshakeTimeoutMinDuration;
+            this.transientTimeoutDetectionDuration = builder.transientTimeoutDetectionDuration;
+            this.transientTimeoutDetectionThreshold = builder.transientTimeoutDetectionThreshold;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.tcpNetworkRequestTimeout
@@ -542,6 +550,8 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
             this.preferTcpNative = true;
+            this.transientTimeoutDetectionDuration = Duration.ofSeconds(65L);
+            this.transientTimeoutDetectionThreshold = 10;
         }
 
         // endregion
@@ -644,6 +654,14 @@ public class RntbdTransportClient extends TransportClient {
 
         public long sslHandshakeTimeoutInMillis() {
             return Math.max(this.sslHandshakeTimeoutMinDuration.toMillis(), this.connectTimeout.toMillis());
+        }
+
+        public long transitTimeoutDetectionTimeInNanoTime() {
+            return this.transientTimeoutDetectionDuration.toNanos();
+        }
+
+        public int transientTimeoutDetectionThreshold() {
+            return this.transientTimeoutDetectionThreshold;
         }
 
         // endregion
@@ -804,6 +822,8 @@ public class RntbdTransportClient extends TransportClient {
             private int tcpKeepIdle;
             private boolean preferTcpNative;
             private Duration sslHandshakeTimeoutMinDuration;
+            private Duration transientTimeoutDetectionDuration;
+            private int transientTimeoutDetectionThreshold;
 
             // endregion
 
@@ -838,6 +858,8 @@ public class RntbdTransportClient extends TransportClient {
                 this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
                 this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
                 this.sslHandshakeTimeoutMinDuration = DEFAULT_OPTIONS.sslHandshakeTimeoutMinDuration;
+                this.transientTimeoutDetectionDuration = DEFAULT_OPTIONS.transientTimeoutDetectionDuration;
+                this.transientTimeoutDetectionThreshold = DEFAULT_OPTIONS.transientTimeoutDetectionThreshold;
             }
 
             // endregion

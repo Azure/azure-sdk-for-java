@@ -801,6 +801,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
 
+        // we have got successful response, so reset the timestamp
+        this.timestamps.resetTransitTimeout();
+
         // When decode completed, it means sdk has received the full response from server
         requestRecord.stage(
                 RntbdRequestRecord.Stage.RECEIVED,

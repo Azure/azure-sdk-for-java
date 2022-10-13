@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -54,6 +56,12 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     @JsonProperty
     private final long writeDelayLimitInNanos;
 
+    @JsonProperty
+    private final long transitTimeoutDetectionTimeInNanos;
+
+    @JsonProperty
+    private final int transitTimeoutThreshold;
+
     // endregion
 
     // region Constructors
@@ -73,7 +81,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.idleConnectionTimeoutInNanos = config.idleConnectionTimeoutInNanos();
         this.readDelayLimitInNanos = config.receiveHangDetectionTimeInNanos();
         this.writeDelayLimitInNanos = config.sendHangDetectionTimeInNanos();
-
+        this.transitTimeoutDetectionTimeInNanos = config.transitTimeoutDetectionTimeInNanos();
+        this.transitTimeoutThreshold = config.transitTimeoutThreshold();
     }
 
     // endregion
@@ -242,10 +251,10 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         final long writeHangDurationInNanos =
             currentTime - timestamps.lastChannelWriteAttemptNanoTime();
 
-        if (writeDelayInNanos > this.writeDelayLimitInNanos && writeHangDurationInNanos > writeHangGracePeriodInNanos) {
+        final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
+        final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
-            final int pendingRequestCount = requestManager.pendingRequestCount();
+        if (writeDelayInNanos > this.writeDelayLimitInNanos && writeHangDurationInNanos > writeHangGracePeriodInNanos) {
 
             logger.warn("{} health check failed due to nonresponding write: {lastChannelWriteAttemptNanoTime: {}, " +
                     "lastChannelWriteNanoTime: {}, writeDelayInNanos: {}, writeDelayLimitInNanos: {}, " +
@@ -273,9 +282,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         if (readDelay > this.readDelayLimitInNanos && readHangDuration > readHangGracePeriodInNanos) {
 
-            final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
-            final int pendingRequestCount = requestManager.pendingRequestCount();
-
             logger.warn("{} health check failed due to nonresponding read: {lastChannelWrite: {}, lastChannelRead: {}, "
                 + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
                 timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
@@ -286,6 +292,27 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                     + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6})", channel,
                 timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
                 this.readDelayLimitInNanos, rntbdContext, pendingRequestCount
+            );
+
+            return promise.setSuccess(msg);
+        }
+
+        final long transitTimeoutContinuousNanoTime = currentTime - timestamps.continuousTransitTimeoutEarliestNanoTime();
+        final int transitTimeoutCount = timestamps.continuousTransitTimeoutCount();
+        if (transitTimeoutContinuousNanoTime >= this.transitTimeoutDetectionTimeInNanos
+            && transitTimeoutCount >= this.transitTimeoutThreshold) {
+
+            String msg = MessageFormat.format(
+                    "{0} health check failed due to continuous transit timeout: (lastChannelWrite: {1}, lastChannelRead: {2}, "
+                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, transitTimeoutStartTime: {7}, transitTimeoutCount: {8})", channel,
+                    timestamps.lastChannelWriteNanoTime(),
+                    timestamps.lastChannelReadNanoTime(),
+                    readDelay,
+                    this.readDelayLimitInNanos,
+                    rntbdContext,
+                    pendingRequestCount,
+                    timestamps.continuousTransitTimeoutEarliestNanoTime(),
+                    timestamps.continuousTransitTimeoutCount
             );
 
             return promise.setSuccess(msg);
@@ -345,10 +372,18 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private static final AtomicLongFieldUpdater<Timestamps> lastWriteAttemptUpdater =
             newUpdater(Timestamps.class, "lastWriteAttemptNanoTime");
 
+        private static final AtomicReferenceFieldUpdater<Timestamps, Long> transitTimeoutTimestampUpdater =
+                AtomicReferenceFieldUpdater.newUpdater(Timestamps.class, Long.class, "transitTimeoutNanoTime");
+
+        private static final AtomicIntegerFieldUpdater<Timestamps> transitTimeoutCountUpdater =
+                AtomicIntegerFieldUpdater.newUpdater(Timestamps.class, "transitTimeoutCount");
+
         private volatile long lastPingNanoTime;
         private volatile long lastReadNanoTime;
         private volatile long lastWriteNanoTime;
         private volatile long lastWriteAttemptNanoTime;
+        private volatile long continuousTransitTimeoutEarliestNanoTime;
+        private volatile int continuousTransitTimeoutCount;
 
         public Timestamps() {
         }
@@ -360,6 +395,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             this.lastReadNanoTime = lastReadUpdater.get(other);
             this.lastWriteNanoTime = lastWriteUpdater.get(other);
             this.lastWriteAttemptNanoTime = lastWriteAttemptUpdater.get(other);
+            this.continuousTransitTimeoutEarliestNanoTime = transitTimeoutTimestampUpdater.get(other);
+            this.continuousTransitTimeoutCount = transitTimeoutCountUpdater.get(other);
         }
 
         public void channelPingCompleted() {
@@ -372,6 +409,16 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         public void channelWriteAttempted() {
             lastWriteUpdater.set(this, System.nanoTime());
+        }
+
+        public void transitTimeout() {
+            transitTimeoutTimestampUpdater.compareAndSet(this, null, System.nanoTime());
+            transitTimeoutCountUpdater.incrementAndGet(this);
+        }
+
+        public void resetTransitTimeout() {
+            transitTimeoutTimestampUpdater.set(this, null);
+            transitTimeoutCountUpdater.set(this, 0);
         }
 
         public void channelWriteCompleted() {
@@ -396,6 +443,16 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         @JsonProperty
         public long lastChannelWriteAttemptNanoTime() {
             return lastWriteAttemptUpdater.get(this);
+        }
+
+        @JsonProperty
+        public long continuousTransitTimeoutEarliestNanoTime() {
+            return transitTimeoutTimestampUpdater.get(this);
+        }
+
+        @JsonProperty
+        public int continuousTransitTimeoutCount() {
+            return transitTimeoutCountUpdater.get(this);
         }
 
         @Override
