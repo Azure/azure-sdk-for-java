@@ -16,6 +16,8 @@ import com.azure.storage.file.share.implementation.models.InternalShareFileItemP
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
@@ -24,6 +26,11 @@ import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelHelper {
 
@@ -203,5 +210,37 @@ public class ModelHelper {
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+    }
+
+    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
+        return new HandleItem()
+            .setHandleId(handleItem.getHandleId())
+            .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
+            .setSessionId(handleItem.getSessionId())
+            .setClientIp(handleItem.getClientIp())
+            .setFileId(handleItem.getFileId())
+            .setParentId(handleItem.getParentId())
+            .setLastReconnectTime(handleItem.getLastReconnectTime())
+            .setOpenTime(handleItem.getOpenTime());
+    }
+
+    public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
+        List<HandleItem> result = new ArrayList<>();
+        handleItems.forEach(item -> {
+            result.add(transformHandleItem(item));
+        });
+        return result;
+    }
+
+    public static String decodeName(StringEncoded stringEncoded) {
+        if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
+            try {
+                return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+            }
+        } else {
+            return stringEncoded.getContent();
+        }
     }
 }

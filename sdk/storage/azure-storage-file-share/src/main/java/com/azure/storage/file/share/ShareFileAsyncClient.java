@@ -2845,7 +2845,7 @@ public class ShareFileAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().getHandleList(),
+                    ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
