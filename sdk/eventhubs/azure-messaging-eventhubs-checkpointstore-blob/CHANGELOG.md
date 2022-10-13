@@ -2,6 +2,10 @@
 
 ## 1.16.0 (2022-10-13)
 
+### Breaking Changes
+
+- Remove `com.azure.messaging.eventhubs.checkpointstore.blob.Messages` from public API.
+
 ### Other Changes
 
 #### Dependency Updates
