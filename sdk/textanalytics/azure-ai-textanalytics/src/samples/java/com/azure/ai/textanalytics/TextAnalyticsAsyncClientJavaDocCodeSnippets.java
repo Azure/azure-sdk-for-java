@@ -844,6 +844,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                     System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                                         entity.getText(), entity.getCategory(), role.getName());
                                 });
+                                System.out.printf("\tRelation confidence score: %f.%n",
+                                    entityRelation.getConfidenceScore());
                             });
                         });
                     }));
@@ -910,6 +912,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                     System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                                         entity.getText(), entity.getCategory(), role.getName());
                                 });
+                                System.out.printf("\tRelation confidence score: %f.%n",
+                                    entityRelation.getConfidenceScore());
                             });
                         });
                     }));
@@ -982,6 +986,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                     System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
                                         entity.getText(), entity.getCategory(), role.getName());
                                 });
+                                System.out.printf("\tRelation confidence score: %f.%n",
+                                    entityRelation.getConfidenceScore());
                             });
                         });
                     }));
