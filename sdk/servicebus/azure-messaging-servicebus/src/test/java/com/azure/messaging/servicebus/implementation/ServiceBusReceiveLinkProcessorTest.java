@@ -30,7 +30,6 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -79,6 +79,8 @@ class ServiceBusReceiveLinkProcessorTest {
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
 
+    private int requestedMessages;
+
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
@@ -95,10 +97,17 @@ class ServiceBusReceiveLinkProcessorTest {
 
         linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
         linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
+        requestedMessages = 0;
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messagePublisher.flux());
         when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        doAnswer((arg) -> requestedMessages).when(link1).getRequestedMessages();
+        doAnswer((arg) -> requestedMessages += (int) arg.getArgument(0))
+            .when(link1).addRequestedMessages(anyInt());
+        doAnswer((arg) -> requestedMessages--)
+            .when(link1).decrementRequestedMessages();
+
     }
 
     @AfterEach
@@ -117,19 +126,6 @@ class ServiceBusReceiveLinkProcessorTest {
      */
     @Test
     void createNewLink() throws InterruptedException {
-        // Arrange
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-        // Add PREFETCH credits when publisher is subscribed
-        when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
-            countDownLatch.countDown();
-            return Mono.empty();
-        });
-        // Add 1 credit after onNext() first message
-        when(link1.addCredits(eq(1))).thenAnswer(invocation -> {
-            countDownLatch.countDown();
-            return Mono.empty();
-        });
-
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
@@ -150,9 +146,10 @@ class ServiceBusReceiveLinkProcessorTest {
         // dispose the processor
         processor.dispose();
 
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
-        Assertions.assertTrue(awaited);
+        // Add PREFETCH credits when publisher is subscribed
+        verify(link1, times(1)).addCredits(eq(PREFETCH));
+        // Add 1 credit after onNext() message1 and message2
+        verify(link1, times(2)).addCredits(eq(1));
     }
 
     /**
@@ -173,7 +170,10 @@ class ServiceBusReceiveLinkProcessorTest {
             .thenCancel()
             .verify();
 
-        verify(link1).addCredits(backpressure);  // request up to PREFETCH
+        // Add backpressure credits when publisher is subscribed
+        verify(link1, times(1)).addCredits(eq(backpressure));
+        // Won't re-fill the credit as there is no prefetch, so only addCredits base on downstream request number
+        verify(link1, times(0)).addCredits(eq(1));
     }
 
     /**
@@ -246,6 +246,7 @@ class ServiceBusReceiveLinkProcessorTest {
         when(link2.getEndpointStates()).thenReturn(connection2EndpointProcessor.flux());
         when(link2.receive()).thenReturn(Flux.create(sink -> sink.next(message2)));
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(link2.getRequestedMessages()).thenReturn(0, PREFETCH - 1);
 
         when(link3.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link3.receive()).thenReturn(Flux.create(sink -> {
@@ -253,6 +254,7 @@ class ServiceBusReceiveLinkProcessorTest {
             sink.next(message4);
         }));
         when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(link3.getRequestedMessages()).thenReturn(0,  PREFETCH - 1, PREFETCH - 1);
 
         when(link1.closeAsync()).thenReturn(Mono.empty());
         when(link2.closeAsync()).thenReturn(Mono.empty());
@@ -284,6 +286,17 @@ class ServiceBusReceiveLinkProcessorTest {
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
         assertNull(processor.getError());
+
+        verify(link1, times(1)).addCredits(eq(PREFETCH));
+        // Add 1 credit after onNext() message1
+        verify(link1, times(1)).addCredits(eq(1));
+        // Add PREFETCH credits for new link
+        verify(link2, times(1)).addCredits(eq(PREFETCH));
+        // Add 1 credit after onNext() message2
+        verify(link2, times(1)).addCredits(eq(1));
+        verify(link3, times(1)).addCredits(eq(PREFETCH));
+        // Add 1 credit after onNext() message3 and message4
+        verify(link3, times(2)).addCredits(eq(1));
     }
 
     /**
@@ -565,19 +578,8 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesFromFirstLink() throws InterruptedException {
+    void receivesFromFirstLink() {
         // Arrange
-        final CountDownLatch countDownLatch = new CountDownLatch(2);
-
-        when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
-            countDownLatch.countDown();
-            return Mono.empty();
-        });
-        when(link1.addCredits(eq(1))).thenAnswer(invocation -> {
-            countDownLatch.countDown();
-            return Mono.empty();
-        });
-
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
         // Act & Assert
@@ -597,6 +599,9 @@ class ServiceBusReceiveLinkProcessorTest {
 
         // dispose the processor
         processor.dispose();
+        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
+        verify(link1, times(1)).addCredits(eq(PREFETCH));
+        verify(link1, times(2)).addCredits(eq(1));
 
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -605,11 +610,6 @@ class ServiceBusReceiveLinkProcessorTest {
         final Integer creditValue = value.get();
 
         assertEquals(0, creditValue);
-
-        // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        final boolean awaited = countDownLatch.await(5, TimeUnit.SECONDS);
-        Assertions.assertTrue(awaited);
-
     }
 
     /**

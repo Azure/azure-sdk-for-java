@@ -609,9 +609,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
-            final int requested = link.getRequestedMessages();;
+            final int requested = link.getRequestedMessages();
             final int pending = queuedMessages + requested;
-            
+
             if (hasBackpressure) {
                 creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
             } else {
