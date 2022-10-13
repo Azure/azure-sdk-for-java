@@ -61,10 +61,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     // size() on Deque is O(n) operation, so we use an integer to keep track. All reads and writes to this are gated by
     // the `queueLock`.
     private final AtomicInteger pendingMessages = new AtomicInteger();
-    // link.getCredits() is thread-unsafe, so we use an Atomic to calculate adding credits. unreceivedMessages here
-    // present for the number of messages that are not received by the ServiceBusReceiveLinkProcessor, which includes
-    // messages received by link but buffered in the reactor-operator-chain.
-    private final AtomicInteger unreceivedMessages = new AtomicInteger();
     private final int minimumNumberOfMessages;
     private final int prefetch;
 
@@ -222,15 +218,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             currentLink = next;
             next.setEmptyCreditListener(() -> 0);
 
-            unreceivedMessages.set(0);
-
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().subscribe(
                     message -> {
                         synchronized (queueLock) {
                             messageQueue.add(message);
                             pendingMessages.incrementAndGet();
-                            unreceivedMessages.decrementAndGet();
+                            next.decrementRequestedMessages();
                         }
 
                         drain();
@@ -412,7 +406,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         Operators.addCap(REQUESTED, this, request);
 
-        final AmqpReceiveLink link = currentLink;
+        final ServiceBusReceiveLink link = currentLink;
         if (link == null) {
             return;
         }
@@ -570,21 +564,21 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         return true;
     }
 
-    private void checkAndAddCredits(AmqpReceiveLink link) {
+    private void checkAndAddCredits(ServiceBusReceiveLink link) {
         if (link == null) {
             return;
         }
 
         synchronized (lock) {
-            final int credits = getCreditsToAdd();
+            final int credits = getCreditsToAdd(link);
             if (credits > 0) {
-                unreceivedMessages.addAndGet(credits);
+                link.addRequestedMessages(credits);
                 link.addCredits(credits).subscribe();
             }
         }
     }
 
-    private int getCreditsToAdd() {
+    private int getCreditsToAdd(ServiceBusReceiveLink link) {
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long r = REQUESTED.get(this);
         final boolean hasBackpressure = r != Long.MAX_VALUE;
@@ -615,9 +609,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
-            final int unreceived = unreceivedMessages.get();
-            final int pending = queuedMessages + unreceived;
-
+            final int requested = link.getRequestedMessages();;
+            final int pending = queuedMessages + requested;
+            
             if (hasBackpressure) {
                 creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
             } else {
@@ -632,7 +626,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, r)
                 .addKeyValue("expectedTotalCredit", expectedTotalCredit)
                 .addKeyValue("queuedMessages", queuedMessages)
-                .addKeyValue("unreceivedMessages", unreceived)
+                .addKeyValue("requestedMessages", requested)
                 .addKeyValue("creditsToAdd", creditsToAdd)
                 .addKeyValue("messageQueueSize", messageQueue.size())
                 .log("Adding credits.");

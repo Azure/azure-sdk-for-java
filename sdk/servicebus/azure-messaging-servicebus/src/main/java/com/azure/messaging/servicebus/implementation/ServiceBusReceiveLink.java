@@ -37,4 +37,23 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink, AsyncCloseable {
      * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
      */
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
+
+    /**
+     * Gets the value of requested messages
+     *
+     * @return The value of requested messages
+     */
+    int getRequestedMessages();
+
+    /**
+     * Atomically adds the given number to requested messages
+     *
+     * @param messages Number of messages to add
+     */
+    void addRequestedMessages(int messages);
+
+    /**
+     * Atomically decrements requested messages
+     */
+    void decrementRequestedMessages();
 }

@@ -87,6 +87,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<String> sessionIdMono;
     private final Mono<OffsetDateTime> sessionLockedUntil;
 
+    // link.getCredits() is thread-unsafe, so we use an Atomic to calculate adding credits. requestedMessages here
+    // present for the number of messages that are still pending requested by the ServiceBusReceiveLinkProcessor,
+    // which includes unreceived and buffered messages.
+    private final AtomicInteger requestedMessages = new AtomicInteger();
+
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
         ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, Duration timeout,
         AmqpRetryPolicy retryPolicy) {
@@ -243,6 +248,21 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             // to propagate.
             return EMPTY_MESSAGE;
         }
+    }
+
+    @Override
+    public int getRequestedMessages() {
+        return requestedMessages.get();
+    }
+
+    @Override
+    public void addRequestedMessages(int messages) {
+        requestedMessages.addAndGet(messages);
+    }
+
+    @Override
+    public void decrementRequestedMessages() {
+        requestedMessages.decrementAndGet();
     }
 
     private Mono<Void> updateDispositionInternal(String lockToken, DeliveryState deliveryState) {
