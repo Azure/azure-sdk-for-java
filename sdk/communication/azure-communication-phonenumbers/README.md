@@ -70,7 +70,7 @@ The `direct routing` feature enables connecting your existing telephony infrastr
 The configuration is managed using the `SipRoutingClient`, which provides methods for setting up SIP trunks and voice routing rules, in order to properly handle calls for your telephony subnet.
 
 ### Initializing Client
-Client can be initialized using the Azure Active Directory Authentication.
+Clients can be initialized using the Azure Active Directory Authentication.
 
 ```java readme-sample-createPhoneNumberClientWithAAD
 // You can find your endpoint and access key from your resource in the Azure Portal
