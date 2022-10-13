@@ -24,6 +24,10 @@ public final class NginxConfigurationListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NginxConfigurationListResponse class. */
+    public NginxConfigurationListResponse() {
+    }
+
     /**
      * Get the value property: Results of a list operation.
      *
