@@ -28,6 +28,10 @@ public final class RegistryInfo {
     @JsonProperty(value = "registryPassword")
     private String registryPassword;
 
+    /** Creates an instance of RegistryInfo class. */
+    public RegistryInfo() {
+    }
+
     /**
      * Get the registryUrl property: registry server Url.
      *

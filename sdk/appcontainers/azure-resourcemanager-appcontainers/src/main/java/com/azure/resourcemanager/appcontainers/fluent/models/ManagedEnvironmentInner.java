@@ -8,14 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
+import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.EnvironmentSkuProperties;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
+import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** An environment for hosting container apps. */
 @Fluent
 public final class ManagedEnvironmentInner extends Resource {
+    /*
+     * SKU properties of the Environment.
+     */
+    @JsonProperty(value = "sku")
+    private EnvironmentSkuProperties sku;
+
     /*
      * Managed environment resource specific properties
      */
@@ -23,11 +33,34 @@ public final class ManagedEnvironmentInner extends Resource {
     private ManagedEnvironmentProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ManagedEnvironmentInner class. */
+    public ManagedEnvironmentInner() {
+    }
+
+    /**
+     * Get the sku property: SKU properties of the Environment.
+     *
+     * @return the sku value.
+     */
+    public EnvironmentSkuProperties sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: SKU properties of the Environment.
+     *
+     * @param sku the sku value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withSku(EnvironmentSkuProperties sku) {
+        this.sku = sku;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: Managed environment resource specific properties.
@@ -219,11 +252,69 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the customDomainConfiguration property: Custom domain configuration for the environment.
+     *
+     * @return the customDomainConfiguration value.
+     */
+    public CustomDomainConfiguration customDomainConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().customDomainConfiguration();
+    }
+
+    /**
+     * Set the customDomainConfiguration property: Custom domain configuration for the environment.
+     *
+     * @param customDomainConfiguration the customDomainConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withCustomDomainConfiguration(customDomainConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the eventStreamEndpoint property: The endpoint of the eventstream of the Environment.
+     *
+     * @return the eventStreamEndpoint value.
+     */
+    public String eventStreamEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventStreamEndpoint();
+    }
+
+    /**
+     * Get the workloadProfiles property: Workload profiles configured for the Managed Environment.
+     *
+     * @return the workloadProfiles value.
+     */
+    public List<WorkloadProfile> workloadProfiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadProfiles();
+    }
+
+    /**
+     * Set the workloadProfiles property: Workload profiles configured for the Managed Environment.
+     *
+     * @param workloadProfiles the workloadProfiles value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withWorkloadProfiles(List<WorkloadProfile> workloadProfiles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withWorkloadProfiles(workloadProfiles);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -41,15 +41,6 @@ public final class DaprComponentsImpl implements DaprComponents {
         return Utils.mapPage(inner, inner1 -> new DaprComponentImpl(inner1, this.manager()));
     }
 
-    public DaprComponent get(String resourceGroupName, String environmentName, String componentName) {
-        DaprComponentInner inner = this.serviceClient().get(resourceGroupName, environmentName, componentName);
-        if (inner != null) {
-            return new DaprComponentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DaprComponent> getWithResponse(
         String resourceGroupName, String environmentName, String componentName, Context context) {
         Response<DaprComponentInner> inner =
@@ -65,8 +56,13 @@ public final class DaprComponentsImpl implements DaprComponents {
         }
     }
 
-    public void delete(String resourceGroupName, String environmentName, String componentName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, componentName);
+    public DaprComponent get(String resourceGroupName, String environmentName, String componentName) {
+        DaprComponentInner inner = this.serviceClient().get(resourceGroupName, environmentName, componentName);
+        if (inner != null) {
+            return new DaprComponentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -74,14 +70,8 @@ public final class DaprComponentsImpl implements DaprComponents {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, componentName, context);
     }
 
-    public DaprSecretsCollection listSecrets(String resourceGroupName, String environmentName, String componentName) {
-        DaprSecretsCollectionInner inner =
-            this.serviceClient().listSecrets(resourceGroupName, environmentName, componentName);
-        if (inner != null) {
-            return new DaprSecretsCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String environmentName, String componentName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, componentName);
     }
 
     public Response<DaprSecretsCollection> listSecretsWithResponse(
@@ -94,6 +84,16 @@ public final class DaprComponentsImpl implements DaprComponents {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DaprSecretsCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DaprSecretsCollection listSecrets(String resourceGroupName, String environmentName, String componentName) {
+        DaprSecretsCollectionInner inner =
+            this.serviceClient().listSecrets(resourceGroupName, environmentName, componentName);
+        if (inner != null) {
+            return new DaprSecretsCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

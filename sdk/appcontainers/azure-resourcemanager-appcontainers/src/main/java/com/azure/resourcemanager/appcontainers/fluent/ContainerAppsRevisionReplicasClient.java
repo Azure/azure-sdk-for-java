@@ -20,22 +20,6 @@ public interface ContainerAppsRevisionReplicasClient {
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @param replicaName Name of the Container App Revision Replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replica for a Container App Revision.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner getReplica(String resourceGroupName, String containerAppName, String revisionName, String replicaName);
-
-    /**
-     * Get a replica for a Container App Revision.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param replicaName Name of the Container App Revision Replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -48,19 +32,20 @@ public interface ContainerAppsRevisionReplicasClient {
         String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context);
 
     /**
-     * List replicas for a Container App Revision.
+     * Get a replica for a Container App Revision.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
+     * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revision Replicas collection ARM resource.
+     * @return a replica for a Container App Revision.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName);
+    ReplicaInner getReplica(String resourceGroupName, String containerAppName, String revisionName, String replicaName);
 
     /**
      * List replicas for a Container App Revision.
@@ -78,4 +63,19 @@ public interface ContainerAppsRevisionReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ReplicaCollectionInner> listReplicasWithResponse(
         String resourceGroupName, String containerAppName, String revisionName, Context context);
+
+    /**
+     * List replicas for a Container App Revision.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param revisionName Name of the Container App Revision.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Revision Replicas collection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName);
 }
