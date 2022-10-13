@@ -13,9 +13,9 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: 706290C54CCC43B487698E5C8D544FAF Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:53Z",
+      "X-MSEdge-Ref" : "Ref A: 4FBE7C06D7AC482999D8A8FD382D14BB Ref B: PAOEDGE0521 Ref C: 2022-10-13T21:14:20Z",
       "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in query are invalid, out of range, or not in the expected format\"}}",
-      "Date" : "Thu, 29 Sep 2022 21:00:52 GMT",
+      "Date" : "Thu, 13 Oct 2022 21:14:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

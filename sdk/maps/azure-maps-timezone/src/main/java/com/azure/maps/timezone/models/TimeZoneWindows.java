@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TimezoneWindows model. */
+/** The TimeZoneWindows model. */
 @Fluent
-public final class TimezoneWindows {
+public final class TimeZoneWindows {
     /*
      * Windows Id property
      */
@@ -29,8 +29,8 @@ public final class TimezoneWindows {
     @JsonProperty(value = "IanaIds")
     private List<String> ianaIds;
 
-    /** Set default TimezoneWindows constructor to private */
-    private TimezoneWindows() {}
+    /** Set default TimeZoneWindows constructor to private */
+    private TimeZoneWindows() {}
 
     /**
      * Get the windowsId property: Windows Id property.

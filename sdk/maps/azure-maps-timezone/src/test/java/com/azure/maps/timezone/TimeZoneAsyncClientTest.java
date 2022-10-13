@@ -11,8 +11,8 @@ import java.time.Duration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoPosition;
-import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
-import com.azure.maps.timezone.models.TimezoneIdOptions;
+import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
+import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.models.TimezoneOptions;
 
 import org.junit.jupiter.api.AfterAll;
@@ -36,16 +36,16 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-    private TimeZoneAsyncClient getTimeZoneAsyncClient(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    private TimeZoneAsyncClient getTimeZoneAsyncClient(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         return getTimeZoneAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
     // Test async get timezone by id
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetDataForPoints(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetDataForPoints(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneById(options))
             .assertNext(actualResults -> {
@@ -61,9 +61,9 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncGetDataForPointsWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .assertNext(response -> {
@@ -78,9 +78,9 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .verifyErrorSatisfies(ex -> {
@@ -92,10 +92,10 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Test async get timezone by coordinates
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetTimezoneByCoordinates(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetTimezoneByCoordinates(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinates(options))
             .assertNext(actualResults -> {
                 try {
@@ -110,10 +110,10 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null))
             .assertNext(response -> {
                 try {
@@ -127,10 +127,10 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testInvalidAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testInvalidAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-10000, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -141,7 +141,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Test async get windows timezone ids
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetWindowsTimezoneIds(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetWindowsTimezoneIds(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getWindowsTimezoneIds())
             .assertNext(actualResults -> {
@@ -157,7 +157,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testInvalidAsyncGetWindowsTimezoneIds(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testInvalidAsyncGetWindowsTimezoneIds(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getWindowsTimezoneIdsWithResponse(null))
             .assertNext(response -> {
@@ -172,7 +172,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Test async get iana timezone ids
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetIanaTimezoneIds(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetIanaTimezoneIds(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getIanaTimezoneIds())
             .assertNext(actualResults -> {
@@ -188,7 +188,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testGetIanaTimezoneIdsWithResponseWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testGetIanaTimezoneIdsWithResponseWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getIanaTimezoneIdsWithResponse(null))
             .assertNext(response -> {
@@ -203,7 +203,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Test async get iana version 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetIanaVersion(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetIanaVersion(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getIanaVersion())
             .assertNext(actualResults -> {
@@ -219,7 +219,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetIanaVersionWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncGetIanaVersionWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getIanaVersionWithResponse(null))
             .assertNext(response -> {
@@ -234,7 +234,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Test async get convert windows timezone to iana
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetConvertWindowsTimezoneToIana(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
+    public void testAsyncGetConvertWindowsTimezoneToIana(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.convertWindowsTimezoneToIana("pacific standard time", null))
             .assertNext(actualResults -> {
@@ -250,7 +250,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncGetConvertWindowsTimezoneToIanaWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncGetConvertWindowsTimezoneToIanaWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.convertWindowsTimezoneToIanaWithResponse("pacific standard time", null, null))
             .assertNext(response -> {
@@ -265,7 +265,7 @@ public class TimeZoneAsyncClientTest extends TimeZoneClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetConvertWindowsTimezoneToIanaWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetConvertWindowsTimezoneToIanaWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneAsyncClient client = getTimeZoneAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.convertWindowsTimezoneToIanaWithResponse("", null, null))
             .verifyErrorSatisfies(ex -> {

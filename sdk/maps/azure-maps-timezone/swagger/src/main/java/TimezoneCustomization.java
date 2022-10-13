@@ -1,6 +1,5 @@
-import java.util.Arrays;
-
 import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
@@ -16,10 +15,10 @@ public class TimezoneCustomization extends Customization {
         customizeCountryRecord(models);
 
         // customize timezone id
-        customizeTimezoneId(models);
+        customizeTimeZoneId(models);
 
         // customize timezone names
-        customizeTimezoneNames(models);
+        customizeTimeZoneNames(models);
 
         // customize reference time
         customizeReferenceTime(models);
@@ -30,41 +29,37 @@ public class TimezoneCustomization extends Customization {
         // customize iana id
         customizeIanaId(models);
 
-        // customize timezone windows
-        customizeTimezoneWindows(models);
+        // customize timeZone windows
+        customizeTimeZoneWindows(models);
 
-        // customize Timezone Iana Version Result
-        customizeTimezoneIanaVersionResult(models);
+        // customize TimeZone Iana Version Result
+        customizeTimeZoneIanaVersionResult(models);
 
-        // customize Timezone Result
-        customizeTimezoneResult(models);
+        // customize TimeZone Result
+        customizeTimeZoneResult(models);
     }
 
     // Customizes the country record class
     private void customizeCountryRecord(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("CountryRecord");
 
-        classCustomization.addConstructor(
-            "private CountryRecord() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default CountryRecord constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public CountryRecord()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default CountryRecord constructor to private");
     }
 
     // Customizes the timezone names class
-    private void customizeTimezoneNames(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TimezoneNames");
+    private void customizeTimeZoneNames(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimeZoneNames");
 
-        classCustomization.addConstructor(
-            "private TimezoneNames() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default TimezoneNames constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneNames()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default TimeZoneNames constructor to private");
     }
 
     // Customizes the timezone id class
-    private void customizeTimezoneId(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TimezoneId");
+    private void customizeTimeZoneId(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimeZoneId");
         classCustomization.removeMethod("getRepresentativePoint");
         // Get representative point
         classCustomization.addMethod(
@@ -76,11 +71,9 @@ public class TimezoneCustomization extends Customization {
             .setReturn("Returns a {@link GeoPosition} coordinate.");
         classCustomization.addImports("com.azure.core.models.GeoPosition");
 
-        classCustomization.addConstructor(
-            "private TimezoneId() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default TimezoneId constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneId()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default TimeZoneId constructor to private");
     }
 
     // Customizes the reference time class
@@ -90,12 +83,6 @@ public class TimezoneCustomization extends Customization {
         classCustomization.removeMethod("getDaylightSavings");
         classCustomization.removeMethod("getWallTime");
 
-        classCustomization.addConstructor(
-            "private ReferenceTime() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("ReferenceTime constructor");
-        
         classCustomization.addConstructor(
             "private ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
             "   this.daylightSavings = daylightSavings.toString();\n" + 
@@ -141,6 +128,10 @@ public class TimezoneCustomization extends Customization {
 
         classCustomization.addImports("java.time.ZoneOffset");
         classCustomization.addImports("java.time.OffsetDateTime");
+
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public ReferenceTime()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default ReferenceTime constructor to private");
     }
 
     // Customizes the time transition class
@@ -149,12 +140,6 @@ public class TimezoneCustomization extends Customization {
         classCustomization.removeMethod("getStandardOffset");
         classCustomization.removeMethod("getDaylightSavings");
 
-        classCustomization.addConstructor(
-            "private TimeTransition() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("TimeTransition constructor");
-        
         classCustomization.addConstructor(
             "private TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
             "   this.daylightSavings = daylightSavings.toString();\n" + 
@@ -190,6 +175,11 @@ public class TimezoneCustomization extends Customization {
             .setReturn("Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp.");
 
             classCustomization.addImports("java.time.ZoneOffset");
+
+            ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeTransition()");
+            constructorCustomization.setModifier(2);
+            constructorCustomization.getJavadoc().setDescription("Set default TimeTransition constructor to private");
+    
     }
 
     // Customizes the iana id class
@@ -199,43 +189,34 @@ public class TimezoneCustomization extends Customization {
         methodCustomization.rename("getAlias");
         MethodCustomization methodCustomization2 = classCustomization.getMethod("isHasZone1970Location");
         methodCustomization2.rename("getHasZone1970Location");
-        classCustomization.addConstructor(
-            "private IanaId() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default IanaId constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public IanaId()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default IanaId constructor to private");
     }
     
     // Customizes the timezone windows class
-    private void customizeTimezoneWindows(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TimezoneWindows");
+    private void customizeTimeZoneWindows(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimeZoneWindows");
         classCustomization.removeMethod("setIanaIds");
-        classCustomization.addConstructor(
-            "private TimezoneWindows() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default TimezoneWindows constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneWindows()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default TimeZoneWindows constructor to private");
     }
 
-    // Customizes the Timezone Iana Version Result
-    private void customizeTimezoneIanaVersionResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TimezoneIanaVersionResult");
+    // Customizes the TimeZone Iana Version Result
+    private void customizeTimeZoneIanaVersionResult(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimeZoneIanaVersionResult");
 
-        classCustomization.addConstructor(
-            "private TimezoneIanaVersionResult() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default TimezoneIanaVersionResult constructor to private");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneIanaVersionResult()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default TimeZoneIanaVersionResult constructor to private");
     }
 
     // Customizes the timezone result class
-    private void customizeTimezoneResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TimezoneResult");
-
-        classCustomization.addConstructor(
-            "private TimezoneResult() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default TimezoneResult constructor to private");
+    private void customizeTimeZoneResult(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimeZoneResult");
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneResult()");
+        constructorCustomization.setModifier(2);
+        constructorCustomization.getJavadoc().setDescription("Set default TimeZoneResult constructor to private");
     }
 }

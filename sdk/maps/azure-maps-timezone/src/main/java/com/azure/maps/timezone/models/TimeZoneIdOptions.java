@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Organizes inputs for get timezone by ID
  */
-public final class TimezoneIdOptions {
+public final class TimeZoneIdOptions {
     private String timezoneId;
     private String acceptLanguage;
     private TimezoneOptions options;
@@ -20,7 +20,7 @@ public final class TimezoneIdOptions {
      * TimezoneIdOptions constructor
      * @param timezoneId the IANA time zone ID.
      */
-    public TimezoneIdOptions(String timezoneId) {
+    public TimeZoneIdOptions(String timezoneId) {
         this.timezoneId = timezoneId;
     }
 
@@ -37,7 +37,7 @@ public final class TimezoneIdOptions {
      * @param timezoneId the IANA time zone ID.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setTimezoneId(String timezoneId) {
+    public TimeZoneIdOptions setTimezoneId(String timezoneId) {
         this.timezoneId = timezoneId;
         return this;
     }
@@ -59,7 +59,7 @@ public final class TimezoneIdOptions {
      *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setLanguage(String acceptLanguage) {
+    public TimeZoneIdOptions setLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -77,7 +77,7 @@ public final class TimezoneIdOptions {
      * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setOptions(TimezoneOptions options) {
+    public TimeZoneIdOptions setOptions(TimezoneOptions options) {
         this.options = options;
         return this;
     }
@@ -97,7 +97,7 @@ public final class TimezoneIdOptions {
      *     machine time serving the request.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setTimestamp(OffsetDateTime timeStamp) {
+    public TimeZoneIdOptions setTimestamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }
@@ -117,7 +117,7 @@ public final class TimezoneIdOptions {
      *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setDaylightSavingsTime(OffsetDateTime daylightSavingsTimeFrom) {
+    public TimeZoneIdOptions setDaylightSavingsTime(OffsetDateTime daylightSavingsTimeFrom) {
         this.daylightSavingsTimeFrom = daylightSavingsTimeFrom;
         return this;
     }
@@ -137,7 +137,7 @@ public final class TimezoneIdOptions {
      *     for which DST transitions are requested, only applies when "options" = all or "options" = transitions.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setDaylightSavingsTimeLastingYears(Integer daylightSavingsTimeLastingYears) {
+    public TimeZoneIdOptions setDaylightSavingsTimeLastingYears(Integer daylightSavingsTimeLastingYears) {
         this.daylightSavingsTimeLastingYears = daylightSavingsTimeLastingYears;
         return this;
     }

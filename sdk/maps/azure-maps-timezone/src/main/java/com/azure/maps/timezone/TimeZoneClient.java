@@ -12,11 +12,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.maps.timezone.implementation.models.ErrorResponseException;
 import com.azure.maps.timezone.models.IanaId;
-import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
-import com.azure.maps.timezone.models.TimezoneIdOptions;
-import com.azure.maps.timezone.models.TimezoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimezoneResult;
-import com.azure.maps.timezone.models.TimezoneWindows;
+import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
+import com.azure.maps.timezone.models.TimeZoneIdOptions;
+import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneResult;
+import com.azure.maps.timezone.models.TimeZoneWindows;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public final class TimeZoneClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneById&#40;options&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
@@ -69,7 +69,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimezoneResult getTimezoneById(TimezoneIdOptions options) {
+    public TimeZoneResult getTimezoneById(TimeZoneIdOptions options) {
         return this.asyncClient.getTimezoneById(options).block();
     }
 
@@ -77,7 +77,7 @@ public final class TimeZoneClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneById&#40;options&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
@@ -94,7 +94,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TimezoneResult> getTimezoneByIdWithResponse(TimezoneIdOptions options, Context context) {
+    public Response<TimeZoneResult> getTimezoneByIdWithResponse(TimeZoneIdOptions options, Context context) {
         return this.asyncClient.getTimezoneByIdWithResponse(options, context).block();
     }
 
@@ -103,7 +103,7 @@ public final class TimeZoneClient {
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition cd = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op = new TimeZoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
@@ -120,7 +120,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimezoneResult getTimezoneByCoordinates(TimezoneCoordinateOptions options) {
+    public TimeZoneResult getTimezoneByCoordinates(TimeZoneCoordinateOptions options) {
         return this.asyncClient.getTimezoneByCoordinates(options).block();
     }
 
@@ -129,7 +129,7 @@ public final class TimeZoneClient {
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition cd = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op = new TimeZoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
@@ -147,7 +147,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TimezoneResult> getTimezoneByCoordinatesWithResponse(TimezoneCoordinateOptions options, Context context) {
+    public Response<TimeZoneResult> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options, Context context) {
         return this.asyncClient.getTimezoneByCoordinatesWithResponse(options, context).block();
     }
 
@@ -169,7 +169,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TimezoneWindows> getWindowsTimezoneIds() {
+    public List<TimeZoneWindows> getWindowsTimezoneIds() {
         return this.asyncClient.getWindowsTimezoneIds().block();
     }
 
@@ -192,7 +192,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<TimezoneWindows>> getWindowsTimezoneIdsWithResponse(Context context) {
+    public Response<List<TimeZoneWindows>> getWindowsTimezoneIdsWithResponse(Context context) {
         return this.asyncClient.getWindowsTimezoneIdsWithResponse(context).block();
     }
 
@@ -261,7 +261,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimezoneIanaVersionResult getIanaVersion() {
+    public TimeZoneIanaVersionResult getIanaVersion() {
         return this.asyncClient.getIanaVersion().block();
     }
 
@@ -284,7 +284,7 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TimezoneIanaVersionResult> getIanaVersionWithResponse(Context context) {
+    public Response<TimeZoneIanaVersionResult> getIanaVersionWithResponse(Context context) {
         return this.asyncClient.getIanaVersionWithResponse(context).block();
     }
 

@@ -14,12 +14,12 @@ import com.azure.maps.timezone.implementation.TimezonesImpl;
 import com.azure.maps.timezone.implementation.helper.Utility;
 import com.azure.maps.timezone.implementation.models.ErrorResponseException;
 import com.azure.maps.timezone.models.IanaId;
-import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
-import com.azure.maps.timezone.models.TimezoneIdOptions;
+import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
+import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.implementation.models.JsonFormat;
-import com.azure.maps.timezone.models.TimezoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimezoneResult;
-import com.azure.maps.timezone.models.TimezoneWindows;
+import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneResult;
+import com.azure.maps.timezone.models.TimeZoneWindows;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +56,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -72,8 +72,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TimezoneResult> getTimezoneById(TimezoneIdOptions options) {
-        Mono<Response<TimezoneResult>> result = this.getTimezoneByIdWithResponse(options);
+    public Mono<TimeZoneResult> getTimezoneById(TimeZoneIdOptions options) {
+        Mono<Response<TimeZoneResult>> result = this.getTimezoneByIdWithResponse(options);
         return result.flatMap(response -> {
             return Mono.just(response.getValue());
         });
@@ -83,7 +83,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -99,7 +99,7 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TimezoneResult>> getTimezoneByIdWithResponse(TimezoneIdOptions options) {
+    public Mono<Response<TimeZoneResult>> getTimezoneByIdWithResponse(TimeZoneIdOptions options) {
         return this.getTimezoneByIdWithResponse(options, null);
     }
 
@@ -107,7 +107,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -123,7 +123,7 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
-    Mono<Response<TimezoneResult>> getTimezoneByIdWithResponse(TimezoneIdOptions options, Context context) {
+    Mono<Response<TimeZoneResult>> getTimezoneByIdWithResponse(TimeZoneIdOptions options, Context context) {
         return this.serviceClient.getTimezoneByIDWithResponseAsync(
             JsonFormat.JSON,
             options.getTimezoneId(),
@@ -146,7 +146,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -163,8 +163,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TimezoneResult> getTimezoneByCoordinates(TimezoneCoordinateOptions options) {
-        Mono<Response<TimezoneResult>> result = this.getTimezoneByCoordinatesWithResponse(options);
+    public Mono<TimeZoneResult> getTimezoneByCoordinates(TimeZoneCoordinateOptions options) {
+        Mono<Response<TimeZoneResult>> result = this.getTimezoneByCoordinatesWithResponse(options);
         return result.flatMap(response -> {
             return Mono.just(response.getValue());
         });
@@ -175,7 +175,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -192,7 +192,7 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TimezoneResult>> getTimezoneByCoordinatesWithResponse(TimezoneCoordinateOptions options) {
+    public Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options) {
         return this.getTimezoneByCoordinatesWithResponse(options, null);
     }
 
@@ -201,7 +201,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -218,7 +218,7 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
-    Mono<Response<TimezoneResult>> getTimezoneByCoordinatesWithResponse(TimezoneCoordinateOptions options, Context context) {
+    Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options, Context context) {
         return this.serviceClient.getTimezoneByCoordinatesWithResponseAsync(
             JsonFormat.JSON,
             Utility.toCoordinateList(options.getPosition()),
@@ -254,8 +254,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TimezoneWindows>> getWindowsTimezoneIds() {
-        Mono<Response<List<TimezoneWindows>>> result = this.getWindowsTimezoneIdsWithResponse();
+    public Mono<List<TimeZoneWindows>> getWindowsTimezoneIds() {
+        Mono<Response<List<TimeZoneWindows>>> result = this.getWindowsTimezoneIdsWithResponse();
         return result.flatMap(response -> {
             return Mono.just(response.getValue());
         });
@@ -279,7 +279,7 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<TimezoneWindows>>> getWindowsTimezoneIdsWithResponse() {
+    public Mono<Response<List<TimeZoneWindows>>> getWindowsTimezoneIdsWithResponse() {
         return this.getWindowsTimezoneIdsWithResponse(null);
     }
 
@@ -301,7 +301,7 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
-    Mono<Response<List<TimezoneWindows>>> getWindowsTimezoneIdsWithResponse(Context context) {
+    Mono<Response<List<TimeZoneWindows>>> getWindowsTimezoneIdsWithResponse(Context context) {
         return this.serviceClient.getWindowsTimezoneIdsWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
             if (!(throwable instanceof ErrorResponseException)) {
                 return throwable;
@@ -407,8 +407,8 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TimezoneIanaVersionResult> getIanaVersion() {
-        Mono<Response<TimezoneIanaVersionResult>> result = this.getIanaVersionWithResponse();
+    public Mono<TimeZoneIanaVersionResult> getIanaVersion() {
+        Mono<Response<TimeZoneIanaVersionResult>> result = this.getIanaVersionWithResponse();
         return result.flatMap(response -> {
             return Mono.just(response.getValue());
         });
@@ -432,7 +432,7 @@ public final class TimeZoneAsyncClient {
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TimezoneIanaVersionResult>> getIanaVersionWithResponse() {
+    public Mono<Response<TimeZoneIanaVersionResult>> getIanaVersionWithResponse() {
         return this.getIanaVersionWithResponse(null);
     }
 
@@ -454,7 +454,7 @@ public final class TimeZoneAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone IANA Version call.
      */
-    Mono<Response<TimezoneIanaVersionResult>> getIanaVersionWithResponse(Context context) {
+    Mono<Response<TimeZoneIanaVersionResult>> getIanaVersionWithResponse(Context context) {
         return this.serviceClient.getIanaVersionWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
             if (!(throwable instanceof ErrorResponseException)) {
                 return throwable;

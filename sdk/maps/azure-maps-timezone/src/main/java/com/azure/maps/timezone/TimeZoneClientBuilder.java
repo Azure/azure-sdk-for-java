@@ -75,7 +75,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     private static final ClientLogger LOGGER = new ClientLogger(TimeZoneClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
     private String endpoint;
-    private TimezoneServiceVersion serviceVersion;
+    private TimeZoneServiceVersion serviceVersion;
     /*
      * Specifies which account is intended for usage in conjunction with the
      * Azure AD security model.  It represents a unique ID for the Azure Maps
@@ -136,7 +136,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     }
 
     /**
-     * Sets the {@link TimezoneServiceVersion} that is used when making API requests.
+     * Sets the {@link TimeZoneServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -144,10 +144,10 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link TimezoneServiceVersion} of the service to be used when making requests.
+     * @param version {@link TimeZoneServiceVersion} of the service to be used when making requests.
      * @return the updated TimeZoneClientBuilder object
      */
-    public TimeZoneClientBuilder serviceVersion(TimezoneServiceVersion version) {
+    public TimeZoneClientBuilder serviceVersion(TimeZoneServiceVersion version) {
         this.serviceVersion = version;
         return this;
     }
@@ -288,7 +288,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
             this.endpoint = "https://atlas.microsoft.com";
         }
         if (serviceVersion == null) {
-            this.serviceVersion = TimezoneServiceVersion.getLatest();
+            this.serviceVersion = TimeZoneServiceVersion.getLatest();
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

@@ -26,9 +26,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.maps.timezone.models.IanaId;
-import com.azure.maps.timezone.models.TimezoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimezoneResult;
-import com.azure.maps.timezone.models.TimezoneWindows;
+import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneResult;
+import com.azure.maps.timezone.models.TimeZoneWindows;
 
 public class TimeZoneClientTestBase extends TestBase {
     static final String FAKE_API_KEY = "1234567890";
@@ -47,7 +47,7 @@ public class TimeZoneClientTestBase extends TestBase {
         interceptorManagerTestBase = interceptorManager;
     }
 
-    TimeZoneClientBuilder getTimeZoneAsyncClientBuilder(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
+    TimeZoneClientBuilder getTimeZoneAsyncClientBuilder(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
         TimeZoneClientBuilder builder = new TimeZoneClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
@@ -97,31 +97,31 @@ public class TimeZoneClientTestBase extends TestBase {
             : endpoint;
     }
 
-    static void validateGetTimezoneById(TimezoneResult actual, TimezoneResult expected) {
+    static void validateGetTimezoneById(TimeZoneResult actual, TimeZoneResult expected) {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getTimeZones().size(), actual.getTimeZones().size());
     }
 
-    static void validateGetTimezoneByIdWithResponse(TimezoneResult expected, int expectedStatusCode, Response<TimezoneResult> response) {
+    static void validateGetTimezoneByIdWithResponse(TimeZoneResult expected, int expectedStatusCode, Response<TimeZoneResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetTimezoneById(expected, response.getValue());
     }
 
-    static void validateGetTimezoneByCoordinates(TimezoneResult actual, TimezoneResult expected) {
+    static void validateGetTimezoneByCoordinates(TimeZoneResult actual, TimeZoneResult expected) {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getTimeZones().size(), actual.getTimeZones().size());
     }
 
-    static void validateGetTimezoneByCoordinatesWithResponse(TimezoneResult expected, int expectedStatusCode, Response<TimezoneResult> response) {
+    static void validateGetTimezoneByCoordinatesWithResponse(TimeZoneResult expected, int expectedStatusCode, Response<TimeZoneResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetTimezoneByCoordinates(expected, response.getValue());
     }
 
-    static void validateGetWindowsTimezoneIds(List<TimezoneWindows> actual, List<TimezoneWindows> expected) {
+    static void validateGetWindowsTimezoneIds(List<TimeZoneWindows> actual, List<TimeZoneWindows> expected) {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.size(), actual.size());
@@ -131,7 +131,7 @@ public class TimeZoneClientTestBase extends TestBase {
         }
     }
 
-    static void validateGetWindowsTimezoneIdsWithResponse(List<TimezoneWindows> expected, int expectedStatusCode, Response<List<TimezoneWindows>> response) {
+    static void validateGetWindowsTimezoneIdsWithResponse(List<TimeZoneWindows> expected, int expectedStatusCode, Response<List<TimeZoneWindows>> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetWindowsTimezoneIds(expected, response.getValue());
@@ -153,13 +153,13 @@ public class TimeZoneClientTestBase extends TestBase {
         validateGetIanaTimezoneIds(expected, response.getValue());
     }
 
-    static void validateGetIanaVersion(TimezoneIanaVersionResult actual, TimezoneIanaVersionResult expected) {
+    static void validateGetIanaVersion(TimeZoneIanaVersionResult actual, TimeZoneIanaVersionResult expected) {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getVersion(), actual.getVersion());
     }
 
-    static void validateGetIanaVersionWithResponse(TimezoneIanaVersionResult expected, int expectedStatusCode, Response<TimezoneIanaVersionResult> response) {
+    static void validateGetIanaVersionWithResponse(TimeZoneIanaVersionResult expected, int expectedStatusCode, Response<TimeZoneIanaVersionResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetIanaVersion(expected, response.getValue());
