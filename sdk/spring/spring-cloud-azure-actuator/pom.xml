@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator</artifactId>
-      <version>3.0.0-M4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+      <version>3.0.0-M5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
       <scope>compile</scope>
     </dependency>
 
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.0.0-M4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.0.0-M5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -120,7 +120,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-actuator:[3.0.0-M4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[3.0.0-M5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

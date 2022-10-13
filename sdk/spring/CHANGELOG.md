@@ -1,5 +1,8 @@
 # Release History
 
+## 6.0.0-beta.3 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.0.0-M5 and Spring Cloud dependencies version to 2022.0.0-M5.
+
 ## 6.0.0-beta.2 (2022-09-30)
 Upgrade Spring Boot dependencies version to 3.0.0-M4 and Spring Cloud dependencies version to 2022.0.0-M4.
 
