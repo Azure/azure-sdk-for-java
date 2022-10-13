@@ -1507,6 +1507,67 @@
       "type": "com.azure.security.keyvault.secrets.SecretServiceVersion",
       "description": "Secret service version used when making API requests.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.client-secret",
+      "type": "java.lang.String",
+      "description": "Client secret to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.client-certificate-password",
+      "type": "java.lang.String",
+      "description": "Password of the certificate file.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.client-certificate-path",
+      "type": "java.lang.String",
+      "description": "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.username",
+      "type": "java.lang.String",
+      "description": "Username to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.password",
+      "type": "java.lang.String",
+      "description": "Password to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.credential.managed-identity-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.datasource.azure.profile.environment.active-directory-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory endpoint to connect to.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.profile.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for Azure resources.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
+    },
+    {
+      "name": "spring.datasource.azure.profile.cloud-type",
+      "type": "java.lang.String",
+      "description": "Name of the Azure cloud to connect to.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties"
     }
   ],
   "hints": [

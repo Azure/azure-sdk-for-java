@@ -22,6 +22,10 @@ public final class RecommendedMachineConfiguration {
     @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceRange vCPUs;
 
+    /** Creates an instance of RecommendedMachineConfiguration class. */
+    public RecommendedMachineConfiguration() {
+    }
+
     /**
      * Get the memory property: Recommended memory range.
      *

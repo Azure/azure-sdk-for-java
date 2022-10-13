@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.devcenter.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents an image version. */
-@Fluent
+@Immutable
 public final class ImageVersionInner extends ProxyResource {
     /*
      * Image version properties.
@@ -24,6 +24,10 @@ public final class ImageVersionInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ImageVersionInner class. */
+    public ImageVersionInner() {
+    }
 
     /**
      * Get the innerProperties property: Image version properties.

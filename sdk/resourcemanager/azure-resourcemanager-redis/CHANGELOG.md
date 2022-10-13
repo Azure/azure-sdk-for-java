@@ -2,13 +2,9 @@
 
 ## 2.20.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Redis cache will be created with version V6 instead of V4, if version is not specified.
 
 ## 2.19.0 (2022-09-23)
 

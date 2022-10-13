@@ -51,15 +51,6 @@ public final class ImagesImpl implements Images {
         return Utils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 
-    public Image get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
-        ImageInner inner = this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName);
-        if (inner != null) {
-            return new ImageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Image> getWithResponse(
         String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context) {
         Response<ImageInner> inner =
@@ -70,6 +61,15 @@ public final class ImagesImpl implements Images {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ImageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Image get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
+        ImageInner inner = this.serviceClient().get(resourceGroupName, devCenterName, galleryName, imageName);
+        if (inner != null) {
+            return new ImageImpl(inner, this.manager());
         } else {
             return null;
         }

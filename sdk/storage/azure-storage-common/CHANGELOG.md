@@ -1,6 +1,6 @@
 # Release History
 
-## 12.19.0-beta.2 (Unreleased)
+## 12.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.19.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 
 ## 12.18.1 (2022-09-12)
 
