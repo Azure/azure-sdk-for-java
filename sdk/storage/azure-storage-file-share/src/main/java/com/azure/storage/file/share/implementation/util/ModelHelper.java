@@ -235,9 +235,9 @@ public class ModelHelper {
     public static String decodeName(StringEncoded stringEncoded) {
         if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
             try {
-                return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
+                return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.name());
             } catch (UnsupportedEncodingException e) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
         } else {
             return stringEncoded.getContent();
