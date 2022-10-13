@@ -2136,31 +2136,23 @@ public class ShareDirectoryAsyncClient {
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
                 .forEach(directoryItem -> {
-                    try {
-                        shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
-                            true,
-                            directoryItem.getFileId(),
-                            ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                            NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                            directoryItem.getPermissionKey(),
-                            null));
-                    } catch (UnsupportedEncodingException e) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
-                    }
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
+                        true,
+                        directoryItem.getFileId(),
+                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                        directoryItem.getPermissionKey(),
+                        null));
                 });
             res.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> {
-                    try {
-                        shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                            false,
-                            fileItem.getFileId(),
-                            ModelHelper.transformFileProperty(fileItem.getProperties()),
-                            NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
-                            fileItem.getPermissionKey(),
-                            fileItem.getProperties().getContentLength()));
-                    } catch (UnsupportedEncodingException e) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
-                    }
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                        false,
+                        fileItem.getFileId(),
+                        ModelHelper.transformFileProperty(fileItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                        fileItem.getPermissionKey(),
+                        fileItem.getProperties().getContentLength()));
                 });
         }
 
