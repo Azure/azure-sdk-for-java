@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
@@ -9,7 +12,17 @@ import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -27,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class IdentitySyncClient extends IdentityClientBase{
+public class IdentitySyncClient extends IdentityClientBase {
 
     private final SynchronousAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronousAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
@@ -138,7 +151,7 @@ public class IdentitySyncClient extends IdentityClientBase{
             } else {
                 throw new IllegalStateException("Received token is close to expiry.");
             }
-        } catch ( MalformedURLException e ) {
+        } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
@@ -171,11 +184,11 @@ public class IdentitySyncClient extends IdentityClientBase{
         parametersBuilder.tenant(
             IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
-             MsalToken accessToken = new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
+            MsalToken accessToken = new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
             if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
                 return accessToken;
             }
-        } catch ( MalformedURLException e ) {
+        } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
@@ -197,7 +210,7 @@ public class IdentitySyncClient extends IdentityClientBase{
             IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
             return new MsalToken(pc.acquireTokenSilently(forceParametersBuilder.build()).get());
-        } catch ( MalformedURLException e ) {
+        } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));

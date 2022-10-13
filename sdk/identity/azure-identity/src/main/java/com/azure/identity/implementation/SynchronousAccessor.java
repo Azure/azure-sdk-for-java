@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @param <T> The value being instantiated / accessed.
  */
 public class SynchronousAccessor<T> {
-    private T cache;
+    private volatile T cache;
     private Supplier<T> cacheSupplier;
     private ReentrantLock lock;
     private Duration cacheTimeout;

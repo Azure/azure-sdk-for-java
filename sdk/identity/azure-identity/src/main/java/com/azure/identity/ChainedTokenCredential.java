@@ -107,7 +107,7 @@ public class ChainedTokenCredential implements TokenCredential {
             try {
                 return credential.getTokenSync(request);
             } catch (Exception e) {
-                if (!e.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                if (e.getClass() != CredentialUnavailableException.class) {
                     throw new ClientAuthenticationException(
                         unavailableError + credential.getClass().getSimpleName()
                             + " authentication failed. Error Details: " + e.getMessage(),
@@ -127,7 +127,6 @@ public class ChainedTokenCredential implements TokenCredential {
                 + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
                 : ""));
         }
-
         throw last;
     }
 }

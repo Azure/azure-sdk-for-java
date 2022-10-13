@@ -3,7 +3,11 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,7 +18,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.HttpRequest;
 import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -64,21 +67,14 @@ class HttpPipelineAdapter implements IHttpClient {
         HttpResponse response = httpPipeline.sendSync(request, Context.NONE);
         String body =  response.getBodyAsBinaryData().toString();
 
-        if (!CoreUtils.isNullOrEmpty(body)) {
-            logAccountIdentifiersIfConfigured(body);
-            com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
-                .body(body)
-                .statusCode(response.getStatusCode());
-            httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                HttpHeader::getValuesList)));
-            return httpResponse;
-        }
-
-        // if no body
+        logAccountIdentifiersIfConfigured(body);
         com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
-                .statusCode(response.getStatusCode());
+            .statusCode(response.getStatusCode());
+        if (!CoreUtils.isNullOrEmpty(body)) {
+            httpResponse.body(body);
+        }
         httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
-                HttpHeader::getValuesList)));
+        HttpHeader::getValuesList)));
         return httpResponse;
     }
 

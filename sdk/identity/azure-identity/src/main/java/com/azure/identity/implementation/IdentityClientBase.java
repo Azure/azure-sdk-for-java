@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
@@ -177,7 +180,7 @@ public abstract class IdentityClientBase {
                     }
                 }
             } catch (IOException | GeneralSecurityException e) {
-                 throw LOGGER.logExceptionAsError(new RuntimeException(
+                throw LOGGER.logExceptionAsError(new RuntimeException(
                     "Failed to parse the certificate for the credential: " + e.getMessage(), e));
             }
         } else if (clientAssertionSupplier != null) {

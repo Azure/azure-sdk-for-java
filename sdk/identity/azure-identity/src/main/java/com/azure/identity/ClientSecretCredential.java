@@ -8,7 +8,10 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.*;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -88,7 +91,7 @@ public class ClientSecretCredential implements TokenCredential {
         } catch (Exception e) { }
 
         try {
-             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (Exception e) {

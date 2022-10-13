@@ -11,7 +11,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import com.sun.jna.Platform;
-import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,7 +50,7 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         return this;
     }
 
-    Boolean registerCache() {
+    boolean registerCache() {
         try {
             PersistenceSettings persistenceSettings = getPersistenceSettings();
             cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
