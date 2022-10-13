@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsComp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -139,6 +141,8 @@ public final class ClientTelemetryMetrics {
 
         EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(cosmosAsyncClient);
 
+        Set<String> contactedRegions = cosmosDiagnostics.getContactedRegionNames();
+
         Tags operationTags = createOperationTags(
             metricTagNames,
             cosmosAsyncClient,
@@ -149,7 +153,8 @@ public final class ClientTelemetryMetrics {
             resourceType,
             consistencyLevel,
             operationId,
-            isPointOperation
+            isPointOperation,
+            contactedRegions
         );
 
         OperationMetricProducer metricProducer = new OperationMetricProducer(metricTagNames, operationTags);
@@ -158,7 +163,8 @@ public final class ClientTelemetryMetrics {
             latency,
             maxItemCount == null ? -1 : maxItemCount,
             actualItemCount,
-            cosmosDiagnostics
+            cosmosDiagnostics,
+            contactedRegions
         );
     }
 
@@ -215,7 +221,8 @@ public final class ClientTelemetryMetrics {
         ResourceType resourceType,
         ConsistencyLevel consistencyLevel,
         String operationId,
-        boolean isPointOperation) {
+        boolean isPointOperation,
+        Set<String> contactedRegions) {
         List<Tag> effectiveTags = new ArrayList<>();
 
         if (metricTagNames.contains(TagName.ClientCorrelationId)) {
@@ -254,6 +261,16 @@ public final class ClientTelemetryMetrics {
             ));
         }
 
+        if (contactedRegions != null &&
+            contactedRegions.size() > 0 &&
+            metricTagNames.contains(TagName.RegionName)) {
+
+            effectiveTags.add(Tag.of(
+                TagName.RegionName.toString(),
+                String.join(", ", contactedRegions)
+            ));
+        }
+
         return Tags.of(effectiveTags);
     }
 
@@ -271,7 +288,16 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             int maxItemCount,
             int actualItemCount,
-            CosmosDiagnostics diagnostics) {
+            CosmosDiagnostics diagnostics,
+            Set<String> contactedRegions) {
+
+            Counter operationsCounter = Counter
+                .builder(nameOf("op.calls"))
+                .baseUnit("calls")
+                .description("Operation calls")
+                .tags(operationTags)
+                .register(compositeRegistry);
+            operationsCounter.increment();
 
             DistributionSummary requestChargeMeter = DistributionSummary
                 .builder(nameOf("op.RUs"))
@@ -282,7 +308,20 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(true)
                 .tags(operationTags)
                 .register(compositeRegistry);
-            requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
+            requestChargeMeter.record(Math.min(requestCharge, 10_000_000d));
+
+            DistributionSummary regionsContactedMeter = DistributionSummary
+                .builder(nameOf("op.regionsContacted"))
+                .baseUnit("Regions contacted")
+                .description("Operation - regions contacted")
+                .maximumExpectedValue(100d)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(operationTags)
+                .register(compositeRegistry);
+            if (contactedRegions != null && contactedRegions.size() > 0) {
+                regionsContactedMeter.record(Math.min(contactedRegions.size(), 100d));
+            }
 
             Timer latencyMeter = Timer
                 .builder(nameOf("op.latency"))
@@ -332,6 +371,14 @@ public final class ClientTelemetryMetrics {
             Tags requestTags = operationTags.and(
                 createQueryPlanTags(metricTagNames)
             );
+
+            Counter requestCounter = Counter
+                .builder(nameOf("req.gw.requests"))
+                .baseUnit("requests")
+                .description("Gateway requests")
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestCounter.increment();
 
             Duration latency = queryPlanDiagnostics.getDuration();
 
@@ -439,7 +486,7 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RegionName)) {
                 effectiveTags.add(Tag.of(
                     TagName.RegionName.toString(),
-                    regionName != null ? escape(regionName) : "NONE"));
+                    regionName != null ? regionName : "NONE"));
             }
 
             if (metricTagNames.contains(TagName.ServiceEndpoint)) {
@@ -600,6 +647,18 @@ public final class ClientTelemetryMetrics {
                     backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
                 }
 
+                double requestCharge = storeResponseDiagnostics.getRequestCharge();
+                DistributionSummary requestChargeMeter = DistributionSummary
+                    .builder(nameOf("req.rntbd.RUs"))
+                    .baseUnit("RU (request unit)")
+                    .description("RNTBD Request RU charge")
+                    .maximumExpectedValue(1_000_000d)
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
+
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
                     Timer requestLatencyMeter = Timer
@@ -612,6 +671,14 @@ public final class ClientTelemetryMetrics {
                         .register(compositeRegistry);
                     requestLatencyMeter.record(latency);
                 }
+
+                Counter requestCounter = Counter
+                    .builder(nameOf("req.rntbd.requests"))
+                    .baseUnit("requests")
+                    .description("RNTBD requests")
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestCounter.increment();
 
                 recordRequestTimeline(
                     "req.rntbd.timeline.",
@@ -653,6 +720,26 @@ public final class ClientTelemetryMetrics {
                     null,
                     null)
             );
+
+            Counter requestCounter = Counter
+                .builder(nameOf("req.gw.requests"))
+                .baseUnit("requests")
+                .description("Gateway requests")
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestCounter.increment();
+
+            double requestCharge = gatewayStatistics.getRequestCharge();
+            DistributionSummary requestChargeMeter = DistributionSummary
+                .builder(nameOf("req.gw.RUs"))
+                .baseUnit("RU (request unit)")
+                .description("Gateway Request RU charge")
+                .maximumExpectedValue(1_000_000d)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestChargeMeter.record(Math.min(requestCharge, 1_000_000d));
 
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
@@ -710,6 +797,14 @@ public final class ClientTelemetryMetrics {
                     .tags(addressResolutionTags)
                     .register(compositeRegistry);
                 addressResolutionLatencyMeter.record(latency);
+
+                Counter requestCounter = Counter
+                    .builder(nameOf("rntbd.addressResolution.requests"))
+                    .baseUnit("requests")
+                    .description("Address resolution requests")
+                    .tags(addressResolutionTags)
+                    .register(compositeRegistry);
+                requestCounter.increment();
             }
         }
     }

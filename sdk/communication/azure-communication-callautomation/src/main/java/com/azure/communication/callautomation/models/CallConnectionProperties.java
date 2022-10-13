@@ -139,8 +139,7 @@ public final class CallConnectionProperties {
      *
      * @return the mediaSubscriptionId value.
      */
-    public String getMediaSubscriptionId() {
+    public String getMediaSubscriptionId() { 
         return mediaSubscriptionId;
     }
-
 }

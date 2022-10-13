@@ -10,6 +10,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -911,10 +912,9 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig());
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -928,10 +928,9 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(consistencyLevel)
                 .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig());
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -962,10 +961,9 @@ public class TestSuiteBase extends DocumentClientTest {
                             .withConsistencyLevel(consistencyLevel)
                             .withConfigs(configs)
                             .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig());
+                            .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
 
     }
 

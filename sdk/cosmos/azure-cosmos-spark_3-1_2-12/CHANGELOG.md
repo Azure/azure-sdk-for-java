@@ -1,15 +1,26 @@
 ## Release History
 
-### 4.14.0-beta.1 (Unreleased)
+### 4.15.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.14.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.14.1 and above.
+#### Bugs Fixed
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+
+### 4.14.0 (2022-09-30)
+
+#### Features Added
+* Added new config options for Change Feed Modes, Incremental as `LatestVersion` and Full Fidelity as `AllVersionsAndDeletes` changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
 
 ### 4.13.1 (2022-09-22)
 

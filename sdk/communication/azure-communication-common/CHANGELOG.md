@@ -1,5 +1,25 @@
 # Release History
 
+## 1.3.0-beta.2 (Unreleased)
+
+### Bug Fixes
+
+### Other Changes
+
+#### Dependency Updates
+
+## 1.2.2 (2022-10-11)
+
+### Bug Fixes
+- Fixed the logic of `PhoneNumberIdentifier` to always maintain the original phone number string whether it included the leading `+` sign or not.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
 ## 1.2.1 (2022-09-07)
 
 ### Other Changes

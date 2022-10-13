@@ -30,6 +30,10 @@ public class DevBoxDefinitionUpdateProperties {
     @JsonProperty(value = "osStorageType")
     private String osStorageType;
 
+    /** Creates an instance of DevBoxDefinitionUpdateProperties class. */
+    public DevBoxDefinitionUpdateProperties() {
+    }
+
     /**
      * Get the imageReference property: Image reference information.
      *

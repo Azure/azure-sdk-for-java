@@ -23,11 +23,14 @@ public final class EnvironmentVar {
     private String value;
 
     /*
-     * Name of the Container App secret from which to pull the environment
-     * variable value.
+     * Name of the Container App secret from which to pull the environment variable value.
      */
     @JsonProperty(value = "secretRef")
     private String secretRef;
+
+    /** Creates an instance of EnvironmentVar class. */
+    public EnvironmentVar() {
+    }
 
     /**
      * Get the name property: Environment variable name.

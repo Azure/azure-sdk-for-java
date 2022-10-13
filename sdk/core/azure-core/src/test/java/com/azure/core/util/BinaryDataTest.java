@@ -237,14 +237,29 @@ public class BinaryDataTest {
         assertArraysEqual(expected, data.toBytes());
     }
 
-    @Test
-    public void createFromFluxEagerly() {
-        // Arrange
+    @ParameterizedTest
+    @MethodSource("createFromFluxEagerlySupplier")
+    public void createFromFluxEagerly(Mono<BinaryData> binaryDataMono, byte[] expectedBytes, int expectedCount) {
+        StepVerifier.create(binaryDataMono)
+            .assertNext(actual -> {
+                assertArrayEquals(expectedBytes, actual.toBytes());
+                assertEquals(expectedBytes.length, actual.getLength());
+            })
+            .verifyComplete();
+
+        // Verify that the data got buffered.
+        StepVerifier.create(binaryDataMono.flatMapMany(BinaryData::toFluxByteBuffer).count())
+            .assertNext(actualCount -> assertEquals(expectedCount, actualCount))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> createFromFluxEagerlySupplier() {
         final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
         final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
         final long length = expected.length;
 
+<<<<<<< HEAD
         Arrays.asList(
             BinaryData.fromFlux(dataFlux),
             BinaryData.fromFlux(dataFlux, null),
@@ -265,6 +280,15 @@ public class BinaryDataTest {
                 .assertNext(actual -> assertEquals(1, actual))
                 .verifyComplete();
         });
+=======
+        return Stream.of(
+            Arguments.of(BinaryData.fromFlux(dataFlux), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, null), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, length), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, null, true), expected, 2),
+            Arguments.of(BinaryData.fromFlux(dataFlux, length, true), expected, 2)
+        );
+>>>>>>> b5c0ca6d3202e7411b47ae174ee2e2c489c76ba6
     }
 
     @Test

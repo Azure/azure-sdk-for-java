@@ -1,6 +1,6 @@
 # Release History
 
-## 1.33.0-beta.1 (Unreleased)
+## 1.34.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.33.0 (2022-10-07)
+
+### Features Added
+
+- Added configuration options to specify which `HttpClient` implementation to use from the classpath when using 
+  `HttpClient.createDefault(HttpClientOptions)`. ([#30894](https://github.com/Azure/azure-sdk-for-java/pull/30894))
+- Added `BinaryData.fromByteBuffer(ByteBuffer)`.
+- Added `SyncPoller.createPoller(Duration, Function, Function, BiFunction, Function)`. ([#31296](https://github.com/Azure/azure-sdk-for-java/pull/31296))
+- Added `TokenCredential.getTokenSync(TokenRequestContext)`. ([#31056](https://github.com/Azure/azure-sdk-for-java/pull/31056))
+
+### Bugs Fixed
+
+- Added a short delay to `AccessTokenCache.getToken()` to avoid an async-busy-loop when the first thread to retrieve a fresh token takes longer than usual and the cache is shared amongst many threads. ([#31110](https://github.com/Azure/azure-sdk-for-java/pull/31110))
+- Fixed issue when deserializing InputStream from an HTTP response.
+
+### Other Changes
+
+- Defer creation of `XmlMapper` allowing for non-XML applications to exclude `jackson-dataformat-xml` dependency. ([#30663](https://github.com/Azure/azure-sdk-for-java/pull/30663))
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.3` to `2.13.4`.
+- Upgraded Reactor from `3.4.22` to `3.4.23`.
 
 ## 1.32.0 (2022-09-01)
 
@@ -24,7 +49,7 @@
 
 #### Dependency Updates
 
-- Upgraded Reactor from `3.4.2` to `3.4.22`.
+- Upgraded Reactor from `3.4.21` to `3.4.22`.
 
 ## 1.31.0 (2022-08-05)
 

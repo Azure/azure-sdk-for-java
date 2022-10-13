@@ -44,7 +44,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndHangupTest", next))
             .buildAsyncClient();
 
@@ -63,7 +63,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(10000);
+            waitForOperationCompletion(10000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -71,7 +71,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertNotNull(callConnectionProperties);
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -92,7 +92,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
             .buildAsyncClient();
 
@@ -112,7 +112,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(10000);
+            waitForOperationCompletion(10000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -120,7 +120,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertNotNull(callConnectionProperties);
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -142,7 +142,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 5. verify that call connection cannot be found.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("startACallWithMultipleTargetsTest", next))
             .buildAsyncClient();
 
@@ -163,7 +163,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(20000);
+            waitForOperationCompletion(20000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -177,7 +177,7 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
             assertEquals(4, listParticipantsResultResponse.getValue().getValues().size());
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

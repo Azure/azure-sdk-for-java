@@ -9,14 +9,15 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.security.SecureRandom;
 
@@ -28,12 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DeadlockTests {
     private static final String GET_ENDPOINT = "/get";
 
-    private WireMockServer server;
-    private byte[] expectedGetBytes;
+    private static WireMockServer server;
+    private static byte[] expectedGetBytes;
 
-    @BeforeEach
-    public void configureWireMockServer() {
-        expectedGetBytes = new byte[10 * 1024 * 1024];
+    @BeforeAll
+    public static void configureWireMockServer() {
+        expectedGetBytes = new byte[1024 * 1024];
         new SecureRandom().nextBytes(expectedGetBytes);
 
         server = new WireMockServer(WireMockConfiguration.options()
@@ -46,8 +47,8 @@ public class DeadlockTests {
         server.start();
     }
 
-    @AfterEach
-    public void shutdownWireMockServer() {
+    @AfterAll
+    public static void shutdownWireMockServer() {
         if (server != null) {
             server.shutdown();
         }
@@ -61,7 +62,7 @@ public class DeadlockTests {
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
             .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), expectedGetBytes.length)
-                .zipWith(Mono.just(response.getStatusCode())));
+                .map(bytes -> Tuples.of(bytes, response.getStatusCode())));
 
         StepVerifier.create(Flux.range(0, 100)
                 .parallel(Schedulers.DEFAULT_POOL_SIZE * 2)
