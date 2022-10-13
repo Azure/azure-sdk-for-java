@@ -2184,6 +2184,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions options,
         Class<T> klass) {
 
+        return readManyInternal(itemIdentityList, collectionLink, options, klass, false);
+    }
+
+    @Override
+    public <T> Mono<FeedResponse<T>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        String collectionLink,
+        CosmosQueryRequestOptions options,
+        Class<T> klass,
+        boolean usePointReads) {
+        
+        return readManyInternal(itemIdentityList, collectionLink, options, klass, usePointReads);
+    }
+
+    private  <T> Mono<FeedResponse<T>> readManyInternal(
+        List<CosmosItemIdentity> itemIdentityList,
+        String collectionLink,
+        CosmosQueryRequestOptions options,
+        Class<T> klass,
+        boolean usePointReads) {
+
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             OperationType.Query,
@@ -2210,8 +2231,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             null,
                             null);
                     return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
-                        Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap =
-                            new HashMap<>();
+                        Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap = new HashMap<>();
+                        Map<PartitionKeyRange, CosmosItemIdentity> singleItemPartitionRequestMap = new HashMap<>();
                         CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
                         if (routingMap == null) {
                             throw new IllegalStateException("Failed to get routing map.");
@@ -2235,11 +2256,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     List<CosmosItemIdentity> list = new ArrayList<>();
                                     list.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, list);
+
+                                    if (usePointReads) singleItemPartitionRequestMap.put(range, itemIdentity);
                                 } else {
                                     List<CosmosItemIdentity> pairs =
                                         partitionRangeItemKeyMap.get(range);
                                     pairs.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, pairs);
+
+                                    if (usePointReads) singleItemPartitionRequestMap.remove(range);
                                 }
 
                             });
@@ -2248,10 +2273,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         // partitionkeyrange
                         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap;
                         rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap,
+                            singleItemPartitionRequestMap,
                             collection.getPartitionKey());
 
+                        // Create point read requests
+                        var pointReads = usePointReads ? Flux.fromIterable(singleItemPartitionRequestMap.values())
+                            .flatMap(cosmosItemIdentity -> readDocument("", new RequestOptions()))
+                            .map(documentResourceResponse -> toFeedResponsePage(
+                                documentResourceResponse.getResponse(),
+                                ImplementationBridgeHelpers
+                                    .CosmosQueryRequestOptionsHelper
+                                    .getCosmosQueryRequestOptionsAccessor()
+                                    .getItemFactoryMethod(options, Document.class),
+                                Document.class
+                            ))
+                            .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
+
+
                         // create the executable query
-                        return createReadManyQuery(
+                        var queries = createReadManyQuery(
                             resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
@@ -2259,8 +2299,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ResourceType.Document,
                             collection,
                             Collections.unmodifiableMap(rangeQueryMap))
-                            .collectList() // aggregating the result construct a FeedResponse and
-                            // aggregate RUs.
+                            .collectList();
+
+                        // Aggregating the result construct a FeedResponse and aggregate RUs.
+                        return Flux.merge(pointReads, queries)
+                            .flatMapIterable(feedResponses -> feedResponses)
+                            .collectList()
                             .map(feedList -> {
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
@@ -2293,6 +2337,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap,
+        Map<PartitionKeyRange, CosmosItemIdentity> singleItemPartitionRequestMap,
         PartitionKeyDefinition partitionKeyDefinition) {
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
@@ -2302,6 +2347,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
 
             SqlQuerySpec sqlQuerySpec;
+            if (singleItemPartitionRequestMap.containsKey(entry.getKey())) continue;
             if (partitionKeySelector.equals("[\"id\"]")) {
                 sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(entry.getValue(), partitionKeySelector);
             } else {
