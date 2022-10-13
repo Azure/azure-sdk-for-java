@@ -93,14 +93,7 @@ class VirtualMachineExtensionImpl
         return this
             .client
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
-            .flatMap(inner -> {
-                VirtualMachineExtensionInstanceView instanceView = inner.instanceView();
-                if (instanceView == null) {
-                    return Mono.empty();
-                } else {
-                    return Mono.just(instanceView);
-                }
-            });
+            .flatMap(inner -> Mono.justOrEmpty(inner.instanceView()));
     }
 
     @Override
