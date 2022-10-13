@@ -53,7 +53,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
-        callOptions.setSubject(CALL_SUBJECT);
+        callOptions.setOperationContext(CALL_SUBJECT);
 
         Response<CreateCallResult> createCallResult = callAutomationClient.createCallWithResponse(callOptions, Context.NONE);
 
