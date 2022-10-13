@@ -51,7 +51,7 @@ By default, Azure Active Directory token authentication depends on correct confi
 - `AZURE_TENANT_ID` for Azure tenant ID.
 - `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable .
+In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
 With above configuration, `azure` client can be authenticated using the following code:
 
