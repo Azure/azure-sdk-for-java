@@ -7,6 +7,9 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import org.slf4j.Logger;
@@ -72,7 +75,12 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                 .flatMap(newEpkRange -> {
                     // TODO: Annie: what if not all child leases are created
                     // Should we change to use batch transaction?
-                    return this.leaseManager.createLeaseIfNotExist(newEpkRange, this.lease.getContinuationToken())
+                    String effectiveChildLeaseContinuationToken = this.getEffectiveChildLeaseContinuationToken(
+                            newEpkRange,
+                            this.lease.getContinuationToken());
+
+                    return this.leaseManager
+                            .createLeaseIfNotExist(newEpkRange, effectiveChildLeaseContinuationToken)
                             .doOnSuccess(newLease -> leaseTokens.add(newLease.getLeaseToken()));
                 })
                 .doOnComplete(() -> {
@@ -81,6 +89,26 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                             this.lease.getLeaseToken(),
                             StringUtils.join(leaseTokens, ","));
                 });
+    }
+
+
+    private String getEffectiveChildLeaseContinuationToken(FeedRangeEpkImpl childLeaseFeedRange, String parentLeaseCT) {
+        String childLeaseCT = parentLeaseCT;
+        if (StringUtils.isNotEmpty(parentLeaseCT)) {
+            ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(parentLeaseCT);
+
+            FeedRangeContinuation effectiveFeedRangeContinuation = FeedRangeContinuation.create(
+                    changeFeedState.getContainerRid(),
+                    childLeaseFeedRange,
+                    childLeaseFeedRange.getRange());
+            effectiveFeedRangeContinuation.replaceContinuation(
+                    changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
+
+            changeFeedState.setContinuation(effectiveFeedRangeContinuation);
+            childLeaseCT = changeFeedState.toString();
+        }
+
+        return childLeaseCT;
     }
 
     @Override

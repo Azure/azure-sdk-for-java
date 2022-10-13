@@ -97,17 +97,21 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
 
     private void populateEffectiveRangeAndStartFromSettingsToRequest(RxDocumentServiceRequest request) {
         final ChangeFeedStartFromInternal effectiveStartFrom;
-        final CompositeContinuationToken continuationToken =
-                this.continuation != null ? this.continuation.getCurrentContinuationToken() : null;
-
-        request.applyFeedRangeFilter(this.feedRange);
+        final CompositeContinuationToken continuationToken;
+        if (this.continuation != null) {
+            continuationToken = this.continuation.getCurrentContinuationToken();
+            request.applyFeedRangeFilter(this.continuation.getFeedRange());
+        } else {
+            continuationToken = null;
+            request.applyFeedRangeFilter(this.feedRange);
+        }
 
         if (continuationToken == null || continuationToken.getToken() == null) {
             effectiveStartFrom = this.startFromSettings;
         } else {
             effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(
                 continuationToken.getToken(),
-                this.feedRange);
+                new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
         effectiveStartFrom.populateRequest(request, this.mode);
