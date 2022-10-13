@@ -1,14 +1,8 @@
 ## Release History
 
-### 4.38.0-beta.1 (Unreleased)
-
+### 4.38.0 (2022-10-12)
 #### Features Added
 * Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.37.1 (2022-10-07)
 > [!IMPORTANT]
@@ -21,7 +15,6 @@
 * Added SslHandshakeTimeout minimum duration config - See [PR 31298](https://github.com/Azure/azure-sdk-for-java/pull/31298)
 
 ### 4.37.0 (2022-09-30)
-
 #### Features Added
 * Added new preview APIs to `ChangeFeedProcessor` for handling all versions and deletes changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
 * Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
@@ -33,7 +26,6 @@
 * Enable replica validation by default - See [PR 31159](https://github.com/Azure/azure-sdk-for-java/pull/31159)
 
 ### 4.36.0 (2022-09-15)
-
 #### Other Changes
 * Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
 * Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)

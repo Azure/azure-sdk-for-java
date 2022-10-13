@@ -1,14 +1,8 @@
 ## Release History
 
-### 3.29.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
+### 3.29.0 (2022-10-12)
 #### Other Changes
+* Updated `azure-cosmos` to version `4.38.0`.
 
 ### 3.28.1 (2022-10-07)
 > [!IMPORTANT]
@@ -17,7 +11,6 @@
 * Updated `azure-cosmos` to version `4.37.1`.
 
 ### 3.28.0 (2022-09-30)
-
 #### Bugs Fixed
 * Fixing ARRAY_CONTAINS annotated query bug introduced by fixing to IN annotated queries. - See [PR 31179](https://github.com/Azure/azure-sdk-for-java/pull/31179)
 
@@ -25,7 +18,6 @@
 * Updated `azure-cosmos` to version `4.37.0`.
 
 ### 3.27.0 (2022-09-15)
-
 #### Features Added
 * Exposed `maxBufferedItemCount` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30921](https://github.com/Azure/azure-sdk-for-java/pull/30921)
 * Exposed `responseContinuationTokenLimitInKb` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30980](https://github.com/Azure/azure-sdk-for-java/pull/30980)
