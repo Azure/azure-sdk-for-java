@@ -42,8 +42,8 @@ public class EvaluationTests extends PersonalizerTestBase {
             .setName("JavaSDKTestEvaluation")
             .setOfflineExperimentationEnabled(true)
             // We have cooked log data for this date for the static test resource and know that they will not be purged.
-            .setStartTime(OffsetDateTime.parse("2022-08-25T19:00:00+00:00"))
-            .setEndTime(OffsetDateTime.parse("2022-08-25T20:00:00+00:00"))
+            .setStartTime(OffsetDateTime.parse("2022-09-20T00:00:00+00:00"))
+            .setEndTime(OffsetDateTime.parse("2022-09-30T00:00:00+00:00"))
             .setPolicies(new ArrayList<>());
         PersonalizerAdministrationAsyncClient client = getAdministrationAsyncClient(httpClient, serviceVersion, true);
         SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller = client
