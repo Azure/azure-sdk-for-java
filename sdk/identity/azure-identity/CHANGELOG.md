@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
+
 ### Breaking Changes
 
 ### Bugs Fixed
