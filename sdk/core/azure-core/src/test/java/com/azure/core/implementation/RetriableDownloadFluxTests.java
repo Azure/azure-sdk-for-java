@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -116,7 +116,7 @@ public class RetriableDownloadFluxTests {
             .parallel()
             .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .map(bytes -> {
-                assertArrayEquals(expected, bytes);
+                ValidationUtils.assertArraysEqual(expected, bytes);
                 return bytes;
             })
             .then())
@@ -137,7 +137,7 @@ public class RetriableDownloadFluxTests {
         byte[] expected = new byte[]{0, 0, 0, 0, 0};
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .assertNext(bytes -> assertArrayEquals(expected, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(expected, bytes))
             .verifyComplete();
     }
 

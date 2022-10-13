@@ -15,6 +15,7 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.ValidationUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.AfterEach;
@@ -43,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -308,8 +308,8 @@ public class HttpResponseBodyDecoderTests {
                 assertTrue(actual instanceof List);
                 @SuppressWarnings("unchecked") List<byte[]> decoded = (List<byte[]>) actual;
                 assertEquals(2, decoded.size());
-                assertArrayEquals(base64Urls.get(0).decodedBytes(), decoded.get(0));
-                assertArrayEquals(base64Urls.get(1).decodedBytes(), decoded.get(1));
+                ValidationUtils.assertArraysEqual(base64Urls.get(0).decodedBytes(), decoded.get(0));
+                ValidationUtils.assertArraysEqual(base64Urls.get(1).decodedBytes(), decoded.get(1));
             }).verifyComplete();
     }
 

@@ -16,6 +16,7 @@ import com.azure.core.http.netty.implementation.MockProxyServer;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -55,7 +56,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -146,7 +146,7 @@ public class NettyAsyncHttpClientTests {
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
         StepVerifier.create(response.getBodyAsByteArray())
-            .assertNext(bytes -> assertArrayEquals(SHORT_BODY, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(SHORT_BODY, bytes))
             .verifyComplete();
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
@@ -259,7 +259,7 @@ public class NettyAsyncHttpClientTests {
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+                .doOnNext(bytes -> ValidationUtils.assertArraysEqual(LONG_BODY, bytes)))
             .sequential()
             .map(bytes -> (long) bytes.length)
             .reduce(0L, Long::sum);
@@ -284,7 +284,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
+        ValidationUtils.assertArraysEqual(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     /**
@@ -317,7 +317,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
+        ValidationUtils.assertArraysEqual(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     @ParameterizedTest
@@ -518,7 +518,7 @@ public class NettyAsyncHttpClientTests {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
                 .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

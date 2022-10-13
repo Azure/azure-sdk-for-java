@@ -3,13 +3,13 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -67,8 +67,8 @@ public class AmqpAnnotatedMessageTest {
         final AmqpMessageBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                byte[] actualData = actual.getBody().getData().stream().findFirst().get();
-                assertArrayEquals(expectedbody, actualData);
+                byte[] actualData = actual.getBody().getData().iterator().next();
+                ValidationUtils.assertArraysEqual(expectedbody, actualData);
                 break;
             case VALUE:
             case SEQUENCE:

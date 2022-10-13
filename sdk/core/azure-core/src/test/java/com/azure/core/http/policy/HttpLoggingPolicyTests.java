@@ -16,6 +16,7 @@ import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ValidationUtils;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -61,7 +62,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -181,7 +181,7 @@ public class HttpLoggingPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
             .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .doOnSuccess(bytes -> ValidationUtils.assertArraysEqual(data, bytes))
                 .then(Mono.empty()))
             .build();
 
@@ -212,7 +212,7 @@ public class HttpLoggingPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
             .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .doOnSuccess(bytes -> ValidationUtils.assertArraysEqual(data, bytes))
                 .then(Mono.empty()))
             .build();
 
@@ -244,7 +244,7 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(request, CONTEXT))
             .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .assertNext(bytes -> assertArrayEquals(data, bytes))
+                .assertNext(bytes -> ValidationUtils.assertArraysEqual(data, bytes))
                 .verifyComplete())
             .verifyComplete();
 
@@ -269,7 +269,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         HttpResponse response = pipeline.sendSync(request, CONTEXT);
-        assertArrayEquals(data, response.getBodyAsByteArray().block());
+        ValidationUtils.assertArraysEqual(data, response.getBodyAsByteArray().block());
 
         String logString = convertOutputStreamToString(logCaptureStream);
         assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
@@ -387,8 +387,7 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel)
-        throws JsonProcessingException, InterruptedException {
+    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel) {
         AtomicInteger requestCount = new AtomicInteger();
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com")
             .setHeader("x-ms-client-request-id", "client-request-id");
@@ -426,7 +425,7 @@ public class HttpLoggingPolicyTests {
                     expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
                     expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
                 }))
-            .assertNext(body -> assertArrayEquals(responseBody, body))
+            .assertNext(body -> ValidationUtils.assertArraysEqual(responseBody, body))
             .verifyComplete();
     }
 
@@ -466,7 +465,7 @@ public class HttpLoggingPolicyTests {
                     expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
                     expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
                 }))
-            .assertNext(body -> assertArrayEquals(responseBody, body))
+            .assertNext(body -> ValidationUtils.assertArraysEqual(responseBody, body))
             .verifyComplete();
     }
 
@@ -510,13 +509,13 @@ public class HttpLoggingPolicyTests {
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
         expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
 
-        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+        ValidationUtils.assertArraysEqual(responseBody, response.getBodyAsByteArray().block());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) throws JsonProcessingException {
+    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         byte[] requestBody = new byte[] {42};
         byte[] responseBody = new byte[] {24, 42};
@@ -539,7 +538,7 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         HttpResponse response = pipeline.sendSync(request, CONTEXT);
-        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+        ValidationUtils.assertArraysEqual(responseBody, response.getBodyAsByteArray().block());
     }
 
     private void setupLogLevel(int logLevelToSet) {

@@ -51,7 +51,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -193,7 +192,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            ValidationUtils.assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -214,12 +213,12 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel, 6).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            ValidationUtils.assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
     @Test
-    public void testWriteWritableChannel() throws Exception {
+    public void testWriteWritableChannel() {
         String content = "test";
 
         byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
@@ -229,7 +228,7 @@ public class FluxUtilTest {
         WritableByteChannel channel = Channels.newChannel(byteArrayOutputStream);
 
         FluxUtil.writeToWritableByteChannel(body, channel).block();
-        assertArrayEquals(byteArrayOutputStream.toByteArray(), bytes);
+        ValidationUtils.assertArraysEqual(byteArrayOutputStream.toByteArray(), bytes);
     }
 
     @ParameterizedTest
@@ -361,7 +360,7 @@ public class FluxUtilTest {
             .verify(Duration.ofSeconds(30));
 
         byte[] writtenData = Files.readAllBytes(file);
-        assertArrayEquals(data, writtenData);
+        ValidationUtils.assertArraysEqual(data, writtenData);
     }
 
     private Flux<ByteBuffer> generateStream(byte[] data, long offset, AtomicInteger errorCount) {
@@ -399,7 +398,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
             StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel),
                     expectedFileBytes.length))
-                .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))
+                .assertNext(bytes -> ValidationUtils.assertArraysEqual(expectedFileBytes, bytes))
                 .verifyComplete();
         }
 
@@ -430,7 +429,7 @@ public class FluxUtilTest {
 
                 // Check if this is the last emission expected.
                 if (requestCount.decrementAndGet() == -1) {
-                    assertArrayEquals(expected, collectionBuffer.array());
+                    ValidationUtils.assertArraysEqual(expected, collectionBuffer.array());
                     return false;
                 } else {
                     return true;
@@ -468,11 +467,11 @@ public class FluxUtilTest {
         Flux<ByteBuffer> conversionFlux = FluxUtil.toFluxByteBuffer(inputStream);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(singleRead, actual))
+            .assertNext(actual -> ValidationUtils.assertArraysEqual(singleRead, actual))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(new byte[0], actual))
+            .assertNext(actual -> ValidationUtils.assertArraysEqual(new byte[0], actual))
             .verifyComplete();
     }
 

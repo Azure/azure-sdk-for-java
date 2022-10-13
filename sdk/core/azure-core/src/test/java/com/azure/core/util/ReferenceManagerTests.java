@@ -10,7 +10,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -44,7 +43,7 @@ public class ReferenceManagerTests {
 
         ReferenceManager.INSTANCE.register(wrapperClass, cleanupAction);
 
-        assertArrayEquals(expectedInitialBytes, wrappedBytes);
+        ValidationUtils.assertArraysEqual(expectedInitialBytes, wrappedBytes);
 
         wrapperClass = null;
 
@@ -54,7 +53,7 @@ public class ReferenceManagerTests {
         // Give the cleanup action a moment to run.
         Thread.sleep(500);
 
-        assertArrayEquals(expectedFinalBytes, wrappedBytes);
+        ValidationUtils.assertArraysEqual(expectedFinalBytes, wrappedBytes);
 
         verify(cleanupAction, times(1)).run();
     }

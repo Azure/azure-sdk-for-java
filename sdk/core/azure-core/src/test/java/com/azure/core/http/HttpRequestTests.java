@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,7 +20,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -84,7 +84,8 @@ public class HttpRequestTests {
         assertSame(data, request.getBodyAsBinaryData());
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
-            assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+            ValidationUtils.assertArraysEqual(BODY_BYTES,
+                FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
         } else  {
             assertNull(request.getBody());
         }
@@ -101,7 +102,8 @@ public class HttpRequestTests {
         assertSame(data, request.getBodyAsBinaryData());
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
-            assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+            ValidationUtils.assertArraysEqual(BODY_BYTES,
+                FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
         } else  {
             assertNull(request.getBody());
         }
@@ -115,7 +117,8 @@ public class HttpRequestTests {
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
-        assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+        ValidationUtils.assertArraysEqual(BODY_BYTES,
+            FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
     }
 
     @Test
@@ -126,7 +129,8 @@ public class HttpRequestTests {
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
-        assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+        ValidationUtils.assertArraysEqual(BODY_BYTES,
+            FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
     }
 
     @Test

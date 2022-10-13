@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.utils.ValidationUtils;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
@@ -36,7 +37,6 @@ import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
@@ -196,7 +196,7 @@ public class OkHttpAsyncHttpClientTests {
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> getResponse(client, "/long")
                 .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+                .doOnNext(bytes -> ValidationUtils.assertArraysEqual(LONG_BODY, bytes)))
             .sequential()
             .map(buffer -> (long) buffer.length)
             .reduce(0L, Long::sum);
@@ -271,7 +271,7 @@ public class OkHttpAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

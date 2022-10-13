@@ -6,6 +6,7 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -23,7 +24,6 @@ import java.security.SecureRandom;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeadlockTests {
@@ -70,7 +70,7 @@ public class DeadlockTests {
                 .flatMap(ignored -> request))
             .thenConsumeWhile(responseTuple -> {
                 assertEquals(200, responseTuple.getT2());
-                assertArrayEquals(expectedGetBytes, responseTuple.getT1());
+                ValidationUtils.assertArraysEqual(expectedGetBytes, responseTuple.getT1());
 
                 return true;
             })

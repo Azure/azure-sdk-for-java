@@ -10,8 +10,6 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
 /**
  * Tests {@link BufferedFluxByteBuffer}.
  */
@@ -27,12 +25,12 @@ public class BufferedFluxByteBufferTests {
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(randomBytes, bytes))
             .verifyComplete();
 
         // Run again to verify that the results are consistent.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(randomBytes, bytes))
             .verifyComplete();
     }
 
@@ -47,12 +45,12 @@ public class BufferedFluxByteBufferTests {
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(randomBytes, bytes))
             .verifyComplete();
 
         // Run again to verify that the results are consistent.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArrayEquals(randomBytes, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(randomBytes, bytes))
             .verifyComplete();
     }
 

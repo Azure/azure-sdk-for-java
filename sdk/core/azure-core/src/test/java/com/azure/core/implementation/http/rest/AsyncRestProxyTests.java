@@ -7,6 +7,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.util.ValidationUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,6 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -117,7 +117,7 @@ public class AsyncRestProxyTests {
         StepVerifier.create(asyncRestProxy.handleBodyReturnType(decodedResponse, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof byte[]);
-                assertArrayEquals((byte[]) value, expectedBytes);
+                ValidationUtils.assertArraysEqual((byte[]) value, expectedBytes);
             })
             .expectComplete()
             .verify();
@@ -157,7 +157,7 @@ public class AsyncRestProxyTests {
                     final int read = inputStream.read(actualBytes);
 
                     assertEquals(available, read, "Should have read same number of bytes available.");
-                    assertArrayEquals(expectedBytes, actualBytes);
+                    ValidationUtils.assertArraysEqual(expectedBytes, actualBytes);
                 } catch (IOException e) {
                     fail("Should not have thrown an error.", e);
                 }

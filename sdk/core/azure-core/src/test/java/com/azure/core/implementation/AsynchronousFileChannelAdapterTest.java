@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -16,13 +17,11 @@ import java.nio.channels.WritePendingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -69,7 +68,7 @@ public class AsynchronousFileChannelAdapterTest {
             latch.await(60, TimeUnit.SECONDS);
         }
         readData.flip();
-        assertArrayEquals(data, readData.array());
+        ValidationUtils.assertArraysEqual(data, readData.array());
     }
 
     @Test
@@ -87,7 +86,7 @@ public class AsynchronousFileChannelAdapterTest {
             latch.await(60, TimeUnit.SECONDS);
         }
         readData.flip();
-        assertArrayEquals(Arrays.copyOfRange(data, offset, data.length), readData.array());
+        ValidationUtils.assertArraysEqual(data, offset, readData.array(), 0, data.length - offset);
     }
 
     private static void readWithCallback(AsynchronousByteChannel channel, ByteBuffer aggregator, CountDownLatch latch) {
@@ -131,7 +130,7 @@ public class AsynchronousFileChannelAdapterTest {
             } while (read >= 0);
         }
         readData.flip();
-        assertArrayEquals(data, readData.array());
+        ValidationUtils.assertArraysEqual(data, readData.array());
     }
 
     @Test
@@ -153,7 +152,7 @@ public class AsynchronousFileChannelAdapterTest {
             } while (read >= 0);
         }
         readData.flip();
-        assertArrayEquals(Arrays.copyOfRange(data, offset, data.length), readData.array());
+        ValidationUtils.assertArraysEqual(data, offset, readData.array(), 0, data.length - offset);
     }
 
     @Test
@@ -170,7 +169,7 @@ public class AsynchronousFileChannelAdapterTest {
             latch.await(60, TimeUnit.SECONDS);
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -193,7 +192,7 @@ public class AsynchronousFileChannelAdapterTest {
         }
 
 
-        assertArrayEquals(expectedData.array(), Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(expectedData.array(), Files.readAllBytes(tempFile));
     }
 
     private static void writeWithCallback(AsynchronousByteChannel channel, ByteBuffer data, CountDownLatch latch) {
@@ -234,7 +233,7 @@ public class AsynchronousFileChannelAdapterTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -259,7 +258,7 @@ public class AsynchronousFileChannelAdapterTest {
         }
 
 
-        assertArrayEquals(expectedData.array(), Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(expectedData.array(), Files.readAllBytes(tempFile));
     }
 
     @Test

@@ -17,6 +17,7 @@ import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
 import com.azure.core.amqp.models.ReceivedDeliveryOutcome;
 import com.azure.core.amqp.models.RejectedDeliveryOutcome;
 import com.azure.core.amqp.models.TransactionalDeliveryOutcome;
+import com.azure.core.test.utils.ValidationUtils;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -54,7 +55,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -172,7 +172,7 @@ public class MessageUtilsTest {
         // Assert
         assertNotNull(actual);
         assertNotNull(actual.getBody());
-        assertArrayEquals(contents, actual.getBody().getFirstData());
+        ValidationUtils.assertArraysEqual(contents, actual.getBody().getFirstData());
 
         assertHeader(actual.getHeader(), header);
         assertProperties(actual.getProperties(), properties);
@@ -253,7 +253,7 @@ public class MessageUtilsTest {
         assertTrue(actual.getBody() instanceof Data);
 
         final Data dataBody = (Data) actual.getBody();
-        assertArrayEquals(body.getFirstData(), dataBody.getValue().getArray());
+        ValidationUtils.assertArraysEqual(body.getFirstData(), dataBody.getValue().getArray());
 
         assertHeader(header, actual.getHeader());
         assertProperties(properties, actual.getProperties());
@@ -891,7 +891,7 @@ public class MessageUtilsTest {
 
         if (properties.getUserId() != null) {
             assertNotNull(protonJProperties.getUserId());
-            assertArrayEquals(properties.getUserId(), protonJProperties.getUserId().getArray());
+            ValidationUtils.assertArraysEqual(properties.getUserId(), protonJProperties.getUserId().getArray());
         } else {
             assertNull(protonJProperties.getUserId());
         }

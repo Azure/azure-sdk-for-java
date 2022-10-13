@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.models;
 
+import com.azure.core.test.utils.ValidationUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +35,8 @@ public class AmqpMessageBodyTest {
         assertEquals(AmqpMessageBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        assertArrayEquals(expectedData, actual.getFirstData());
-        assertArrayEquals(expectedData, actual.getData().stream().findFirst().get());
+        ValidationUtils.assertArraysEqual(expectedData, actual.getFirstData());
+        ValidationUtils.assertArraysEqual(expectedData, actual.getData().iterator().next());
     }
 
     /**

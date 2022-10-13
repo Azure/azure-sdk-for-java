@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
@@ -31,7 +32,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -90,7 +90,7 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-            .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
+            .assertNext(actual -> ValidationUtils.assertArraysEqual(HELLO_BYTES, actual))
             .verifyComplete();
     }
 
@@ -109,7 +109,7 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
 
         StepVerifier.create(response.getBodyAsByteArray())
-            .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
+            .assertNext(actual -> ValidationUtils.assertArraysEqual(HELLO_BYTES, actual))
             .verifyComplete();
     }
 

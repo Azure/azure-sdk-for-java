@@ -3,9 +3,10 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.ValidationUtils;
+import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -22,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -97,7 +97,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -235,7 +235,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -316,7 +316,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -350,7 +350,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -396,7 +396,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, readData.array());
+        ValidationUtils.assertArraysEqual(data, readData.array());
     }
 
     @Test
@@ -449,7 +449,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, readData.array());
+        ValidationUtils.assertArraysEqual(data, readData.array());
     }
 
     @Test
@@ -481,7 +481,7 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -520,6 +520,6 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(data, Files.readAllBytes(tempFile));
     }
 }

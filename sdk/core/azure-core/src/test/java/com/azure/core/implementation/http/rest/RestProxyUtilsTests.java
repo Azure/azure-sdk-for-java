@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +27,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyUtilsTests {
 
@@ -39,7 +44,7 @@ public class RestProxyUtilsTests {
         StepVerifier.create(
                 RestProxyUtils.validateLengthAsync(httpRequest)
                     .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -99,11 +104,11 @@ public class RestProxyUtilsTests {
             .flatMapMany(HttpRequest::getBody);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -221,7 +226,7 @@ public class RestProxyUtilsTests {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream))
                 .setHeader("Content-Length", String.valueOf(EXPECTED.length));
-            assertArrayEquals(EXPECTED, validateAndCollectRequestSync(httpRequest));
+            ValidationUtils.assertArraysEqual(EXPECTED, validateAndCollectRequestSync(httpRequest));
         }
     }
 

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.util.ValidationUtils;
 import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -156,7 +156,7 @@ public class StreamResponseTest {
                         })
                 ).verifyComplete();
 
-                assertArrayEquals(responseValue, Files.readAllBytes(tempFile));
+                ValidationUtils.assertArraysEqual(responseValue, Files.readAllBytes(tempFile));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -170,7 +170,7 @@ public class StreamResponseTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
 
-            assertArrayEquals(responseValue, bos.toByteArray());
+            ValidationUtils.assertArraysEqual(responseValue, bos.toByteArray());
         });
     }
 

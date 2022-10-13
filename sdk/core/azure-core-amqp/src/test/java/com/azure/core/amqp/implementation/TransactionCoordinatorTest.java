@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpTransaction;
+import com.azure.core.test.utils.ValidationUtils;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -119,7 +120,7 @@ public class TransactionCoordinatorTest {
         StepVerifier.create(transactionCoordinator.declare())
             .assertNext(actual -> {
                 Assertions.assertNotNull(actual);
-                Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
+                ValidationUtils.assertArraysEqual(transactionId, actual.getTransactionId().array());
             })
             .verifyComplete();
 

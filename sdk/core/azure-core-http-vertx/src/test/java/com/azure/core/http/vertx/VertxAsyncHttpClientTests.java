@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -35,7 +36,6 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
@@ -88,7 +88,7 @@ public class VertxAsyncHttpClientTests {
     public void responseBodyAsStringAsyncWithCharset() {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, "/short").getBodyAsByteArray())
-            .assertNext(result -> assertArrayEquals(SHORT_BODY, result))
+            .assertNext(result -> ValidationUtils.assertArraysEqual(SHORT_BODY, result))
             .verifyComplete();
     }
 
@@ -171,7 +171,7 @@ public class VertxAsyncHttpClientTests {
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> getResponse(client, "/long", Context.NONE)
                 .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+                .doOnNext(bytes -> ValidationUtils.assertArraysEqual(LONG_BODY, bytes)))
             .sequential()
             .map(buffer -> (long) buffer.length)
             .reduce(0L, Long::sum);
@@ -220,7 +220,7 @@ public class VertxAsyncHttpClientTests {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
         StepVerifier.create(getResponse(client, "/short", context).flatMapMany(HttpResponse::getBody))
-            .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
+            .assertNext(buffer -> ValidationUtils.assertArraysEqual(SHORT_BODY, buffer.array()))
             .verifyComplete();
     }
 
@@ -276,7 +276,7 @@ public class VertxAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).getBodyAsByteArray())
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

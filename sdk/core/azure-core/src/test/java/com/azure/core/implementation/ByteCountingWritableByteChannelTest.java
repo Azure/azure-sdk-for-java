@@ -5,6 +5,7 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.PartialWriteChannel;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -16,7 +17,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,7 +71,7 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        ValidationUtils.assertArraysEqual(data, bos.toByteArray());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        ValidationUtils.assertArraysEqual(data, bos.toByteArray());
     }
 
     @Test
@@ -115,7 +115,7 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        ValidationUtils.assertArraysEqual(data, bos.toByteArray());
     }
 
     @Test
@@ -139,6 +139,6 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        ValidationUtils.assertArraysEqual(data, bos.toByteArray());
     }
 }

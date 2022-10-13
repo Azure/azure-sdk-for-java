@@ -3,11 +3,11 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.test.utils.ValidationUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -33,6 +33,6 @@ public class AmqpTransactionTest {
 
         // Assert
         assertNotNull(actual);
-        assertArrayEquals(TRANSACTION_ID, actual.getTransactionId().array());
+        ValidationUtils.assertArraysEqual(TRANSACTION_ID, actual.getTransactionId().array());
     }
 }

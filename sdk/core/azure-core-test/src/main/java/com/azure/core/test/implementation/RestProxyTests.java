@@ -42,6 +42,7 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize
 import com.azure.core.test.implementation.entities.HttpBinHeaders;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.test.utils.MessageDigestUtils;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -1017,7 +1018,7 @@ public abstract class RestProxyTests {
 
         final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
-        assertArrayEquals(expectedBytes, actualBytes);
+        ValidationUtils.assertArraysEqual(expectedBytes, actualBytes);
     }
 
     @Test
@@ -1026,7 +1027,7 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(expectedBytes))
             .assertNext(json -> {
                 assertTrue(json.data() instanceof String);
-                assertArrayEquals(expectedBytes, ((String) json.data()).getBytes());
+                ValidationUtils.assertArraysEqual(expectedBytes, ((String) json.data()).getBytes());
             }).verifyComplete();
     }
 

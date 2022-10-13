@@ -3,6 +3,7 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -10,10 +11,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -92,44 +91,44 @@ public class LengthValidatingInputStreamTests {
     @ParameterizedTest
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStream(int bufferSize) throws Exception {
-        byte[] bytes = new byte[4096];
+        byte[] bytes = new byte[bufferSize];
         new Random().nextBytes(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
-        InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
+        InputStream validatorStream = new LengthValidatingInputStream(inner, bufferSize);
 
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(bytes, afterRead);
+        ValidationUtils.assertArraysEqual(bytes, afterRead);
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithReset(int bufferSize) throws Exception {
-        byte[] bytes = new byte[4096];
+        byte[] bytes = new byte[bufferSize];
         new Random().nextBytes(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
-        InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
+        InputStream validatorStream = new LengthValidatingInputStream(inner, bufferSize);
 
         validatorStream.mark(Integer.MAX_VALUE);
         validatorStream.read(new byte[12]);
         validatorStream.reset();
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(bytes, afterRead);
+        ValidationUtils.assertArraysEqual(bytes, afterRead);
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithSkip(int bufferSize) throws Exception {
-        byte[] bytes = new byte[4096];
+        byte[] bytes = new byte[bufferSize];
         new Random().nextBytes(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
-        InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
+        InputStream validatorStream = new LengthValidatingInputStream(inner, bufferSize);
 
         validatorStream.skip(10);
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(Arrays.copyOfRange(bytes, 10, bytes.length), afterRead);
+        ValidationUtils.assertArraysEqual(bytes, 10, afterRead, 0, bytes.length - 10);
     }
 
     @Test
@@ -141,7 +140,7 @@ public class LengthValidatingInputStreamTests {
 
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(bytes, afterRead);
+        ValidationUtils.assertArraysEqual(bytes, afterRead);
     }
 
     @Test
@@ -156,7 +155,7 @@ public class LengthValidatingInputStreamTests {
         validatorStream.reset();
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(bytes, afterRead);
+        ValidationUtils.assertArraysEqual(bytes, afterRead);
     }
 
     @Test
@@ -169,7 +168,7 @@ public class LengthValidatingInputStreamTests {
         validatorStream.skip(10);
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(Arrays.copyOfRange(bytes, 10, bytes.length), afterRead);
+        ValidationUtils.assertArraysEqual(bytes, 10, afterRead, 0, bytes.length - 10);
     }
 
     private byte[] readStream(InputStream stream) throws Exception {

@@ -11,6 +11,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FaultyAsynchronousByteChannel;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.PartialWriteChannel;
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
@@ -29,14 +30,12 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IOUtilsTest {
@@ -55,7 +54,7 @@ public class IOUtilsTest {
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(DATA, byteArrayOutputStream.toByteArray());
+        ValidationUtils.assertArraysEqual(DATA, byteArrayOutputStream.toByteArray());
     }
 
     @Test
@@ -66,7 +65,7 @@ public class IOUtilsTest {
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(DATA, byteArrayOutputStream.toByteArray());
+        ValidationUtils.assertArraysEqual(DATA, byteArrayOutputStream.toByteArray());
     }
 
     @Test
@@ -80,7 +79,7 @@ public class IOUtilsTest {
             IOUtils.transferAsync(source, destination).block();
         }
 
-        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(DATA, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -95,7 +94,7 @@ public class IOUtilsTest {
             IOUtils.transferAsync(source, paritialWriteDestination).block();
         }
 
-        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(DATA, Files.readAllBytes(tempFile));
     }
 
     @Test
@@ -146,7 +145,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(DATA, Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(4, responses.size());
         responses.forEach(r -> Mockito.verify(r).close());
@@ -201,7 +200,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(2, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(Arrays.copyOfRange(DATA, 0, 1024), Files.readAllBytes(tempFile));
+        ValidationUtils.assertArraysEqual(DATA, 0, Files.readAllBytes(tempFile), 0, 1024);
         // check that all responses are closed
         assertEquals(3, responses.size());
         responses.forEach(r -> Mockito.verify(r).close());

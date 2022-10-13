@@ -5,6 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.test.utils.ValidationUtils;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ByteString;
@@ -21,8 +22,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class OkHttpFileRequestBodyTest {
 
@@ -44,7 +43,7 @@ public class OkHttpFileRequestBodyTest {
 
         fileRequestBody.writeTo(sink);
 
-        assertArrayEquals(sink.getData(), bytes);
+        ValidationUtils.assertArraysEqual(sink.getData(), bytes);
     }
 
     @ParameterizedTest
@@ -63,7 +62,7 @@ public class OkHttpFileRequestBodyTest {
 
         fileRequestBody.writeTo(sink);
 
-        assertArrayEquals(sink.getData(), bytes);
+        ValidationUtils.assertArraysEqual(sink.getData(), bytes);
     }
 
     @ParameterizedTest
@@ -82,7 +81,7 @@ public class OkHttpFileRequestBodyTest {
 
         fileRequestBody.writeTo(sink);
 
-        assertArrayEquals(sink.getData(), bytes);
+        ValidationUtils.assertArraysEqual(sink.getData(), bytes);
     }
 
     private static final class TestSink implements BufferedSink {
@@ -116,17 +115,17 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public BufferedSink emit() throws IOException {
+        public BufferedSink emit() {
             return null;
         }
 
         @Override
-        public BufferedSink emitCompleteSegments() throws IOException {
+        public BufferedSink emitCompleteSegments() {
             return null;
         }
 
         @Override
-        public void flush() throws IOException {
+        public void flush() {
 
         }
 
@@ -136,102 +135,102 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public BufferedSink write(byte[] bytes) throws IOException {
+        public BufferedSink write(byte[] bytes) {
             return null;
         }
 
         @Override
-        public BufferedSink write(byte[] bytes, int i, int i1) throws IOException {
+        public BufferedSink write(byte[] bytes, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink write(ByteString byteString) throws IOException {
+        public BufferedSink write(ByteString byteString) {
             return null;
         }
 
         @Override
-        public BufferedSink write(ByteString byteString, int i, int i1) throws IOException {
+        public BufferedSink write(ByteString byteString, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink write(Source source, long l) throws IOException {
+        public BufferedSink write(Source source, long l) {
             return null;
         }
 
         @Override
-        public long writeAll(Source source) throws IOException {
+        public long writeAll(Source source) {
             return 0;
         }
 
         @Override
-        public BufferedSink writeByte(int i) throws IOException {
+        public BufferedSink writeByte(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeDecimalLong(long l) throws IOException {
+        public BufferedSink writeDecimalLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeHexadecimalUnsignedLong(long l) throws IOException {
+        public BufferedSink writeHexadecimalUnsignedLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeInt(int i) throws IOException {
+        public BufferedSink writeInt(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeIntLe(int i) throws IOException {
+        public BufferedSink writeIntLe(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeLong(long l) throws IOException {
+        public BufferedSink writeLong(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeLongLe(long l) throws IOException {
+        public BufferedSink writeLongLe(long l) {
             return null;
         }
 
         @Override
-        public BufferedSink writeShort(int i) throws IOException {
+        public BufferedSink writeShort(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeShortLe(int i) throws IOException {
+        public BufferedSink writeShortLe(int i) {
             return null;
         }
 
         @Override
-        public BufferedSink writeString(String s, Charset charset) throws IOException {
+        public BufferedSink writeString(String s, Charset charset) {
             return null;
         }
 
         @Override
-        public BufferedSink writeString(String s, int i, int i1, Charset charset) throws IOException {
+        public BufferedSink writeString(String s, int i, int i1, Charset charset) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8(String s) throws IOException {
+        public BufferedSink writeUtf8(String s) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8(String s, int i, int i1) throws IOException {
+        public BufferedSink writeUtf8(String s, int i, int i1) {
             return null;
         }
 
         @Override
-        public BufferedSink writeUtf8CodePoint(int i) throws IOException {
+        public BufferedSink writeUtf8CodePoint(int i) {
             return null;
         }
 
@@ -255,7 +254,7 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
 
         }
 
@@ -265,7 +264,7 @@ public class OkHttpFileRequestBodyTest {
         }
 
         @Override
-        public void write(Buffer buffer, long l) throws IOException {
+        public void write(Buffer buffer, long l) {
 
         }
     }

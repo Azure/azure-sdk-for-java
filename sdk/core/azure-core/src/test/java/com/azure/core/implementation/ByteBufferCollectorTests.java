@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -52,7 +52,7 @@ public class ByteBufferCollectorTests {
 
         buffers.forEach(collector::write);
 
-        assertArrayEquals(expected, collector.toByteArray());
+        ValidationUtils.assertArraysEqual(expected, collector.toByteArray());
     }
 
     private static Stream<Arguments> combineBuffersSupplier() {

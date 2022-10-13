@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -62,7 +62,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @Test
@@ -171,7 +171,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     @ParameterizedTest
@@ -229,7 +229,7 @@ public class StreamUtilTest {
         // assert that collection carries original bytes.
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
-        assertArrayEquals(bytes, readBytes);
+        ValidationUtils.assertArraysEqual(bytes, readBytes);
     }
 
     public static Stream<Arguments> provideTestDataRoundTripParameters() {

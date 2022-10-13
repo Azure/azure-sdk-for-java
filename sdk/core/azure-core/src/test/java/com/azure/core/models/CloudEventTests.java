@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.ValidationUtils;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -166,7 +166,7 @@ public class CloudEventTests {
 
         assertNotNull(eventData);
 
-        assertArrayEquals(Base64.getDecoder().decode("c2FtcGxlYmluYXJ5ZGF0YQ=="), eventData);
+        ValidationUtils.assertArraysEqual(Base64.getDecoder().decode("c2FtcGxlYmluYXJ5ZGF0YQ=="), eventData);
     }
 
     @Test

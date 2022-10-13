@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.utils.ValidationUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -52,7 +53,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -113,7 +113,7 @@ public class JdkHttpClientTests {
     public void testBufferResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/long").buffer();
-        Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+        ValidationUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"));
         HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true));
-        Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+        ValidationUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
 
     @Test
@@ -171,8 +171,8 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/short");
 
-        Assertions.assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
-        Assertions.assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+        ValidationUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+        ValidationUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
     }
 
     @Test
@@ -390,7 +390,7 @@ public class JdkHttpClientTests {
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long")
                 .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
+                .doOnNext(bytes -> ValidationUtils.assertArraysEqual(LONG_BODY, bytes)))
             .sequential()
             .map(buffer -> (long) buffer.length)
             .reduce(0L, Long::sum);
@@ -412,7 +412,7 @@ public class JdkHttpClientTests {
             .flatMap(ignored -> {
                 HttpResponse response = doRequestSync(client, "/long");
                 byte[] body = response.getBodyAsBinaryData().toBytes();
-                assertArrayEquals(LONG_BODY, body);
+                ValidationUtils.assertArraysEqual(LONG_BODY, body);
                 return Flux.just((long) body.length);
             })
             .sequential()
@@ -451,7 +451,7 @@ public class JdkHttpClientTests {
     private void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> Assertions.assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> ValidationUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 
@@ -461,7 +461,7 @@ public class JdkHttpClientTests {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         WritableByteChannel body = Channels.newChannel(outStream);
         response.writeBodyTo(body);
-        Assertions.assertArrayEquals(expectedBody, outStream.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBody, outStream.toByteArray());
     }
 
     private Mono<HttpResponse> doRequest(HttpClient client, String path) {

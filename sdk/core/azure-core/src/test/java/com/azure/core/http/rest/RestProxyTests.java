@@ -169,13 +169,7 @@ public class RestProxyTests {
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-<<<<<<< HEAD
-            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file))), bytes.length),
-            Arguments.of(Named.of("flux with length",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
-=======
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
->>>>>>> b5c0ca6d3202e7411b47ae174ee2e2c489c76ba6
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
                 BinaryData.fromObject(bytes).getLength())
         );

@@ -4,6 +4,7 @@
 package com.azure.core.implementation.util;
 
 
+import com.azure.core.util.ValidationUtils;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,7 +49,7 @@ public class SliceInputStreamTest {
             os.write(b);
         }
 
-        assertArrayEquals(expectedBytes, os.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBytes, os.toByteArray());
     }
 
     @ParameterizedTest
@@ -64,7 +64,7 @@ public class SliceInputStreamTest {
             os.write(buffer, 0, nRead);
         }
 
-        assertArrayEquals(expectedBytes, os.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBytes, os.toByteArray());
     }
 
     @ParameterizedTest
@@ -87,7 +87,7 @@ public class SliceInputStreamTest {
             os.write(buffer, 0, nRead);
         }
 
-        assertArrayEquals(expectedBytes, os.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBytes, os.toByteArray());
     }
 
     @ParameterizedTest
@@ -113,7 +113,7 @@ public class SliceInputStreamTest {
             os.write(buffer, 0, nRead);
         }
 
-        assertArrayEquals(expectedBytes, os.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBytes, os.toByteArray());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class SliceInputStreamTest {
         }
 
         assertEquals(expectedSkipped, skipped);
-        assertArrayEquals(expectedBytes, os.toByteArray());
+        ValidationUtils.assertArraysEqual(expectedBytes, os.toByteArray());
     }
 
     private static Stream<Arguments> provideArguments() {
