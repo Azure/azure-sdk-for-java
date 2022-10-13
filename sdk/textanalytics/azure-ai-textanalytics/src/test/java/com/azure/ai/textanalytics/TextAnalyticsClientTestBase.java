@@ -18,7 +18,7 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DocumentType;
+import com.azure.ai.textanalytics.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
@@ -1026,7 +1026,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void healthcareStringInputRunner(BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         testRunner.accept(HEALTHCARE_INPUTS,
             new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true).setFhirVersion(FhirVersion.V4_0_1)
-                .setDocumentType(DocumentType.PROGRESS_NOTE)
+                .setDocumentType(HealthcareDocumentType.PROGRESS_NOTE)
         );
     }
 

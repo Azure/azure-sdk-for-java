@@ -15,7 +15,7 @@ public final class AnalyzeHealthcareEntitiesAction {
     private String modelVersion;
     private Boolean disableServiceLogs;
     private FhirVersion fhirVersion;
-    private DocumentType documentType;
+    private HealthcareDocumentType documentType;
 
     /**
      * Get the name of action.
@@ -113,7 +113,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      *
      * @return the documentType value.
      */
-    public DocumentType getDocumentType() {
+    public HealthcareDocumentType getDocumentType() {
         return this.documentType;
     }
 
@@ -124,7 +124,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      * @param documentType the documentType value to set.
      * @return the AnalyzeHealthcareEntitiesAction object itself.
      */
-    public AnalyzeHealthcareEntitiesAction setDocumentType(DocumentType documentType) {
+    public AnalyzeHealthcareEntitiesAction setDocumentType(HealthcareDocumentType documentType) {
         this.documentType = documentType;
         return this;
     }

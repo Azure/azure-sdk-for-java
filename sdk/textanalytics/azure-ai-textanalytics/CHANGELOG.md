@@ -7,7 +7,7 @@
 - Added properties `fhirVersion` and `documentType` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`.
 - Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
 - Added property `confidenceScore` to `HealthcareEntityRelation`.
-- Added enum `DocumentType` and `FhirVersion`.
+- Added enum `HealthcareDocumentType` and `FhirVersion`.
 
 ### Breaking Changes
 

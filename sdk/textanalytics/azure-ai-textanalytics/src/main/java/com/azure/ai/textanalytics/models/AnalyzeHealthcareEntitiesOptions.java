@@ -13,7 +13,7 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     private String displayName;
     private Boolean disableServiceLogs;
     private FhirVersion fhirVersion;
-    private DocumentType documentType;
+    private HealthcareDocumentType documentType;
 
     /**
      * Gets display name of the operation.
@@ -64,7 +64,7 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
      *
      * @return the documentType value.
      */
-    public DocumentType getDocumentType() {
+    public HealthcareDocumentType getDocumentType() {
         return this.documentType;
     }
 
@@ -75,7 +75,7 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
      * @param documentType the documentType value to set.
      * @return The {@link AnalyzeHealthcareEntitiesOptions} object itself.
      */
-    public AnalyzeHealthcareEntitiesOptions setDocumentType(DocumentType documentType) {
+    public AnalyzeHealthcareEntitiesOptions setDocumentType(HealthcareDocumentType documentType) {
         this.documentType = documentType;
         return this;
     }
