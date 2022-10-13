@@ -14,9 +14,9 @@ public final class GitHubOwnerGetSamples {
     /**
      * Sample code: GitHubOwner_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().getWithResponse("westusrg", "testconnector", "Azure", Context.NONE);
     }
 }

@@ -19,10 +19,10 @@ public final class GitHubOwnersImpl implements GitHubOwners {
 
     private final GitHubOwnersClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public GitHubOwnersImpl(
-        GitHubOwnersClient innerClient, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        GitHubOwnersClient innerClient, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -122,7 +122,7 @@ public final class GitHubOwnersImpl implements GitHubOwners {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 

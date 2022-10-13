@@ -18,11 +18,11 @@ public final class GitHubConnectorStatsOperationsImpl implements GitHubConnector
 
     private final GitHubConnectorStatsOperationsClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public GitHubConnectorStatsOperationsImpl(
         GitHubConnectorStatsOperationsClient innerClient,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -55,7 +55,7 @@ public final class GitHubConnectorStatsOperationsImpl implements GitHubConnector
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 }

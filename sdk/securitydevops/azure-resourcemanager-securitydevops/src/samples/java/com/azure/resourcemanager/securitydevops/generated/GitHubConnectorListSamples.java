@@ -14,10 +14,10 @@ public final class GitHubConnectorListSamples {
     /**
      * Sample code: GitHubConnector_ListBySubscription.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubConnectorListBySubscription(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().list(Context.NONE);
     }
 }

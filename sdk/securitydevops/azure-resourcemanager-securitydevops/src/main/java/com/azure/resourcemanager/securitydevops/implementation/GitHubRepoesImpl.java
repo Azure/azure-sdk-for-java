@@ -19,10 +19,10 @@ public final class GitHubRepoesImpl implements GitHubRepoes {
 
     private final GitHubRepoesClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public GitHubRepoesImpl(
-        GitHubRepoesClient innerClient, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        GitHubRepoesClient innerClient, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -162,7 +162,7 @@ public final class GitHubRepoesImpl implements GitHubRepoes {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 

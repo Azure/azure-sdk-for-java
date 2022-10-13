@@ -12,10 +12,10 @@ public final class GitHubRepoCreateOrUpdateSamples {
     /**
      * Sample code: GitHubRepo_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubRepoCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .gitHubRepoes()
             .define("azure-rest-api-specs")

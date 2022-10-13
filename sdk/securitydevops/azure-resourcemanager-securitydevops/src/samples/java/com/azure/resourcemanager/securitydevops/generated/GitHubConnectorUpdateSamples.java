@@ -17,9 +17,9 @@ public final class GitHubConnectorUpdateSamples {
     /**
      * Sample code: GitHubConnector_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubConnector resource =
             manager
                 .gitHubConnectors()

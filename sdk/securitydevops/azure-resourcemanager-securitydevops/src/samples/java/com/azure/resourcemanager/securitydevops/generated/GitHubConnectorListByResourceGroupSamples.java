@@ -14,10 +14,10 @@ public final class GitHubConnectorListByResourceGroupSamples {
     /**
      * Sample code: GitHubConnector_ListByResourceGroup.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubConnectorListByResourceGroup(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().listByResourceGroup("westusrg", Context.NONE);
     }
 }

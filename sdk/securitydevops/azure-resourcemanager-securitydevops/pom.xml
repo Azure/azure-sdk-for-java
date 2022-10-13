@@ -12,8 +12,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-securitydevops;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for securitydevops Management</name>
-  <description>This package contains Microsoft Azure SDK for securitydevops Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for Defender for DevOps. Package tag package-2022-09-01-preview.</description>
+  <name>Microsoft Azure SDK for Security Dev Ops Management</name>
+  <description>This package contains Microsoft Azure SDK for Security Dev Ops Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for Defender for DevOps. Package tag package-2022-09-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

@@ -14,9 +14,9 @@ public final class AzureDevOpsConnectorGetByResourceGroupSamples {
     /**
      * Sample code: AzureDevOpsConnector_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsConnectorGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsConnectorGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().getByResourceGroupWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }

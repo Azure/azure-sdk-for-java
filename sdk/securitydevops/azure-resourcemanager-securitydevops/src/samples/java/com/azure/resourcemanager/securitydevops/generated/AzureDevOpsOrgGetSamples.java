@@ -14,9 +14,9 @@ public final class AzureDevOpsOrgGetSamples {
     /**
      * Sample code: AzureDevOpsOrg_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsOrgGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsOrgGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsOrgs().getWithResponse("westusrg", "testconnector", "myOrg", Context.NONE);
     }
 }

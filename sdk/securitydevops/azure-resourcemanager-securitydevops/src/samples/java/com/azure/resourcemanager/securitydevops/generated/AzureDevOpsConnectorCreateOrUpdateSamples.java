@@ -18,10 +18,10 @@ public final class AzureDevOpsConnectorCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsConnector_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsConnectors()
             .define("testconnector")

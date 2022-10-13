@@ -14,9 +14,9 @@ public final class AzureDevOpsRepoGetSamples {
     /**
      * Sample code: AzureDevOpsRepo_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsRepoGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsRepoGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsRepoes()
             .getWithResponse("westusrg", "testconnector", "myOrg", "myProject", "myRepo", Context.NONE);

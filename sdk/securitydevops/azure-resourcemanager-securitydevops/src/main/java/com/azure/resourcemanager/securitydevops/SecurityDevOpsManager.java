@@ -52,8 +52,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SecuritydevopsManager. REST APIs for Defender for DevOps. */
-public final class SecuritydevopsManager {
+/** Entry point to SecurityDevOpsManager. REST APIs for Defender for DevOps. */
+public final class SecurityDevOpsManager {
     private AzureDevOpsConnectors azureDevOpsConnectors;
 
     private AzureDevOpsRepoes azureDevOpsRepoes;
@@ -76,7 +76,7 @@ public final class SecuritydevopsManager {
 
     private final MicrosoftSecurityDevOps clientObject;
 
-    private SecuritydevopsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private SecurityDevOpsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -89,38 +89,38 @@ public final class SecuritydevopsManager {
     }
 
     /**
-     * Creates an instance of securitydevops service API entry point.
+     * Creates an instance of Security Dev Ops service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the securitydevops service API instance.
+     * @return the Security Dev Ops service API instance.
      */
-    public static SecuritydevopsManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static SecurityDevOpsManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of securitydevops service API entry point.
+     * Creates an instance of Security Dev Ops service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the securitydevops service API instance.
+     * @return the Security Dev Ops service API instance.
      */
-    public static SecuritydevopsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static SecurityDevOpsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new SecuritydevopsManager(httpPipeline, profile, null);
+        return new SecurityDevOpsManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create SecuritydevopsManager with optional configuration.
+     * Gets a Configurable instance that can be used to create SecurityDevOpsManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new SecuritydevopsManager.Configurable();
+        return new SecurityDevOpsManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -223,13 +223,13 @@ public final class SecuritydevopsManager {
         }
 
         /**
-         * Creates an instance of securitydevops service API entry point.
+         * Creates an instance of Security Dev Ops service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the securitydevops service API instance.
+         * @return the Security Dev Ops service API instance.
          */
-        public SecuritydevopsManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public SecurityDevOpsManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -292,7 +292,7 @@ public final class SecuritydevopsManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new SecuritydevopsManager(httpPipeline, profile, defaultPollInterval);
+            return new SecurityDevOpsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 

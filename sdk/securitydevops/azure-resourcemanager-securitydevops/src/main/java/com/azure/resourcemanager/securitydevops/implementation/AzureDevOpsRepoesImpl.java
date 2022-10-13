@@ -19,11 +19,11 @@ public final class AzureDevOpsRepoesImpl implements AzureDevOpsRepoes {
 
     private final AzureDevOpsRepoesClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public AzureDevOpsRepoesImpl(
         AzureDevOpsRepoesClient innerClient,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -221,7 +221,7 @@ public final class AzureDevOpsRepoesImpl implements AzureDevOpsRepoes {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 

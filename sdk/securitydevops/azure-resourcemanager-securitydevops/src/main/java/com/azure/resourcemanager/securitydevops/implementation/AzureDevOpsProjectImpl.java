@@ -14,7 +14,7 @@ public final class AzureDevOpsProjectImpl
     implements AzureDevOpsProject, AzureDevOpsProject.Definition, AzureDevOpsProject.Update {
     private AzureDevOpsProjectInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class AzureDevOpsProjectImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -94,7 +94,7 @@ public final class AzureDevOpsProjectImpl
         return this;
     }
 
-    AzureDevOpsProjectImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    AzureDevOpsProjectImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new AzureDevOpsProjectInner();
         this.serviceManager = serviceManager;
         this.azureDevOpsProjectName = name;
@@ -136,7 +136,7 @@ public final class AzureDevOpsProjectImpl
 
     AzureDevOpsProjectImpl(
         AzureDevOpsProjectInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

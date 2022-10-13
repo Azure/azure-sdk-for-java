@@ -14,9 +14,9 @@ public final class GitHubRepoListSamples {
     /**
      * Sample code: GitHubRepo_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().list("westusrg", "testconnector", "Azure", Context.NONE);
     }
 }

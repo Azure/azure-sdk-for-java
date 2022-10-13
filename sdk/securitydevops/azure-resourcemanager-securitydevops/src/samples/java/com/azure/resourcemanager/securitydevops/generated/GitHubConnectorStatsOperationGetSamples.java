@@ -14,9 +14,9 @@ public final class GitHubConnectorStatsOperationGetSamples {
     /**
      * Sample code: GitHubConnectorStats_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorStatsGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorStatsGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectorStatsOperations().getWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }

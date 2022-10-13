@@ -16,7 +16,7 @@ import java.util.Map;
 public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnector.Definition, GitHubConnector.Update {
     private GitHubConnectorInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -67,7 +67,7 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -98,7 +98,7 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
         return this;
     }
 
-    GitHubConnectorImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    GitHubConnectorImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new GitHubConnectorInner();
         this.serviceManager = serviceManager;
         this.gitHubConnectorName = name;
@@ -128,7 +128,7 @@ public final class GitHubConnectorImpl implements GitHubConnector, GitHubConnect
 
     GitHubConnectorImpl(
         GitHubConnectorInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

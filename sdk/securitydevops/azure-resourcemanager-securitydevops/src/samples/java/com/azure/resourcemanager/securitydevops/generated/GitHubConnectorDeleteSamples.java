@@ -14,9 +14,9 @@ public final class GitHubConnectorDeleteSamples {
     /**
      * Sample code: GitHubConnector_Delete.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorDelete(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorDelete(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().delete("westusrg", "testconnector", Context.NONE);
     }
 }

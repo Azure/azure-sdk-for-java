@@ -14,10 +14,10 @@ public final class AzureDevOpsRepoListByConnectorSamples {
     /**
      * Sample code: AzureDevOpsRepo_ListByConnector.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsRepoListByConnector(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsRepoes().listByConnector("westusrg", "testconnector", Context.NONE);
     }
 }

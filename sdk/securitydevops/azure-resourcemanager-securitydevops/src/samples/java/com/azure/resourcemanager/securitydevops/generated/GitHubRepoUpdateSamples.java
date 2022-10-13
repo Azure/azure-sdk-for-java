@@ -15,9 +15,9 @@ public final class GitHubRepoUpdateSamples {
     /**
      * Sample code: GitHubRepo_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubRepo resource =
             manager
                 .gitHubRepoes()

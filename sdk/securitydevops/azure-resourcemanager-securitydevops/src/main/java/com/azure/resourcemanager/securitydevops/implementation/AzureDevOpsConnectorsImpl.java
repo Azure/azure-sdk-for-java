@@ -19,11 +19,11 @@ public final class AzureDevOpsConnectorsImpl implements AzureDevOpsConnectors {
 
     private final AzureDevOpsConnectorsClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public AzureDevOpsConnectorsImpl(
         AzureDevOpsConnectorsClient innerClient,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -176,7 +176,7 @@ public final class AzureDevOpsConnectorsImpl implements AzureDevOpsConnectors {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 

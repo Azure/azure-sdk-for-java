@@ -15,9 +15,9 @@ public final class GitHubOwnerUpdateSamples {
     /**
      * Sample code: GitHubOwner_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubOwner resource =
             manager.gitHubOwners().getWithResponse("westusrg", "testconnector", "Azure", Context.NONE).getValue();
         resource.update().apply();

@@ -13,11 +13,11 @@ import java.util.List;
 public final class AzureDevOpsConnectorStatsListResponseImpl implements AzureDevOpsConnectorStatsListResponse {
     private AzureDevOpsConnectorStatsListResponseInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     AzureDevOpsConnectorStatsListResponseImpl(
         AzureDevOpsConnectorStatsListResponseInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class AzureDevOpsConnectorStatsListResponseImpl implements AzureDev
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 }

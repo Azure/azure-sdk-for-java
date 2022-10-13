@@ -1,8 +1,8 @@
-# Azure Resource Manager securitydevops client library for Java
+# Azure Resource Manager Security Dev Ops client library for Java
 
-Azure Resource Manager securitydevops client library for Java.
+Azure Resource Manager Security Dev Ops client library for Java.
 
-This package contains Microsoft Azure SDK for securitydevops Management SDK. REST APIs for Defender for DevOps. Package tag package-2022-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Security Dev Ops Management SDK. REST APIs for Defender for DevOps. Package tag package-2022-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-SecuritydevopsManager manager = SecuritydevopsManager
+SecurityDevOpsManager manager = SecurityDevOpsManager
     .authenticate(credential, profile);
 ```
 

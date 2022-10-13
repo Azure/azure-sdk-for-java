@@ -17,9 +17,9 @@ public final class AzureDevOpsOrgUpdateSamples {
     /**
      * Sample code: AzureDevOpsOrg_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsOrgUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsOrgUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsOrg resource =
             manager.azureDevOpsOrgs().getWithResponse("westusrg", "testconnector", "myOrg", Context.NONE).getValue();
         resource

@@ -14,10 +14,10 @@ public final class GitHubRepoListByConnectorSamples {
     /**
      * Sample code: GitHubRepo_ListByConnector.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubRepoListByConnector(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().listByConnector("westusrg", "testconnector", Context.NONE);
     }
 }

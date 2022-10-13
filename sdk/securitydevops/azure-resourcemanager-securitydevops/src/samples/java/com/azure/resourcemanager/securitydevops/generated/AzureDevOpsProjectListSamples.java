@@ -14,9 +14,9 @@ public final class AzureDevOpsProjectListSamples {
     /**
      * Sample code: AzureDevOpsProject_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsProjectList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsProjectList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsProjects().list("westusrg", "testconnector", "myOrg", Context.NONE);
     }
 }

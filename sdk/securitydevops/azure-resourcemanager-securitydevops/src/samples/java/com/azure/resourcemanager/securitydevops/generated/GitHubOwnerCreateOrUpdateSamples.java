@@ -12,10 +12,10 @@ public final class GitHubOwnerCreateOrUpdateSamples {
     /**
      * Sample code: GitHubOwner_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubOwnerCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().define("Azure").withExistingGitHubConnector("westusrg", "testconnector").create();
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.securitydevops.SecuritydevopsManager;
+import com.azure.resourcemanager.securitydevops.SecurityDevOpsManager;
 import com.azure.resourcemanager.securitydevops.models.GitHubRepo;
 import com.azure.resourcemanager.securitydevops.models.GitHubRepoProperties;
 import com.azure.resourcemanager.securitydevops.models.ProvisioningState;
@@ -53,8 +53,8 @@ public final class GitHubRepoesCreateOrUpdateMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        SecuritydevopsManager manager =
-            SecuritydevopsManager
+        SecurityDevOpsManager manager =
+            SecurityDevOpsManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

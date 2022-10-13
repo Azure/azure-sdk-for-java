@@ -13,7 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.securitydevops.SecuritydevopsManager;
+import com.azure.resourcemanager.securitydevops.SecurityDevOpsManager;
 import com.azure.resourcemanager.securitydevops.models.Operation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +52,8 @@ public final class OperationsListMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        SecuritydevopsManager manager =
-            SecuritydevopsManager
+        SecurityDevOpsManager manager =
+            SecurityDevOpsManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

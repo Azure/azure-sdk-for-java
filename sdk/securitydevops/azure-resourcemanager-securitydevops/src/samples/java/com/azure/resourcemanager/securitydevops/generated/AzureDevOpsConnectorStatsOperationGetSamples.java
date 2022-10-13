@@ -14,10 +14,10 @@ public final class AzureDevOpsConnectorStatsOperationGetSamples {
     /**
      * Sample code: AzureDevOpsConnectorStats_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorStatsGet(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectorStatsOperations().getWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }

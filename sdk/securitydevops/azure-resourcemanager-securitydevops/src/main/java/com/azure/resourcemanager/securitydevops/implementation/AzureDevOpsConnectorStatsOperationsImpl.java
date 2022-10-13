@@ -18,11 +18,11 @@ public final class AzureDevOpsConnectorStatsOperationsImpl implements AzureDevOp
 
     private final AzureDevOpsConnectorStatsOperationsClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public AzureDevOpsConnectorStatsOperationsImpl(
         AzureDevOpsConnectorStatsOperationsClient innerClient,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -56,7 +56,7 @@ public final class AzureDevOpsConnectorStatsOperationsImpl implements AzureDevOp
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 }
