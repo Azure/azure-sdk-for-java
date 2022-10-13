@@ -297,27 +297,29 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             return promise.setSuccess(msg);
         }
 
-        final long transitTimeoutContinuousNanoTime = currentTime - timestamps.continuousTransitTimeoutEarliestNanoTime();
-        final int transitTimeoutCount = timestamps.continuousTransitTimeoutCount();
-        if (transitTimeoutContinuousNanoTime >= this.transitTimeoutDetectionTimeInNanos
-            && transitTimeoutCount >= this.transitTimeoutThreshold) {
+        if (timestamps.continuousTransitTimeoutEarliestNanoTime() != null) {
+            final long transitTimeoutContinuousNanoTime = currentTime - timestamps.continuousTransitTimeoutEarliestNanoTime();
+            final int transitTimeoutCount = timestamps.continuousTransitTimeoutCount();
+            if (transitTimeoutContinuousNanoTime >= this.transitTimeoutDetectionTimeInNanos
+                    && transitTimeoutCount >= this.transitTimeoutThreshold) {
 
-            String msg = MessageFormat.format(
-                    "{0} health check failed due to continuous transit timeout: (lastChannelWrite: {1}, lastChannelRead: {2}, "
-                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, transitTimeoutStartTime: {7}, transitTimeoutCount: {8})", channel,
-                    timestamps.lastChannelWriteNanoTime(),
-                    timestamps.lastChannelReadNanoTime(),
-                    readDelay,
-                    this.readDelayLimitInNanos,
-                    rntbdContext,
-                    pendingRequestCount,
-                    timestamps.continuousTransitTimeoutEarliestNanoTime(),
-                    timestamps.continuousTransitTimeoutCount
-            );
+                String msg = MessageFormat.format(
+                        "{0} health check failed due to continuous transit timeout: (lastChannelWrite: {1}, lastChannelRead: {2}, "
+                                + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, transitTimeoutStartTime: {7}, transitTimeoutCount: {8})", channel,
+                        timestamps.lastChannelWriteNanoTime(),
+                        timestamps.lastChannelReadNanoTime(),
+                        readDelay,
+                        this.readDelayLimitInNanos,
+                        rntbdContext,
+                        pendingRequestCount,
+                        timestamps.continuousTransitTimeoutEarliestNanoTime(),
+                        timestamps.continuousTransitTimeoutCount
+                );
 
-            return promise.setSuccess(msg);
+                return promise.setSuccess(msg);
+            }
         }
-
+        
         if (this.idleConnectionTimeoutInNanos > 0L) {
             if (currentTime - timestamps.lastChannelReadNanoTime() > this.idleConnectionTimeoutInNanos) {
                 String msg = MessageFormat.format(
@@ -446,7 +448,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         }
 
         @JsonProperty
-        public long continuousTransitTimeoutEarliestNanoTime() {
+        public Long continuousTransitTimeoutEarliestNanoTime() {
             return transitTimeoutTimestampUpdater.get(this);
         }
 
