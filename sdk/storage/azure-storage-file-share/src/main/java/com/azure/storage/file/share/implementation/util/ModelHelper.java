@@ -213,19 +213,15 @@ public class ModelHelper {
     }
 
     public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
-        try {
-            return new HandleItem()
-                .setHandleId(handleItem.getHandleId())
-                .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
-                .setSessionId(handleItem.getSessionId())
-                .setClientIp(handleItem.getClientIp())
-                .setFileId(handleItem.getFileId())
-                .setParentId(handleItem.getParentId())
-                .setLastReconnectTime(handleItem.getLastReconnectTime())
-                .setOpenTime(handleItem.getOpenTime());
-        } catch (UnsupportedEncodingException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
-        }
+        return new HandleItem()
+            .setHandleId(handleItem.getHandleId())
+            .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
+            .setSessionId(handleItem.getSessionId())
+            .setClientIp(handleItem.getClientIp())
+            .setFileId(handleItem.getFileId())
+            .setParentId(handleItem.getParentId())
+            .setLastReconnectTime(handleItem.getLastReconnectTime())
+            .setOpenTime(handleItem.getOpenTime());
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
@@ -236,9 +232,13 @@ public class ModelHelper {
         return result;
     }
 
-    public static String decodeName(StringEncoded stringEncoded) throws UnsupportedEncodingException {
+    public static String decodeName(StringEncoded stringEncoded) {
         if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
-            return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
+            try {
+                return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.toString());
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+            }
         } else {
             return stringEncoded.getContent();
         }
