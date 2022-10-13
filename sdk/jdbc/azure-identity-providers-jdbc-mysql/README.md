@@ -7,9 +7,9 @@
       - [Prepare the working environment](#prepare-the-working-environment)
       - [Create an Azure Database for MySQL server](#create-an-azure-database-for-mysql-server)
       - [Configure a firewall rule for your MySQL server](#configure-a-firewall-rule-for-your-mysql-server)
-      - [Enable Azure Active Directory (Azure AD)-based authentication](#enable-azure-active-directory--azure-ad--based-authentication)
+      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
   * [Key concepts](#key-concepts)
-    + [Azure Active Directory (Azure AD) authentication with MySQL](#azure-active-directory--azure-ad--authentication-with-mysql)
+    + [Azure AD authentication with MySQL](#azure-ad-authentication-with-mysql)
     + [Architecture](#architecture)
   * [Examples](#examples)
     + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
@@ -65,11 +65,11 @@ First, use the following command to set up some environment variables.
 
 ```bash
 export AZ_RESOURCE_GROUP=database-workshop
-export AZ_DATABASE_NAME=<YOUR_DATABASE_NAME>
-export AZ_LOCATION=<YOUR_AZURE_REGION>
+export AZ_DATABASE_NAME={YOUR_DATABASE_NAME}
+export AZ_LOCATION={YOUR_AZURE_REGION}
 export AZ_MYSQL_AD_ADMIN_USERNAME=demo
 export AZ_MYSQL_AD_NON_ADMIN_USERNAME=demo-non-admin
-export AZ_LOCAL_IP_ADDRESS=<YOUR_LOCAL_IP_ADDRESS>
+export AZ_LOCAL_IP_ADDRESS={YOUR_LOCAL_IP_ADDRESS}
 ```
 
 Replace the placeholders with the following values, which are used throughout this article:
@@ -108,7 +108,7 @@ az mysql server firewall-rule create \
    
 ```
 
-#### Enable Azure Active Directory (Azure AD)-based authentication
+#### Enable Azure AD-based authentication
 
 To use Azure Active Directory access with Azure Database for MySQL, you should set the Azure Active Directory (Azure AD) admin user first. Only
 an Azure Active Directory (Azure AD) Admin user can create/enable users for Azure Active Directory (Azure AD)-based authentication.
@@ -123,7 +123,7 @@ az mysql server ad-admin create \
 
 ## Key concepts
 
-### Azure Active Directory (Azure AD) authentication with MySQL
+### Azure AD authentication with MySQL
 
 Microsoft Azure Active Directory (Azure Active Directory (Azure AD)) authentication is a mechanism of connecting to Azure Database for MySQL
 using identities defined in Azure Active Directory (Azure AD). With Azure Active Directory (Azure AD) authentication, you can manage database user identities and other

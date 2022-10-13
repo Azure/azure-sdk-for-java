@@ -1,11 +1,11 @@
 - [Azure identity JDBC plugin library for Java](#azure-identity-jdbc-plugin-library-for-java)
-    * [Getting started](#getting-started)
-        + [Prerequisites](#prerequisites)
-    * [Key concepts](#key-concepts)
-    * [Examples](#examples)
-    * [Troubleshooting](#troubleshooting)
-    * [Next steps](#next-steps)
-    * [Contributing](#contributing)
+  * [Getting started](#getting-started)
+    + [Prerequisites](#prerequisites)
+  * [Key concepts](#key-concepts)
+  * [Examples](#examples)
+  * [Troubleshooting](#troubleshooting)
+  * [Next steps](#next-steps)
+  * [Contributing](#contributing)
     
 # Azure identity JDBC plugin library for Java
 
@@ -23,8 +23,8 @@ to get a token as the password for connection.
 
 ## Key concepts
 
-Azure Identity Providers Core contains a common template framework for users to get a token from Azure Active Directory (Azure AD) and
-use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure Active Directory (Azure AD) and use the
+Azure Identity Providers Core contains a common template framework for users to get a token from Azure AD and
+use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
 token as a password to connect with MySQL.
 
 ## Examples

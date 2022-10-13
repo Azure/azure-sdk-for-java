@@ -7,9 +7,9 @@
       - [Prepare the working environment](#prepare-the-working-environment)
       - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
       - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
-    + [Enable Azure Active Directory (Azure AD)-based authentication](#enable-azure-active-directory--azure-ad--based-authentication)
+      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
   * [Key concepts](#key-concepts)
-    + [Azure Active Directory (Azure AD) authentication with PostgreSQL](#azure-active-directory--azure-ad--authentication-with-postgresql)
+    + [Azure AD authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
     + [Architecture](#architecture)
   * [Examples](#examples)
     + [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
@@ -66,11 +66,11 @@ First, use the following command to set up some environment variables.
 
 ```bash
 export AZ_RESOURCE_GROUP=database-workshop
-export AZ_DATABASE_NAME=<YOUR_DATABASE_NAME>
-export AZ_LOCATION=<YOUR_AZURE_REGION>
+export AZ_DATABASE_NAME={YOUR_DATABASE_NAME}
+export AZ_LOCATION={YOUR_AZURE_REGION}
 export AZ_POSTGRESQL_AD_ADMIN_USERNAME=demo@tenant.com
-export AZ_POSTGRESQL_AD_NON_ADMIN_USERNAME=<YOUR_POSTGRESQL_AD_NON_ADMIN_USERNAME>
-export AZ_LOCAL_IP_ADDRESS=<YOUR_LOCAL_IP_ADDRESS>
+export AZ_POSTGRESQL_AD_NON_ADMIN_USERNAME={YOUR_POSTGRESQL_AD_NON_ADMIN_USERNAME}
+export AZ_LOCAL_IP_ADDRESS={YOUR_LOCAL_IP_ADDRESS}
 ```
 
 Replace the placeholders with the following values, which are used throughout this article:
@@ -80,7 +80,7 @@ Replace the placeholders with the following values, which are used throughout th
   region closer to where you live. You can have the full list of available regions by entering az account
   list-locations.
 - <YOUR_POSTGRESQL_AD_NON_ADMIN_USERNAME>: The username of your PostgreSQL database server. Make ensure the username is
-  a valid user in your Azure Active Directory (Azure AD) tenant.
+  a valid user in your Azure AD tenant.
 - <YOUR_LOCAL_IP_ADDRESS>: The IP address of your local computer, from which you'll run your Spring Boot application.
   One convenient way to find it is to point your browser to [whatismyip.akamai.com][whatismyip.akamai.com].
 
@@ -111,10 +111,10 @@ az postgres server firewall-rule create \
     --output tsv
 ```
 
-### Enable Azure Active Directory (Azure AD)-based authentication
+#### Enable Azure AD-based authentication
 
-To use Azure Active Directory access with Azure Database for PostgreSQL, you should set the Azure Active Directory (Azure AD) admin user first.
-Only an Azure Active Directory (Azure AD) Admin user can create/enable users for Azure Active Directory (Azure AD)-based authentication.
+To use Azure Active Directory access with Azure Database for PostgreSQL, you should set the Azure AD admin user first.
+Only an Azure AD Admin user can create/enable users for Azure AD-based authentication.
 
 ```Azure CLI
 az postgres server ad-admin create \
@@ -126,18 +126,18 @@ az postgres server ad-admin create \
 
 ## Key concepts
 
-### Azure Active Directory (Azure AD) authentication with PostgreSQL
+### Azure AD authentication with PostgreSQL
 
-Microsoft Azure Active Directory (Azure Active Directory (Azure AD)) authentication is a mechanism of connecting to Azure Database for PostgreSQL
-using identities defined in Azure Active Directory (Azure AD). With Azure Active Directory (Azure AD) authentication, you can manage database user identities and other
+Microsoft Azure Active Directory (Azure AD) authentication is a mechanism of connecting to Azure Database for PostgreSQL
+using identities defined in Azure AD. With Azure AD authentication, you can manage database user identities and other
 Microsoft services in a central location, which simplifies permission management.
 
-The following high-level diagram summarizes how authentication works using Azure Active Directory (Azure AD) authentication with Azure Database
+The following high-level diagram summarizes how authentication works using Azure AD authentication with Azure Database
 for PostgreSQL. The arrows indicate communication pathways.
 
 ![postgresql-architecture.png](img/postgresql-architecture.png)
 
-To learn more about using Azure Active Directory (Azure AD) with PostgreSQL, see Use (Use Azure Active Directory for authenticating with
+To learn more about using Azure AD with PostgreSQL, see Use (Use Azure Active Directory for authenticating with
 PostgreSQL)[Use Azure Active Directory for authenticating with PostgreSQL]
 
 ### Architecture
