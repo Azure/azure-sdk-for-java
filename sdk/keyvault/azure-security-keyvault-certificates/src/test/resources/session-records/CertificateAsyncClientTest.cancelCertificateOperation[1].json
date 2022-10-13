@@ -1,0 +1,505 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/create?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1309",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Mon, 03 Oct 2022 19:42:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "8236e43d-a3a8-4f62-b4c2-839d2056af19",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3&request_id=0cf206782a14498ba9740eab4fbf5786"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1309",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "08ac5240-d768-4d22-bf23-51afcc49fc60",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "455629ed-7f21-4191-88bb-c3ea3e4ec05e",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5f208723-7b0c-4969-b150-621124e912b4",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f5d016a3-c864-4c7a-8c9a-3dc02e5bfed5",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:25 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5819e1e9-a8a5-43ea-89bc-8a21c177aa8a",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "81ce1c1a-c532-4928-b595-d3879d999820",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "66062023-4829-49dc-a36d-903291db2233",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "54dc2bae-2452-468d-807d-36e639b48c0b",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e58feb69-f369-4933-90e3-581ac3caa4cb",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "9bc07340-677a-4e6e-a805-054dfeb7b53d",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "59b8bc02-5ac3-48e3-81b3-2521318a7f71",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:33 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "53a0694f-ad05-405a-808b-9bb30bee234e",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c809df33-7195-4bf7-a568-fa0611061d2a",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a993595b-e951-4087-9eda-bae0c6e1b7a0",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e9e54538-8042-4f75-8bd3-b6e4f96e9c2e",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e16cd76d-9959-4a29-a9a6-d6bc647f343c",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1308",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "7dd150b5-ab0c-4570-a3c8-fd9b9a7a75ef",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1143",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "63a8cd92-bd4e-4eb2-9425-9f6867fabde2",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPO4kba0TY8itCBuWxfF5cR/49aMWvu3CFPvM8OvCGPysOBcLhpGlvESVxJ3/uSoCwyr5913JNvW1UqGUxscldQTUTFfAf8+S4HSzpU1vtAYZ8Bl8n2EJtcazXnCp1Y0fXyVCUGxmej/aWPQLFkiRveg5LHDqyA0AIl8K16UmX4aOMRw6+8w0DgFMB+c84VZt/bq5Wc4FLZNoh1ddikGKRfTYtuuk0r44HubBHbQTf3HldYzrg9LS4wvHVxbhngwGxfUW8GLSzy4ooCKyPSme7Akuee9vrvGE7UkOl8sNYwRweAlpD3YAyycKk0ZzSp5Pdf5rtByLc9cXSeI1wVV8xUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQCYv15LjVbhX6uDTcSF61Fkv59qxubJjKR1VI/60xshrc+TbX/cW+UT7UDKrpqleF0U9B3+Tf6iMQHgusPLyOhZweLzFD6JcKOqyAZH7dFhtDlBKG+QZzFwFMzoUbCTsNAgmuQ/r51yjA/bFslCFgMI+qhNXYbhtwA+UJcmVdkbx7iqA7Nx+Ih2AEnHXtMobxgkp9q77S4aLJTuCTSAgdlNHCuCW9u1VS4KaCciZq/hjw3hgDG2QmcTfCJoGLZffuSL6YpjmvVZ3KmmqptV3cFzMGwF8Sfu8d0YQn1KN9stW4nspVB8nt8VngkgDulPcMOR5arFuk9M5MuqroBTeHAV\",\"cancellation_requested\":true,\"status\":\"cancelled\",\"request_id\":\"0cf206782a14498ba9740eab4fbf5786\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert01778b2a897/?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1041",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Mon, 03 Oct 2022 19:42:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c545cbb4-5d34-4d31-82e9-0e6621bb2bb6",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
+      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/fb1f872325bd49b6b07ffb2537513fae\",\"attributes\":{\"enabled\":false,\"nbf\":1664825540,\"exp\":1696362140,\"created\":1664826140,\"updated\":1664826140,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90},\"policy\":{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=DefaultPolicy\",\"sans\":{},\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1664826141,\"updated\":1664826141}},\"pending\":{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/testcert01778b2a897/pending\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testcert01778b2a897" ]
+}

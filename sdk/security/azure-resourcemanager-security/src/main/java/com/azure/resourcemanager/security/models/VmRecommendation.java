@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a machine that is part of a machine group. */
 @Fluent
 public final class VmRecommendation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VmRecommendation.class);
-
     /*
      * The configuration status of the machines group or machine or rule
      */

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for hybrid compute management. */
 @Fluent
 public final class HybridComputeSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridComputeSettingsProperties.class);
-
     /*
      * State of the service principal and its secret
      */
@@ -21,15 +18,13 @@ public final class HybridComputeSettingsProperties {
     private HybridComputeProvisioningState hybridComputeProvisioningState;
 
     /*
-     * Whether or not to automatically install Azure Arc (hybrid compute)
-     * agents on machines
+     * Whether or not to automatically install Azure Arc (hybrid compute) agents on machines
      */
     @JsonProperty(value = "autoProvision", required = true)
     private AutoProvision autoProvision;
 
     /*
-     * The name of the resource group where Arc (Hybrid Compute) connectors are
-     * connected.
+     * The name of the resource group where Arc (Hybrid Compute) connectors are connected.
      */
     @JsonProperty(value = "resourceGroupName")
     private String resourceGroupName;
@@ -41,8 +36,8 @@ public final class HybridComputeSettingsProperties {
     private String region;
 
     /*
-     * For a non-Azure machine that is not connected directly to the internet,
-     * specify a proxy server that the non-Azure machine can use.
+     * For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the
+     * non-Azure machine can use.
      */
     @JsonProperty(value = "proxyServer")
     private ProxyServerProperties proxyServer;
@@ -175,7 +170,7 @@ public final class HybridComputeSettingsProperties {
      */
     public void validate() {
         if (autoProvision() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property autoProvision in model HybridComputeSettingsProperties"));
@@ -187,4 +182,6 @@ public final class HybridComputeSettingsProperties {
             servicePrincipal().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HybridComputeSettingsProperties.class);
 }

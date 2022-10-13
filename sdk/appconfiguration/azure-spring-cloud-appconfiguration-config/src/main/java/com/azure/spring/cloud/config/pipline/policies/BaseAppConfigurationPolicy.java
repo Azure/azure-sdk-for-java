@@ -79,6 +79,10 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         if (isDev || isKeyVaultConfigured) {
             tracingInfo += ",Env=" + getEnvInfo();
         }
+        
+        if (replicaCount > 0) {
+            tracingInfo += "," + RequestTracingConstants.REPLICA_COUNT + "=" + replicaCount;
+        }
 
         return tracingInfo;
 

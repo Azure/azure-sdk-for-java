@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskEncryptionSets ListAssociatedResources. */
 public final class DiskEncryptionSetsListAssociatedResourcesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-03-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
      */
     /**
      * Sample code: List all resources that are encrypted with this disk encryption set.

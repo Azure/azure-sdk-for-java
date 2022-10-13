@@ -38,6 +38,7 @@ import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificati
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROResult;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROTask;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.DocumentType;
 import com.azure.ai.textanalytics.implementation.models.EntitiesLROTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
@@ -49,6 +50,7 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingTask;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.EntityRecognitionLROResult;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -517,7 +519,13 @@ class AnalyzeActionsAsyncClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
+        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
+        final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
+        final DocumentType documentTypeImpl = action.getDocumentType() == null ? null
+            : DocumentType.fromString(action.getDocumentType().toString());
         return new HealthcareTaskParameters()
+            .setDocumentType(documentTypeImpl)
+            .setFhirVersion(fhirVersionImpl)
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());

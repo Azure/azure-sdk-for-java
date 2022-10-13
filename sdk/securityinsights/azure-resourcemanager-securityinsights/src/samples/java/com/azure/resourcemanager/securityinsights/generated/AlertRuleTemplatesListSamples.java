@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AlertRuleTemplates List. */
 public final class AlertRuleTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplates.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/alertRuleTemplates/GetAlertRuleTemplates.json
      */
     /**
      * Sample code: Get all alert rule templates.

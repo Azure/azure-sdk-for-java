@@ -4,52 +4,30 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AzureResourceLink;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about the security control. */
-@JsonFlatten
-@Immutable
-public class SecureScoreControlDefinitionItemInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlDefinitionItemInner.class);
-
+@Fluent
+public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /*
-     * User friendly display name of the control
+     * Security Control Definition Properties.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private SecureScoreControlDefinitionItemProperties innerProperties;
 
-    /*
-     * User friendly description of the control
+    /**
+     * Get the innerProperties property: Security Control Definition Properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Maximum control score (0..10)
-     */
-    @JsonProperty(value = "properties.maxScore", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maxScore;
-
-    /*
-     * Source object from which the control was created
-     */
-    @JsonProperty(value = "properties.source", access = JsonProperty.Access.WRITE_ONLY)
-    private SecureScoreControlDefinitionSource source;
-
-    /*
-     * Array of assessments metadata IDs that are included in this security
-     * control
-     */
-    @JsonProperty(value = "properties.assessmentDefinitions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AzureResourceLink> assessmentDefinitions;
+    private SecureScoreControlDefinitionItemProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: User friendly display name of the control.
@@ -57,7 +35,7 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -66,7 +44,7 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -75,7 +53,7 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @return the maxScore value.
      */
     public Integer maxScore() {
-        return this.maxScore;
+        return this.innerProperties() == null ? null : this.innerProperties().maxScore();
     }
 
     /**
@@ -84,7 +62,7 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @return the source value.
      */
     public SecureScoreControlDefinitionSource source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -94,7 +72,7 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @return the assessmentDefinitions value.
      */
     public List<AzureResourceLink> assessmentDefinitions() {
-        return this.assessmentDefinitions;
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentDefinitions();
     }
 
     /**
@@ -103,11 +81,8 @@ public class SecureScoreControlDefinitionItemInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (source() != null) {
-            source().validate();
-        }
-        if (assessmentDefinitions() != null) {
-            assessmentDefinitions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

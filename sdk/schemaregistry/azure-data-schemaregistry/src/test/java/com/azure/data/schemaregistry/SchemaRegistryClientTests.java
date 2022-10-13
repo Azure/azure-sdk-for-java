@@ -246,4 +246,31 @@ public class SchemaRegistryClientTests extends TestBase {
 
         assertEquals(404, error.getResponse().getStatusCode());
     }
+
+    @Test
+    public void getSchemaByGroupNameVersion() {
+        // Arrange
+        final SchemaRegistryClient client1 = builder.buildClient();
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+
+        // Register a schema first.
+        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO);
+
+        assertNotNull(registeredSchema);
+
+        // Act
+        final SchemaRegistrySchema actual = client1.getSchema(schemaGroup, schemaName, registeredSchema.getVersion());
+
+        // Assert
+        assertNotNull(schemaName);
+
+        final SchemaProperties properties = actual.getProperties();
+        assertNotNull(properties);
+
+        assertEquals(registeredSchema.getVersion(), properties.getVersion());
+        assertEquals(schemaGroup, registeredSchema.getGroupName());
+        assertEquals(schemaName, registeredSchema.getName());
+        assertEquals(registeredSchema.getId(), registeredSchema.getId());
+    }
 }

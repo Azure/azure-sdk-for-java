@@ -30,6 +30,7 @@ import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.ErrorCode;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
@@ -946,11 +947,15 @@ public final class Utility {
                                     }).collect(Collectors.toList());
                             HealthcareEntityRelationPropertiesHelper.setRoles(entityRelation,
                                 IterableStream.of(relationRoles));
+                            HealthcareEntityRelationPropertiesHelper.setConfidenceScore(entityRelation,
+                                healthcareRelation.getConfidenceScore());
 
                             return entityRelation;
                         }).collect(Collectors.toList());
                 AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(analyzeHealthcareEntitiesResult,
                     IterableStream.of(healthcareEntityRelations));
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setFhirBundle(analyzeHealthcareEntitiesResult,
+                    documentEntities.getFhirBundle());
 
                 analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
@@ -960,6 +965,10 @@ public final class Utility {
                 documentError.getId(), null, toTextAnalyticsError(documentError.getError())))
         );
         return new AnalyzeHealthcareEntitiesResultCollection(IterableStream.of(analyzeHealthcareEntitiesResults));
+    }
+
+    public static FhirVersion toFhirVersion(com.azure.ai.textanalytics.models.FhirVersion fhirVersion) {
+        return fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
     }
 
     public static HealthcareEntityAssertion toHealthcareEntityAssertion(HealthcareAssertion healthcareAssertion) {

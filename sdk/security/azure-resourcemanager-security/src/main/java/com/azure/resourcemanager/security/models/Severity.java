@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Severity. */
+/** The sub-assessment severity level. */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /** Static value Low for Severity. */
     public static final Severity LOW = fromString("Low");
@@ -30,7 +30,11 @@ public final class Severity extends ExpandableStringEnum<Severity> {
         return fromString(name, Severity.class);
     }
 
-    /** @return known Severity values. */
+    /**
+     * Gets known Severity values.
+     *
+     * @return known Severity values.
+     */
     public static Collection<Severity> values() {
         return values(Severity.class);
     }

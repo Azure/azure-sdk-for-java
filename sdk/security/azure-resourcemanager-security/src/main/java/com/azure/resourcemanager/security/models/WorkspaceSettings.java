@@ -16,7 +16,7 @@ public interface WorkspaceSettings {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response.
+     * @return list of workspace settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkspaceSetting> list();
 
@@ -28,7 +28,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response.
+     * @return list of workspace settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkspaceSetting> list(Context context);
 
@@ -53,7 +53,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
+     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     Response<WorkspaceSetting> getWithResponse(String workspaceSettingName, Context context);
 
@@ -75,7 +75,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String workspaceSettingName, Context context);
 
@@ -87,7 +87,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
+     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     WorkspaceSetting getById(String id);
 
@@ -100,7 +100,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
+     * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     Response<WorkspaceSetting> getByIdWithResponse(String id, Context context);
 
@@ -122,7 +122,7 @@ public interface WorkspaceSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

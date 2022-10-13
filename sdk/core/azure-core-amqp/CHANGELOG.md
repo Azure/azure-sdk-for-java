@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 2.7.2 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Reactor from `3.4.22` to `3.4.23`.
+
 ## 2.7.1 (2022-09-01)
 
 ### Features Added
