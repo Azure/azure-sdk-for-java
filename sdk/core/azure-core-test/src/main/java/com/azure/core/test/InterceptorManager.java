@@ -285,8 +285,8 @@ public class InterceptorManager implements AutoCloseable {
     private RecordedData readDataFromFile() {
         File recordFile = getRecordFile();
 
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
-            return RECORD_MAPPER.readValue(reader, RecordedData.class);
+        try {
+            return RECORD_MAPPER.readValue(Files.readAllBytes(recordFile.toPath()), RecordedData.class);
         } catch (IOException ex) {
             throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
         }
