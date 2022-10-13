@@ -41,6 +41,10 @@ public final class ImageVersionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ImageVersionProperties class. */
+    public ImageVersionProperties() {
+    }
+
     /**
      * Get the name property: The semantic version string.
      *

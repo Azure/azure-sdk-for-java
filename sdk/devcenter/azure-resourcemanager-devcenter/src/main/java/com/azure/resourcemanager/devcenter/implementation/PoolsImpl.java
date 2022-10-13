@@ -38,15 +38,6 @@ public final class PoolsImpl implements Pools {
         return Utils.mapPage(inner, inner1 -> new PoolImpl(inner1, this.manager()));
     }
 
-    public Pool get(String resourceGroupName, String projectName, String poolName) {
-        PoolInner inner = this.serviceClient().get(resourceGroupName, projectName, poolName);
-        if (inner != null) {
-            return new PoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Pool> getWithResponse(
         String resourceGroupName, String projectName, String poolName, Context context) {
         Response<PoolInner> inner =
@@ -57,6 +48,15 @@ public final class PoolsImpl implements Pools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Pool get(String resourceGroupName, String projectName, String poolName) {
+        PoolInner inner = this.serviceClient().get(resourceGroupName, projectName, poolName);
+        if (inner != null) {
+            return new PoolImpl(inner, this.manager());
         } else {
             return null;
         }

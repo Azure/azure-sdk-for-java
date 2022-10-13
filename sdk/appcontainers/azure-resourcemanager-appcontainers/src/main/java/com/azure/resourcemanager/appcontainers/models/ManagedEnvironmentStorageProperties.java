@@ -16,6 +16,10 @@ public final class ManagedEnvironmentStorageProperties {
     @JsonProperty(value = "azureFile")
     private AzureFileProperties azureFile;
 
+    /** Creates an instance of ManagedEnvironmentStorageProperties class. */
+    public ManagedEnvironmentStorageProperties() {
+    }
+
     /**
      * Get the azureFile property: Azure file properties.
      *

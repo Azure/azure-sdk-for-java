@@ -24,6 +24,10 @@ public final class NetworkConnectionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of NetworkConnectionListResult class. */
+    public NetworkConnectionListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

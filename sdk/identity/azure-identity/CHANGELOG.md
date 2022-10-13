@@ -4,11 +4,21 @@
 
 ### Features Added
 
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.1 (2022-10-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 
 ## 1.7.0-beta.1 (2022-09-20)
 

@@ -61,6 +61,10 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         }
     }
 
+    public String secretStoreComponent() {
+        return this.innerModel().secretStoreComponent();
+    }
+
     public List<DaprMetadata> metadata() {
         List<DaprMetadata> inner = this.innerModel().metadata();
         if (inner != null) {
@@ -187,14 +191,14 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         return this;
     }
 
-    public DaprSecretsCollection listSecrets() {
-        return serviceManager.daprComponents().listSecrets(resourceGroupName, environmentName, componentName);
-    }
-
     public Response<DaprSecretsCollection> listSecretsWithResponse(Context context) {
         return serviceManager
             .daprComponents()
             .listSecretsWithResponse(resourceGroupName, environmentName, componentName, context);
+    }
+
+    public DaprSecretsCollection listSecrets() {
+        return serviceManager.daprComponents().listSecrets(resourceGroupName, environmentName, componentName);
     }
 
     public DaprComponentImpl withComponentType(String componentType) {
@@ -219,6 +223,11 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
 
     public DaprComponentImpl withSecrets(List<Secret> secrets) {
         this.innerModel().withSecrets(secrets);
+        return this;
+    }
+
+    public DaprComponentImpl withSecretStoreComponent(String secretStoreComponent) {
+        this.innerModel().withSecretStoreComponent(secretStoreComponent);
         return this;
     }
 

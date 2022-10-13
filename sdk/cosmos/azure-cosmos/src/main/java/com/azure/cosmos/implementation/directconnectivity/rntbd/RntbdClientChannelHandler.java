@@ -124,7 +124,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
         SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
-        sslHandler.setHandshakeTimeout(config.connectTimeoutInMillis(), TimeUnit.MILLISECONDS);
+        sslHandler.setHandshakeTimeout(config.sslHandshakeTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
         pipeline.addFirst(SslHandler.class.toString(), sslHandler);
         channel.attr(REQUEST_MANAGER).set(requestManager);

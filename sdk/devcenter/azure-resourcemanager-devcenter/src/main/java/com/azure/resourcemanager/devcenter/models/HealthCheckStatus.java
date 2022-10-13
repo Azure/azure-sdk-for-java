@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthCheckStatus. */
+/** Health check status values. */
 public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckStatus> {
     /** Static value Pending for HealthCheckStatus. */
     public static final HealthCheckStatus PENDING = fromString("Pending");
