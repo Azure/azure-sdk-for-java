@@ -15,7 +15,7 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.developer.devcenter.readme.devboxes
         // BEGIN: com.azure.developer.devcenter.readme.createDevCenterClient
-        String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+        String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
         String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
         // Build our clients

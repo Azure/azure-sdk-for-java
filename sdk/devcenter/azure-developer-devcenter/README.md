@@ -41,7 +41,7 @@ Various documentation is available to help you get started
 ## Examples
 ### Dev Box Scenarios
 ```java com.azure.developer.devcenter.readme.devboxes
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
 // Build our clients

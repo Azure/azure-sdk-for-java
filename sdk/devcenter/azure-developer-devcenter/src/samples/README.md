@@ -21,7 +21,7 @@ Set the following environment variables for easy consumption in client code:
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
 // Build our clients
@@ -36,7 +36,7 @@ DevCenterClient devCenterClient =
 The DevBoxes client is created in essentially the same manner:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
 // Build our clients
@@ -103,7 +103,7 @@ Set the following environment variables for easy consumption in client code:
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
 // Build our clients
@@ -164,7 +164,7 @@ environmentDeleteResponse.waitForCompletion();
 ## Full Examples
 ### Dev Boxes
 ```java com.azure.developer.devcenter.readme.devboxes
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT");
+String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
 String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
 
 // Build our clients
