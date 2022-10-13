@@ -212,27 +212,26 @@ public class ModelHelper {
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 
-    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem)
-        throws UnsupportedEncodingException {
-        return new HandleItem()
-            .setHandleId(handleItem.getHandleId())
-            .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
-            .setSessionId(handleItem.getSessionId())
-            .setClientIp(handleItem.getClientIp())
-            .setFileId(handleItem.getFileId())
-            .setParentId(handleItem.getParentId())
-            .setLastReconnectTime(handleItem.getLastReconnectTime())
-            .setOpenTime(handleItem.getOpenTime());
+    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
+        try {
+            return new HandleItem()
+                .setHandleId(handleItem.getHandleId())
+                .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
+                .setSessionId(handleItem.getSessionId())
+                .setClientIp(handleItem.getClientIp())
+                .setFileId(handleItem.getFileId())
+                .setParentId(handleItem.getParentId())
+                .setLastReconnectTime(handleItem.getLastReconnectTime())
+                .setOpenTime(handleItem.getOpenTime());
+        } catch (UnsupportedEncodingException e) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
+        }
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
         List<HandleItem> result = new ArrayList<>();
         handleItems.forEach(item -> {
-            try {
-                result.add(transformHandleItem(item));
-            } catch (UnsupportedEncodingException e) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
-            }
+            result.add(transformHandleItem(item));
         });
         return result;
     }
