@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.confidentialledger;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
@@ -15,7 +16,9 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,7 +111,12 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     }
 
     public static void setCredential() {
-        credential = new DefaultAzureCredentialBuilder().build();
+        String testMode = getTestModeForStaticMethods();
+        if ("PLAYBACK".equals(testMode)) {
+            credential = (request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else {
+            credential = new DefaultAzureCredentialBuilder().build();
+        }
     }
 
     public ConfidentialLedgerManagementOperations getLedgerOperationsInstance() {
