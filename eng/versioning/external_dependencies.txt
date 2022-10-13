@@ -67,8 +67,8 @@ io.projectreactor.netty:reactor-netty;1.0.21
 io.projectreactor.netty:reactor-netty-http;1.0.21
 io.projectreactor:reactor-core;3.4.21
 io.reactivex:rxjava;1.3.8
-io.vertx:vertx-codegen;4.2.7
-io.vertx:vertx-core;4.2.7
+io.vertx:vertx-codegen;4.3.3
+io.vertx:vertx-core;4.3.3
 jakarta.servlet:jakarta.servlet-api;5.0.0
 jakarta.validation:jakarta.validation-api;3.0.2
 jakarta.xml.bind:jakarta.xml.bind-api;3.0.1
