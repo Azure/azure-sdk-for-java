@@ -1090,6 +1090,20 @@
                 </configuration>
               </execution>
 
+              <!-- then compile without module-info for Java 8 -->
+              <execution>
+                <id>base-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>8</release>
+                  <excludes>
+                    <exclude>module-info.java</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+
               <!-- test compile with the current VM's default Java version -->
               <execution>
                 <id>default-testCompile</id>
@@ -1099,6 +1113,21 @@
                 <configuration>
                   <release>${java.vm.specification.version}</release>
                   <testRelease>${java.vm.specification.version}</testRelease>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 8 -->
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
+                  <testExcludes>
+                    <testExclude>module-info.java</testExclude>
+                  </testExcludes>
                 </configuration>
               </execution>
             </executions>
