@@ -340,17 +340,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to attempt to auto-detect the region.
-     *
-     * @param regionalAuthority the regional authority
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setRegionalAuthority(RegionalAuthority regionalAuthority) {
-        this.regionalAuthority = regionalAuthority;
-        return this;
-    }
-
-    /**
      * Gets the regional authority, or null if regional authority should not be used.
      * @return the regional authority value if specified
      */
@@ -506,6 +495,17 @@ public final class IdentityClientOptions implements Cloneable {
 
     IdentityClientOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
         this.additionallyAllowedTenants = additionallyAllowedTenants;
+        return this;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to attempt to auto-detect the region.
+     *
+     * @param regionalAuthority the regional authority
+     * @return the updated identity client options
+     */
+    IdentityClientOptions setRegionalAuthority(RegionalAuthority regionalAuthority) {
+        this.regionalAuthority = regionalAuthority;
         return this;
     }
 
