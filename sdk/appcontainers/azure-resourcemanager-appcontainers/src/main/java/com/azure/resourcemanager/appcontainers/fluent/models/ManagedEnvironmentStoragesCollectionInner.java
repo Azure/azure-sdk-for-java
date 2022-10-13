@@ -18,6 +18,10 @@ public final class ManagedEnvironmentStoragesCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ManagedEnvironmentStorageInner> value;
 
+    /** Creates an instance of ManagedEnvironmentStoragesCollectionInner class. */
+    public ManagedEnvironmentStoragesCollectionInner() {
+    }
+
     /**
      * Get the value property: Collection of storage resources.
      *

@@ -19,6 +19,10 @@ public final class SecretsCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ContainerAppSecret> value;
 
+    /** Creates an instance of SecretsCollectionInner class. */
+    public SecretsCollectionInner() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

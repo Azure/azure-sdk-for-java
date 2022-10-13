@@ -29,6 +29,10 @@ public final class QueueScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
+    /** Creates an instance of QueueScaleRule class. */
+    public QueueScaleRule() {
+    }
+
     /**
      * Get the queueName property: Queue name.
      *
