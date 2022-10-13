@@ -13,7 +13,7 @@ public final class NginxCertificateProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -34,6 +34,10 @@ public final class NginxCertificateProperties {
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
 
+    /** Creates an instance of NginxCertificateProperties class. */
+    public NginxCertificateProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioningState property.
      *
@@ -41,17 +45,6 @@ public final class NginxCertificateProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioningState property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the NginxCertificateProperties object itself.
-     */
-    public NginxCertificateProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

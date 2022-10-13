@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-/** Samples for Certificates Create. */
-public final class CertificatesCreateSamples {
+/** Samples for Certificates CreateOrUpdate. */
+public final class CertificatesCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_CreateOrUpdate.json
      */
