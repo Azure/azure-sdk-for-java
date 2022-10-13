@@ -13,7 +13,7 @@ import com.azure.resourcemanager.securitydevops.models.GitHubRepoProperties;
 public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, GitHubRepo.Update {
     private GitHubRepoInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -43,7 +43,7 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -93,7 +93,7 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
         return this;
     }
 
-    GitHubRepoImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    GitHubRepoImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new GitHubRepoInner();
         this.serviceManager = serviceManager;
         this.gitHubRepoName = name;
@@ -134,7 +134,7 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
     }
 
     GitHubRepoImpl(
-        GitHubRepoInner innerObject, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        GitHubRepoInner innerObject, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

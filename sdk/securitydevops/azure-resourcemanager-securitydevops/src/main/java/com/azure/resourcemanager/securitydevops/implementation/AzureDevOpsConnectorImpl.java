@@ -17,7 +17,7 @@ public final class AzureDevOpsConnectorImpl
     implements AzureDevOpsConnector, AzureDevOpsConnector.Definition, AzureDevOpsConnector.Update {
     private AzureDevOpsConnectorInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -68,7 +68,7 @@ public final class AzureDevOpsConnectorImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -100,7 +100,7 @@ public final class AzureDevOpsConnectorImpl
     }
 
     AzureDevOpsConnectorImpl(
-        String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new AzureDevOpsConnectorInner();
         this.serviceManager = serviceManager;
         this.azureDevOpsConnectorName = name;
@@ -130,7 +130,7 @@ public final class AzureDevOpsConnectorImpl
 
     AzureDevOpsConnectorImpl(
         AzureDevOpsConnectorInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

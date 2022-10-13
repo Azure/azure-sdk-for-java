@@ -84,10 +84,10 @@ public final class AzureDevOpsConnectorCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsConnector_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsConnectors()
             .define("testconnector")
@@ -125,10 +125,10 @@ public final class AzureDevOpsConnectorDeleteSamples {
     /**
      * Sample code: AzureDevOpsConnector_Delete.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorDelete(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().delete("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -147,9 +147,9 @@ public final class AzureDevOpsConnectorGetByResourceGroupSamples {
     /**
      * Sample code: AzureDevOpsConnector_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsConnectorGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsConnectorGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().getByResourceGroupWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -168,10 +168,10 @@ public final class AzureDevOpsConnectorListSamples {
     /**
      * Sample code: AzureDevOpsConnector_ListBySubscription.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorListBySubscription(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().list(Context.NONE);
     }
 }
@@ -190,10 +190,10 @@ public final class AzureDevOpsConnectorListByResourceGroupSamples {
     /**
      * Sample code: AzureDevOpsConnector_ListByResourceGroup.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorListByResourceGroup(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().listByResourceGroup("westusrg", Context.NONE);
     }
 }
@@ -215,10 +215,10 @@ public final class AzureDevOpsConnectorUpdateSamples {
     /**
      * Sample code: AzureDevOpsConnector_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsConnector resource =
             manager
                 .azureDevOpsConnectors()
@@ -253,10 +253,10 @@ public final class AzureDevOpsConnectorStatsOperationGetSamples {
     /**
      * Sample code: AzureDevOpsConnectorStats_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorStatsGet(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectorStatsOperations().getWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -276,10 +276,10 @@ public final class AzureDevOpsOrgCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsOrg_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsOrgCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsOrgs()
             .define("myOrg")
@@ -303,9 +303,9 @@ public final class AzureDevOpsOrgGetSamples {
     /**
      * Sample code: AzureDevOpsOrg_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsOrgGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsOrgGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsOrgs().getWithResponse("westusrg", "testconnector", "myOrg", Context.NONE);
     }
 }
@@ -324,9 +324,9 @@ public final class AzureDevOpsOrgListSamples {
     /**
      * Sample code: AzureDevOpsOrg_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsOrgList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsOrgList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsOrgs().list("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -348,9 +348,9 @@ public final class AzureDevOpsOrgUpdateSamples {
     /**
      * Sample code: AzureDevOpsOrg_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsOrgUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsOrgUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsOrg resource =
             manager.azureDevOpsOrgs().getWithResponse("westusrg", "testconnector", "myOrg", Context.NONE).getValue();
         resource
@@ -375,10 +375,10 @@ public final class AzureDevOpsProjectCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsProject_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsProjectCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsProjects()
             .define("myProject")
@@ -402,9 +402,9 @@ public final class AzureDevOpsProjectGetSamples {
     /**
      * Sample code: AzureDevOpsProject_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsProjectGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsProjectGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsProjects().getWithResponse("westusrg", "testconnector", "myOrg", "myProject", Context.NONE);
     }
 }
@@ -423,9 +423,9 @@ public final class AzureDevOpsProjectListSamples {
     /**
      * Sample code: AzureDevOpsProject_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsProjectList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsProjectList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsProjects().list("westusrg", "testconnector", "myOrg", Context.NONE);
     }
 }
@@ -447,10 +447,10 @@ public final class AzureDevOpsProjectUpdateSamples {
     /**
      * Sample code: AzureDevOpsProject_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsProjectUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsProject resource =
             manager
                 .azureDevOpsProjects()
@@ -482,10 +482,10 @@ public final class AzureDevOpsRepoCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsRepo_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsRepoCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsRepoes()
             .define("myRepo")
@@ -518,9 +518,9 @@ public final class AzureDevOpsRepoGetSamples {
     /**
      * Sample code: AzureDevOpsRepo_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsRepoGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsRepoGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsRepoes()
             .getWithResponse("westusrg", "testconnector", "myOrg", "myProject", "myRepo", Context.NONE);
@@ -541,9 +541,9 @@ public final class AzureDevOpsRepoListSamples {
     /**
      * Sample code: AzureDevOpsRepo_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsRepoList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsRepoList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsRepoes().list("westusrg", "testconnector", "myOrg", "myProject", Context.NONE);
     }
 }
@@ -562,10 +562,10 @@ public final class AzureDevOpsRepoListByConnectorSamples {
     /**
      * Sample code: AzureDevOpsRepo_ListByConnector.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsRepoListByConnector(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsRepoes().listByConnector("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -585,9 +585,9 @@ public final class AzureDevOpsRepoUpdateSamples {
     /**
      * Sample code: AzureDevOpsRepo_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsRepoUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsRepoUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsRepo resource =
             manager
                 .azureDevOpsRepoes()
@@ -611,10 +611,10 @@ public final class GitHubConnectorCreateOrUpdateSamples {
     /**
      * Sample code: GitHubConnector_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubConnectorCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .gitHubConnectors()
             .define("testconnector")
@@ -639,9 +639,9 @@ public final class GitHubConnectorDeleteSamples {
     /**
      * Sample code: GitHubConnector_Delete.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorDelete(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorDelete(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().delete("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -660,9 +660,9 @@ public final class GitHubConnectorGetByResourceGroupSamples {
     /**
      * Sample code: GitHubConnector_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().getByResourceGroupWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -681,10 +681,10 @@ public final class GitHubConnectorListSamples {
     /**
      * Sample code: GitHubConnector_ListBySubscription.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubConnectorListBySubscription(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().list(Context.NONE);
     }
 }
@@ -703,10 +703,10 @@ public final class GitHubConnectorListByResourceGroupSamples {
     /**
      * Sample code: GitHubConnector_ListByResourceGroup.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubConnectorListByResourceGroup(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().listByResourceGroup("westusrg", Context.NONE);
     }
 }
@@ -728,9 +728,9 @@ public final class GitHubConnectorUpdateSamples {
     /**
      * Sample code: GitHubConnector_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubConnector resource =
             manager
                 .gitHubConnectors()
@@ -765,9 +765,9 @@ public final class GitHubConnectorStatsOperationGetSamples {
     /**
      * Sample code: GitHubConnectorStats_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorStatsGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorStatsGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectorStatsOperations().getWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -784,10 +784,10 @@ public final class GitHubOwnerCreateOrUpdateSamples {
     /**
      * Sample code: GitHubOwner_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubOwnerCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().define("Azure").withExistingGitHubConnector("westusrg", "testconnector").create();
     }
 }
@@ -806,9 +806,9 @@ public final class GitHubOwnerGetSamples {
     /**
      * Sample code: GitHubOwner_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().getWithResponse("westusrg", "testconnector", "Azure", Context.NONE);
     }
 }
@@ -827,9 +827,9 @@ public final class GitHubOwnerListSamples {
     /**
      * Sample code: GitHubOwner_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().list("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -849,9 +849,9 @@ public final class GitHubOwnerUpdateSamples {
     /**
      * Sample code: GitHubOwner_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubOwner resource =
             manager.gitHubOwners().getWithResponse("westusrg", "testconnector", "Azure", Context.NONE).getValue();
         resource.update().apply();
@@ -870,10 +870,10 @@ public final class GitHubRepoCreateOrUpdateSamples {
     /**
      * Sample code: GitHubRepo_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubRepoCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .gitHubRepoes()
             .define("azure-rest-api-specs")
@@ -896,9 +896,9 @@ public final class GitHubRepoGetSamples {
     /**
      * Sample code: GitHubRepo_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().getWithResponse("westusrg", "testconnector", "Azure", "39093389", Context.NONE);
     }
 }
@@ -917,9 +917,9 @@ public final class GitHubRepoListSamples {
     /**
      * Sample code: GitHubRepo_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().list("westusrg", "testconnector", "Azure", Context.NONE);
     }
 }
@@ -938,10 +938,10 @@ public final class GitHubRepoListByConnectorSamples {
     /**
      * Sample code: GitHubRepo_ListByConnector.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void gitHubRepoListByConnector(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().listByConnector("westusrg", "testconnector", Context.NONE);
     }
 }
@@ -961,9 +961,9 @@ public final class GitHubRepoUpdateSamples {
     /**
      * Sample code: GitHubRepo_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoUpdate(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoUpdate(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         GitHubRepo resource =
             manager
                 .gitHubRepoes()
@@ -987,9 +987,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void operationsList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void operationsList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.operations().list(Context.NONE);
     }
 }

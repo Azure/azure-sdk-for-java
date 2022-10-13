@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.securitydevops.SecuritydevopsManager;
+import com.azure.resourcemanager.securitydevops.SecurityDevOpsManager;
 import com.azure.resourcemanager.securitydevops.models.AutoDiscovery;
 import com.azure.resourcemanager.securitydevops.models.AzureDevOpsOrg;
 import com.azure.resourcemanager.securitydevops.models.AzureDevOpsOrgProperties;
@@ -54,8 +54,8 @@ public final class AzureDevOpsOrgsCreateOrUpdateMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        SecuritydevopsManager manager =
-            SecuritydevopsManager
+        SecurityDevOpsManager manager =
+            SecurityDevOpsManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

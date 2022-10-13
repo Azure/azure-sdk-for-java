@@ -14,10 +14,10 @@ public final class AzureDevOpsConnectorListSamples {
     /**
      * Sample code: AzureDevOpsConnector_ListBySubscription.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorListBySubscription(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().list(Context.NONE);
     }
 }

@@ -14,9 +14,9 @@ public final class GitHubOwnerListSamples {
     /**
      * Sample code: GitHubOwner_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubOwnerList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubOwnerList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubOwners().list("westusrg", "testconnector", Context.NONE);
     }
 }

@@ -13,7 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.securitydevops.SecuritydevopsManager;
+import com.azure.resourcemanager.securitydevops.SecurityDevOpsManager;
 import com.azure.resourcemanager.securitydevops.models.ActionableRemediationState;
 import com.azure.resourcemanager.securitydevops.models.AzureDevOpsRepo;
 import com.azure.resourcemanager.securitydevops.models.ProvisioningState;
@@ -55,8 +55,8 @@ public final class AzureDevOpsRepoesListByConnectorMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        SecuritydevopsManager manager =
-            SecuritydevopsManager
+        SecurityDevOpsManager manager =
+            SecurityDevOpsManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

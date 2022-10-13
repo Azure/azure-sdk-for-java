@@ -14,9 +14,9 @@ public final class GitHubConnectorGetByResourceGroupSamples {
     /**
      * Sample code: GitHubConnector_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubConnectorGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubConnectorGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubConnectors().getByResourceGroupWithResponse("westusrg", "testconnector", Context.NONE);
     }
 }

@@ -17,10 +17,10 @@ public final class AzureDevOpsProjectUpdateSamples {
     /**
      * Sample code: AzureDevOpsProject_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsProjectUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsProject resource =
             manager
                 .azureDevOpsProjects()

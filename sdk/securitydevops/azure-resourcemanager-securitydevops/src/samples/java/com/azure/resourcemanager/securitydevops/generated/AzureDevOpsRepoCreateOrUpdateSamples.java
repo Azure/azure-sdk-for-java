@@ -19,10 +19,10 @@ public final class AzureDevOpsRepoCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsRepo_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsRepoCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsRepoes()
             .define("myRepo")

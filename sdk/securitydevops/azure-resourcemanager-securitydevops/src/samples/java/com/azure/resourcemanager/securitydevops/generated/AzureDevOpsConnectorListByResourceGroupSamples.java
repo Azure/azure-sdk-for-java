@@ -14,10 +14,10 @@ public final class AzureDevOpsConnectorListByResourceGroupSamples {
     /**
      * Sample code: AzureDevOpsConnector_ListByResourceGroup.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorListByResourceGroup(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().listByResourceGroup("westusrg", Context.NONE);
     }
 }

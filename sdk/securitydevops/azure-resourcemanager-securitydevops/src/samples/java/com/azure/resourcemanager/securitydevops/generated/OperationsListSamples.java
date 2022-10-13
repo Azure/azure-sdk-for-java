@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void operationsList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void operationsList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.operations().list(Context.NONE);
     }
 }

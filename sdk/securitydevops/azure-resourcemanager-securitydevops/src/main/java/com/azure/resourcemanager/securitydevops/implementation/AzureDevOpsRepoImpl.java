@@ -13,7 +13,7 @@ import com.azure.resourcemanager.securitydevops.models.AzureDevOpsRepoProperties
 public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRepo.Definition, AzureDevOpsRepo.Update {
     private AzureDevOpsRepoInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -43,7 +43,7 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -101,7 +101,7 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
         return this;
     }
 
-    AzureDevOpsRepoImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    AzureDevOpsRepoImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new AzureDevOpsRepoInner();
         this.serviceManager = serviceManager;
         this.azureDevOpsRepoName = name;
@@ -145,7 +145,7 @@ public final class AzureDevOpsRepoImpl implements AzureDevOpsRepo, AzureDevOpsRe
 
     AzureDevOpsRepoImpl(
         AzureDevOpsRepoInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

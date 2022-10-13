@@ -13,7 +13,7 @@ import com.azure.resourcemanager.securitydevops.models.GitHubOwnerProperties;
 public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definition, GitHubOwner.Update {
     private GitHubOwnerInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -43,7 +43,7 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -78,7 +78,7 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
         return this;
     }
 
-    GitHubOwnerImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    GitHubOwnerImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new GitHubOwnerInner();
         this.serviceManager = serviceManager;
         this.gitHubOwnerName = name;
@@ -107,7 +107,7 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
     }
 
     GitHubOwnerImpl(
-        GitHubOwnerInner innerObject, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        GitHubOwnerInner innerObject, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -15,10 +15,10 @@ public final class AzureDevOpsOrgCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsOrg_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsOrgCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsOrgs()
             .define("myOrg")

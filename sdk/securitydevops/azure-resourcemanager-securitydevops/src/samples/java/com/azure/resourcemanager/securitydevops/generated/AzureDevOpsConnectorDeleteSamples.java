@@ -14,10 +14,10 @@ public final class AzureDevOpsConnectorDeleteSamples {
     /**
      * Sample code: AzureDevOpsConnector_Delete.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorDelete(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsConnectors().delete("westusrg", "testconnector", Context.NONE);
     }
 }

@@ -14,9 +14,9 @@ public final class GitHubRepoGetSamples {
     /**
      * Sample code: GitHubRepo_Get.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void gitHubRepoGet(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void gitHubRepoGet(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.gitHubRepoes().getWithResponse("westusrg", "testconnector", "Azure", "39093389", Context.NONE);
     }
 }

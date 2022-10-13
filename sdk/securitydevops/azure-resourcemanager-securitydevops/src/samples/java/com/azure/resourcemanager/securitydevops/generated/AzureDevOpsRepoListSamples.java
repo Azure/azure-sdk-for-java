@@ -14,9 +14,9 @@ public final class AzureDevOpsRepoListSamples {
     /**
      * Sample code: AzureDevOpsRepo_List.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
-    public static void azureDevOpsRepoList(com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+    public static void azureDevOpsRepoList(com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager.azureDevOpsRepoes().list("westusrg", "testconnector", "myOrg", "myProject", Context.NONE);
     }
 }

@@ -17,10 +17,10 @@ public final class AzureDevOpsConnectorUpdateSamples {
     /**
      * Sample code: AzureDevOpsConnector_Update.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsConnectorUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         AzureDevOpsConnector resource =
             manager
                 .azureDevOpsConnectors()

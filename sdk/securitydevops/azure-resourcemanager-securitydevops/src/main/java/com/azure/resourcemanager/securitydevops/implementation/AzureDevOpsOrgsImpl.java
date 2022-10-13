@@ -19,11 +19,11 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
 
     private final AzureDevOpsOrgsClient innerClient;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public AzureDevOpsOrgsImpl(
         AzureDevOpsOrgsClient innerClient,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -132,7 +132,7 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 

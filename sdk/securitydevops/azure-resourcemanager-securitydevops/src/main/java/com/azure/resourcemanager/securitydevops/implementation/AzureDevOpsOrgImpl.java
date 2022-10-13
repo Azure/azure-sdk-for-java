@@ -13,7 +13,7 @@ import com.azure.resourcemanager.securitydevops.models.AzureDevOpsOrgProperties;
 public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.Definition, AzureDevOpsOrg.Update {
     private AzureDevOpsOrgInner innerObject;
 
-    private final com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager;
+    private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -43,7 +43,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager() {
+    private com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager() {
         return this.serviceManager;
     }
 
@@ -80,7 +80,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
         return this;
     }
 
-    AzureDevOpsOrgImpl(String name, com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+    AzureDevOpsOrgImpl(String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new AzureDevOpsOrgInner();
         this.serviceManager = serviceManager;
         this.azureDevOpsOrgName = name;
@@ -111,7 +111,7 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
 
     AzureDevOpsOrgImpl(
         AzureDevOpsOrgInner innerObject,
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager serviceManager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

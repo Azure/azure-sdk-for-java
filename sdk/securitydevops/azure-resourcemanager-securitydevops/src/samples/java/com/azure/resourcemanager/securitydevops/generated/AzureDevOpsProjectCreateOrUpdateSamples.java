@@ -15,10 +15,10 @@ public final class AzureDevOpsProjectCreateOrUpdateSamples {
     /**
      * Sample code: AzureDevOpsProject_CreateOrUpdate.
      *
-     * @param manager Entry point to SecuritydevopsManager.
+     * @param manager Entry point to SecurityDevOpsManager.
      */
     public static void azureDevOpsProjectCreateOrUpdate(
-        com.azure.resourcemanager.securitydevops.SecuritydevopsManager manager) {
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager manager) {
         manager
             .azureDevOpsProjects()
             .define("myProject")
