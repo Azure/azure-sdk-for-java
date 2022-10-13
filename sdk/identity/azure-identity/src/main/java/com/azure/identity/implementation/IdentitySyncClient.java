@@ -138,7 +138,7 @@ public class IdentitySyncClient extends IdentityClientBase {
     }
 
 
-    public AccessToken authenticateWithConfidentialClientCacheSync(TokenRequestContext request) {
+    public AccessToken authenticateWithConfidentialClientCache(TokenRequestContext request) {
         ConfidentialClientApplication confidentialClientApplication = confidentialClientApplicationAccessor.getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(new HashSet<>(request.getScopes()))
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));

@@ -142,7 +142,7 @@ public class ClientCertificateCredentialTest {
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
         })) {
             // test
@@ -182,7 +182,7 @@ public class ClientCertificateCredentialTest {
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
 
         })) {
@@ -222,7 +222,7 @@ public class ClientCertificateCredentialTest {
 
         // mock
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
         })) {
             // test
@@ -263,7 +263,7 @@ public class ClientCertificateCredentialTest {
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
         })) {
             // test

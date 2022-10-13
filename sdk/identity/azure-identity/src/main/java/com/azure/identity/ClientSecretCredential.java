@@ -85,7 +85,7 @@ public class ClientSecretCredential implements TokenCredential {
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
-            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCacheSync(request);
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (Exception e) { }

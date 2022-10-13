@@ -65,7 +65,7 @@ public class ClientSecretCredentialTest {
 
         // mock
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
             when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
         })) {
@@ -110,7 +110,7 @@ public class ClientSecretCredentialTest {
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithConfidentialClientCacheSync(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request)).thenThrow(new MsalServiceException("bad secret", "BadSecret"));
             when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         })) {
