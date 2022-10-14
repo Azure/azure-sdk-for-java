@@ -24,11 +24,8 @@ import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreatorTest.RestTemplateProxyCustomizerConfiguration.FACTORY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,28 +37,15 @@ class AadRestTemplateCreatorTest {
                 .withUserConfiguration(RestTemplateAutoConfiguration.class)
                 .run((context) -> {
                     RestTemplateBuilder builder = context.getBean(RestTemplateBuilder.class);
-                    testCreateRestTemplate(builder);
                     testCreateOAuth2ErrorResponseHandledRestTemplate(builder);
                     testCreateOAuth2AccessTokenResponseClientRestTemplate(builder);
                 });
-    }
-
-    void testCreateRestTemplate(RestTemplateBuilder builder) {
-        RestTemplate restTemplate = createRestTemplate(builder);
-        ResponseErrorHandler handler = restTemplate.getErrorHandler();
-        assertNotEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
-        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
-        assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
     }
 
     void testCreateOAuth2ErrorResponseHandledRestTemplate(RestTemplateBuilder builder) {
         RestTemplate restTemplate = createOAuth2ErrorResponseHandledRestTemplate(builder);
         ResponseErrorHandler handler = restTemplate.getErrorHandler();
         assertEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
-        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
-        assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
     }
 
     void testCreateOAuth2AccessTokenResponseClientRestTemplate(RestTemplateBuilder builder) {
