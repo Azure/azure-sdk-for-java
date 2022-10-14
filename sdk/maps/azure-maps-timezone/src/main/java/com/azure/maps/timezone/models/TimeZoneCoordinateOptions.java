@@ -13,7 +13,7 @@ import com.azure.core.models.GeoPosition;
 public final class TimeZoneCoordinateOptions {
     private GeoPosition coordinates;
     private String acceptLanguage;
-    private TimezoneOptions options;
+    private TimeZoneOptions options;
     private OffsetDateTime timeStamp;
     private OffsetDateTime daylightSavingsTimeFrom;
     private Integer daylightSavingsTimeLastingYears;
@@ -76,7 +76,7 @@ public final class TimeZoneCoordinateOptions {
      * Get timezone options
      * @return returns timezone options. Alternatively, use alias "o". Options available for types of information returned in the result.
      */
-    public TimezoneOptions getTimezoneOptions() {
+    public TimeZoneOptions getTimezoneOptions() {
         return options;
     }
 
@@ -85,7 +85,7 @@ public final class TimeZoneCoordinateOptions {
      * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
      * @return TimeZoneCoordinateOptions
      */
-    public TimeZoneCoordinateOptions setTimezoneOptions(TimezoneOptions options) {
+    public TimeZoneCoordinateOptions setTimezoneOptions(TimeZoneOptions options) {
         this.options = options;
         return this;
     }

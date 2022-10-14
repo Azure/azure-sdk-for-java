@@ -37,6 +37,9 @@ public class TimezoneCustomization extends Customization {
 
         // customize TimeZone Result
         customizeTimeZoneResult(models);
+
+        // customize TimeZone Options
+        customizeTimeZoneOptions(models);
     }
 
     // Customizes the country record class
@@ -218,5 +221,11 @@ public class TimezoneCustomization extends Customization {
         ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public TimeZoneResult()");
         constructorCustomization.setModifier(2);
         constructorCustomization.getJavadoc().setDescription("Set default TimeZoneResult constructor to private");
+    }
+
+    // Customizes the timezone options class
+    private void customizeTimeZoneOptions(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimezoneOptions");
+        classCustomization.rename("TimeZoneOptions");
     }
 }

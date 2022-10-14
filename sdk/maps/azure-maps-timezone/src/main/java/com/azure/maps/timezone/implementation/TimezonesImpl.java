@@ -25,9 +25,9 @@ import com.azure.maps.timezone.implementation.models.ErrorResponseException;
 import com.azure.maps.timezone.implementation.models.JsonFormat;
 import com.azure.maps.timezone.models.IanaId;
 import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneOptions;
 import com.azure.maps.timezone.models.TimeZoneResult;
 import com.azure.maps.timezone.models.TimeZoneWindows;
-import com.azure.maps.timezone.models.TimezoneOptions;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ public final class TimezonesImpl {
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept-Language") String acceptLanguage,
-                @QueryParam("options") TimezoneOptions options,
+                @QueryParam("options") TimeZoneOptions options,
                 @QueryParam("timeStamp") OffsetDateTime timeStamp,
                 @QueryParam("transitionsFrom") OffsetDateTime daylightSavingsTimeFrom,
                 @QueryParam("transitionsYears") Integer daylightSavingsTimeLastingYears,
@@ -83,7 +83,7 @@ public final class TimezonesImpl {
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept-Language") String acceptLanguage,
-                @QueryParam("options") TimezoneOptions options,
+                @QueryParam("options") TimeZoneOptions options,
                 @QueryParam("timeStamp") OffsetDateTime timeStamp,
                 @QueryParam("transitionsFrom") OffsetDateTime daylightSavingsTimeFrom,
                 @QueryParam("transitionsYears") Integer daylightSavingsTimeLastingYears,
@@ -169,7 +169,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {
@@ -222,7 +222,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -273,7 +273,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {
@@ -319,7 +319,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -367,7 +367,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -413,7 +413,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             String timezoneId,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {
@@ -462,7 +462,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {
@@ -520,7 +520,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -576,7 +576,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {
@@ -625,7 +625,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -676,7 +676,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears,
@@ -725,7 +725,7 @@ public final class TimezonesImpl {
             JsonFormat format,
             List<Double> coordinates,
             String acceptLanguage,
-            TimezoneOptions options,
+            TimeZoneOptions options,
             OffsetDateTime timeStamp,
             OffsetDateTime daylightSavingsTimeFrom,
             Integer daylightSavingsTimeLastingYears) {

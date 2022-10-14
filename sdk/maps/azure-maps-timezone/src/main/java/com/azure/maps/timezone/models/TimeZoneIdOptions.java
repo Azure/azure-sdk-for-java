@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 public final class TimeZoneIdOptions {
     private String timezoneId;
     private String acceptLanguage;
-    private TimezoneOptions options;
+    private TimeZoneOptions options;
     private OffsetDateTime timeStamp;
     private OffsetDateTime daylightSavingsTimeFrom;
     private Integer daylightSavingsTimeLastingYears;
@@ -66,9 +66,9 @@ public final class TimeZoneIdOptions {
 
     /**
      * get timezone options
-     * @return TimezoneOptions. Alternatively, use alias "o". Options available for types of information returned in the result.
+     * @return TimeZoneOptions. Alternatively, use alias "o". Options available for types of information returned in the result.
      */
-    public TimezoneOptions getOptions() {
+    public TimeZoneOptions getOptions() {
         return options;
     }
 
@@ -77,7 +77,7 @@ public final class TimeZoneIdOptions {
      * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
      * @return TimezoneIdOptions
      */
-    public TimeZoneIdOptions setOptions(TimezoneOptions options) {
+    public TimeZoneIdOptions setOptions(TimeZoneOptions options) {
         this.options = options;
         return this;
     }

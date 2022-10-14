@@ -10,7 +10,7 @@ import com.azure.maps.timezone.TimeZoneAsyncClient;
 import com.azure.maps.timezone.TimeZoneClient;
 import com.azure.maps.timezone.TimeZoneClientBuilder;
 import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
-import com.azure.maps.timezone.models.TimezoneOptions;
+import com.azure.maps.timezone.models.TimeZoneOptions;
 
 public class GetTimezoneByCoordinates {
     public static void main(String[] args) {
@@ -33,7 +33,7 @@ public class GetTimezoneByCoordinates {
         // In addition, the API provides sunset and sunrise times for a given location.
         // BEGIN: com.azure.maps.timezone.sync.get_timezone_by_coordinates
         GeoPosition cd = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions op = new TimeZoneCoordinateOptions(cd).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions op = new TimeZoneCoordinateOptions(cd).setTimezoneOptions(TimeZoneOptions.ALL);
         client.getTimezoneByCoordinates(op);
         // END: com.azure.maps.timezone.sync.get_timezone_by_coordinates
 
@@ -56,7 +56,7 @@ public class GetTimezoneByCoordinates {
         // In addition, the API provides sunset and sunrise times for a given location.
         // BEGIN: com.azure.maps.timezone.async.get_timezone_by_coordinates
         GeoPosition c2 = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions(c2).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions(c2).setTimezoneOptions(TimeZoneOptions.ALL);
         asyncClient.getTimezoneByCoordinates(op2);
         // END: com.azure.maps.timezone.async.get_timezone_by_coordinates
     }

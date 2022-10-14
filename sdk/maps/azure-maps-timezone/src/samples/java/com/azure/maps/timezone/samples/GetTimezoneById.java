@@ -9,7 +9,7 @@ import com.azure.maps.timezone.TimeZoneAsyncClient;
 import com.azure.maps.timezone.TimeZoneClient;
 import com.azure.maps.timezone.TimeZoneClientBuilder;
 import com.azure.maps.timezone.models.TimeZoneIdOptions;
-import com.azure.maps.timezone.models.TimezoneOptions;
+import com.azure.maps.timezone.models.TimeZoneOptions;
 
 public class GetTimezoneById {
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class GetTimezoneById {
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-by-id
         // This API returns current, historical, and future time zone information for the specified IANA time zone ID.
         // BEGIN: com.azure.maps.timezone.sync.get_timezone_by_id
-        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL);
         client.getTimezoneById(options);
         // END: com.azure.maps.timezone.sync.get_timezone_by_id
 
@@ -51,7 +51,7 @@ public class GetTimezoneById {
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-by-id
         // This API returns current, historical, and future time zone information for the specified IANA time zone ID.
         // BEGIN: com.azure.maps.timezone.async.get_timezone_by_id
-        TimeZoneIdOptions options2 = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+        TimeZoneIdOptions options2 = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL);
         asyncClient.getTimezoneById(options2);
         // END: com.azure.maps.timezone.async.get_timezone_by_id
     }

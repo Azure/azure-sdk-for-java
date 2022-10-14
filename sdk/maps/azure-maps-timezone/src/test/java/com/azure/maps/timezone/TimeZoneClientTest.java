@@ -16,7 +16,7 @@ import com.azure.maps.timezone.models.IanaId;
 import com.azure.maps.timezone.models.TimeZoneCoordinateOptions;
 import com.azure.maps.timezone.models.TimeZoneIdOptions;
 import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimezoneOptions;
+import com.azure.maps.timezone.models.TimeZoneOptions;
 import com.azure.maps.timezone.models.TimeZoneResult;
 import com.azure.maps.timezone.models.TimeZoneWindows;
 
@@ -36,7 +36,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testGetTimezoneById(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
-        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         TimeZoneResult actualResult = client.getTimezoneById(options);
         TimeZoneResult expectedResult = TestUtils.getExpectedTimezoneById();
@@ -50,7 +50,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testGetTimezoneByIdWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
-        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         validateGetTimezoneByIdWithResponse(TestUtils.getExpectedTimezoneById(), 200, client.getTimezoneByIdWithResponse(options, null));
     }
@@ -60,7 +60,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testInvalidGetTimezoneByIdWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
-        TimeZoneIdOptions options = new TimeZoneIdOptions("").setOptions(TimezoneOptions.ALL).setLanguage(null)
+        TimeZoneIdOptions options = new TimeZoneIdOptions("").setOptions(TimeZoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTimezoneById(options));
@@ -73,7 +73,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     public void testGetTimezoneByCoordinates(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         TimeZoneResult actualResult = client.getTimezoneByCoordinates(options);
         TimeZoneResult expectedResult = TestUtils.getExpectedTimezoneByCoordinates();
         validateGetTimezoneByCoordinates(actualResult, expectedResult);
@@ -86,7 +86,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     public void testGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         validateGetTimezoneByCoordinatesWithResponse(TestUtils.getExpectedTimezoneByCoordinates(), 200, client.getTimezoneByCoordinatesWithResponse(options, null));
     }
 
@@ -96,7 +96,7 @@ public class TimeZoneClientTest extends TimeZoneClientTestBase {
     public void testInvalidGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) throws IOException {
         client = getTimeZoneClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-1000000, 47.0);
-        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimeZoneCoordinateOptions options = new TimeZoneCoordinateOptions(coordinate).setTimezoneOptions(TimeZoneOptions.ALL);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTimezoneByCoordinatesWithResponse(options, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());

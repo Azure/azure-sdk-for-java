@@ -56,7 +56,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -83,7 +83,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -107,7 +107,7 @@ public final class TimeZoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneIdOptions options2 = new TimeZoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -146,7 +146,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -175,7 +175,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -201,7 +201,7 @@ public final class TimeZoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimeZoneCoordinateOptions op2 = new TimeZoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimeZoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
