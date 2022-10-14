@@ -9,18 +9,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for TimezoneOptions. */
-public final class TimezoneOptions extends ExpandableStringEnum<TimezoneOptions> {
+public final class TimeZoneOptions extends ExpandableStringEnum<TimeZoneOptions> {
     /** Static value none for TimezoneOptions. */
-    public static final TimezoneOptions NONE = fromString("none");
+    public static final TimeZoneOptions NONE = fromString("none");
 
     /** Static value zoneInfo for TimezoneOptions. */
-    public static final TimezoneOptions ZONE_INFO = fromString("zoneInfo");
+    public static final TimeZoneOptions ZONE_INFO = fromString("zoneInfo");
 
     /** Static value transitions for TimezoneOptions. */
-    public static final TimezoneOptions TRANSITIONS = fromString("transitions");
+    public static final TimeZoneOptions TRANSITIONS = fromString("transitions");
 
     /** Static value all for TimezoneOptions. */
-    public static final TimezoneOptions ALL = fromString("all");
+    public static final TimeZoneOptions ALL = fromString("all");
 
     /**
      * Creates or finds a TimezoneOptions from its string representation.
@@ -29,8 +29,8 @@ public final class TimezoneOptions extends ExpandableStringEnum<TimezoneOptions>
      * @return the corresponding TimezoneOptions.
      */
     @JsonCreator
-    public static TimezoneOptions fromString(String name) {
-        return fromString(name, TimezoneOptions.class);
+    public static TimeZoneOptions fromString(String name) {
+        return fromString(name, TimeZoneOptions.class);
     }
 
     /**
@@ -38,7 +38,7 @@ public final class TimezoneOptions extends ExpandableStringEnum<TimezoneOptions>
      *
      * @return known TimezoneOptions values.
      */
-    public static Collection<TimezoneOptions> values() {
-        return values(TimezoneOptions.class);
+    public static Collection<TimeZoneOptions> values() {
+        return values(TimeZoneOptions.class);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 /** This object is returned from a successful Timezone By ID call or By Coordinates call. */
 @Immutable
-public final class TimezoneResult {
+public final class TimeZoneResult {
     /*
      * Version property
      */
@@ -28,10 +28,10 @@ public final class TimezoneResult {
      * TimeZoneId array
      */
     @JsonProperty(value = "TimeZones", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TimezoneId> timeZones;
+    private List<TimeZoneId> timeZones;
 
-    /** Set default TimezoneResult constructor to private */
-    private TimezoneResult() {}
+    /** Set default TimeZoneResult constructor to private */
+    private TimeZoneResult() {}
 
     /**
      * Get the version property: Version property.
@@ -56,7 +56,7 @@ public final class TimezoneResult {
      *
      * @return the timeZones value.
      */
-    public List<TimezoneId> getTimeZones() {
+    public List<TimeZoneId> getTimeZones() {
         return this.timeZones;
     }
 }
