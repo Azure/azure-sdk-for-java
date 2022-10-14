@@ -159,4 +159,10 @@ public final class IdentityClientBuilder {
             clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }
+
+    public IdentitySyncClient buildSyncClient() {
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            identityClientOptions);
+    }
 }

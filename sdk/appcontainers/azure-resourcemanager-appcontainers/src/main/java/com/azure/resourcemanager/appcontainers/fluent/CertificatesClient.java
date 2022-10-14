@@ -49,21 +49,6 @@ public interface CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param certificateName Name of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner get(String resourceGroupName, String environmentName, String certificateName);
-
-    /**
-     * Get the specified Certificate.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -76,7 +61,7 @@ public interface CertificatesClient {
         String resourceGroupName, String environmentName, String certificateName, Context context);
 
     /**
-     * Create or Update a Certificate.
+     * Get the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -85,10 +70,10 @@ public interface CertificatesClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
+     * @return the specified Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner createOrUpdate(String resourceGroupName, String environmentName, String certificateName);
+    CertificateInner get(String resourceGroupName, String environmentName, String certificateName);
 
     /**
      * Create or Update a Certificate.
@@ -114,7 +99,7 @@ public interface CertificatesClient {
         Context context);
 
     /**
-     * Deletes the specified Certificate.
+     * Create or Update a Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -123,9 +108,10 @@ public interface CertificatesClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String environmentName, String certificateName);
+    CertificateInner createOrUpdate(String resourceGroupName, String environmentName, String certificateName);
 
     /**
      * Deletes the specified Certificate.
@@ -145,24 +131,23 @@ public interface CertificatesClient {
         String resourceGroupName, String environmentName, String certificateName, Context context);
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Deletes the specified Certificate.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param certificateName Name of the Certificate.
-     * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner update(
-        String resourceGroupName, String environmentName, String certificateName, CertificatePatch certificateEnvelope);
+    void delete(String resourceGroupName, String environmentName, String certificateName);
 
     /**
-     * Patches a certificate. Currently only patching of tags is supported.
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -183,4 +168,23 @@ public interface CertificatesClient {
         String certificateName,
         CertificatePatch certificateEnvelope,
         Context context);
+
+    /**
+     * Update properties of a certificate
+     *
+     * <p>Patches a certificate. Currently only patching of tags is supported.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param certificateName Name of the Certificate.
+     * @param certificateEnvelope Properties of a certificate that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CertificateInner update(
+        String resourceGroupName, String environmentName, String certificateName, CertificatePatch certificateEnvelope);
 }

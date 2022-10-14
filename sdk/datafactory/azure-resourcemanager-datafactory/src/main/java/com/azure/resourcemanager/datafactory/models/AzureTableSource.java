@@ -26,6 +26,10 @@ public final class AzureTableSource extends TabularSource {
     @JsonProperty(value = "azureTableSourceIgnoreTableNotFound")
     private Object azureTableSourceIgnoreTableNotFound;
 
+    /** Creates an instance of AzureTableSource class. */
+    public AzureTableSource() {
+    }
+
     /**
      * Get the azureTableSourceQuery property: Azure Table source query. Type: string (or Expression with resultType
      * string).

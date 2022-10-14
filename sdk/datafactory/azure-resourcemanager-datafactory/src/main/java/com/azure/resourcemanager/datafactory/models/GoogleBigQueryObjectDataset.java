@@ -23,6 +23,10 @@ public final class GoogleBigQueryObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GoogleBigQueryDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of GoogleBigQueryObjectDataset class. */
+    public GoogleBigQueryObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

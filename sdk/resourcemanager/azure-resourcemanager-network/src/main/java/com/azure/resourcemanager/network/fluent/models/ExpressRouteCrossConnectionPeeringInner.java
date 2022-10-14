@@ -34,6 +34,10 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ExpressRouteCrossConnectionPeeringInner class. */
+    public ExpressRouteCrossConnectionPeeringInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the express route cross connection peering.
      *

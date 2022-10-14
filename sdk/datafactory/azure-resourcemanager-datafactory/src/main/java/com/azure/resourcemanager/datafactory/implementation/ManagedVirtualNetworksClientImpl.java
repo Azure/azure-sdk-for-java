@@ -454,32 +454,6 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -495,30 +469,6 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedVirtualNetworkResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .block();
     }
 
     /**
@@ -547,6 +497,30 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a managed Virtual Network.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedVirtualNetwork Managed Virtual Network resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed Virtual Network resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedVirtualNetworkResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        ManagedVirtualNetworkResourceInner managedVirtualNetwork) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -675,26 +649,6 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -706,24 +660,6 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedVirtualNetworkResourceInner get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch).block();
     }
 
     /**
@@ -749,6 +685,25 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, context)
             .block();
+    }
+
+    /**
+     * Gets a managed Virtual Network.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedVirtualNetworkResourceInner get(
+        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, Context.NONE)
+            .getValue();
     }
 
     /**

@@ -90,6 +90,10 @@ public final class RemediationImpl implements Remediation, Remediation.Definitio
         return this.innerModel().failureThreshold();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RemediationInner innerModel() {
         return this.innerObject;
     }
@@ -199,14 +203,14 @@ public final class RemediationImpl implements Remediation, Remediation.Definitio
             .listDeploymentsAtResourceGroup(resourceGroupName, remediationName, top, context);
     }
 
-    public Remediation cancelAtResourceGroup() {
-        return serviceManager.remediations().cancelAtResourceGroup(resourceGroupName, remediationName);
-    }
-
     public Response<Remediation> cancelAtResourceGroupWithResponse(Context context) {
         return serviceManager
             .remediations()
             .cancelAtResourceGroupWithResponse(resourceGroupName, remediationName, context);
+    }
+
+    public Remediation cancelAtResourceGroup() {
+        return serviceManager.remediations().cancelAtResourceGroup(resourceGroupName, remediationName);
     }
 
     public RemediationImpl withPolicyAssignmentId(String policyAssignmentId) {

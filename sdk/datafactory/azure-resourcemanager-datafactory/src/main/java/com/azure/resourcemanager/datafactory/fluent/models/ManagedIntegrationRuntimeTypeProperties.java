@@ -31,6 +31,10 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "customerVirtualNetwork")
     private IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork;
 
+    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    public ManagedIntegrationRuntimeTypeProperties() {
+    }
+
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
      *

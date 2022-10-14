@@ -131,6 +131,10 @@ public final class RestServiceLinkedServiceTypeProperties {
     @JsonProperty(value = "scope")
     private Object scope;
 
+    /** Creates an instance of RestServiceLinkedServiceTypeProperties class. */
+    public RestServiceLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The base URL of the REST service.
      *

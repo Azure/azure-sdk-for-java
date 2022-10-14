@@ -24,6 +24,10 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties =
         new SqlServerStoredProcedureActivityTypeProperties();
 
+    /** Creates an instance of SqlServerStoredProcedureActivity class. */
+    public SqlServerStoredProcedureActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: SQL stored procedure activity properties.
      *

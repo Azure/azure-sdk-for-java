@@ -182,21 +182,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourcesWrapperInner get(String resourceGroupName, String factoryName) {
-        return getAsync(resourceGroupName, factoryName).block();
-    }
-
-    /**
-     * Gets the private link resources.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -207,5 +192,20 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public Response<PrivateLinkResourcesWrapperInner> getWithResponse(
         String resourceGroupName, String factoryName, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, context).block();
+    }
+
+    /**
+     * Gets the private link resources.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourcesWrapperInner get(String resourceGroupName, String factoryName) {
+        return getWithResponse(resourceGroupName, factoryName, Context.NONE).getValue();
     }
 }

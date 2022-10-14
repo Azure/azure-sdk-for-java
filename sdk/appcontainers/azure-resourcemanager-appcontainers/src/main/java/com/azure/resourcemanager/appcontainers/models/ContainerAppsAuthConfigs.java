@@ -43,20 +43,6 @@ public interface ContainerAppsAuthConfigs {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param authConfigName Name of the Container App AuthConfig.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthConfig of a Container App.
-     */
-    AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName);
-
-    /**
-     * Get a AuthConfig of a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -68,7 +54,7 @@ public interface ContainerAppsAuthConfigs {
         String resourceGroupName, String containerAppName, String authConfigName, Context context);
 
     /**
-     * Delete a Container App AuthConfig.
+     * Get a AuthConfig of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
@@ -77,8 +63,9 @@ public interface ContainerAppsAuthConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a AuthConfig of a Container App.
      */
-    void delete(String resourceGroupName, String containerAppName, String authConfigName);
+    AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
      * Delete a Container App AuthConfig.
@@ -95,6 +82,19 @@ public interface ContainerAppsAuthConfigs {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String containerAppName, String authConfigName, Context context);
+
+    /**
+     * Delete a Container App AuthConfig.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param authConfigName Name of the Container App AuthConfig.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
      * Get a AuthConfig of a Container App.

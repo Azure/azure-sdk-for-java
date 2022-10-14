@@ -26,6 +26,10 @@ public final class SnowflakeSink extends CopySink {
     @JsonProperty(value = "importSettings")
     private SnowflakeImportCopyCommand importSettings;
 
+    /** Creates an instance of SnowflakeSink class. */
+    public SnowflakeSink() {
+    }
+
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
      *

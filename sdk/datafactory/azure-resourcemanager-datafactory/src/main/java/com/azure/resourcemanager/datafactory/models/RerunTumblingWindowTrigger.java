@@ -28,6 +28,10 @@ public final class RerunTumblingWindowTrigger extends Trigger {
     private RerunTumblingWindowTriggerTypeProperties innerTypeProperties =
         new RerunTumblingWindowTriggerTypeProperties();
 
+    /** Creates an instance of RerunTumblingWindowTrigger class. */
+    public RerunTumblingWindowTrigger() {
+    }
+
     /**
      * Get the innerTypeProperties property: Rerun Trigger properties.
      *

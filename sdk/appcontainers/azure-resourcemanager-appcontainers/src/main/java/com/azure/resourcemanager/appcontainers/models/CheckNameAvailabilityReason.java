@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CheckNameAvailabilityReason. */
+/** The reason why the given name is not available. */
 public final class CheckNameAvailabilityReason extends ExpandableStringEnum<CheckNameAvailabilityReason> {
     /** Static value Invalid for CheckNameAvailabilityReason. */
     public static final CheckNameAvailabilityReason INVALID = fromString("Invalid");

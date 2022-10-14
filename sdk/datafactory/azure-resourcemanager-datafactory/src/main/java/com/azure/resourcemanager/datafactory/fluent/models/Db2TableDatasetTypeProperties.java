@@ -28,6 +28,10 @@ public final class Db2TableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of Db2TableDatasetTypeProperties class. */
+    public Db2TableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

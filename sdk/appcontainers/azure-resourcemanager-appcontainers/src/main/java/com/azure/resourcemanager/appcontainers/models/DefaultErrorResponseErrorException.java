@@ -30,6 +30,7 @@ public final class DefaultErrorResponseErrorException extends ManagementExceptio
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public DefaultErrorResponseError getValue() {
         return (DefaultErrorResponseError) super.getValue();

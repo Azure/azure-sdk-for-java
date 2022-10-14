@@ -46,6 +46,10 @@ public final class ExplicitProxy {
     @JsonProperty(value = "pacFile")
     private String pacFile;
 
+    /** Creates an instance of ExplicitProxy class. */
+    public ExplicitProxy() {
+    }
+
     /**
      * Get the enableExplicitProxy property: When set to true, explicit proxy mode is enabled.
      *

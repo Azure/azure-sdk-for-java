@@ -22,11 +22,14 @@ public final class DaprComponentInner extends ProxyResource {
     private DaprComponentProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DaprComponentInner class. */
+    public DaprComponentInner() {
+    }
 
     /**
      * Get the innerProperties property: Dapr Component resource specific properties.
@@ -158,6 +161,29 @@ public final class DaprComponentInner extends ProxyResource {
             this.innerProperties = new DaprComponentProperties();
         }
         this.innerProperties().withSecrets(secrets);
+        return this;
+    }
+
+    /**
+     * Get the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+     *
+     * @return the secretStoreComponent value.
+     */
+    public String secretStoreComponent() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretStoreComponent();
+    }
+
+    /**
+     * Set the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+     *
+     * @param secretStoreComponent the secretStoreComponent value to set.
+     * @return the DaprComponentInner object itself.
+     */
+    public DaprComponentInner withSecretStoreComponent(String secretStoreComponent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DaprComponentProperties();
+        }
+        this.innerProperties().withSecretStoreComponent(secretStoreComponent);
         return this;
     }
 

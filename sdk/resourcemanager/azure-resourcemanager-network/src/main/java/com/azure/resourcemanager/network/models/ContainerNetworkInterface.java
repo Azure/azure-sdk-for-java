@@ -37,6 +37,10 @@ public final class ContainerNetworkInterface extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ContainerNetworkInterface class. */
+    public ContainerNetworkInterface() {
+    }
+
     /**
      * Get the innerProperties property: Container network interface properties.
      *

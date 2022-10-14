@@ -38,6 +38,10 @@ public final class AzureTableSink extends CopySink {
     @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;
 
+    /** Creates an instance of AzureTableSink class. */
+    public AzureTableSink() {
+    }
+
     /**
      * Get the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
      * Expression with resultType string).

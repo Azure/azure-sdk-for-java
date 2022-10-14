@@ -38,6 +38,10 @@ public final class ForEachActivityTypeProperties {
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
+    /** Creates an instance of ForEachActivityTypeProperties class. */
+    public ForEachActivityTypeProperties() {
+    }
+
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
      *

@@ -24,6 +24,10 @@ public final class SapTableLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapTableLinkedServiceTypeProperties innerTypeProperties = new SapTableLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapTableLinkedService class. */
+    public SapTableLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *

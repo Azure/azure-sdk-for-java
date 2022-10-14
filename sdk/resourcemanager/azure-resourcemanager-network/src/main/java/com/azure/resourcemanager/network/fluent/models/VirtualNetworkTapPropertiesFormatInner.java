@@ -48,6 +48,10 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     @JsonProperty(value = "destinationPort")
     private Integer destinationPort;
 
+    /** Creates an instance of VirtualNetworkTapPropertiesFormatInner class. */
+    public VirtualNetworkTapPropertiesFormatInner() {
+    }
+
     /**
      * Get the networkInterfaceTapConfigurations property: Specifies the list of resource IDs for the network interface
      * IP configuration that needs to be tapped.

@@ -51,10 +51,21 @@ public final class ExpressRouteConnectionProperties {
     private Boolean expressRouteGatewayBypass;
 
     /*
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
+     */
+    @JsonProperty(value = "enablePrivateLinkFastPath")
+    private Boolean enablePrivateLinkFastPath;
+
+    /*
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
+
+    /** Creates an instance of ExpressRouteConnectionProperties class. */
+    public ExpressRouteConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route connection resource.
@@ -163,6 +174,28 @@ public final class ExpressRouteConnectionProperties {
      */
     public ExpressRouteConnectionProperties withExpressRouteGatewayBypass(Boolean expressRouteGatewayBypass) {
         this.expressRouteGatewayBypass = expressRouteGatewayBypass;
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.enablePrivateLinkFastPath;
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the ExpressRouteConnectionProperties object itself.
+     */
+    public ExpressRouteConnectionProperties withEnablePrivateLinkFastPath(Boolean enablePrivateLinkFastPath) {
+        this.enablePrivateLinkFastPath = enablePrivateLinkFastPath;
         return this;
     }
 

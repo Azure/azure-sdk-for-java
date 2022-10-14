@@ -47,6 +47,10 @@ public final class ValidationActivityTypeProperties {
     @JsonProperty(value = "dataset", required = true)
     private DatasetReference dataset;
 
+    /** Creates an instance of ValidationActivityTypeProperties class. */
+    public ValidationActivityTypeProperties() {
+    }
+
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType

@@ -28,6 +28,10 @@ public final class ActiveSecurityAdminRulesListResultInner {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of ActiveSecurityAdminRulesListResultInner class. */
+    public ActiveSecurityAdminRulesListResultInner() {
+    }
+
     /**
      * Get the value property: Gets a page of active security admin rules.
      *

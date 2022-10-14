@@ -554,23 +554,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
-        return queryByFactoryAsync(resourceGroupName, factoryName, filterParameters).block();
-    }
-
-    /**
-     * Query triggers.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -581,6 +564,23 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<TriggerQueryResponseInner> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+    }
+
+    /**
+     * Query triggers.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param filterParameters Parameters to filter the triggers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a query of triggers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
+        return queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, Context.NONE).getValue();
     }
 
     /**
@@ -723,31 +723,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
-     * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String triggerName,
-        TriggerResourceInner trigger,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -759,25 +734,6 @@ public final class TriggersClientImpl implements TriggersClient {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch).block();
     }
 
     /**
@@ -805,6 +761,26 @@ public final class TriggersClientImpl implements TriggersClient {
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param trigger Trigger resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, trigger, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -923,26 +899,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -953,23 +909,6 @@ public final class TriggersClientImpl implements TriggersClient {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch).block();
     }
 
     /**
@@ -990,6 +929,23 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<TriggerResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1118,21 +1074,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String triggerName) {
-        deleteAsync(resourceGroupName, factoryName, triggerName).block();
-    }
-
-    /**
-     * Deletes a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1143,6 +1084,21 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName, context).block();
+    }
+
+    /**
+     * Deletes a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String triggerName) {
+        deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -1544,23 +1500,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName) {
-        return getEventSubscriptionStatusAsync(resourceGroupName, factoryName, triggerName).block();
-    }
-
-    /**
-     * Get a trigger's event subscription status.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1572,6 +1511,24 @@ public final class TriggersClientImpl implements TriggersClient {
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return getEventSubscriptionStatusWithResponseAsync(resourceGroupName, factoryName, triggerName, context)
             .block();
+    }
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
+        String resourceGroupName, String factoryName, String triggerName) {
+        return getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE)
+            .getValue();
     }
 
     /**

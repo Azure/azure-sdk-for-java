@@ -23,6 +23,10 @@ public final class ScriptActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ScriptActivityTypeProperties innerTypeProperties = new ScriptActivityTypeProperties();
 
+    /** Creates an instance of ScriptActivity class. */
+    public ScriptActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Script activity properties.
      *

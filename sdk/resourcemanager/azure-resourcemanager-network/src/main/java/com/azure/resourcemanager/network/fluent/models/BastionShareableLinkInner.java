@@ -36,6 +36,10 @@ public final class BastionShareableLinkInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of BastionShareableLinkInner class. */
+    public BastionShareableLinkInner() {
+    }
+
     /**
      * Get the vm property: Reference of the virtual machine resource.
      *

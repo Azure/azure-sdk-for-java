@@ -37,6 +37,10 @@ public final class LinkedServiceResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of LinkedServiceResourceInner class. */
+    public LinkedServiceResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of linked service.
      *

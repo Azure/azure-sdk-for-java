@@ -22,6 +22,10 @@ public final class ApplicationGatewayBackendAddress {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
+    /** Creates an instance of ApplicationGatewayBackendAddress class. */
+    public ApplicationGatewayBackendAddress() {
+    }
+
     /**
      * Get the fqdn property: Fully qualified domain name (FQDN).
      *

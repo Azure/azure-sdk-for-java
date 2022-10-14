@@ -63,6 +63,10 @@ public final class ConcurLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ConcurLinkedServiceTypeProperties class. */
+    public ConcurLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.

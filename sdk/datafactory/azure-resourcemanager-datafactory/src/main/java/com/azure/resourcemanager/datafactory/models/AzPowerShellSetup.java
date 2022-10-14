@@ -22,6 +22,10 @@ public final class AzPowerShellSetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private AzPowerShellSetupTypeProperties innerTypeProperties = new AzPowerShellSetupTypeProperties();
 
+    /** Creates an instance of AzPowerShellSetup class. */
+    public AzPowerShellSetup() {
+    }
+
     /**
      * Get the innerTypeProperties property: Install Azure PowerShell type properties.
      *

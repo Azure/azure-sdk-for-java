@@ -23,6 +23,10 @@ public final class PackageStore {
     @JsonProperty(value = "packageStoreLinkedService", required = true)
     private EntityReference packageStoreLinkedService;
 
+    /** Creates an instance of PackageStore class. */
+    public PackageStore() {
+    }
+
     /**
      * Get the name property: The name of the package store.
      *

@@ -28,6 +28,10 @@ public final class InboundSecurityRules {
     @JsonProperty(value = "destinationPortRange")
     private Integer destinationPortRange;
 
+    /** Creates an instance of InboundSecurityRules class. */
+    public InboundSecurityRules() {
+    }
+
     /**
      * Get the protocol property: Protocol. This should be either TCP or UDP.
      *

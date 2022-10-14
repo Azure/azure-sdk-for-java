@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Evaluation details of policy language expressions. */
 @Fluent
 public final class ExpressionEvaluationDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressionEvaluationDetails.class);
-
     /*
      * Evaluation result.
      */
@@ -55,6 +51,10 @@ public final class ExpressionEvaluationDetails {
      */
     @JsonProperty(value = "operator")
     private String operator;
+
+    /** Creates an instance of ExpressionEvaluationDetails class. */
+    public ExpressionEvaluationDetails() {
+    }
 
     /**
      * Get the result property: Evaluation result.

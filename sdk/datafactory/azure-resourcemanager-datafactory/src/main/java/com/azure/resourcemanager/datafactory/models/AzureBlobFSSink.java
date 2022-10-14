@@ -28,6 +28,10 @@ public final class AzureBlobFSSink extends CopySink {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
+    /** Creates an instance of AzureBlobFSSink class. */
+    public AzureBlobFSSink() {
+    }
+
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
      *

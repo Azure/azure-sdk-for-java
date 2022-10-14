@@ -35,6 +35,10 @@ public final class CopyActivity extends ExecutionActivity {
     @JsonProperty(value = "outputs")
     private List<DatasetReference> outputs;
 
+    /** Creates an instance of CopyActivity class. */
+    public CopyActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Copy activity properties.
      *

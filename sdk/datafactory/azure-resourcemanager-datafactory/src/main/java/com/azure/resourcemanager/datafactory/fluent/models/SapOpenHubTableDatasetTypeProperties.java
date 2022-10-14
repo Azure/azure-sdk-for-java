@@ -32,6 +32,10 @@ public final class SapOpenHubTableDatasetTypeProperties {
     @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;
 
+    /** Creates an instance of SapOpenHubTableDatasetTypeProperties class. */
+    public SapOpenHubTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
      * Table. Type: string (or Expression with resultType string).

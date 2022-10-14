@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FileServerLocation")
 @Fluent
 public final class FileServerLocation extends DatasetLocation {
+    /** Creates an instance of FileServerLocation class. */
+    public FileServerLocation() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public FileServerLocation withFolderPath(Object folderPath) {

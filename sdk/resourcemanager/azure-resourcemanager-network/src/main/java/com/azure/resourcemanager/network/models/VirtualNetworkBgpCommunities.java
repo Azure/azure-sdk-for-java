@@ -23,6 +23,10 @@ public final class VirtualNetworkBgpCommunities {
     @JsonProperty(value = "regionalCommunity", access = JsonProperty.Access.WRITE_ONLY)
     private String regionalCommunity;
 
+    /** Creates an instance of VirtualNetworkBgpCommunities class. */
+    public VirtualNetworkBgpCommunities() {
+    }
+
     /**
      * Get the virtualNetworkCommunity property: The BGP community associated with the virtual network.
      *

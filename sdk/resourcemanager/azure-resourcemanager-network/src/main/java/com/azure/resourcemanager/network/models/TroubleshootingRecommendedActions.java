@@ -34,6 +34,10 @@ public final class TroubleshootingRecommendedActions {
     @JsonProperty(value = "actionUriText")
     private String actionUriText;
 
+    /** Creates an instance of TroubleshootingRecommendedActions class. */
+    public TroubleshootingRecommendedActions() {
+    }
+
     /**
      * Get the actionId property: ID of the recommended action.
      *
