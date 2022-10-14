@@ -106,7 +106,7 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;uk.org.lidalia:slf4j-test;external_dependency} -->
+      <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

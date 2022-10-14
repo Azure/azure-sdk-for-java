@@ -283,7 +283,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
