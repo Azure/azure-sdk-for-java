@@ -165,7 +165,6 @@ stages:
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
                     artifact: ${{parameters.ArtifactName}}-signed
                   - ${{ each artifact in parameters.Artifacts }}:
-                    # TODO: pahallis: Even if artifact.skipPublishPackage?
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
