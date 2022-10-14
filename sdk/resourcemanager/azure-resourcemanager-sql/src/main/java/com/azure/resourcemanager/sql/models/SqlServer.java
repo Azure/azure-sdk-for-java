@@ -13,8 +13,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
+
 import java.util.List;
-import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL Server. */
 @Fluent
@@ -58,24 +58,6 @@ public interface SqlServer
 
     /** @return returns the list of usage metrics for an Azure SQL Server */
     List<ServerMetric> listUsageMetrics();
-
-    /** @return the list of information on all service objectives */
-    List<ServiceObjective> listServiceObjectives();
-
-    /**
-     * Gets the information on a particular Sql Server Service Objective.
-     *
-     * @param serviceObjectiveName name of the service objective to be fetched
-     * @return information of the service objective
-     */
-    ServiceObjective getServiceObjective(String serviceObjectiveName);
-
-    /**
-     * Returns all the recommended elastic pools for the server.
-     *
-     * @return list of recommended elastic pools for the server
-     */
-    Map<String, RecommendedElasticPool> listRecommendedElasticPools();
 
     /** @return the list of all restorable dropped databases */
     List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases();

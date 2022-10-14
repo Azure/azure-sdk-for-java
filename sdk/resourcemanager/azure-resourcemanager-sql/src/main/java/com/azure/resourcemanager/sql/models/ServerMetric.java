@@ -15,9 +15,6 @@ public interface ServerMetric extends HasInnerModel<ServerUsageInner> {
     /** @return Name of the server usage metric */
     String name();
 
-    /** @return the name of the resource */
-    String resourceName();
-
     /** @return the metric display name */
     String displayName();
 
@@ -29,7 +26,4 @@ public interface ServerMetric extends HasInnerModel<ServerUsageInner> {
 
     /** @return the units of the metric */
     String unit();
-
-    /** @return the next reset time for the metric (ISO8601 format) */
-    OffsetDateTime nextResetTime();
 }

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
+
 import java.time.OffsetDateTime;
 
 /** Response containing Azure SQL restorable dropped database. */
@@ -32,12 +33,6 @@ public interface SqlRestorableDroppedDatabase
 
     /** @return the max size in bytes of the database */
     String maxSizeBytes();
-
-    /** @return the service level objective name of the database */
-    String serviceLevelObjective();
-
-    /** @return the elastic pool name of the database */
-    String elasticPoolName();
 
     /** @return the creation date of the database (ISO8601 format) */
     OffsetDateTime creationDate();

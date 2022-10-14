@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 /** An immutable client-side representation of an Azure SQL Database export operation request. */
 @Fluent
 public interface SqlDatabaseExportRequest
-    extends HasInnerModel<ExportRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+    extends HasInnerModel<ExportDatabaseDefinition>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database export operation definition. */
     interface SqlDatabaseExportRequestDefinition
