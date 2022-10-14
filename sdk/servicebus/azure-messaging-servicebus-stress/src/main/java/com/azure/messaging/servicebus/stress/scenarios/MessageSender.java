@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -17,8 +18,11 @@ import java.util.stream.IntStream;
 
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    private static final int SEND_TIMES = 1000000;
-    private static final int MESSAGE_NUMBER = 100;
+    @Value("${SEND_TIMES:0}")
+    private int sendTimes;
+
+    @Value("${SEND_MESSAGES:1}")
+    private int messagesToSend;
 
     @Override
     public void run() {
@@ -39,9 +43,9 @@ public class MessageSender extends ServiceBusScenario {
             .topicName(topicName)
             .buildAsyncClient();
 
-        Flux.range(0, SEND_TIMES).concatMap(i -> {
+        Flux.range(0, sendTimes).concatMap(i -> {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();
-            IntStream.range(0, MESSAGE_NUMBER).forEach(j -> {
+            IntStream.range(0, messagesToSend).forEach(j -> {
                 eventDataList.add(new ServiceBusMessage("A"));
             });
             return client.sendMessages(eventDataList);

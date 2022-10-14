@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -16,6 +17,12 @@ import java.time.Duration;
 @Service("MessageProcessor")
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
+
+    @Value("${MAX_CONCURRENT_CALLS:10}")
+    private int maxConcurrentCalls;
+
+    @Value("${PREFETCH_COUNT:50}")
+    private int prefetchCount;
 
     @Override
     public void run() {
@@ -39,11 +46,10 @@ public class MessageProcessor extends ServiceBusScenario {
             .queueName(queueName)
             .topicName(topicName)
             .subscriptionName(subscriptionName)
-            .maxConcurrentCalls(10)
-            //.maxAutoLockRenewDuration(Duration.ofMinutes(5))
+            .maxConcurrentCalls(maxConcurrentCalls)
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .disableAutoComplete()
-            .prefetchCount(50)
+            .prefetchCount(prefetchCount)
             .processMessage(messageContext -> {
                 System.out.printf("messageProcessor %s%n", messageContext.getMessage().getLockToken());
                 LOGGER.info("Before complete. messageId: {}, lockToken: {}",

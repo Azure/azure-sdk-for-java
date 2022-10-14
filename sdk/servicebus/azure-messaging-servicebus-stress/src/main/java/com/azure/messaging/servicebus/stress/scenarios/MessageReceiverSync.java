@@ -14,6 +14,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -22,7 +23,8 @@ import java.time.Duration;
 public class MessageReceiverSync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverSync.class);
 
-    private static final int MAX_RECEIVED_MESSAGES = 1000;
+    @Value("${MAX_RECEIVE_MESSAGES:100000}")
+    private int maxReceiveMessages;
 
     @Override
     public void run() {
@@ -55,7 +57,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
             .buildClient();
 
 
-        IterableStream<ServiceBusReceivedMessage> receivedMessages = client.receiveMessages(MAX_RECEIVED_MESSAGES);
+        IterableStream<ServiceBusReceivedMessage> receivedMessages = client.receiveMessages(maxReceiveMessages);
         try {
             for (ServiceBusReceivedMessage receivedMessage : receivedMessages) {
                 try {
@@ -75,7 +77,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
                 }
             }
         } catch (ServiceBusException | AmqpException err) {
-            LOGGER.error("Iterating iterable from receiveMessages({}) error", MAX_RECEIVED_MESSAGES, err);
+            LOGGER.error("Iterating iterable from receiveMessages({}) error", maxReceiveMessages, err);
         }
     }
 }

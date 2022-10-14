@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +19,11 @@ import java.util.stream.IntStream;
 public class MessageSenderSync extends ServiceBusScenario{
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiver.class);
 
-    private static final int SEND_TIMES = 1000000;
-    private static final int MESSAGE_NUMBER = 100;
+    @Value("${SEND_TIMES:100000}")
+    private int sendTimes;
+
+    @Value("${SEND_MESSAGES:100}")
+    private int messagesToSend;
 
     @Override
     public void run() {
@@ -41,9 +45,9 @@ public class MessageSenderSync extends ServiceBusScenario{
             .buildAsyncClient();
 
         try (client) {
-            for (long i = 0; i < SEND_TIMES; i++) {
+            for (long i = 0; i < sendTimes; i++) {
                 List<ServiceBusMessage> eventDataList = new ArrayList<>();
-                IntStream.range(0, MESSAGE_NUMBER).forEach(j -> {
+                IntStream.range(0, messagesToSend).forEach(j -> {
                     eventDataList.add(new ServiceBusMessage("A"));
                 });
                 try {

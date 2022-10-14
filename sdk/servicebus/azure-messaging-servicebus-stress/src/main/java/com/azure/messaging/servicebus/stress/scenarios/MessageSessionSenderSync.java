@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +21,15 @@ import java.util.stream.IntStream;
 public class MessageSessionSenderSync extends ServiceBusScenario{
     private final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
-    private static final int SEND_TIMES = 1000000;
-    private static final int SESSION_NUMBER = 128;
-    private static final int MESSAGE_NUMBER = 100;
+    @Value("${SEND_TIMES:100000}")
+    private int sendTimes;
+
+    @Value("${SEND_SESSIONS:128}")
+    private int sessionsToSend;
+
+    @Value("${SEND_MESSAGES:100}")
+    private int messagesToSend;
+
     @Override
     public void run() {
         final String connectionString = options.getServicebusConnectionString();
@@ -44,11 +51,11 @@ public class MessageSessionSenderSync extends ServiceBusScenario{
             .buildClient();
 
         try (client) {
-            for (long i = 0; i < SEND_TIMES; i++) {
-                for(int j = 0; j < SESSION_NUMBER; j++) {
+            for (long i = 0; i < sendTimes; i++) {
+                for(int j = 0; j < sessionsToSend; j++) {
                     List<ServiceBusMessage> eventDataList = new ArrayList<>();
                     final String sessionId = Integer.toString(j);
-                    IntStream.range(0, MESSAGE_NUMBER).forEach(k -> {
+                    IntStream.range(0, messagesToSend).forEach(k -> {
                         eventDataList.add(new ServiceBusMessage("A").setSessionId(sessionId));
                     });
                     try {
