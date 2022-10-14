@@ -20,5 +20,4 @@ public class StubDateTimeProvider implements DateTimeProvider {
     public void setNow(OffsetDateTime now) {
         this.now = now;
     }
-
 }

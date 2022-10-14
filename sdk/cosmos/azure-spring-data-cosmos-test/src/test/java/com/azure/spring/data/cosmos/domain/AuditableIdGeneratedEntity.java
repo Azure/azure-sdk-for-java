@@ -4,8 +4,6 @@ package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -16,7 +14,7 @@ import java.time.OffsetDateTime;
 
 @Container
 public class AuditableIdGeneratedEntity {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuditableIdGeneratedEntity.class);
+    
     @Id
     @GeneratedValue
     String id;
@@ -50,7 +48,6 @@ public class AuditableIdGeneratedEntity {
     }
 
     public void setCreatedDate(OffsetDateTime createdDate) {
-        LOGGER.info("Current thread {} set createdDate to {}", Thread.currentThread().getName(), createdDate);
         this.createdDate = createdDate;
     }
 
@@ -67,7 +64,6 @@ public class AuditableIdGeneratedEntity {
     }
 
     public void setLastModifiedByDate(OffsetDateTime lastModifiedByDate) {
-        LOGGER.info("Current thread {} set lastModifiedByDate to {}", Thread.currentThread().getName(), lastModifiedByDate);
         this.lastModifiedByDate = lastModifiedByDate;
     }
 

@@ -25,7 +25,7 @@ public final class CosmosSimpleTypes {
     }
 
     /**
-     * The Cosmos {@link SimpleTypeHolder}. 
+     * The Cosmos {@link SimpleTypeHolder}.
      */
     public static final SimpleTypeHolder HOLDER = new SimpleTypeHolder(COSMOS_SIMPLE_TYPES, true) {
 
