@@ -7,10 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RestTemplateCustomizer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
@@ -18,14 +14,12 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreatorTest.RestTemplateProxyCustomizerConfiguration.FACTORY;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration.FACTORY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -79,24 +73,6 @@ class AadRestTemplateCreatorTest {
     static boolean hasItemOfClass(List<?> list, Class<?> clazz) {
         return list.stream()
                 .anyMatch(item -> item.getClass().equals(clazz));
-    }
-
-    @Configuration
-    static class RestTemplateProxyCustomizerConfiguration {
-
-        static final SimpleClientHttpRequestFactory FACTORY = createProxyFactory();
-
-        @Bean
-        public RestTemplateCustomizer proxyRestTemplateCustomizer() {
-            return (RestTemplate restTemplate) -> restTemplate.setRequestFactory(FACTORY);
-        }
-
-        static SimpleClientHttpRequestFactory createProxyFactory() {
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8080));
-            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-            factory.setProxy(proxy);
-            return factory;
-        }
     }
 
 }
