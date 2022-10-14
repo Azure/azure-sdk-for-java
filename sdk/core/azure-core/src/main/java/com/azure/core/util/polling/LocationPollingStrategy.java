@@ -37,7 +37,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
@@ -100,45 +100,60 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
+        return Mono.fromSupplier(() -> canPollSync(initialResponse));
+    }
+
+    @Override
+    public boolean canPollSync(Response<?> initialResponse) {
         HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
             PollingConstants.LOCATION_LOWER_CASE);
+
         if (locationHeader != null) {
             try {
                 new URL(getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
-                return Mono.just(true);
+                return true;
             } catch (MalformedURLException e) {
                 LOGGER.info("Failed to parse Location header into a URL.", e);
-                return Mono.just(false);
+                return false;
             }
         }
-        return Mono.just(false);
+
+        return false;
     }
 
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                   TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
+        return Mono.fromSupplier(() -> onInitialResponseSync(response, pollingContext, pollResponseType));
+    }
+
+    @Override
+    public PollResponse<T> onInitialResponseSync(Response<?> response, PollingContext<T> pollingContext,
+        TypeReference<T> pollResponseType) {
         HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
             PollingConstants.LOCATION_LOWER_CASE);
+
         if (locationHeader != null) {
             pollingContext.setData(PollingConstants.LOCATION,
                 getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
         }
+
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
         if (response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204) {
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
-                .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
+
+            T convertedValue = PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType);
+            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, convertedValue, retryAfter);
         } else {
-            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
-                + ", 'Location' header: %s, and response body: %s", response.getStatusCode(), locationHeader,
-                PollingUtils.serializeResponse(response.getValue(), serializer))));
+            BinaryData serializedResponse = PollingUtils.serializeResponse(response.getValue(), serializer);
+            throw LOGGER.logExceptionAsError(new AzureException(String.format(
+                "Operation failed or cancelled with status code %d, 'Location' header: %s, and response body: %s",
+                response.getStatusCode(), locationHeader, serializedResponse)));
         }
     }
 
@@ -166,10 +181,38 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
                     pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
                     Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-                    return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
-                        .map(value -> new PollResponse<>(status, value, retryAfter));
+                    return Mono.fromSupplier(() -> new PollResponse<>(status,
+                        PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType), retryAfter));
                 });
             });
+    }
+
+    @Override
+    public PollResponse<T> pollSync(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
+        try (HttpResponse response = httpPipeline.sendSync(request, this.context)) {
+            HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
+                PollingConstants.LOCATION_LOWER_CASE);
+            if (locationHeader != null) {
+                pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
+            }
+
+            LongRunningOperationStatus status;
+            if (response.getStatusCode() == 202) {
+                status = LongRunningOperationStatus.IN_PROGRESS;
+            } else if (response.getStatusCode() >= 200 && response.getStatusCode() <= 204) {
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+            } else {
+                status = LongRunningOperationStatus.FAILED;
+            }
+
+            BinaryData responseBody = response.getBodyAsBinaryData();
+            pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, responseBody.toString());
+            Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+            T deserializedValue = PollingUtils.deserializeResponse(responseBody, serializer, pollResponseType);
+
+            return new PollResponse<>(status, deserializedValue, retryAfter);
+        }
     }
 
     @Override
@@ -183,10 +226,10 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         String finalGetUrl;
         String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
-                || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+            || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null) {
+            && pollingContext.getData(PollingConstants.LOCATION) != null) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
             return Mono.error(new AzureException("Cannot get final result"));
@@ -194,14 +237,46 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
+            return Mono.fromSupplier(() ->
+                PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType));
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                     CoreUtils.mergeContexts(context1, this.context)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
-                .map(BinaryData::fromBytes)
-                .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));
+                .map(bytes -> PollingUtils.deserializeResponse(BinaryData.fromBytes(bytes), serializer, resultType));
+        }
+    }
+
+    @Override
+    public U getResultSync(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
+        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation cancelled."));
+        }
+
+        String finalGetUrl;
+        String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
+        if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
+            || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+            finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
+        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
+            && pollingContext.getData(PollingConstants.LOCATION) != null) {
+            finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
+        } else {
+            throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));
+        }
+
+        if (finalGetUrl == null) {
+            String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
+        } else {
+            HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
+
+            try (HttpResponse response = httpPipeline.sendSync(request, this.context)) {
+                return PollingUtils.deserializeResponse(response.getBodyAsBinaryData(), serializer, resultType);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -16,15 +17,16 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Fallback polling strategy that doesn't poll but exits successfully if no other polling strategies are detected
- * and status code is 2xx.
+ * Fallback polling strategy that doesn't poll but exits successfully if no other polling strategies are detected and
+ * status code is 2xx.
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+    private static final ClientLogger LOGGER = new ClientLogger(StatusCheckPollingStrategy.class);
 
     private final ObjectSerializer serializer;
 
@@ -37,6 +39,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     /**
      * Creates a status check polling strategy with a custom object serializer.
+     *
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer) {
@@ -49,19 +52,27 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
+    public boolean canPollSync(Response<?> initialResponse) {
+        return true;
+    }
+
+    @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
-        if (response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204) {
+        TypeReference<T> pollResponseType) {
+        return Mono.fromSupplier(() -> onInitialResponseSync(response, pollingContext, pollResponseType));
+    }
+
+    @Override
+    public PollResponse<T> onInitialResponseSync(Response<?> response, PollingContext<T> pollingContext,
+        TypeReference<T> pollResponseType) {
+        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
+            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
-                .map(value -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null, retryAfter)));
+            T convertedValue = PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType);
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, convertedValue, retryAfter);
         } else {
-            return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
+            throw LOGGER.logExceptionAsError(
+                new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
         }
     }
 
@@ -71,7 +82,18 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
+    public PollResponse<T> pollSync(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        throw LOGGER.logExceptionAsError(
+            new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
+    }
+
+    @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        return Mono.fromSupplier(() -> getResultSync(pollingContext, resultType));
+    }
+
+    @Override
+    public U getResultSync(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         T activationResponse = pollingContext.getActivationResponse().getValue();
         return PollingUtils.convertResponse(activationResponse, serializer, resultType);
     }

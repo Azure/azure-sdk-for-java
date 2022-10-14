@@ -10,12 +10,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
@@ -32,6 +30,8 @@ import java.time.OffsetDateTime;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.azure.core.implementation.ImplUtils.getRetryAfterFromHeaders;
+import static com.azure.core.util.CoreUtils.mergeContexts;
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 
 /**
@@ -39,7 +39,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
@@ -65,24 +65,26 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
     /**
      * Creates an instance of the operation resource polling strategy.
+     *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long-running operation
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                                            String operationLocationHeaderName) {
+        String operationLocationHeaderName) {
         this(httpPipeline, serializer, operationLocationHeaderName, Context.NONE);
     }
 
     /**
      * Creates an instance of the operation resource polling strategy.
+     *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long-running operation
      * @param context an instance of {@link com.azure.core.util.Context}
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                                            String operationLocationHeaderName, Context context) {
+        String operationLocationHeaderName, Context context) {
         this(httpPipeline, null, serializer, operationLocationHeaderName, context);
     }
 
@@ -112,22 +114,33 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
+        return Mono.fromSupplier(() -> canPollSync(initialResponse));
+    }
+
+    @Override
+    public boolean canPollSync(Response<?> initialResponse) {
         HttpHeader operationLocationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
             operationLocationHeaderNameLowerCase);
         if (operationLocationHeader != null) {
             try {
                 new URL(getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
-                return Mono.just(true);
+                return true;
             } catch (MalformedURLException e) {
-                return Mono.just(false);
+                return false;
             }
         }
-        return Mono.just(false);
+        return false;
     }
 
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                   TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
+        return Mono.fromSupplier(() -> onInitialResponseSync(response, pollingContext, pollResponseType));
+    }
+
+    @Override
+    public PollResponse<T> onInitialResponseSync(Response<?> response, PollingContext<T> pollingContext,
+        TypeReference<T> pollResponseType) {
         HttpHeader operationLocationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
             operationLocationHeaderNameLowerCase);
         HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
@@ -143,45 +156,55 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204) {
-            Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
-                .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
+        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
+            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
+            Duration retryAfter = getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+            T convertedResponse = PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType);
+
+            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, convertedResponse, retryAfter);
         } else {
-            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
-                + ", '%s' header: %s, and response body: %s", response.getStatusCode(), operationLocationHeaderName,
-                operationLocationHeader, PollingUtils.serializeResponse(response.getValue(), serializer))));
+            BinaryData serializedResponse = PollingUtils.serializeResponse(response.getValue(), serializer);
+            throw LOGGER.logExceptionAsError(new AzureException(String.format(
+                "Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
+                response.getStatusCode(), operationLocationHeaderName, operationLocationHeader, serializedResponse)));
         }
     }
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName));
-        return FluxUtil.withContext(context1 -> httpPipeline.send(request,
-                CoreUtils.mergeContexts(context1, this.context))).flatMap(response -> response.getBodyAsByteArray()
-            .map(BinaryData::fromBytes)
-            .flatMap(binaryData -> PollingUtils.deserializeResponse(
-                    binaryData, serializer, new TypeReference<PollResult>() { })
-                .map(pollResult -> {
-                    final String resourceLocation = pollResult.getResourceLocation();
-                    if (resourceLocation != null) {
-                        pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
-                            getAbsolutePath(resourceLocation, endpoint, LOGGER));
-                    }
-                    pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                    return pollResult.getStatus();
-                })
-                .flatMap(status -> {
-                    Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(),
-                        OffsetDateTime::now);
-                    return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
-                        .map(value -> new PollResponse<>(status, value, retryAfter));
-                })));
+        return FluxUtil.withContext(context1 -> httpPipeline.send(request, mergeContexts(context1, this.context)))
+            .flatMap(response -> response.getBodyAsByteArray()
+                .map(responseBytes -> createPollResponse(BinaryData.fromBytes(responseBytes), serializer,
+                    pollingContext, endpoint, response, pollResponseType)));
+    }
+
+    @Override
+    public PollResponse<T> pollSync(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName));
+
+        try (HttpResponse response = httpPipeline.sendSync(request, this.context)) {
+            return createPollResponse(response.getBodyAsBinaryData(), serializer, pollingContext, endpoint, response,
+                pollResponseType);
+        }
+    }
+
+    private static <T> PollResponse<T> createPollResponse(BinaryData binaryData, ObjectSerializer serializer,
+        PollingContext<T> pollingContext, String endpoint, HttpResponse response, TypeReference<T> pollResponseType) {
+        PollResult pollResult = PollingUtils.deserializeResponse(binaryData, serializer, PollResult.TYPE_REFERENCE);
+
+        final String resourceLocation = pollResult.getResourceLocation();
+        if (resourceLocation != null) {
+            pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
+                getAbsolutePath(resourceLocation, endpoint, LOGGER));
+        }
+
+        pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
+
+        Duration retryAfter = getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+        T deserializedValue = PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType);
+
+        return new PollResponse<>(pollResult.getStatus(), deserializedValue, retryAfter);
     }
 
     @Override
@@ -195,10 +218,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         if (finalGetUrl == null) {
             String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
-                    || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+                || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
             } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                    && pollingContext.getData(PollingConstants.LOCATION) != null) {
+                && pollingContext.getData(PollingConstants.LOCATION) != null) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
             } else {
                 return Mono.error(new AzureException("Cannot get final result"));
@@ -207,27 +230,61 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
+            return Mono.fromSupplier(() ->
+                PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType));
+        } else {
+            HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
+            return FluxUtil.withContext(context1 -> httpPipeline.send(request, mergeContexts(context1, this.context)))
+                .flatMap(HttpResponse::getBodyAsByteArray)
+                .map(bytes -> PollingUtils.deserializeResponse(BinaryData.fromBytes(bytes), serializer, resultType));
+        }
+    }
+
+    @Override
+    public U getResultSync(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
+        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+            throw LOGGER.logExceptionAsError(new AzureException("Long running operation cancelled."));
+        }
+        String finalGetUrl = pollingContext.getData(PollingConstants.RESOURCE_LOCATION);
+        if (finalGetUrl == null) {
+            String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
+            if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
+                || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+                finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
+            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
+                && pollingContext.getData(PollingConstants.LOCATION) != null) {
+                finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
+            } else {
+                throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));
+            }
+        }
+
+        if (finalGetUrl == null) {
+            String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return FluxUtil.withContext(context1 -> httpPipeline.send(request,
-                    CoreUtils.mergeContexts(context1, this.context)))
-                .flatMap(HttpResponse::getBodyAsByteArray)
-                .map(BinaryData::fromBytes)
-                .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));
+
+            try (HttpResponse response = httpPipeline.sendSync(request, this.context)) {
+                return PollingUtils.deserializeResponse(response.getBodyAsBinaryData(), serializer, resultType);
+            }
         }
     }
 
     /**
      * A simple structure representing the partial response received from an operation location URL, containing the
-     * information of the status of the long running operation.
+     * information of the status of the long-running operation.
      */
     private static class PollResult {
+        private static final TypeReference<PollResult> TYPE_REFERENCE = TypeReference.createInstance(PollResult.class);
         private LongRunningOperationStatus status;
         private String resourceLocation;
 
         /**
-         * Gets the status of the long running operation.
+         * Gets the status of the long-running operation.
+         *
          * @return the status represented as a {@link LongRunningOperationStatus}
          */
         public LongRunningOperationStatus getStatus() {
@@ -235,10 +292,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         }
 
         /**
-         * Sets the long running operation status in the format of a string returned by the service. This is called by
+         * Sets the long-running operation status in the format of a string returned by the service. This is called by
          * the deserializer when a response is received.
          *
-         * @param status the status of the long running operation
+         * @param status the status of the long-running operation
          * @return the modified PollResult instance
          */
         @JsonSetter
@@ -259,9 +316,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         }
 
         /**
-         * Sets the long running operation status in the format of the {@link LongRunningOperationStatus} enum.
+         * Sets the long-running operation status in the format of the {@link LongRunningOperationStatus} enum.
          *
-         * @param status the status of the long running operation
+         * @param status the status of the long-running operation
          * @return the modified PollResult instance
          */
         public PollResult setStatus(LongRunningOperationStatus status) {
@@ -271,7 +328,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         /**
          * Gets the resource location URL to get the final result. This is often available in the response when the
-         * long running operation has been successfully completed.
+         * long-running operation has been successfully completed.
          *
          * @return the resource location URL to get he final result
          */

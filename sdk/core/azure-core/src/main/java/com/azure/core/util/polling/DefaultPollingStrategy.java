@@ -14,14 +14,14 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 
 /**
- * The default polling strategy to use with Azure data plane services. The default polling strategy will attempt 3
- * known strategies, {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
+ * The default polling strategy to use with Azure data plane services. The default polling strategy will attempt 3 known
+ * strategies, {@link OperationResourcePollingStrategy}, {@link LocationPollingStrategy}, and
  * {@link StatusCheckPollingStrategy}, in this order. The first strategy that can poll on the initial response will be
  * used. The created chained polling strategy is capable of handling most of the polling scenarios in Azure.
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final ChainedPollingStrategy<T, U> chainedPollingStrategy;
@@ -75,7 +75,8 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @param context an instance of {@link Context}.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, Context context) {
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
+        Context context) {
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
             new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
             new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
@@ -83,8 +84,13 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     @Override
-    public Mono<U> getResult(PollingContext<T> context, TypeReference<U> resultType) {
-        return chainedPollingStrategy.getResult(context, resultType);
+    public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        return chainedPollingStrategy.getResult(pollingContext, resultType);
+    }
+
+    @Override
+    public U getResultSync(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        return chainedPollingStrategy.getResultSync(pollingContext, resultType);
     }
 
     @Override
@@ -93,13 +99,29 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
     }
 
     @Override
+    public boolean canPollSync(Response<?> initialResponse) {
+        return chainedPollingStrategy.canPollSync(initialResponse);
+    }
+
+    @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
         return chainedPollingStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 
     @Override
-    public Mono<PollResponse<T>> poll(PollingContext<T> context, TypeReference<T> pollResponseType) {
-        return chainedPollingStrategy.poll(context, pollResponseType);
+    public PollResponse<T> onInitialResponseSync(Response<?> response, PollingContext<T> pollingContext,
+        TypeReference<T> pollResponseType) {
+        return chainedPollingStrategy.onInitialResponseSync(response, pollingContext, pollResponseType);
+    }
+
+    @Override
+    public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return chainedPollingStrategy.poll(pollingContext, pollResponseType);
+    }
+
+    @Override
+    public PollResponse<T> pollSync(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return chainedPollingStrategy.pollSync(pollingContext, pollResponseType);
     }
 }
