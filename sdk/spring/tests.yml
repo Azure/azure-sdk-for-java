@@ -12,7 +12,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-          Location: 'chinanorth'
+          Location: 'chinanorth3'
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
