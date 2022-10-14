@@ -56,7 +56,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.maps.geolocation.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {GeoLocationClient.class, GeoLocationAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {GeoLocationClient.class, GeolocationAsyncClient.class})
 public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<GeoLocationClientBuilder>,
     TokenCredentialTrait<GeoLocationClientBuilder>, HttpTrait<GeoLocationClientBuilder>,
     ConfigurationTrait<GeoLocationClientBuilder>, EndpointTrait<GeoLocationClientBuilder> {
@@ -362,12 +362,12 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
     }
 
     /**
-     * Builds an instance of GeoLocationAsyncClient async client.
+     * Builds an instance of GeolocationAsyncClient async client.
      *
-     * @return an instance of GeoLocationAsyncClient.
+     * @return an instance of GeolocationAsyncClient.
      */
-    public GeoLocationAsyncClient buildAsyncClient() {
-        return new GeoLocationAsyncClient(buildInnerClient().getGeolocations());
+    public GeolocationAsyncClient buildAsyncClient() {
+        return new GeolocationAsyncClient(buildInnerClient().getGeolocations());
     }
 
     /**

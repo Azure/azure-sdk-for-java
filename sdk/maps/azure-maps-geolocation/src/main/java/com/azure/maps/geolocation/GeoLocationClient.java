@@ -30,14 +30,14 @@ import com.azure.maps.geolocation.models.IpAddressToLocationResult;
  */
 @ServiceClient(builder = GeoLocationClientBuilder.class)
 public final class GeoLocationClient {
-    private final GeoLocationAsyncClient asyncClient;
+    private final GeolocationAsyncClient asyncClient;
 
     /**
      * Initializes an instance of GeoLocationClient client.
      *
      * @param serviceClient the service client implementation.
      */
-    GeoLocationClient(GeoLocationAsyncClient asyncClient) {
+    GeoLocationClient(GeolocationAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 

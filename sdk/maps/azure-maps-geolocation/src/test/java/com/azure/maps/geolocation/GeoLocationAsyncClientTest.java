@@ -32,7 +32,7 @@ public class GeoLocationAsyncClientTest extends GeoLocationClientTestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-    private GeoLocationAsyncClient getGeoLocationAsyncClient(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) {
+    private GeolocationAsyncClient getGeoLocationAsyncClient(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) {
         return getGeoLocationAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
@@ -40,7 +40,7 @@ public class GeoLocationAsyncClientTest extends GeoLocationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
     public void testAsyncGetLocation(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) throws IOException {
-        GeoLocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
+        GeolocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getLocation("131.107.0.89"))
             .assertNext(actualResults -> {
                 try {
@@ -56,7 +56,7 @@ public class GeoLocationAsyncClientTest extends GeoLocationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
     public void testAsyncGetLocationWithResponse(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) {
-        GeoLocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
+        GeolocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getLocationWithResponse("131.107.0.89"))
             .assertNext(response -> {
                 try {
@@ -71,7 +71,7 @@ public class GeoLocationAsyncClientTest extends GeoLocationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) {
-        GeoLocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
+        GeolocationAsyncClient client = getGeoLocationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getLocationWithResponse("0000000adfasfwe"))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
