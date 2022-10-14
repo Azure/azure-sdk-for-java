@@ -24,6 +24,10 @@ public final class MagentoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MagentoLinkedServiceTypeProperties innerTypeProperties = new MagentoLinkedServiceTypeProperties();
 
+    /** Creates an instance of MagentoLinkedService class. */
+    public MagentoLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Magento server linked service properties.
      *

@@ -26,6 +26,10 @@ public final class SalesforceSource extends TabularSource {
     @JsonProperty(value = "readBehavior")
     private SalesforceSourceReadBehavior readBehavior;
 
+    /** Creates an instance of SalesforceSource class. */
+    public SalesforceSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

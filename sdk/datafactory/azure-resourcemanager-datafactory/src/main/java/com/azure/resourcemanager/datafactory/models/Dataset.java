@@ -179,6 +179,10 @@ public class Dataset {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Dataset class. */
+    public Dataset() {
+    }
+
     /**
      * Get the description property: Dataset description.
      *

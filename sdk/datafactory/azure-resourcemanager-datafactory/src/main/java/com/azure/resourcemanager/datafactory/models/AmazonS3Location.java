@@ -26,6 +26,10 @@ public final class AmazonS3Location extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
+    /** Creates an instance of AmazonS3Location class. */
+    public AmazonS3Location() {
+    }
+
     /**
      * Get the bucketName property: Specify the bucketName of amazon S3. Type: string (or Expression with resultType
      * string).

@@ -24,6 +24,10 @@ public final class AzureBatchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureBatchLinkedServiceTypeProperties innerTypeProperties = new AzureBatchLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBatchLinkedService class. */
+    public AzureBatchLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Batch linked service properties.
      *

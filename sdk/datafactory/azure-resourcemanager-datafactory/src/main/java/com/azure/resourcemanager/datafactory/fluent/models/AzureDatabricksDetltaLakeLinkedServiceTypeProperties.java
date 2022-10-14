@@ -53,6 +53,10 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
     @JsonProperty(value = "workspaceResourceId")
     private Object workspaceResourceId;
 
+    /** Creates an instance of AzureDatabricksDetltaLakeLinkedServiceTypeProperties class. */
+    public AzureDatabricksDetltaLakeLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).

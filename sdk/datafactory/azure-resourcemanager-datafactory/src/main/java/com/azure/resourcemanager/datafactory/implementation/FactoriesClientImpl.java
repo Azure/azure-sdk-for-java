@@ -483,21 +483,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @param locationId The location identifier.
      * @param factoryRepoUpdate Update factory repo request definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FactoryInner configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
-        return configureFactoryRepoAsync(locationId, factoryRepoUpdate).block();
-    }
-
-    /**
-     * Updates a factory's repo information.
-     *
-     * @param locationId The location identifier.
-     * @param factoryRepoUpdate Update factory repo request definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -508,6 +493,21 @@ public final class FactoriesClientImpl implements FactoriesClient {
     public Response<FactoryInner> configureFactoryRepoWithResponse(
         String locationId, FactoryRepoUpdate factoryRepoUpdate, Context context) {
         return configureFactoryRepoWithResponseAsync(locationId, factoryRepoUpdate, context).block();
+    }
+
+    /**
+     * Updates a factory's repo information.
+     *
+     * @param locationId The location identifier.
+     * @param factoryRepoUpdate Update factory repo request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return factory resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FactoryInner configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
+        return configureFactoryRepoWithResponse(locationId, factoryRepoUpdate, Context.NONE).getValue();
     }
 
     /**
@@ -793,26 +793,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factory Factory resource definition.
-     * @param ifMatch ETag of the factory entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FactoryInner> createOrUpdateAsync(
-        String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param factory Factory resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -823,23 +803,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param factory Factory resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FactoryInner createOrUpdate(String resourceGroupName, String factoryName, FactoryInner factory) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, factory, ifMatch).block();
     }
 
     /**
@@ -860,6 +823,23 @@ public final class FactoriesClientImpl implements FactoriesClient {
     public Response<FactoryInner> createOrUpdateWithResponse(
         String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch, context).block();
+    }
+
+    /**
+     * Creates or updates a factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param factory Factory resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return factory resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FactoryInner createOrUpdate(String resourceGroupName, String factoryName, FactoryInner factory) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, factory, ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1001,23 +981,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param factoryUpdateParameters The parameters for updating a factory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FactoryInner update(
-        String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
-        return updateAsync(resourceGroupName, factoryName, factoryUpdateParameters).block();
-    }
-
-    /**
-     * Updates a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param factoryUpdateParameters The parameters for updating a factory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,6 +994,23 @@ public final class FactoriesClientImpl implements FactoriesClient {
         FactoryUpdateParameters factoryUpdateParameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, factoryName, factoryUpdateParameters, context).block();
+    }
+
+    /**
+     * Updates a factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param factoryUpdateParameters The parameters for updating a factory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return factory resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FactoryInner update(
+        String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
+        return updateWithResponse(resourceGroupName, factoryName, factoryUpdateParameters, Context.NONE).getValue();
     }
 
     /**
@@ -1138,25 +1118,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param ifNoneMatch ETag of the factory entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FactoryInner> getByResourceGroupAsync(
-        String resourceGroupName, String factoryName, String ifNoneMatch) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1167,22 +1128,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
         final String ifNoneMatch = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FactoryInner getByResourceGroup(String resourceGroupName, String factoryName) {
-        final String ifNoneMatch = null;
-        return getByResourceGroupAsync(resourceGroupName, factoryName, ifNoneMatch).block();
     }
 
     /**
@@ -1202,6 +1147,22 @@ public final class FactoriesClientImpl implements FactoriesClient {
     public Response<FactoryInner> getByResourceGroupWithResponse(
         String resourceGroupName, String factoryName, String ifNoneMatch, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a factory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FactoryInner getByResourceGroup(String resourceGroupName, String factoryName) {
+        final String ifNoneMatch = null;
+        return getByResourceGroupWithResponse(resourceGroupName, factoryName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1317,20 +1278,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName) {
-        deleteAsync(resourceGroupName, factoryName).block();
-    }
-
-    /**
-     * Deletes a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1340,6 +1287,20 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, context).block();
+    }
+
+    /**
+     * Deletes a factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName) {
+        deleteWithResponse(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -1481,23 +1442,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param gitHubAccessTokenRequest Get GitHub access token request definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubAccessTokenResponseInner getGitHubAccessToken(
-        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        return getGitHubAccessTokenAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest).block();
-    }
-
-    /**
-     * Get GitHub Access Token.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1512,6 +1456,24 @@ public final class FactoriesClientImpl implements FactoriesClient {
         Context context) {
         return getGitHubAccessTokenWithResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest, context)
             .block();
+    }
+
+    /**
+     * Get GitHub Access Token.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gitHub Access Token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubAccessTokenResponseInner getGitHubAccessToken(
+        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        return getGitHubAccessTokenWithResponse(resourceGroupName, factoryName, gitHubAccessTokenRequest, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1646,23 +1608,6 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param policy Data Plane user access policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessPolicyResponseInner getDataPlaneAccess(
-        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
-        return getDataPlaneAccessAsync(resourceGroupName, factoryName, policy).block();
-    }
-
-    /**
-     * Get Data Plane access.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1673,6 +1618,23 @@ public final class FactoriesClientImpl implements FactoriesClient {
     public Response<AccessPolicyResponseInner> getDataPlaneAccessWithResponse(
         String resourceGroupName, String factoryName, UserAccessPolicy policy, Context context) {
         return getDataPlaneAccessWithResponseAsync(resourceGroupName, factoryName, policy, context).block();
+    }
+
+    /**
+     * Get Data Plane access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param policy Data Plane user access policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Plane access.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessPolicyResponseInner getDataPlaneAccess(
+        String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+        return getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy, Context.NONE).getValue();
     }
 
     /**

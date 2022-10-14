@@ -89,6 +89,10 @@ public final class HDInsightStreamingActivityTypeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
+    /** Creates an instance of HDInsightStreamingActivityTypeProperties class. */
+    public HDInsightStreamingActivityTypeProperties() {
+    }
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

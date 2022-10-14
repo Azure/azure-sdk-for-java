@@ -24,6 +24,10 @@ public final class SnowflakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SnowflakeLinkedServiceTypeProperties innerTypeProperties = new SnowflakeLinkedServiceTypeProperties();
 
+    /** Creates an instance of SnowflakeLinkedService class. */
+    public SnowflakeLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Snowflake linked service properties.
      *

@@ -16,6 +16,10 @@ public final class DataFlowFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DataFlowFolder class. */
+    public DataFlowFolder() {
+    }
+
     /**
      * Get the name property: The name of the folder that this data flow is in.
      *

@@ -41,19 +41,6 @@ public interface GlobalParameters {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Global parameter.
-     */
-    GlobalParameterResource get(String resourceGroupName, String factoryName, String globalParameterName);
-
-    /**
-     * Gets a Global parameter.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,7 +51,7 @@ public interface GlobalParameters {
         String resourceGroupName, String factoryName, String globalParameterName, Context context);
 
     /**
-     * Deletes a Global parameter.
+     * Gets a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -72,8 +59,9 @@ public interface GlobalParameters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Global parameter.
      */
-    void delete(String resourceGroupName, String factoryName, String globalParameterName);
+    GlobalParameterResource get(String resourceGroupName, String factoryName, String globalParameterName);
 
     /**
      * Deletes a Global parameter.
@@ -89,6 +77,18 @@ public interface GlobalParameters {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context);
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String factoryName, String globalParameterName);
 
     /**
      * Gets a Global parameter.

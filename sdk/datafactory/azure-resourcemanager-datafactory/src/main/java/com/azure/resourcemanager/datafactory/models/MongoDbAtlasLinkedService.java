@@ -24,6 +24,10 @@ public final class MongoDbAtlasLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
 
+    /** Creates an instance of MongoDbAtlasLinkedService class. */
+    public MongoDbAtlasLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB Atlas linked service properties.
      *

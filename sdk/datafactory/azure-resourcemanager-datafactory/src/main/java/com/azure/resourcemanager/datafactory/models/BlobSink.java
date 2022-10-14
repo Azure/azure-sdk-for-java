@@ -46,6 +46,10 @@ public final class BlobSink extends CopySink {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
+    /** Creates an instance of BlobSink class. */
+    public BlobSink() {
+    }
+
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
      * resultType boolean).

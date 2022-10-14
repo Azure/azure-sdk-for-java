@@ -24,6 +24,10 @@ public final class HiveLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HiveLinkedServiceTypeProperties innerTypeProperties = new HiveLinkedServiceTypeProperties();
 
+    /** Creates an instance of HiveLinkedService class. */
+    public HiveLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Hive Server linked service properties.
      *

@@ -24,6 +24,10 @@ public final class SapOpenHubTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubTableDatasetTypeProperties innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
 
+    /** Creates an instance of SapOpenHubTableDataset class. */
+    public SapOpenHubTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Sap Business Warehouse Open Hub Destination Table properties.
      *

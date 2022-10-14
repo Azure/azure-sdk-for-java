@@ -22,6 +22,10 @@ public final class TeradataTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of TeradataTableDatasetTypeProperties class. */
+    public TeradataTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the database property: The database name of Teradata. Type: string (or Expression with resultType string).
      *

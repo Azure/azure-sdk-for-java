@@ -24,6 +24,10 @@ public final class ShopifyLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ShopifyLinkedServiceTypeProperties innerTypeProperties = new ShopifyLinkedServiceTypeProperties();
 
+    /** Creates an instance of ShopifyLinkedService class. */
+    public ShopifyLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Shopify Service linked service properties.
      *

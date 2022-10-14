@@ -23,6 +23,10 @@ public final class OrcDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private OrcDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of OrcDataset class. */
+    public OrcDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: ORC dataset properties.
      *

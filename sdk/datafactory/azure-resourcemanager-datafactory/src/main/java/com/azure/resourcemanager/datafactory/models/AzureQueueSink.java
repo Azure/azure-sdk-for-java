@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureQueueSink")
 @Fluent
 public final class AzureQueueSink extends CopySink {
+    /** Creates an instance of AzureQueueSink class. */
+    public AzureQueueSink() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureQueueSink withWriteBatchSize(Object writeBatchSize) {

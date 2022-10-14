@@ -23,6 +23,10 @@ public final class Db2TableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private Db2TableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of Db2TableDataset class. */
+    public Db2TableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Db2 table dataset properties.
      *

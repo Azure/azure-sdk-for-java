@@ -31,6 +31,10 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of PostgreSqlLinkedServiceTypeProperties class. */
+    public PostgreSqlLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string.
      *
