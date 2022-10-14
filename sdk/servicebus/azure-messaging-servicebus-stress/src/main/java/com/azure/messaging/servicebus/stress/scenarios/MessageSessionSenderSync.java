@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Service("MessageSessionSenderSync")
-public class MessageSessionSenderSync extends ServiceBusScenario{
+public class MessageSessionSenderSync extends ServiceBusScenario {
     private final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
     @Value("${SEND_TIMES:100000}")
@@ -50,21 +50,21 @@ public class MessageSessionSenderSync extends ServiceBusScenario{
             .topicName(topicName)
             .buildClient();
 
-        try (client) {
-            for (long i = 0; i < sendTimes; i++) {
-                for(int j = 0; j < sessionsToSend; j++) {
-                    List<ServiceBusMessage> eventDataList = new ArrayList<>();
-                    final String sessionId = Integer.toString(j);
-                    IntStream.range(0, messagesToSend).forEach(k -> {
-                        eventDataList.add(new ServiceBusMessage("A").setSessionId(sessionId));
-                    });
-                    try {
-                        client.sendMessages(eventDataList);
-                    } catch (Exception exp) {
-                        LOGGER.error(exp.getMessage());
-                    }
+        for (long i = 0; i < sendTimes; i++) {
+            for (int j = 0; j < sessionsToSend; j++) {
+                List<ServiceBusMessage> eventDataList = new ArrayList<>();
+                final String sessionId = Integer.toString(j);
+                IntStream.range(0, messagesToSend).forEach(k -> {
+                    eventDataList.add(new ServiceBusMessage("A").setSessionId(sessionId));
+                });
+                try {
+                    client.sendMessages(eventDataList);
+                } catch (Exception exp) {
+                    LOGGER.error(exp.getMessage());
                 }
             }
         }
+
+        client.close();
     }
 }

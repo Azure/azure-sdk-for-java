@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Service("MessageSenderSync")
-public class MessageSenderSync extends ServiceBusScenario{
+public class MessageSenderSync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiver.class);
 
     @Value("${SEND_TIMES:100000}")
@@ -44,18 +44,18 @@ public class MessageSenderSync extends ServiceBusScenario{
             .topicName(topicName)
             .buildAsyncClient();
 
-        try (client) {
-            for (long i = 0; i < sendTimes; i++) {
-                List<ServiceBusMessage> eventDataList = new ArrayList<>();
-                IntStream.range(0, messagesToSend).forEach(j -> {
-                    eventDataList.add(new ServiceBusMessage("A"));
-                });
-                try {
-                    client.sendMessages(eventDataList);
-                } catch (Exception exp) {
-                    LOGGER.error(exp.getMessage());
-                }
+        for (long i = 0; i < sendTimes; i++) {
+            List<ServiceBusMessage> eventDataList = new ArrayList<>();
+            IntStream.range(0, messagesToSend).forEach(j -> {
+                eventDataList.add(new ServiceBusMessage("A"));
+            });
+            try {
+                client.sendMessages(eventDataList);
+            } catch (Exception exp) {
+                LOGGER.error(exp.getMessage());
             }
         }
+
+        client.close();
     }
 }
