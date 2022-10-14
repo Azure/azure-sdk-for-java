@@ -10,8 +10,6 @@
 
 - Removed properties from Legacy Custom Policy Resource. The feature was never released to customer.
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
