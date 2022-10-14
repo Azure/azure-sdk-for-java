@@ -25,80 +25,12 @@ import java.util.function.Consumer;
  * occurs when receiving messages. A {@link ServiceBusProcessorClient} can be created to process messages for a
  * session-enabled or non session-enabled Service Bus entity. It supports auto-settlement of messages by default.
  *
- * <p><strong>Create and run a processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
- * <pre>
- * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
- *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
- *     System.out.printf&#40;&quot;Processing message. Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
- * &#125;;
- *
- * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
- *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
- *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
- *
- *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
- *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
- *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
- *             exception.getReason&#40;&#41;&#41;;
- *     &#125; else &#123;
- *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
- *     &#125;
- * &#125;;
- *
- * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
- *
- * ServiceBusProcessorClient processor = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .processor&#40;&#41;
- *     .queueName&#40;queueName&#41;
- *     .processMessage&#40;onMessage&#41;
- *     .processError&#40;onError&#41;
- *     .buildProcessorClient&#40;&#41;;
- *
- * &#47;&#47; Start the processor in the background
- * processor.start&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
- *
+ * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation}
+ * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation}
  * <p><strong>Create and run a session-enabled processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
- * <pre>
- * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
- *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
- *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
- * &#125;;
- *
- * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
- *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
- *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
- *
- *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
- *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
- *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
- *             exception.getReason&#40;&#41;&#41;;
- *     &#125; else &#123;
- *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
- *     &#125;
- * &#125;;
- *
- * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
- *
- * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .sessionProcessor&#40;&#41;
- *     .queueName&#40;queueName&#41;
- *     .maxConcurrentSessions&#40;2&#41;
- *     .processMessage&#40;onMessage&#41;
- *     .processError&#40;onError&#41;
- *     .buildProcessorClient&#40;&#41;;
- *
- * &#47;&#47; Start the processor in the background
- * sessionProcessor.start&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+ * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
  *
  * @see ServiceBusProcessorClientBuilder
  * @see ServiceBusSessionProcessorClientBuilder
