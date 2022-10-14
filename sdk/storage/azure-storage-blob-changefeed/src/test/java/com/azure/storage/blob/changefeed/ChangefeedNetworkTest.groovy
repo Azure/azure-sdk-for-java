@@ -17,6 +17,7 @@ These tests requires an accounts having a fixed size changefeed It is not feasib
 relationship programmatically, so we have recorded a successful interaction and only test recordings.
  */
 class ChangefeedNetworkTest extends APISpec {
+    def static LOGGER = new ClientLogger(ChangefeedNetworkTest.class)
 
     @Ignore("For debugging larger Change Feeds locally. Infeasible to record due to large number of events. ")
     def "min"() {
@@ -70,10 +71,9 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, OffsetDateTime.MAX)
-        Stream<BlobChangefeedEvent> stream = iterable.stream()
 
         then:
-        stream.count() > 0
+        iterable.iterator().hasNext()
     }
 
     /**
@@ -105,7 +105,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage()
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             lastPage = page
         }
 
@@ -120,7 +120,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage()
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds2.add(event.getId()) } )
             lastPage = page
         }
 
@@ -135,15 +135,15 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage()
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds3.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds3.add(event.getId()) } )
         }
 
         then:
         eventIds3.size() > 0
 
-        eventIds1.intersect(eventIds2).size() == 0
-        eventIds1.intersect(eventIds3).size() == 0
-        eventIds2.intersect(eventIds3).size() == 0
+        !eventIds1.removeAll(eventIds2)
+        !eventIds1.removeAll(eventIds3)
+        !eventIds2.removeAll(eventIds3)
     }
 
     @PlaybackOnly
@@ -173,7 +173,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage(pageSize1)
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             pageCount1++
         }
 
@@ -188,7 +188,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage(pageSize2)
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds2.add(event.getId()) } )
             pageCount2++
         }
 
@@ -197,7 +197,6 @@ class ChangefeedNetworkTest extends APISpec {
         pageCount2 == expectedPageCount2
 
         eventIds1 == eventIds2
-
     }
 
     @PlaybackOnly
@@ -208,10 +207,11 @@ class ChangefeedNetworkTest extends APISpec {
         OffsetDateTime endTime = OffsetDateTime.of(2020, 7, 30, 23, 15, 0, 0, ZoneOffset.UTC)
 
         /* Collect all events within range */
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+        Set<String> allEventIds = new HashSet<>()
+        new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, endTime)
-        Set<String> allEventIds = new HashSet<String>(iterable.stream().collect( { event -> event.getId() } ))
+            .forEach({ event -> allEventIds.add(event.getId()) })
 
         when: "Iterate over the first two pages."
         Set<String> eventIds1 = new HashSet<>()
@@ -223,7 +223,7 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedResponse lastPage = null
         int pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -231,7 +231,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         String continuationToken = lastPage.getContinuationToken()
-        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         long blockOffset = cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() /* Just get the first shard cursor since we only have one shard in this test account. */
 
         then: "Check block offset is in middle."
@@ -247,7 +247,7 @@ class ChangefeedNetworkTest extends APISpec {
         lastPage = null
         pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds2.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -255,7 +255,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         continuationToken = lastPage.getContinuationToken()
-        cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         blockOffset = cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() /* Just get the first shard cursor since we only have one shard in this test account. */
 
         then: "Check block offset is in middle."
@@ -269,22 +269,25 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage(50)
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds3.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds3.add(event.getId()) } )
         }
 
         then:
-        Set<String> unionIds = new HashSet<>()
-        unionIds.addAll(eventIds1)
-        unionIds.addAll(eventIds2)
-        unionIds.addAll(eventIds3)
-
         allEventIds.size() > 0
         eventIds1.size() > 0
         eventIds2.size() > 0
         eventIds3.size() > 0
         allEventIds.size() == eventIds1.size() + eventIds2.size() + eventIds3.size()
 
-        allEventIds == unionIds
+        for (def eventId : eventIds1) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds2) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds3) {
+            assert allEventIds.remove(eventId)
+        }
     }
 
     /**
@@ -301,10 +304,11 @@ class ChangefeedNetworkTest extends APISpec {
         int expectedNumberOfNonEmptyShards = 1
 
         /* Collect all events within range */
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+        Set<String> allEventIds = new HashSet<>()
+        new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, endTime)
-        Set<String> allEventIds = new HashSet<String>(iterable.stream().collect( { event -> event.getId() } ))
+            .forEach({ event -> allEventIds.add(event.getId()) })
 
         when: "Iterate over the first two pages."
         Set<String> eventIds1 = new HashSet<>()
@@ -316,7 +320,7 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedResponse lastPage = null
         int pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -324,7 +328,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         String continuationToken = lastPage.getContinuationToken()
-        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         int numberOfNonEmptyShards = cursor.getCurrentSegmentCursor().getShardCursors().size()
         long blockOffset = cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() /* Just get the first shard cursor since we only have one shard in this test account. */
 
@@ -342,7 +346,7 @@ class ChangefeedNetworkTest extends APISpec {
         lastPage = null
         pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds2.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -350,7 +354,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         continuationToken = lastPage.getContinuationToken()
-        cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         numberOfNonEmptyShards = cursor.getCurrentSegmentCursor().getShardCursors().size()
         blockOffset = cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() /* Just get the first shard cursor since we only have one shard in this test account. */
 
@@ -366,22 +370,25 @@ class ChangefeedNetworkTest extends APISpec {
             .iterableByPage(50)
             .iterator()
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds3.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds3.add(event.getId()) } )
         }
 
         then:
-        Set<String> unionIds = new HashSet<>()
-        unionIds.addAll(eventIds1)
-        unionIds.addAll(eventIds2)
-        unionIds.addAll(eventIds3)
-
         allEventIds.size() > 0
         eventIds1.size() > 0
         eventIds2.size() > 0
         eventIds3.size() > 0
         allEventIds.size() == eventIds1.size() + eventIds2.size() + eventIds3.size()
 
-        allEventIds == unionIds
+        for (def eventId : eventIds1) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds2) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds3) {
+            assert allEventIds.remove(eventId)
+        }
     }
 
     /**
@@ -397,10 +404,11 @@ class ChangefeedNetworkTest extends APISpec {
         OffsetDateTime endTime = OffsetDateTime.of(2020, 8, 5, 17, 15, 0, 0, ZoneOffset.UTC)
 
         /* Collect all events within range */
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+        Set<String> allEventIds = new HashSet<>()
+        new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, endTime)
-        Set<String> allEventIds = new HashSet<String>(iterable.stream().collect( { event -> event.getId() } ))
+            .forEach({ event -> allEventIds.add(event.getId()) })
 
         when: "Iterate over the first two pages."
         Set<String> eventIds1 = new HashSet<>()
@@ -412,7 +420,7 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedResponse lastPage = null
         int pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -420,7 +428,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         String continuationToken = lastPage.getContinuationToken()
-        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         int numberOfNonEmptyShards = cursor.getCurrentSegmentCursor().getShardCursors().size()
 
         then: "Validate number of non empty shards."
@@ -436,7 +444,7 @@ class ChangefeedNetworkTest extends APISpec {
         lastPage = null
         pages = 0
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds2.add(event.getId()) } )
             pages++
             lastPage = page
             if (pages > 2) {
@@ -444,7 +452,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         continuationToken = lastPage.getContinuationToken()
-        cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         numberOfNonEmptyShards = cursor.getCurrentSegmentCursor().getShardCursors().size()
 
         then: "Validate number of non empty shards."
@@ -459,20 +467,16 @@ class ChangefeedNetworkTest extends APISpec {
             .iterator()
         lastPage = null
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds3.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds3.add(event.getId()) } )
             lastPage = page
         }
         continuationToken = lastPage.getContinuationToken()
-        cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
         numberOfNonEmptyShards = cursor.getCurrentSegmentCursor().getShardCursors().size()
 
         then:
         /* By this point we should have encountered all three shards. */
         numberOfNonEmptyShards == 3 /* Note: in Java we do not round robin among shards, we play them sequentially, so another shard path will only show up once the first shard is done iterating through. */
-        Set<String> unionIds = new HashSet<>()
-        unionIds.addAll(eventIds1)
-        unionIds.addAll(eventIds2)
-        unionIds.addAll(eventIds3)
 
         allEventIds.size() > 0
         eventIds1.size() > 0
@@ -480,7 +484,15 @@ class ChangefeedNetworkTest extends APISpec {
         eventIds3.size() > 0
         allEventIds.size() == eventIds1.size() + eventIds2.size() + eventIds3.size()
 
-        allEventIds == unionIds
+        for (def eventId : eventIds1) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds2) {
+            assert allEventIds.remove(eventId)
+        }
+        for (def eventId : eventIds3) {
+            assert allEventIds.remove(eventId)
+        }
     }
 
     @PlaybackOnly
@@ -497,7 +509,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterator()
         BlobChangefeedPagedResponse lastPage = null
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             lastPage = page
         }
         String continuationToken = lastPage.getContinuationToken()
@@ -506,10 +518,9 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(continuationToken)
-        Stream<BlobChangefeedEvent> stream = iterable.stream()
 
         then:
-        stream.count() == 0
+        !iterable.iterator().hasNext()
         eventIds1.size() > 0
     }
 
@@ -530,7 +541,7 @@ class ChangefeedNetworkTest extends APISpec {
             .iterator()
         BlobChangefeedPagedResponse lastPage = null
         for (BlobChangefeedPagedResponse page : iterator) {
-            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            page.getElements().forEach( { event -> eventIds1.add(event.getId()) } )
             lastPage = page
         }
         String continuationToken = lastPage.getContinuationToken()
@@ -539,10 +550,9 @@ class ChangefeedNetworkTest extends APISpec {
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(continuationToken)
-        Stream<BlobChangefeedEvent> stream = iterable.stream()
 
         then:
-        stream.count() == 0
+        !iterable.iterator().hasNext()
         eventIds1.size() > 0
     }
 
@@ -557,20 +567,38 @@ class ChangefeedNetworkTest extends APISpec {
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
         OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 5, 16, 0, 0, 0, ZoneOffset.UTC)
         OffsetDateTime endTime = OffsetDateTime.of(2020, 8, 5, 18, 0, 0, 0, ZoneOffset.UTC)
+        def fifteenMinutesAfterStart = startTime.plusMinutes(15)
+        def fifteenMinutesBeforeEnd = endTime.minusMinutes(15)
+        def fifteenMinutesBeforeStart = startTime.minusMinutes(15)
+        def fifteenMinutesAfterEnd = endTime.plusMinutes(15)
 
         when:
         /* Collect all events within range */
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+        List<BlobChangefeedEvent> events = new ArrayList<>()
+        def event15MinutesAfterStart = false
+        def event15MinutesBeforeEnd = false
+        def event15MinutesBeforeStart = false
+        def event15MinutesAfterEnd = false
+        def numberOfEvents = 0
+
+        new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, endTime)
-        List<BlobChangefeedEvent> events = iterable.stream().collect()
+            .forEach({ event ->
+                numberOfEvents++
+                def eventTime = event.getEventTime()
+                event15MinutesAfterStart |= eventTime.isAfter(fifteenMinutesAfterStart)
+                event15MinutesBeforeEnd |= eventTime.isBefore(fifteenMinutesBeforeEnd)
+                event15MinutesBeforeStart |= eventTime.isBefore(fifteenMinutesBeforeStart)
+                event15MinutesAfterEnd |= eventTime.isAfter(fifteenMinutesAfterEnd)
+            })
 
         then:
-        events.size() > 1
-        events.any { event -> event.getEventTime().isAfter(startTime.plusMinutes(15)) } /* There is some event 15 minutes after start */
-        events.any { event -> event.getEventTime().isBefore(endTime.minusMinutes(15)) } /* There is some event 15 minutes before end */
-        !events.any { event -> event.getEventTime().isBefore(startTime.minusMinutes(15)) } /* There is no event 15 minutes before start */
-        !events.any { event -> event.getEventTime().isAfter(endTime.plusMinutes(15)) } /* There is no event 15 minutes after end */
+        numberOfEvents > 1
+        event15MinutesAfterStart /* There is some event 15 minutes after start */
+        event15MinutesBeforeEnd /* There is some event 15 minutes before end */
+        !event15MinutesBeforeStart /* There is no event 15 minutes before start */
+        !event15MinutesAfterEnd /* There is no event 15 minutes after end */
     }
 
     /**
@@ -586,19 +614,38 @@ class ChangefeedNetworkTest extends APISpec {
         OffsetDateTime roundedStartTime = OffsetDateTime.of(2020, 8, 5, 16, 0, 0, 0, ZoneOffset.UTC)
         OffsetDateTime roundedEndTime = OffsetDateTime.of(2020, 8, 5, 19, 0, 0, 0, ZoneOffset.UTC)
 
+        def fifteenMinutesAfterRoundedStart = roundedStartTime.plusMinutes(15)
+        def fifteenMinutesBeforeRoundedEnd = roundedEndTime.minusMinutes(15)
+        def fifteenMinutesBeforeRoundedStart = roundedStartTime.minusMinutes(15)
+        def fifteenMinutesAfterRoundedEnd = roundedEndTime.plusMinutes(15)
+
         when:
         /* Collect all events within range */
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+        def event15MinutesAfterRoundedStart = false
+        def event15MinutesBeforeRoundedEnd = false
+        def event15MinutesBeforeRoundedStart = false
+        def event15MinutesAfterRoundedEnd = false
+        def numberOfEvents = 0
+
+        List<BlobChangefeedEvent> events = new ArrayList<>()
+        new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
             .getEvents(startTime, endTime)
-        List<BlobChangefeedEvent> events = iterable.stream().collect()
+            .forEach({ event ->
+                numberOfEvents++
+                def eventTime = event.getEventTime()
+                event15MinutesAfterRoundedStart |= eventTime.isAfter(fifteenMinutesAfterRoundedStart)
+                event15MinutesBeforeRoundedEnd |= eventTime.isBefore(fifteenMinutesBeforeRoundedEnd)
+                event15MinutesBeforeRoundedStart |= eventTime.isBefore(fifteenMinutesBeforeRoundedStart)
+                event15MinutesAfterRoundedEnd |= eventTime.isAfter(fifteenMinutesAfterRoundedEnd)
+            })
 
         then:
-        events.size() > 1
-        events.any { event -> event.getEventTime().isAfter(roundedStartTime.plusMinutes(15)) } /* There is some event 15 minutes after start */
-        events.any { event -> event.getEventTime().isBefore(roundedEndTime.minusMinutes(15)) } /* There is some event 15 minutes before end */
-        !events.any { event -> event.getEventTime().isBefore(roundedStartTime.minusMinutes(15)) } /* There is no event 15 minutes before start */
-        !events.any { event -> event.getEventTime().isAfter(roundedEndTime.plusMinutes(15)) } /* There is no event 15 minutes after end */
+        numberOfEvents > 1
+        event15MinutesAfterRoundedStart /* There is some event 15 minutes after start */
+        event15MinutesBeforeRoundedEnd /* There is some event 15 minutes before end */
+        !event15MinutesBeforeRoundedStart /* There is no event 15 minutes before start */
+        !event15MinutesAfterRoundedEnd /* There is no event 15 minutes after end */
     }
 
     @PlaybackOnly
@@ -628,7 +675,7 @@ class ChangefeedNetworkTest extends APISpec {
             }
         }
         String continuationToken = lastPage.getContinuationToken()
-        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
+        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, LOGGER)
 
         then:
         /* You may need to update expected values when re-recording */

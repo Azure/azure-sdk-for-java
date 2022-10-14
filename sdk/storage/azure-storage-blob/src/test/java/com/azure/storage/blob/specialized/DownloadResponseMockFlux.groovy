@@ -144,7 +144,7 @@ class DownloadResponseMockFlux {
                     : Flux.error(new IllegalArgumentException("Retried after getter error.")) as Flux<ByteBuffer>
 
             case DR_TEST_SCENARIO_TIMEOUT:
-                return Flux.just(scenarioData.duplicate()).delayElements(Duration.ofSeconds(31))
+                return Flux.just(scenarioData.duplicate()).delayElements(Duration.ofSeconds(10))
 
             default:
                 return Flux.error(new IllegalArgumentException("Invalid test case"))

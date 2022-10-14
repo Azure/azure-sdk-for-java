@@ -1,39 +1,98 @@
 package com.azure.storage.blob.changefeed
 
-import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Specification
 
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.*
+import java.util.concurrent.atomic.AtomicInteger
 
 class BlobChangefeedPagedFluxTest extends Specification {
 
-    BlobContainerAsyncClient mockContainer
-    ChangefeedFactory mockChangefeedFactory
-    Changefeed mockChangefeed
+    MockChangefeedFactory mockChangefeedFactory
+    MockChangefeed mockChangefeed
 
     List<ChangefeedCursor> mockCursors
     List<BlobChangefeedEvent> mockEvents
     List<BlobChangefeedEventWrapper> mockEventWrappers
 
+    class MockChangefeedFactory extends ChangefeedFactory {
+        MockChangefeed mockChangefeed
+        boolean useCursor
+        AtomicInteger getChangefeedCallCount = new AtomicInteger()
+
+        MockChangefeedFactory(MockChangefeed mockChangefeed, boolean useCursor) {
+            super(getMockSegmentFactory(), getMockContainerClient())
+            this.mockChangefeed = mockChangefeed
+            this.useCursor = useCursor
+        }
+
+        @Override
+        Changefeed getChangefeed(OffsetDateTime startTime, OffsetDateTime endTime) {
+            if (useCursor) {
+                throw new UnsupportedOperationException("Mock configured to use cursor.")
+            }
+
+            getChangefeedCallCount.incrementAndGet()
+            return mockChangefeed
+        }
+
+        @Override
+        Changefeed getChangefeed(String cursor) {
+            if (!useCursor) {
+                throw new UnsupportedOperationException("Mock configured to not use cursor.")
+            }
+
+            getChangefeedCallCount.incrementAndGet()
+            return mockChangefeed
+        }
+    }
+
+    class MockChangefeed extends Changefeed {
+        List<BlobChangefeedEventWrapper> mockEventWrappers
+
+        AtomicInteger getEventsCallCount = new AtomicInteger()
+
+        MockChangefeed(List<BlobChangefeedEventWrapper> mockEventWrappers) {
+            super(getMockContainerClient(), OffsetDateTime.now(), OffsetDateTime.now(), null, null)
+            this.mockEventWrappers = mockEventWrappers
+        }
+
+        @Override
+        Flux<BlobChangefeedEventWrapper> getEvents() {
+            getEventsCallCount.incrementAndGet()
+            return Flux.fromIterable(mockEventWrappers)
+        }
+    }
+
+    def static getMockContainerClient() {
+        new BlobContainerClientBuilder().setAnonymousAccess()
+            .endpoint("https://azure-storage-emulator-azurite:10000/devstoreaccount1")
+            .containerName("mock")
+            .httpClient({ request -> Mono.empty() })
+            .buildAsyncClient()
+    }
+
+    def static getMockSegmentFactory() {
+        def mockContainerClient = getMockContainerClient()
+        def blobChunkedDownloadFactory = new BlobChunkedDownloaderFactory(mockContainerClient)
+        def chunkFactory = new ChunkFactory(new AvroReaderFactory(), blobChunkedDownloadFactory)
+        def shardFactory = new ShardFactory(chunkFactory, mockContainerClient)
+
+        return new SegmentFactory(shardFactory, mockContainerClient)
+    }
+
     def setup() {
         setupEvents()
-        mockContainer = mock(BlobContainerAsyncClient.class)
-        mockChangefeedFactory = mock(ChangefeedFactory.class)
-        mockChangefeed = mock(Changefeed.class)
 
-        when(mockChangefeed.getEvents())
-            .thenReturn(Flux.fromIterable(mockEventWrappers))
+        mockChangefeed = new MockChangefeed(mockEventWrappers)
     }
 
     /* No user cursor. */
@@ -41,8 +100,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
         setup:
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -61,16 +119,16 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .expectNext(mockEvents.get(8))
             .expectNext(mockEvents.get(9))
             .verifyComplete()
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
-        verify(mockChangefeed).getEvents() || true
+
+        mockChangefeedFactory.getGetChangefeedCallCount().get() == 1
+        mockChangefeed.getEventsCallCount.get() == 1
     }
 
     /* user cursor. */
     def "subscribe cursor"() {
         setup:
         String cursor = "cursor"
-        when(mockChangefeedFactory.getChangefeed(any(String.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, true)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, cursor)
@@ -89,16 +147,16 @@ class BlobChangefeedPagedFluxTest extends Specification {
             .expectNext(mockEvents.get(8))
             .expectNext(mockEvents.get(9))
             .verifyComplete()
-        verify(mockChangefeedFactory).getChangefeed(cursor) || true
-        verify(mockChangefeed).getEvents() || true
+
+        mockChangefeedFactory.getGetChangefeedCallCount().get() == 1
+        mockChangefeed.getEventsCallCount.get() == 1
     }
 
     def "byPage min"() {
         setup:
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -106,10 +164,11 @@ class BlobChangefeedPagedFluxTest extends Specification {
         def sv = StepVerifier.create(pagedFlux.byPage())
 
         then:
-        sv.expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])})
+        sv.expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])})
             .verifyComplete()
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
-        verify(mockChangefeed).getEvents() || true
+
+        mockChangefeedFactory.getGetChangefeedCallCount().get() == 1
+        mockChangefeed.getEventsCallCount.get() == 1
     }
 
     def "byPage size"() {
@@ -117,8 +176,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
         int size = 3
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -126,13 +184,14 @@ class BlobChangefeedPagedFluxTest extends Specification {
         def sv = StepVerifier.create(pagedFlux.byPage(size))
 
         then:
-        sv.expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(2).serialize(), [0, 1, 2])})
-            .expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(5).serialize(), [3, 4, 5])})
-            .expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(8).serialize(), [ 6, 7, 8])})
-            .expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [9])})
+        sv.expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(2).serialize(), [0, 1, 2])})
+            .expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(5).serialize(), [3, 4, 5])})
+            .expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(8).serialize(), [ 6, 7, 8])})
+            .expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [9])})
             .verifyComplete()
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
-        verify(mockChangefeed).getEvents() || true
+
+        mockChangefeedFactory.getGetChangefeedCallCount().get() == 1
+        mockChangefeed.getEventsCallCount.get() == 1
     }
 
     def "byPage size continuationToken overload"() {
@@ -140,8 +199,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
         int size = 7
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -149,11 +207,12 @@ class BlobChangefeedPagedFluxTest extends Specification {
         def sv = StepVerifier.create(pagedFlux.byPage(null, size))
 
         then:
-        sv.expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(6).serialize(), [0, 1, 2, 3, 4, 5, 6])})
-            .expectNextMatches({pagedResponse -> this.&validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [7, 8, 9])})
+        sv.expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(6).serialize(), [0, 1, 2, 3, 4, 5, 6])})
+            .expectNextMatches({pagedResponse -> validatePagedResponse(pagedResponse, mockCursors.get(9).serialize(), [7, 8, 9])})
             .verifyComplete()
-        verify(mockChangefeedFactory).getChangefeed(startTime, endTime) || true
-        verify(mockChangefeed).getEvents() || true
+
+        mockChangefeedFactory.getGetChangefeedCallCount().get() == 1
+        mockChangefeed.getEventsCallCount.get() == 1
     }
 
     def "byPage continuationToken error"() {
@@ -161,8 +220,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
         String randomCursor = "randomCursor"
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed( any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -182,8 +240,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
         setup:
         OffsetDateTime startTime = OffsetDateTime.MIN
         OffsetDateTime endTime = OffsetDateTime.MAX
-        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
-            .thenReturn(mockChangefeed)
+        mockChangefeedFactory = new MockChangefeedFactory(mockChangefeed, false)
 
         when:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime)
@@ -193,8 +250,9 @@ class BlobChangefeedPagedFluxTest extends Specification {
         sv.expectError(IllegalArgumentException)
     }
 
-    boolean validatePagedResponse(BlobChangefeedPagedResponse pagedResponse, String expectedCursor, List<Integer> expectedEvents) {
-        boolean validate = true;
+    boolean validatePagedResponse(BlobChangefeedPagedResponse pagedResponse, String expectedCursor,
+        List<Integer> expectedEvents) {
+        boolean validate = true
         validate &= pagedResponse.getContinuationToken() == expectedCursor
         for (int i : expectedEvents) {
             validate &= pagedResponse.getValue().contains(mockEvents.get(i))
