@@ -269,8 +269,8 @@ class AadOAuth2ClientConfigurationTests {
         List<OAuth2AuthorizedClientProvider> providers = getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(context);
         assertEquals(4, providers.size());
         providers.forEach(provider -> {
-            OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>)getField(provider.getClass(), "accessTokenResponseClient", provider);
-            RestTemplate restTemplate = (RestTemplate)getField(client.getClass(), "restOperations", client);
+            OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
+            RestTemplate restTemplate = (RestTemplate) getField(client.getClass(), "restOperations", client);
             assertEquals(FACTORY, restTemplate.getRequestFactory());
         });
     }
@@ -279,9 +279,9 @@ class AadOAuth2ClientConfigurationTests {
     private static List<OAuth2AuthorizedClientProvider> getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(ApplicationContext context) {
         final DefaultOAuth2AuthorizedClientManager manager = context.getBean(DefaultOAuth2AuthorizedClientManager.class);
         DelegatingOAuth2AuthorizedClientProvider delegatingProvider =
-                (DelegatingOAuth2AuthorizedClientProvider)getField(DefaultOAuth2AuthorizedClientManager.class, "authorizedClientProvider", manager);
+                (DelegatingOAuth2AuthorizedClientProvider) getField(DefaultOAuth2AuthorizedClientManager.class, "authorizedClientProvider", manager);
         List<OAuth2AuthorizedClientProvider> providers =
-                (List<OAuth2AuthorizedClientProvider>)getField(DelegatingOAuth2AuthorizedClientProvider.class, "authorizedClientProviders", delegatingProvider);
+                (List<OAuth2AuthorizedClientProvider>) getField(DelegatingOAuth2AuthorizedClientProvider.class, "authorizedClientProviders", delegatingProvider);
         return providers.stream()
                 .filter(provider -> !(provider instanceof AuthorizationCodeOAuth2AuthorizedClientProvider))
                 .filter(provider -> !(provider instanceof AadAzureDelegatedOAuth2AuthorizedClientProvider))
