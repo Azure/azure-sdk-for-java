@@ -4,10 +4,11 @@
 
 ### Features Added
 
+- Introduced new top-level properties on the Public Ip Resource which allows customers to enable DDoS Protection as for a new feature called DDoS Per-IP SKU.
+
 ### Breaking Changes
 
-- Introduced new top-level properties on the Public Ip Resource which allows customers to enable DDoS Protection as for a new feature called DDoS Per-IP SKU.
-- Removed properties from Legacy Custom Policy Resource.
+- Removed properties from Legacy Custom Policy Resource. The feature was never released to customer.
 
 ### Bugs Fixed
 
