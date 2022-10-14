@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 
 @Container
 public class AuditableIdGeneratedEntity {
-    
+
     @Id
     @GeneratedValue
     String id;
