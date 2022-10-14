@@ -40,6 +40,10 @@ public final class SecurityRuleInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of SecurityRuleInner class. */
+    public SecurityRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the security rule.
      *

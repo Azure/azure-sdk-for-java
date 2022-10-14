@@ -16,6 +16,10 @@ public final class NginxConfigurationPackage {
     @JsonProperty(value = "data")
     private String data;
 
+    /** Creates an instance of NginxConfigurationPackage class. */
+    public NginxConfigurationPackage() {
+    }
+
     /**
      * Get the data property: The data property.
      *

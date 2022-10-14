@@ -44,6 +44,10 @@ public final class RoutePropertiesFormat {
     @JsonProperty(value = "hasBgpOverride")
     private Boolean hasBgpOverride;
 
+    /** Creates an instance of RoutePropertiesFormat class. */
+    public RoutePropertiesFormat() {
+    }
+
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
      *

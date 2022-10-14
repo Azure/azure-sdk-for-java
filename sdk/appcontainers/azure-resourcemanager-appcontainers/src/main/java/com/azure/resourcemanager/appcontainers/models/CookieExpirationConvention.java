@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CookieExpirationConvention. */
+/** The convention used when determining the session cookie's expiration. */
 public enum CookieExpirationConvention {
     /** Enum value FixedTime. */
     FIXED_TIME("FixedTime"),
@@ -30,6 +30,9 @@ public enum CookieExpirationConvention {
      */
     @JsonCreator
     public static CookieExpirationConvention fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CookieExpirationConvention[] items = CookieExpirationConvention.values();
         for (CookieExpirationConvention item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CookieExpirationConvention {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

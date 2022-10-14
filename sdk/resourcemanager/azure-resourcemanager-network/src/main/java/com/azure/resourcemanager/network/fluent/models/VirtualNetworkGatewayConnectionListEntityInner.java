@@ -44,6 +44,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualNetworkGatewayConnectionListEntityInner class. */
+    public VirtualNetworkGatewayConnectionListEntityInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the virtual network gateway connection.
      *
@@ -527,6 +531,32 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
         this.innerProperties().withExpressRouteGatewayBypass(expressRouteGatewayBypass);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateLinkFastPath();
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityInner withEnablePrivateLinkFastPath(
+        Boolean enablePrivateLinkFastPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateLinkFastPath(enablePrivateLinkFastPath);
         return this;
     }
 

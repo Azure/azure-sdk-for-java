@@ -24,6 +24,10 @@ public final class CatalogListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of CatalogListResult class. */
+    public CatalogListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

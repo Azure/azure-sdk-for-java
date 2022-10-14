@@ -41,6 +41,10 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     @JsonProperty(value = "state")
     private ExpressRouteCircuitPeeringState state;
 
+    /** Creates an instance of Ipv6ExpressRouteCircuitPeeringConfig class. */
+    public Ipv6ExpressRouteCircuitPeeringConfig() {
+    }
+
     /**
      * Get the primaryPeerAddressPrefix property: The primary address prefix.
      *

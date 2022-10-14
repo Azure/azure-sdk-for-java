@@ -41,15 +41,6 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
         return Utils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
     }
 
-    public SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName) {
-        SourceControlInner inner = this.serviceClient().get(resourceGroupName, containerAppName, sourceControlName);
-        if (inner != null) {
-            return new SourceControlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SourceControl> getWithResponse(
         String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
         Response<SourceControlInner> inner =
@@ -60,6 +51,15 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SourceControlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName) {
+        SourceControlInner inner = this.serviceClient().get(resourceGroupName, containerAppName, sourceControlName);
+        if (inner != null) {
+            return new SourceControlImpl(inner, this.manager());
         } else {
             return null;
         }

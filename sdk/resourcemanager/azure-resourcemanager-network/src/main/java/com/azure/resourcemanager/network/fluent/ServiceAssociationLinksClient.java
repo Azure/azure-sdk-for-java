@@ -50,20 +50,6 @@ public interface ServiceAssociationLinksClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceAssociationLinksListResultInner list(String resourceGroupName, String virtualNetworkName, String subnetName);
-
-    /**
-     * Gets a list of service association links for a subnet.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,4 +59,18 @@ public interface ServiceAssociationLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceAssociationLinksListResultInner> listWithResponse(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context);
+
+    /**
+     * Gets a list of service association links for a subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service association links for a subnet.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceAssociationLinksListResultInner list(String resourceGroupName, String virtualNetworkName, String subnetName);
 }

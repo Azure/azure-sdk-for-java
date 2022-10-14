@@ -28,6 +28,10 @@ public final class NetworkManagerEffectiveSecurityAdminRulesListResultInner {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of NetworkManagerEffectiveSecurityAdminRulesListResultInner class. */
+    public NetworkManagerEffectiveSecurityAdminRulesListResultInner() {
+    }
+
     /**
      * Get the value property: Gets a page of NetworkManagerEffectiveSecurityAdminRules.
      *

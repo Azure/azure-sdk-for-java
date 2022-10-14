@@ -2,6 +2,10 @@
 
 ## 2.20.0-beta.1 (Unreleased)
 
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
+
 ### Other Changes
 
 #### Dependency Updates

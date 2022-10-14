@@ -35,6 +35,10 @@ public final class BgpSettings {
     @JsonProperty(value = "bgpPeeringAddresses")
     private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;
 
+    /** Creates an instance of BgpSettings class. */
+    public BgpSettings() {
+    }
+
     /**
      * Get the asn property: The BGP speaker's ASN.
      *

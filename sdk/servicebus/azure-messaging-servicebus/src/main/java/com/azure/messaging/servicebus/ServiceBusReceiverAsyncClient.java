@@ -20,9 +20,10 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -33,7 +34,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -231,7 +231,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
-    private final ServiceBusReceiverTracer tracer;
+    private final ServiceBusReceiverInstrumentation instrumentation;
+    private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
@@ -241,6 +242,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
+    private final AutoCloseable trackSettlementSequenceNumber;
 
     /**
      * Creates a receiver that listens to a Service Bus resource.
@@ -250,20 +252,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
      * @param connectionProcessor The AMQP connection to the Service Bus resource.
-     * @param tracer ServiceBus tracing helper
+     * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        ServiceBusReceiverTracer tracer, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
+        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
-        this.tracer = Objects.requireNonNull(tracer, "'tracer' cannot be null");
+        this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
@@ -278,11 +280,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.sessionManager = null;
         this.identifier = identifier;
+        this.tracer = instrumentation.getTracer();
+        this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
                                   ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-                                  ServiceBusReceiverTracer tracer, MessageSerializer messageSerializer, Runnable onClientClose,
+                                  ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
                                   ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -290,7 +294,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
-        this.tracer = Objects.requireNonNull(tracer, "'tracer' cannot be null");
+        this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
@@ -305,6 +309,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         });
 
         this.identifier = sessionManager.getIdentifier();
+        this.tracer = instrumentation.getTracer();
+        this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
     /**
@@ -597,8 +603,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
         }
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return connectionProcessor
+
+        Mono<ServiceBusReceivedMessage> result = connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> {
                     final long sequence = lastPeekedSequenceNumber.get() + 1;
@@ -610,7 +616,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     return channel.peek(sequence, sessionId, getLinkName(sessionId));
                 })
                 .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE))
-            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessage", startTime, signal))
             .handle((message, sink) -> {
                 final long current = lastPeekedSequenceNumber
                     .updateAndGet(value -> Math.max(value, message.getSequenceNumber()));
@@ -621,6 +626,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
                 sink.next(message);
             });
+
+        return tracer.traceManagementReceive("ServiceBus.peekMessage", result, ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -656,12 +663,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
         }
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return connectionProcessor
+
+        return tracer.traceManagementReceive("ServiceBus.peekMessage",
+            connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)))
-                .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessage", startTime, signal))
-                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)),
+            ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -677,9 +685,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return peekMessages(maxMessages, receiverOptions.getSessionId())
-            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessages", startTime, signal));
+        return tracer.traceSyncReceive("ServiceBus.peekMessages",
+            peekMessages(maxMessages, receiverOptions.getSessionId()));
     }
 
     /**
@@ -777,12 +784,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (maxMessages <= 0) {
             return fluxError(LOGGER, new IllegalArgumentException("'maxMessages' is not positive."));
         }
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages))
-            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessages", startTime, signal))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+
+        return tracer.traceSyncReceive("ServiceBus.peekMessages",
+            connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages))
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)));
     }
 
     /**
@@ -850,7 +857,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
 
-        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, tracer);
+        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
 
         if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
@@ -872,6 +879,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (highTide > 0) {
             result = result.limitRate(highTide, 0);
         }
+
         return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
@@ -910,25 +918,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
         }
 
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
-                sessionId, getLinkName(sessionId), Collections.singleton(sequenceNumber)).last())
-            .map(receivedMessage -> {
-                if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
-                    return receivedMessage;
-                }
-                if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
-                    receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil(),
-                        receivedMessage.getLockedUntil()));
-                }
+        return
+            tracer.traceManagementReceive("ServiceBus.receiveDeferredMessage",
+                connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                    .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
+                        sessionId, getLinkName(sessionId), Collections.singleton(sequenceNumber)).last())
+                    .map(receivedMessage -> {
+                        if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
+                            return receivedMessage;
+                        }
+                        if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
+                            receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
+                                receivedMessage.getLockedUntil(),
+                                receivedMessage.getLockedUntil()));
+                        }
 
-                return receivedMessage;
-            })
-            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.receiveDeferredMessage", startTime, signal))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+                        return receivedMessage;
+                    })
+                    .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)),
+                ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -944,9 +953,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if deferred messages cannot be received.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers) {
-        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
-        return receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId())
-            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.receiveDeferredMessages", startTime, signal));
+        return tracer.traceSyncReceive("ServiceBus.receiveDeferredMessages",
+            receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId()));
     }
 
     /**
@@ -1030,7 +1038,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(errorMessage));
         }
 
-        return tracer.traceMonoWithLink(renewMessageLock(message.getLockToken()), message, "ServiceBus.renewMessageLock")
+        return tracer.traceMonoWithLink("ServiceBus.renewMessageLock", renewMessageLock(message.getLockToken()), message, message.getContext())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -1095,7 +1103,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
-        return tracer.traceMonoWithLink(operation.getCompletionOperation(), message, "ServiceBus.renewMessageLock")
+        return tracer.traceMonoWithLink("ServiceBus.renewMessageLock", operation.getCompletionOperation(), message, message.getContext())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -1177,11 +1185,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
         }
 
-        return tracer.traceMonoWithLink(connectionProcessor
+        return tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                     .flatMap(transactionSession -> transactionSession.createTransaction())
-                    .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId())),
-                null, "ServiceBus.commitTransaction")
+                    .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId())))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -1231,11 +1238,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return tracer.traceMonoWithLink(connectionProcessor
+        return tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                     .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
-                        transactionContext.getTransactionId()))),
-                null, "ServiceBus.commitTransaction")
+                        transactionContext.getTransactionId()))))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -1284,11 +1290,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return tracer.traceMonoWithLink(connectionProcessor
+        return tracer.traceMono("ServiceBus.rollbackTransaction", connectionProcessor
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                     .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
-                        transactionContext.getTransactionId()))),
-                null, "ServiceBus.rollbackTransaction")
+                        transactionContext.getTransactionId()))))
                 .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
 
     }
@@ -1330,6 +1335,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         managementNodeLocks.close();
         renewalContainer.close();
+
+        if (trackSettlementSequenceNumber != null) {
+            try {
+                trackSettlementSequenceNumber.close();
+            } catch (Exception e) {
+                LOGGER.info("Unable to close settlement sequence number subscription.", e);
+            }
+        }
 
         onClientClose.run();
     }
@@ -1433,6 +1446,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             if (isManagementToken(lockToken) || existingConsumer == null) {
                 updateDispositionOperation = performOnManagement;
             } else {
+
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
                     deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
@@ -1448,7 +1462,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             }
         }
 
-        return tracer.traceSettlement(updateDispositionOperation, message, dispositionStatus)
+        return instrumentation.instrumentSettlement(updateDispositionOperation, message, message.getContext(), dispositionStatus)
             .onErrorMap(throwable -> {
                 if (throwable instanceof ServiceBusException) {
                     return throwable;
@@ -1570,10 +1584,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             ? sessionManager.getLinkName(sessionId)
             : null;
 
-        return tracer.traceMonoWithLink(connectionProcessor
+        return tracer.traceMono("ServiceBus.renewSessionLock", connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                    .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)),
-                null, "ServiceBus.renewSessionLock")
+                    .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -1598,7 +1611,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             maxLockRenewalDuration, true, this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return tracer.traceMonoWithLink(operation.getCompletionOperation(), null, "ServiceBus.renewSessionLock")
+        return tracer.traceMono("ServiceBus.renewSessionLock", operation.getCompletionOperation())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -1613,10 +1626,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             ? sessionManager.getLinkName(sessionId)
             : null;
 
-        return tracer.traceMonoWithLink(connectionProcessor
+        return tracer.traceMono("ServiceBus.setSessionState", connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                    .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName)),
-                null, "ServiceBus.setSessionState")
+                    .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName)))
             .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -1638,12 +1650,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
         }
 
-        return tracer.traceMonoWithLink(result, null, "ServiceBus.setSessionState")
+        return tracer.traceMono("ServiceBus.setSessionState", result)
             .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
-    ServiceBusReceiverTracer getTracer() {
-        return tracer;
+    ServiceBusReceiverInstrumentation getInstrumentation() {
+        return instrumentation;
     }
 
     /**

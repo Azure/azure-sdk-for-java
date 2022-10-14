@@ -38,6 +38,10 @@ public final class RoutingIntentInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of RoutingIntentInner class. */
+    public RoutingIntentInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the RoutingIntent resource.
      *

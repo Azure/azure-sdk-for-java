@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IngressTransportMethod. */
+/** Ingress transport protocol. */
 public final class IngressTransportMethod extends ExpandableStringEnum<IngressTransportMethod> {
     /** Static value auto for IngressTransportMethod. */
     public static final IngressTransportMethod AUTO = fromString("auto");
@@ -18,6 +18,9 @@ public final class IngressTransportMethod extends ExpandableStringEnum<IngressTr
 
     /** Static value http2 for IngressTransportMethod. */
     public static final IngressTransportMethod HTTP2 = fromString("http2");
+
+    /** Static value tcp for IngressTransportMethod. */
+    public static final IngressTransportMethod TCP = fromString("tcp");
 
     /**
      * Creates or finds a IngressTransportMethod from its string representation.

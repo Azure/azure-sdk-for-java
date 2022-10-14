@@ -4,11 +4,19 @@
 
 ### Features Added
 
+- Introduced new top-level properties on the Public Ip Resource which allows customers to enable DDoS Protection as for a new feature called DDoS Per-IP SKU.
+
 ### Breaking Changes
+
+- Removed properties from Legacy Custom Policy Resource. The feature was never released to customer.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-05-01`.
 
 ## 2.19.0 (2022-09-23)
 

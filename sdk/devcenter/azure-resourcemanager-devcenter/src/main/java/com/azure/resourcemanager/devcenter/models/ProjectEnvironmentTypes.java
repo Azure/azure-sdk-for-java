@@ -43,19 +43,6 @@ public interface ProjectEnvironmentTypes {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project environment type.
-     */
-    ProjectEnvironmentType get(String resourceGroupName, String projectName, String environmentTypeName);
-
-    /**
-     * Gets a project environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +53,7 @@ public interface ProjectEnvironmentTypes {
         String resourceGroupName, String projectName, String environmentTypeName, Context context);
 
     /**
-     * Deletes a project environment type.
+     * Gets a project environment type.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
@@ -74,8 +61,9 @@ public interface ProjectEnvironmentTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a project environment type.
      */
-    void delete(String resourceGroupName, String projectName, String environmentTypeName);
+    ProjectEnvironmentType get(String resourceGroupName, String projectName, String environmentTypeName);
 
     /**
      * Deletes a project environment type.
@@ -91,6 +79,18 @@ public interface ProjectEnvironmentTypes {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String projectName, String environmentTypeName, Context context);
+
+    /**
+     * Deletes a project environment type.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String projectName, String environmentTypeName);
 
     /**
      * Gets a project environment type.

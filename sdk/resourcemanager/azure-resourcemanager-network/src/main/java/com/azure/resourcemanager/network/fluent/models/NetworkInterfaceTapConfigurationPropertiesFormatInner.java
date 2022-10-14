@@ -23,6 +23,10 @@ public final class NetworkInterfaceTapConfigurationPropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkInterfaceTapConfigurationPropertiesFormatInner class. */
+    public NetworkInterfaceTapConfigurationPropertiesFormatInner() {
+    }
+
     /**
      * Get the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
      *

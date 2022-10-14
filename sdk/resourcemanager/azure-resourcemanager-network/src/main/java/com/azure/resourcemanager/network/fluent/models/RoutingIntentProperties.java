@@ -25,6 +25,10 @@ public final class RoutingIntentProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of RoutingIntentProperties class. */
+    public RoutingIntentProperties() {
+    }
+
     /**
      * Get the routingPolicies property: List of routing policies.
      *

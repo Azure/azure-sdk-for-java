@@ -22,6 +22,10 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
     @JsonProperty(value = "valueInMbps")
     private Integer valueInMbps;
 
+    /** Creates an instance of ExpressRouteServiceProviderBandwidthsOffered class. */
+    public ExpressRouteServiceProviderBandwidthsOffered() {
+    }
+
     /**
      * Get the offerName property: The OfferName.
      *

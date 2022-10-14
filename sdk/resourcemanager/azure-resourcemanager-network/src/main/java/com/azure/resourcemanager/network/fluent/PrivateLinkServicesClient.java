@@ -142,20 +142,6 @@ public interface PrivateLinkServicesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName, String expand);
-
-    /**
-     * Gets the specified private link service by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,19 +149,6 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName);
-
-    /**
-     * Gets the specified private link service by resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceInner getByResourceGroup(String resourceGroupName, String serviceName);
 
     /**
      * Gets the specified private link service by resource group.
@@ -192,6 +165,19 @@ public interface PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkServiceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String serviceName, String expand, Context context);
+
+    /**
+     * Gets the specified private link service by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceName The name of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link service by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkServiceInner getByResourceGroup(String resourceGroupName, String serviceName);
 
     /**
      * Creates or updates an private link service in the specified resource group.
@@ -392,7 +378,6 @@ public interface PrivateLinkServicesClient
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
-     * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -401,37 +386,6 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
-        String resourceGroupName, String serviceName, String peConnectionName, String expand);
-
-    /**
-     * Get the specific private end point connection by specific private link service in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @param peConnectionName The name of the private end point connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
-        String resourceGroupName, String serviceName, String peConnectionName);
-
-    /**
-     * Get the specific private end point connection by specific private link service in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @param peConnectionName The name of the private end point connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner getPrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName);
 
     /**
@@ -451,6 +405,21 @@ public interface PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(
         String resourceGroupName, String serviceName, String peConnectionName, String expand, Context context);
+
+    /**
+     * Get the specific private end point connection by specific private link service in the resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceName The name of the private link service.
+     * @param peConnectionName The name of the private end point connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific private end point connection by specific private link service in the resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner getPrivateEndpointConnection(
+        String resourceGroupName, String serviceName, String peConnectionName);
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
@@ -497,25 +466,6 @@ public interface PrivateLinkServicesClient
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
      * @param parameters Parameters supplied to approve or reject the private end point connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner updatePrivateEndpointConnection(
-        String resourceGroupName,
-        String serviceName,
-        String peConnectionName,
-        PrivateEndpointConnectionInner parameters);
-
-    /**
-     * Approve or reject private end point connection for a private link service in a subscription.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the private link service.
-     * @param peConnectionName The name of the private end point connection.
-     * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -529,6 +479,25 @@ public interface PrivateLinkServicesClient
         String peConnectionName,
         PrivateEndpointConnectionInner parameters,
         Context context);
+
+    /**
+     * Approve or reject private end point connection for a private link service in a subscription.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceName The name of the private link service.
+     * @param peConnectionName The name of the private end point connection.
+     * @param parameters Parameters supplied to approve or reject the private end point connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return privateEndpointConnection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner updatePrivateEndpointConnection(
+        String resourceGroupName,
+        String serviceName,
+        String peConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
