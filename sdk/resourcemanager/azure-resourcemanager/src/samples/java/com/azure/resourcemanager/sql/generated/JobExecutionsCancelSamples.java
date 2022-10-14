@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for JobExecutions Cancel. */
 public final class JobExecutionsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CancelJobExecution.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelJobExecution.json
      */
     /**
      * Sample code: Cancel a job execution.
@@ -28,7 +28,7 @@ public final class JobExecutionsCancelSamples {
                 "server1",
                 "agent1",
                 "job1",
-                UUID.fromString("5555-6666-7777-8888-999999999999"),
+                UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"),
                 Context.NONE);
     }
 }

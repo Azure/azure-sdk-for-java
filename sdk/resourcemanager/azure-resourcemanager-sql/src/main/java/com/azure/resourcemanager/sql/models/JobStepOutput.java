@@ -55,11 +55,14 @@ public final class JobStepOutput {
     private String tableName;
 
     /*
-     * The resource ID of the credential to use to connect to the output
-     * destination.
+     * The resource ID of the credential to use to connect to the output destination.
      */
     @JsonProperty(value = "credential", required = true)
     private String credential;
+
+    /** Creates an instance of JobStepOutput class. */
+    public JobStepOutput() {
+    }
 
     /**
      * Get the type property: The output destination type.

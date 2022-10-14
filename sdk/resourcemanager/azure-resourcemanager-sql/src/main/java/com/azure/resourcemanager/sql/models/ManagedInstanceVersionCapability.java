@@ -41,6 +41,10 @@ public final class ManagedInstanceVersionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ManagedInstanceVersionCapability class. */
+    public ManagedInstanceVersionCapability() {
+    }
+
     /**
      * Get the name property: The server version name.
      *

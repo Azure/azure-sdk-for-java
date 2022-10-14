@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 /** Samples for ServerKeys CreateOrUpdate. */
 public final class ServerKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/ServerKeyCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a server key.

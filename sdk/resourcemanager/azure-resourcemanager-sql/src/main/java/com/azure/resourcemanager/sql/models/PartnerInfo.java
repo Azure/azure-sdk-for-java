@@ -29,6 +29,10 @@ public final class PartnerInfo {
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private FailoverGroupReplicationRole replicationRole;
 
+    /** Creates an instance of PartnerInfo class. */
+    public PartnerInfo() {
+    }
+
     /**
      * Get the id property: Resource identifier of the partner server.
      *

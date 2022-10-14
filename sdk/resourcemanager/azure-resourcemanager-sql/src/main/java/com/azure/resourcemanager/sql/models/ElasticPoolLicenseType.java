@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ElasticPoolLicenseType. */
+/** The license type to apply for this elastic pool. */
 public final class ElasticPoolLicenseType extends ExpandableStringEnum<ElasticPoolLicenseType> {
     /** Static value LicenseIncluded for ElasticPoolLicenseType. */
     public static final ElasticPoolLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");

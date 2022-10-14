@@ -5,96 +5,87 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.sql.models.ReplicationLinkType;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents the properties of a database replication link. */
+/** Properties of a replication link. */
 @Immutable
 public final class ReplicationLinkProperties {
     /*
-     * Legacy value indicating whether termination is allowed.  Currently
-     * always returns true.
-     */
-    @JsonProperty(value = "isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isTerminationAllowed;
-
-    /*
-     * Replication mode of this replication link.
-     */
-    @JsonProperty(value = "replicationMode", access = JsonProperty.Access.WRITE_ONLY)
-    private String replicationMode;
-
-    /*
-     * The name of the server hosting the partner database.
+     * Resource partner server.
      */
     @JsonProperty(value = "partnerServer", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerServer;
 
     /*
-     * The name of the partner database.
+     * Resource partner database.
      */
     @JsonProperty(value = "partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerDatabase;
 
     /*
-     * The Azure Region of the partner database.
+     * Resource partner location.
      */
     @JsonProperty(value = "partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerLocation;
 
     /*
-     * The role of the database in the replication link.
+     * Local replication role.
      */
     @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole role;
 
     /*
-     * The role of the partner database in the replication link.
+     * Partner replication role.
      */
     @JsonProperty(value = "partnerRole", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole partnerRole;
 
     /*
-     * The start time for the replication link.
+     * Replication mode.
+     */
+    @JsonProperty(value = "replicationMode", access = JsonProperty.Access.WRITE_ONLY)
+    private String replicationMode;
+
+    /*
+     * Time at which the link was created.
      */
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
-     * The percentage of seeding complete for the replication link.
+     * Seeding completion percentage for the link.
      */
     @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
-     * The replication state for the replication link.
+     * Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
      */
     @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
 
-    /**
-     * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always
-     * returns true.
-     *
-     * @return the isTerminationAllowed value.
+    /*
+     * Whether the user is currently allowed to terminate the link.
      */
-    public Boolean isTerminationAllowed() {
-        return this.isTerminationAllowed;
+    @JsonProperty(value = "isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isTerminationAllowed;
+
+    /*
+     * Link type (GEO, NAMED, STANDBY).
+     */
+    @JsonProperty(value = "linkType", access = JsonProperty.Access.WRITE_ONLY)
+    private ReplicationLinkType linkType;
+
+    /** Creates an instance of ReplicationLinkProperties class. */
+    public ReplicationLinkProperties() {
     }
 
     /**
-     * Get the replicationMode property: Replication mode of this replication link.
-     *
-     * @return the replicationMode value.
-     */
-    public String replicationMode() {
-        return this.replicationMode;
-    }
-
-    /**
-     * Get the partnerServer property: The name of the server hosting the partner database.
+     * Get the partnerServer property: Resource partner server.
      *
      * @return the partnerServer value.
      */
@@ -103,7 +94,7 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerDatabase property: The name of the partner database.
+     * Get the partnerDatabase property: Resource partner database.
      *
      * @return the partnerDatabase value.
      */
@@ -112,7 +103,7 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerLocation property: The Azure Region of the partner database.
+     * Get the partnerLocation property: Resource partner location.
      *
      * @return the partnerLocation value.
      */
@@ -121,7 +112,7 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the role property: The role of the database in the replication link.
+     * Get the role property: Local replication role.
      *
      * @return the role value.
      */
@@ -130,7 +121,7 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerRole property: The role of the partner database in the replication link.
+     * Get the partnerRole property: Partner replication role.
      *
      * @return the partnerRole value.
      */
@@ -139,7 +130,16 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the startTime property: The start time for the replication link.
+     * Get the replicationMode property: Replication mode.
+     *
+     * @return the replicationMode value.
+     */
+    public String replicationMode() {
+        return this.replicationMode;
+    }
+
+    /**
+     * Get the startTime property: Time at which the link was created.
      *
      * @return the startTime value.
      */
@@ -148,7 +148,7 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the percentComplete property: The percentage of seeding complete for the replication link.
+     * Get the percentComplete property: Seeding completion percentage for the link.
      *
      * @return the percentComplete value.
      */
@@ -157,12 +157,30 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the replicationState property: The replication state for the replication link.
+     * Get the replicationState property: Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
      *
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
         return this.replicationState;
+    }
+
+    /**
+     * Get the isTerminationAllowed property: Whether the user is currently allowed to terminate the link.
+     *
+     * @return the isTerminationAllowed value.
+     */
+    public Boolean isTerminationAllowed() {
+        return this.isTerminationAllowed;
+    }
+
+    /**
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
+     *
+     * @return the linkType value.
+     */
+    public ReplicationLinkType linkType() {
+        return this.linkType;
     }
 
     /**

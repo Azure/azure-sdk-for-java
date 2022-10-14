@@ -12,6 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SensitivityLabelProperties {
     /*
+     * The schema name.
+     */
+    @JsonProperty(value = "schemaName", access = JsonProperty.Access.WRITE_ONLY)
+    private String schemaName;
+
+    /*
+     * The table name.
+     */
+    @JsonProperty(value = "tableName", access = JsonProperty.Access.WRITE_ONLY)
+    private String tableName;
+
+    /*
+     * The column name.
+     */
+    @JsonProperty(value = "columnName", access = JsonProperty.Access.WRITE_ONLY)
+    private String columnName;
+
+    /*
      * The label name.
      */
     @JsonProperty(value = "labelName")
@@ -36,9 +54,8 @@ public final class SensitivityLabelProperties {
     private String informationTypeId;
 
     /*
-     * Is sensitivity recommendation disabled. Applicable for recommended
-     * sensitivity label only. Specifies whether the sensitivity recommendation
-     * on this column is disabled (dismissed) or not.
+     * Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the
+     * sensitivity recommendation on this column is disabled (dismissed) or not.
      */
     @JsonProperty(value = "isDisabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDisabled;
@@ -48,6 +65,37 @@ public final class SensitivityLabelProperties {
      */
     @JsonProperty(value = "rank")
     private SensitivityLabelRank rank;
+
+    /** Creates an instance of SensitivityLabelProperties class. */
+    public SensitivityLabelProperties() {
+    }
+
+    /**
+     * Get the schemaName property: The schema name.
+     *
+     * @return the schemaName value.
+     */
+    public String schemaName() {
+        return this.schemaName;
+    }
+
+    /**
+     * Get the tableName property: The table name.
+     *
+     * @return the tableName value.
+     */
+    public String tableName() {
+        return this.tableName;
+    }
+
+    /**
+     * Get the columnName property: The column name.
+     *
+     * @return the columnName value.
+     */
+    public String columnName() {
+        return this.columnName;
+    }
 
     /**
      * Get the labelName property: The label name.

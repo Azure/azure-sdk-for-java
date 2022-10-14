@@ -18,8 +18,7 @@ public final class VirtualClusterProperties {
     private String subnetId;
 
     /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
      */
     @JsonProperty(value = "family")
     private String family;
@@ -29,6 +28,16 @@ public final class VirtualClusterProperties {
      */
     @JsonProperty(value = "childResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> childResources;
+
+    /*
+     * Specifies maintenance configuration id to apply to this virtual cluster.
+     */
+    @JsonProperty(value = "maintenanceConfigurationId")
+    private String maintenanceConfigurationId;
+
+    /** Creates an instance of VirtualClusterProperties class. */
+    public VirtualClusterProperties() {
+    }
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
@@ -68,6 +77,28 @@ public final class VirtualClusterProperties {
      */
     public List<String> childResources() {
         return this.childResources;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the VirtualClusterProperties object itself.
+     */
+    public VirtualClusterProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
     }
 
     /**

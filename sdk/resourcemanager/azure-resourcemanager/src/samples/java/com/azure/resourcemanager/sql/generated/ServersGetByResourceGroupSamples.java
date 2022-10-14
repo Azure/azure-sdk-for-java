@@ -9,7 +9,25 @@ import com.azure.core.util.Context;
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ServerGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerGetWithExpandEqualsAdministrators.json
+     */
+    /**
+     * Sample code: Get server with $expand=administrators/activedirectory.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getServerWithExpandAdministratorsActivedirectory(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerGet.json
      */
     /**
      * Sample code: Get server.
@@ -22,6 +40,6 @@ public final class ServersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getServers()
-            .getByResourceGroupWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .getByResourceGroupWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", null, Context.NONE);
     }
 }

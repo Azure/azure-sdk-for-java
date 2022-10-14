@@ -10,10 +10,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /** An update request for an Azure SQL Database server. */
 @Fluent
 public final class ServerUpdate {
+    /*
+     * Server identity
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
     /*
      * Resource properties.
      */
@@ -26,6 +33,30 @@ public final class ServerUpdate {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of ServerUpdate class. */
+    public ServerUpdate() {
+    }
+
+    /**
+     * Get the identity property: Server identity.
+     *
+     * @return the identity value.
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Server identity.
+     *
+     * @param identity the identity value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -181,7 +212,7 @@ public final class ServerUpdate {
      *
      * @return the publicNetworkAccess value.
      */
-    public ServerPublicNetworkAccess publicNetworkAccess() {
+    public ServerNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
@@ -192,11 +223,140 @@ public final class ServerUpdate {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdate object itself.
      */
-    public ServerUpdate withPublicNetworkAccess(ServerPublicNetworkAccess publicNetworkAccess) {
+    public ServerUpdate withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the workspaceFeature property: Whether or not existing server has a workspace created and if it allows
+     * connection from workspace.
+     *
+     * @return the workspaceFeature value.
+     */
+    public ServerWorkspaceFeature workspaceFeature() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceFeature();
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryUserAssignedIdentityId();
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withPrimaryUserAssignedIdentityId(primaryUserAssignedIdentityId);
+        return this;
+    }
+
+    /**
+     * Get the federatedClientId property: The Client id used for cross tenant CMK scenario.
+     *
+     * @return the federatedClientId value.
+     */
+    public UUID federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: The Client id used for cross tenant CMK scenario.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withFederatedClientId(UUID federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyId();
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @param keyId the keyId value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withKeyId(String keyId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withKeyId(keyId);
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @return the administrators value.
+     */
+    public ServerExternalAdministrator administrators() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrators();
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withAdministrators(ServerExternalAdministrator administrators) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withAdministrators(administrators);
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
+     * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public ServerNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().restrictOutboundNetworkAccess();
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
+     * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag restrictOutboundNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
         return this;
     }
 
@@ -206,6 +366,9 @@ public final class ServerUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

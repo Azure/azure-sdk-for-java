@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CapabilityStatus. */
+/** The status of the capability. */
 public enum CapabilityStatus {
     /** Enum value Visible. */
     VISIBLE("Visible"),
@@ -36,6 +36,9 @@ public enum CapabilityStatus {
      */
     @JsonCreator
     public static CapabilityStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CapabilityStatus[] items = CapabilityStatus.values();
         for (CapabilityStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum CapabilityStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

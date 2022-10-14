@@ -8,7 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedServerCreateMode. */
+/**
+ * Specifies the mode of database creation.
+ *
+ * <p>Default: Regular instance creation.
+ *
+ * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+ * SourceManagedInstanceId must be specified.
+ */
 public final class ManagedServerCreateMode extends ExpandableStringEnum<ManagedServerCreateMode> {
     /** Static value Default for ManagedServerCreateMode. */
     public static final ManagedServerCreateMode DEFAULT = fromString("Default");

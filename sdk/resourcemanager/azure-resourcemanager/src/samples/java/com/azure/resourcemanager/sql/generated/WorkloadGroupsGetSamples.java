@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadGroups Get. */
 public final class WorkloadGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/GetWorkloadGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetWorkloadGroup.json
      */
     /**
      * Sample code: Gets a workload group for a data warehouse.

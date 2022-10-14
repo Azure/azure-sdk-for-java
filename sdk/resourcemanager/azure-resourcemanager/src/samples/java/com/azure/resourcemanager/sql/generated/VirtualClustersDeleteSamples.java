@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualClusters Delete. */
 public final class VirtualClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/VirtualClusterDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualClusterDelete.json
      */
     /**
      * Sample code: Delete virtual cluster.

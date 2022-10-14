@@ -17,6 +17,10 @@ public final class CompleteDatabaseRestoreDefinition {
     @JsonProperty(value = "lastBackupName", required = true)
     private String lastBackupName;
 
+    /** Creates an instance of CompleteDatabaseRestoreDefinition class. */
+    public CompleteDatabaseRestoreDefinition() {
+    }
+
     /**
      * Get the lastBackupName property: The last backup name to apply.
      *

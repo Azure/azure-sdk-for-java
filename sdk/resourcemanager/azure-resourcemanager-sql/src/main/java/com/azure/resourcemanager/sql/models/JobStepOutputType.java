@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStepOutputType. */
+/** The output destination type. */
 public final class JobStepOutputType extends ExpandableStringEnum<JobStepOutputType> {
     /** Static value SqlDatabase for JobStepOutputType. */
     public static final JobStepOutputType SQL_DATABASE = fromString("SqlDatabase");

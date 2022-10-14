@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.SensitivityLabelSource;
 /** Samples for SensitivityLabels Get. */
 public final class SensitivityLabelsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ColumnSensitivityLabelGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ColumnSensitivityLabelGet.json
      */
     /**
      * Sample code: Gets the sensitivity label of a given column.

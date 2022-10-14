@@ -17,8 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponseInner;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.sql.models.ImportNewDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.ServerUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -27,6 +29,117 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ServersClient. */
 public interface ServersClient
     extends InnerSupportsGet<ServerInner>, InnerSupportsListing<ServerInner>, InnerSupportsDelete<Void> {
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
+        CheckNameAvailabilityRequest parameters);
+
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(CheckNameAvailabilityRequest parameters);
+
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest parameters, Context context);
+
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest parameters);
+
+    /**
+     * Gets a list of all servers in the subscription.
+     *
+     * @param expand The child resources to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerInner> listAsync(String expand);
+
+    /**
+     * Gets a list of all servers in the subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerInner> listAsync();
+
+    /**
+     * Gets a list of all servers in the subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerInner> list();
+
+    /**
+     * Gets a list of all servers in the subscription.
+     *
+     * @param expand The child resources to include in the response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerInner> list(String expand, Context context);
+
+    /**
+     * Gets a list of servers in a resource groups.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param expand The child resources to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of servers in a resource groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName, String expand);
+
     /**
      * Gets a list of servers in a resource groups.
      *
@@ -58,6 +171,7 @@ public interface ServersClient
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
+     * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +179,7 @@ public interface ServersClient
      * @return a list of servers in a resource groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName, String expand, Context context);
 
     /**
      * Gets a server.
@@ -73,13 +187,15 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String serverName);
+    Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String serverName, String expand);
 
     /**
      * Gets a server.
@@ -101,20 +217,7 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner getByResourceGroup(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
+     * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +225,22 @@ public interface ServersClient
      * @return a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
+    Response<ServerInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String serverName, String expand, Context context);
+
+    /**
+     * Gets a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerInner getByResourceGroup(String resourceGroupName, String serverName);
 
     /**
      * Creates or updates a server.
@@ -445,86 +563,117 @@ public interface ServersClient
     ServerInner update(String resourceGroupName, String serverName, ServerUpdate parameters, Context context);
 
     /**
-     * Gets a list of all servers in the subscription.
+     * Imports a bacpac into a new database.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerInner> listAsync();
-
-    /**
-     * Gets a list of all servers in the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerInner> list();
-
-    /**
-     * Gets a list of all servers in the subscription.
-     *
-     * @param context The context to associate with this operation.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerInner> list(Context context);
-
-    /**
-     * Determines whether a resource can be created with the specified name.
-     *
-     * @param parameters The name availability request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check along with {@link Response} on successful completion of {@link
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
 
     /**
-     * Determines whether a resource can be created with the specified name.
+     * Imports a bacpac into a new database.
      *
-     * @param parameters The name availability request parameters.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(CheckNameAvailabilityRequest parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportDatabaseAsync(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
 
     /**
-     * Determines whether a resource can be created with the specified name.
+     * Imports a bacpac into a new database.
      *
-     * @param parameters The name availability request parameters.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportDatabase(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
 
     /**
-     * Determines whether a resource can be created with the specified name.
+     * Imports a bacpac into a new database.
      *
-     * @param parameters The name availability request parameters.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportDatabase(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters, Context context);
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest parameters, Context context);
+    Mono<ImportExportOperationResultInner> importDatabaseAsync(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImportExportOperationResultInner importDatabase(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImportExportOperationResultInner importDatabase(
+        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters, Context context);
 }

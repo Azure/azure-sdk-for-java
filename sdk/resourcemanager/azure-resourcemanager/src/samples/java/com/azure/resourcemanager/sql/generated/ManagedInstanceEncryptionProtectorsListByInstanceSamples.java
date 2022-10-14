@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstanceEncryptionProtectors ListByInstance. */
 public final class ManagedInstanceEncryptionProtectorsListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceEncryptionProtectorList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceEncryptionProtectorList.json
      */
     /**
      * Sample code: List encryption protectors by managed instance.

@@ -17,6 +17,10 @@ public final class WorkloadClassifierInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkloadClassifierProperties innerProperties;
 
+    /** Creates an instance of WorkloadClassifierInner class. */
+    public WorkloadClassifierInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

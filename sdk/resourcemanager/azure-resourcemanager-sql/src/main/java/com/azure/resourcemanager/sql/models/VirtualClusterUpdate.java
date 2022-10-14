@@ -27,6 +27,10 @@ public final class VirtualClusterUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of VirtualClusterUpdate class. */
+    public VirtualClusterUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -97,6 +101,31 @@ public final class VirtualClusterUpdate {
      */
     public List<String> childResources() {
         return this.innerProperties() == null ? null : this.innerProperties().childResources();
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the VirtualClusterUpdate object itself.
+     */
+    public VirtualClusterUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualClusterProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
     }
 
     /**

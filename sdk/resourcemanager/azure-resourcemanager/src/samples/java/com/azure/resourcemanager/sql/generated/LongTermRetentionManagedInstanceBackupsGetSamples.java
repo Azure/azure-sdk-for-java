@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LongTermRetentionManagedInstanceBackups Get. */
 public final class LongTermRetentionManagedInstanceBackupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedInstanceLongTermRetentionBackupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceLongTermRetentionBackupGet.json
      */
     /**
      * Sample code: Get the long term retention backup of a managed database.

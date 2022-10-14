@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.AdministratorName;
 /** Samples for ServerAzureADAdministrators Get. */
 public final class ServerAzureADAdministratorsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/AdministratorGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AdministratorGet.json
      */
     /**
      * Sample code: Gets a Azure Active Directory administrator.

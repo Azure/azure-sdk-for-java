@@ -46,6 +46,10 @@ public final class WorkloadGroupProperties {
     @JsonProperty(value = "queryExecutionTimeout")
     private Integer queryExecutionTimeout;
 
+    /** Creates an instance of WorkloadGroupProperties class. */
+    public WorkloadGroupProperties() {
+    }
+
     /**
      * Get the minResourcePercent property: The workload group minimum percentage resource.
      *

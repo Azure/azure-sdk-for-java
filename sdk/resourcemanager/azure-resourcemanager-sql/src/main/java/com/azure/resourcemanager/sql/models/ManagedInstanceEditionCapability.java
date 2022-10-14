@@ -24,6 +24,18 @@ public final class ManagedInstanceEditionCapability {
     private List<ManagedInstanceFamilyCapability> supportedFamilies;
 
     /*
+     * The list of supported storage capabilities for this edition
+     */
+    @JsonProperty(value = "supportedStorageCapabilities", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageCapability> supportedStorageCapabilities;
+
+    /*
+     * Whether or not zone redundancy is supported for the edition.
+     */
+    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zoneRedundant;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -34,6 +46,10 @@ public final class ManagedInstanceEditionCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of ManagedInstanceEditionCapability class. */
+    public ManagedInstanceEditionCapability() {
+    }
 
     /**
      * Get the name property: The managed server version name.
@@ -51,6 +67,24 @@ public final class ManagedInstanceEditionCapability {
      */
     public List<ManagedInstanceFamilyCapability> supportedFamilies() {
         return this.supportedFamilies;
+    }
+
+    /**
+     * Get the supportedStorageCapabilities property: The list of supported storage capabilities for this edition.
+     *
+     * @return the supportedStorageCapabilities value.
+     */
+    public List<StorageCapability> supportedStorageCapabilities() {
+        return this.supportedStorageCapabilities;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
     }
 
     /**
@@ -90,6 +124,9 @@ public final class ManagedInstanceEditionCapability {
     public void validate() {
         if (supportedFamilies() != null) {
             supportedFamilies().forEach(e -> e.validate());
+        }
+        if (supportedStorageCapabilities() != null) {
+            supportedStorageCapabilities().forEach(e -> e.validate());
         }
     }
 }

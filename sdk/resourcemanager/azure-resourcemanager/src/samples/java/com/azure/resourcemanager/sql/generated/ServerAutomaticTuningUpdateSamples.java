@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for ServerAutomaticTuning Update. */
 public final class ServerAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerAutomaticTuningUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with all properties.
@@ -47,7 +47,7 @@ public final class ServerAutomaticTuningUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerAutomaticTuningUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with minimal properties.

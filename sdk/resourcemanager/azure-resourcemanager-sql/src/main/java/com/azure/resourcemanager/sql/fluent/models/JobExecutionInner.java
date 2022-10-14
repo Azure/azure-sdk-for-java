@@ -22,6 +22,10 @@ public final class JobExecutionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private JobExecutionProperties innerProperties;
 
+    /** Creates an instance of JobExecutionInner class. */
+    public JobExecutionInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -72,6 +72,10 @@ public final class ManagedDatabaseRestoreDetailsProperties {
     @JsonProperty(value = "blockReason", access = JsonProperty.Access.WRITE_ONLY)
     private String blockReason;
 
+    /** Creates an instance of ManagedDatabaseRestoreDetailsProperties class. */
+    public ManagedDatabaseRestoreDetailsProperties() {
+    }
+
     /**
      * Get the status property: Restore status.
      *

@@ -5,115 +5,65 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-/** The database usages. */
+/** Usage metric of a database. */
 @Immutable
-public final class DatabaseUsageInner {
+public final class DatabaseUsageInner extends ProxyResource {
     /*
-     * The name of the usage metric.
+     * Resource properties.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
+    @JsonProperty(value = "properties")
+    private DatabaseUsageProperties innerProperties;
 
-    /*
-     * The name of the resource.
-     */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceName;
-
-    /*
-     * The usage metric display name.
-     */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * The current value of the usage metric.
-     */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
-    private Double currentValue;
-
-    /*
-     * The current limit of the usage metric.
-     */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
-    private Double limit;
-
-    /*
-     * The units of the usage metric.
-     */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
-
-    /*
-     * The next reset time for the usage metric (ISO8601 format).
-     */
-    @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextResetTime;
-
-    /**
-     * Get the name property: The name of the usage metric.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
+    /** Creates an instance of DatabaseUsageInner class. */
+    public DatabaseUsageInner() {
     }
 
     /**
-     * Get the resourceName property: The name of the resource.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the resourceName value.
+     * @return the innerProperties value.
      */
-    public String resourceName() {
-        return this.resourceName;
+    private DatabaseUsageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the displayName property: The usage metric display name.
+     * Get the displayName property: User-readable name of the metric.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
-     * Get the currentValue property: The current value of the usage metric.
+     * Get the currentValue property: Current value of the metric.
      *
      * @return the currentValue value.
      */
     public Double currentValue() {
-        return this.currentValue;
+        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
     }
 
     /**
-     * Get the limit property: The current limit of the usage metric.
+     * Get the limit property: Boundary value of the metric.
      *
      * @return the limit value.
      */
     public Double limit() {
-        return this.limit;
+        return this.innerProperties() == null ? null : this.innerProperties().limit();
     }
 
     /**
-     * Get the unit property: The units of the usage metric.
+     * Get the unit property: Unit of the metric.
      *
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the nextResetTime property: The next reset time for the usage metric (ISO8601 format).
-     *
-     * @return the nextResetTime value.
-     */
-    public OffsetDateTime nextResetTime() {
-        return this.nextResetTime;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
@@ -122,5 +72,8 @@ public final class DatabaseUsageInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

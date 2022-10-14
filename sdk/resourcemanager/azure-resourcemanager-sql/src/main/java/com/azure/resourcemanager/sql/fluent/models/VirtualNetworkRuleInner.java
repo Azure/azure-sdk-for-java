@@ -18,6 +18,10 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VirtualNetworkRuleProperties innerProperties;
 
+    /** Creates an instance of VirtualNetworkRuleInner class. */
+    public VirtualNetworkRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -10,24 +10,23 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 /** Samples for TransparentDataEncryptions Get. */
 public final class TransparentDataEncryptionsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseTransparentDataEncryptionGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/TransparentDataEncryptionGet.json
      */
     /**
-     * Sample code: Get a database's transparent data encryption configuration.
+     * Sample code: Get a database's transparent data encryption.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getADatabaseSTransparentDataEncryptionConfiguration(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getADatabaseSTransparentDataEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getTransparentDataEncryptions()
             .getWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-9187",
+                "security-tde-resourcegroup",
+                "securitytde",
+                "testdb",
                 TransparentDataEncryptionName.CURRENT,
                 Context.NONE);
     }

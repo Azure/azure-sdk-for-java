@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LongTermRetentionManagedInstanceBackups ListByResourceGroupLocation. */
 public final class LongTermRetentionManagedInstanceBackupsListByResourceGroupLocationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
      */
     /**
      * Sample code: Get all long term retention backups under the location.

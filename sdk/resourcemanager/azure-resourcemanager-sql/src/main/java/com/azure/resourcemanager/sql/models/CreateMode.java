@@ -8,7 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreateMode. */
+/**
+ * Specifies the mode of database creation.
+ *
+ * <p>Default: regular database creation.
+ *
+ * <p>Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID
+ * of the source database.
+ *
+ * <p>Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified
+ * as the resource ID of the existing primary database.
+ *
+ * <p>PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+ * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
+ * specified.
+ *
+ * <p>Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+ * recoverable database resource ID to restore.
+ *
+ * <p>Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If
+ * sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise
+ * sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored.
+ * restorePointInTime may also be specified to restore from an earlier point in time.
+ *
+ * <p>RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+ * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+ *
+ * <p>Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+ */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value Default for CreateMode. */
     public static final CreateMode DEFAULT = fromString("Default");

@@ -9,19 +9,19 @@ import com.azure.core.util.Context;
 /** Samples for DatabaseUsages ListByDatabase. */
 public final class DatabaseUsagesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseUsageMetricsList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetDatabaseUsages.json
      */
     /**
-     * Sample code: List database usage metrics.
+     * Sample code: Gets database usages.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listDatabaseUsageMetrics(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getsDatabaseUsages(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseUsages()
-            .listByDatabase("sqlcrudtest-6730", "sqlcrudtest-9007", "3481", Context.NONE);
+            .listByDatabase("Default-SQL-SouthEastAsia", "testsvr", "testdb", Context.NONE);
     }
 }

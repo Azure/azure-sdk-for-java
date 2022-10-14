@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceLongTermRetentionPoli
 /** Samples for ManagedInstanceLongTermRetentionPolicies CreateOrUpdate. */
 public final class ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update the LTR policy for the managed database.

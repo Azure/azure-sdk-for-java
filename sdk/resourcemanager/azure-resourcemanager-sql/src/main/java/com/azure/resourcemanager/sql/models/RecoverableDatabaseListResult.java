@@ -4,23 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.RecoverableDatabaseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list recoverable databases request. */
-@Fluent
+/** A list of recoverable databases. */
+@Immutable
 public final class RecoverableDatabaseListResult {
     /*
-     * A list of recoverable databases
+     * Array of results.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecoverableDatabaseInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of RecoverableDatabaseListResult class. */
+    public RecoverableDatabaseListResult() {
+    }
+
     /**
-     * Get the value property: A list of recoverable databases.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -29,14 +38,12 @@ public final class RecoverableDatabaseListResult {
     }
 
     /**
-     * Set the value property: A list of recoverable databases.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the RecoverableDatabaseListResult object itself.
+     * @return the nextLink value.
      */
-    public RecoverableDatabaseListResult withValue(List<RecoverableDatabaseInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -45,15 +52,8 @@ public final class RecoverableDatabaseListResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model RecoverableDatabaseListResult"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RecoverableDatabaseListResult.class);
 }

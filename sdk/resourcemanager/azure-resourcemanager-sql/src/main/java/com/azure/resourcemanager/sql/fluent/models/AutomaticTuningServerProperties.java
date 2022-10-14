@@ -33,6 +33,10 @@ public final class AutomaticTuningServerProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AutomaticTuningServerOptions> options;
 
+    /** Creates an instance of AutomaticTuningServerProperties class. */
+    public AutomaticTuningServerProperties() {
+    }
+
     /**
      * Get the desiredState property: Automatic tuning desired state.
      *

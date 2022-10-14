@@ -4,22 +4,26 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A recoverable database. */
-@Fluent
+/** A recoverable database resource. */
+@Immutable
 public final class RecoverableDatabaseInner extends ProxyResource {
     /*
-     * The properties of a recoverable database
+     * Resource properties.
      */
     @JsonProperty(value = "properties")
     private RecoverableDatabaseProperties innerProperties;
 
+    /** Creates an instance of RecoverableDatabaseInner class. */
+    public RecoverableDatabaseInner() {
+    }
+
     /**
-     * Get the innerProperties property: The properties of a recoverable database.
+     * Get the innerProperties property: Resource properties.
      *
      * @return the innerProperties value.
      */
@@ -55,7 +59,7 @@ public final class RecoverableDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the lastAvailableBackupDate property: The last available backup date of the database (ISO8601 format).
+     * Get the lastAvailableBackupDate property: The last available backup date.
      *
      * @return the lastAvailableBackupDate value.
      */

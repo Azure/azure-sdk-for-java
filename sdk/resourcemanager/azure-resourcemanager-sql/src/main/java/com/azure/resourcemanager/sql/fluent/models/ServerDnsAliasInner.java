@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A server DNS alias. */
-@Fluent
+@Immutable
 public final class ServerDnsAliasInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private ServerDnsAliasProperties innerProperties;
+
+    /** Creates an instance of ServerDnsAliasInner class. */
+    public ServerDnsAliasInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

@@ -39,9 +39,8 @@ public final class ManagedDatabaseProperties {
     private OffsetDateTime earliestRestorePoint;
 
     /*
-     * Conditional. If createMode is PointInTimeRestore, this value is
-     * required. Specifies the point in time (ISO8601 format) of the source
-     * database that will be restored to create the new database.
+     * Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601
+     * format) of the source database that will be restored to create the new database.
      */
     @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
@@ -59,67 +58,76 @@ public final class ManagedDatabaseProperties {
     private CatalogCollationType catalogCollation;
 
     /*
-     * Managed database create mode. PointInTimeRestore: Create a database by
-     * restoring a point in time backup of an existing database.
-     * SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
-     * specified. RestoreExternalBackup: Create a database by restoring from
-     * external backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Recovery: Creates a database
-     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
-     * specified as the recoverable database resource ID to restore.
+     * Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an
+     * existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified.
+     * RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri
+     * and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated
+     * backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore.
+     * RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      */
     @JsonProperty(value = "createMode")
     private ManagedDatabaseCreateMode createMode;
 
     /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the uri of the storage container where backups for
-     * this restore are stored.
+     * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage
+     * container where backups for this restore are stored.
      */
     @JsonProperty(value = "storageContainerUri")
     private String storageContainerUri;
 
     /*
-     * The resource identifier of the source database associated with create
-     * operation of this database.
+     * The resource identifier of the source database associated with create operation of this database.
      */
     @JsonProperty(value = "sourceDatabaseId")
     private String sourceDatabaseId;
 
     /*
-     * The restorable dropped database resource id to restore when creating
-     * this database.
+     * The restorable dropped database resource id to restore when creating this database.
      */
     @JsonProperty(value = "restorableDroppedDatabaseId")
     private String restorableDroppedDatabaseId;
 
     /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
+     * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas
+     * token.
      */
     @JsonProperty(value = "storageContainerSasToken")
     private String storageContainerSasToken;
 
     /*
-     * Instance Failover Group resource identifier that this managed database
-     * belongs to.
+     * Instance Failover Group resource identifier that this managed database belongs to.
      */
     @JsonProperty(value = "failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverGroupId;
 
     /*
-     * The resource identifier of the recoverable database associated with
-     * create operation of this database.
+     * The resource identifier of the recoverable database associated with create operation of this database.
      */
     @JsonProperty(value = "recoverableDatabaseId")
     private String recoverableDatabaseId;
 
     /*
-     * The name of the Long Term Retention backup to be used for restore of
-     * this managed database.
+     * The name of the Long Term Retention backup to be used for restore of this managed database.
      */
     @JsonProperty(value = "longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
+
+    /*
+     * Whether to auto complete restore of this managed database.
+     */
+    @JsonProperty(value = "autoCompleteRestore")
+    private Boolean autoCompleteRestore;
+
+    /*
+     * Last backup file name for restore of this managed database.
+     */
+    @JsonProperty(value = "lastBackupName")
+    private String lastBackupName;
+
+    /** Creates an instance of ManagedDatabaseProperties class. */
+    public ManagedDatabaseProperties() {
+    }
 
     /**
      * Get the collation property: Collation of the managed database.
@@ -227,7 +235,8 @@ public final class ManagedDatabaseProperties {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @return the createMode value.
      */
@@ -241,7 +250,8 @@ public final class ManagedDatabaseProperties {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseProperties object itself.
@@ -390,6 +400,46 @@ public final class ManagedDatabaseProperties {
      */
     public ManagedDatabaseProperties withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
         this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
+        return this;
+    }
+
+    /**
+     * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @return the autoCompleteRestore value.
+     */
+    public Boolean autoCompleteRestore() {
+        return this.autoCompleteRestore;
+    }
+
+    /**
+     * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @param autoCompleteRestore the autoCompleteRestore value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withAutoCompleteRestore(Boolean autoCompleteRestore) {
+        this.autoCompleteRestore = autoCompleteRestore;
+        return this;
+    }
+
+    /**
+     * Get the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @return the lastBackupName value.
+     */
+    public String lastBackupName() {
+        return this.lastBackupName;
+    }
+
+    /**
+     * Set the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @param lastBackupName the lastBackupName value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withLastBackupName(String lastBackupName) {
+        this.lastBackupName = lastBackupName;
         return this;
     }
 

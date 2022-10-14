@@ -12,20 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InstanceFailoverGroupReadWriteEndpoint {
     /*
-     * Failover policy of the read-write endpoint for the failover group. If
-     * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
-     * is required.
+     * Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then
+     * failoverWithDataLossGracePeriodMinutes is required.
      */
     @JsonProperty(value = "failoverPolicy", required = true)
     private ReadWriteEndpointFailoverPolicy failoverPolicy;
 
     /*
-     * Grace period before failover with data loss is attempted for the
-     * read-write endpoint. If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
+     * Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is
+     * Automatic then failoverWithDataLossGracePeriodMinutes is required.
      */
     @JsonProperty(value = "failoverWithDataLossGracePeriodMinutes")
     private Integer failoverWithDataLossGracePeriodMinutes;
+
+    /** Creates an instance of InstanceFailoverGroupReadWriteEndpoint class. */
+    public InstanceFailoverGroupReadWriteEndpoint() {
+    }
 
     /**
      * Get the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If

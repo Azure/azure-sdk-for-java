@@ -16,6 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.resourcemanager.sql.fluent.models.UpdateManagedInstanceDnsServersOperationInner;
 import com.azure.resourcemanager.sql.fluent.models.VirtualClusterInner;
 import com.azure.resourcemanager.sql.models.VirtualClusterUpdate;
 import java.nio.ByteBuffer;
@@ -134,20 +135,6 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualClusterInner getByResourceGroup(String resourceGroupName, String virtualClusterName);
-
-    /**
-     * Gets a virtual cluster.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param virtualClusterName The name of the virtual cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,6 +144,20 @@ public interface VirtualClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualClusterName, Context context);
+
+    /**
+     * Gets a virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualClusterInner getByResourceGroup(String resourceGroupName, String virtualClusterName);
 
     /**
      * Deletes a virtual cluster.
@@ -263,7 +264,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -279,7 +280,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,7 +296,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,7 +312,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -328,7 +329,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,7 +345,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -359,7 +360,7 @@ public interface VirtualClustersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param virtualClusterName The name of the virtual cluster.
-     * @param parameters The requested managed instance resource state.
+     * @param parameters The requested virtual cluster resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,4 +370,65 @@ public interface VirtualClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualClusterInner update(
         String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters, Context context);
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recoverable managed database resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<UpdateManagedInstanceDnsServersOperationInner>> updateDnsServersWithResponseAsync(
+        String resourceGroupName, String virtualClusterName);
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recoverable managed database resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<UpdateManagedInstanceDnsServersOperationInner> updateDnsServersAsync(
+        String resourceGroupName, String virtualClusterName);
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recoverable managed database resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<UpdateManagedInstanceDnsServersOperationInner> updateDnsServersWithResponse(
+        String resourceGroupName, String virtualClusterName, Context context);
+
+    /**
+     * Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recoverable managed database resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UpdateManagedInstanceDnsServersOperationInner updateDnsServers(String resourceGroupName, String virtualClusterName);
 }

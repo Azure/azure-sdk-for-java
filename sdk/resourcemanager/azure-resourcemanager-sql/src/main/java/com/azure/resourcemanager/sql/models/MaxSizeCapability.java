@@ -22,6 +22,10 @@ public final class MaxSizeCapability {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeUnit unit;
 
+    /** Creates an instance of MaxSizeCapability class. */
+    public MaxSizeCapability() {
+    }
+
     /**
      * Get the limit property: The maximum size limit (see 'unit' for the units).
      *

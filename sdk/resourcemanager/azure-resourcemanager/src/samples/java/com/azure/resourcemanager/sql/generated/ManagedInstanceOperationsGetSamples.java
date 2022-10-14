@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for ManagedInstanceOperations Get. */
 public final class ManagedInstanceOperationsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/GetManagedInstanceOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetManagedInstanceOperation.json
      */
     /**
      * Sample code: Gets the managed instance management operation.

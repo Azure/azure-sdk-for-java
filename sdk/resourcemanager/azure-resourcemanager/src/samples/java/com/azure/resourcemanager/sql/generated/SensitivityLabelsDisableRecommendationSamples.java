@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SensitivityLabels DisableRecommendation. */
 public final class SensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/RecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RecommendedColumnSensitivityLabelDisable.json
      */
     /**
      * Sample code: Disables sensitivity recommendations on a given column.

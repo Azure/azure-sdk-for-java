@@ -28,6 +28,10 @@ public final class LicenseTypeCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of LicenseTypeCapability class. */
+    public LicenseTypeCapability() {
+    }
+
     /**
      * Get the name property: License type identifier.
      *

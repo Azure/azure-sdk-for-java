@@ -119,21 +119,6 @@ public interface ManagedInstanceKeysClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceKeyInner get(String resourceGroupName, String managedInstanceName, String keyName);
-
-    /**
-     * Gets a managed instance key.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param keyName The name of the managed instance key to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,6 +128,21 @@ public interface ManagedInstanceKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceKeyInner> getWithResponse(
         String resourceGroupName, String managedInstanceName, String keyName, Context context);
+
+    /**
+     * Gets a managed instance key.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param keyName The name of the managed instance key to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceKeyInner get(String resourceGroupName, String managedInstanceName, String keyName);
 
     /**
      * Creates or updates a managed instance key.

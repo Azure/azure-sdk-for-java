@@ -19,6 +19,10 @@ public final class VirtualClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private VirtualClusterProperties innerProperties;
 
+    /** Creates an instance of VirtualClusterInner class. */
+    public VirtualClusterInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -83,6 +87,31 @@ public final class VirtualClusterInner extends Resource {
      */
     public List<String> childResources() {
         return this.innerProperties() == null ? null : this.innerProperties().childResources();
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
+     * cluster.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the VirtualClusterInner object itself.
+     */
+    public VirtualClusterInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualClusterProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
     }
 
     /**

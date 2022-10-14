@@ -83,19 +83,6 @@ public interface SubscriptionUsagesClient {
      *
      * @param locationName The name of the region where the resource is located.
      * @param usageName Name of usage metric to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription usage metric.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionUsageInner get(String locationName, String usageName);
-
-    /**
-     * Gets a subscription usage metric.
-     *
-     * @param locationName The name of the region where the resource is located.
-     * @param usageName Name of usage metric to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,4 +91,17 @@ public interface SubscriptionUsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SubscriptionUsageInner> getWithResponse(String locationName, String usageName, Context context);
+
+    /**
+     * Gets a subscription usage metric.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @param usageName Name of usage metric to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription usage metric.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionUsageInner get(String locationName, String usageName);
 }

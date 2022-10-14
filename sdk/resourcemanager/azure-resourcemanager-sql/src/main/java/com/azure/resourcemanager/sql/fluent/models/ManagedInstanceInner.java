@@ -6,13 +6,19 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
+import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
+import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An Azure SQL managed instance. */
@@ -25,8 +31,7 @@ public final class ManagedInstanceInner extends Resource {
     private ResourceIdentity identity;
 
     /*
-     * Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5,
-     * BC_Gen4, BC_Gen5
+     * Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5, BC_G8IM, BC_G8IH
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -36,6 +41,10 @@ public final class ManagedInstanceInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ManagedInstanceProperties innerProperties;
+
+    /** Creates an instance of ManagedInstanceInner class. */
+    public ManagedInstanceInner() {
+    }
 
     /**
      * Get the identity property: The Azure Active Directory identity of the managed instance.
@@ -58,7 +67,8 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5, BC_Gen4, BC_Gen5.
+     * Get the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
+     * BC_G8IM, BC_G8IH.
      *
      * @return the sku value.
      */
@@ -67,7 +77,8 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5, BC_Gen4, BC_Gen5.
+     * Set the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
+     * BC_G8IM, BC_G8IH.
      *
      * @param sku the sku value to set.
      * @return the ManagedInstanceInner object itself.
@@ -98,6 +109,15 @@ public final class ManagedInstanceInner extends Resource {
     public ManagedInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioningState property.
+     *
+     * @return the provisioningState value.
+     */
+    public ManagedInstancePropertiesProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -273,8 +293,8 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @return the storageSizeInGB value.
      */
@@ -283,8 +303,8 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceInner object itself.
@@ -507,6 +527,40 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ManagedInstancePecProperty> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @return the minimalTlsVersion value.
@@ -526,6 +580,162 @@ public final class ManagedInstanceInner extends Resource {
             this.innerProperties = new ManagedInstanceProperties();
         }
         this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentBackupStorageRedundancy();
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().requestedBackupStorageRedundancy();
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryUserAssignedIdentityId();
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPrimaryUserAssignedIdentityId(primaryUserAssignedIdentityId);
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyId();
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @param keyId the keyId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withKeyId(String keyId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withKeyId(keyId);
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @return the administrators value.
+     */
+    public ManagedInstanceExternalAdministrator administrators() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrators();
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withAdministrators(ManagedInstanceExternalAdministrator administrators) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministrators(administrators);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipal property: The managed instance's service principal.
+     *
+     * @return the servicePrincipal value.
+     */
+    public ServicePrincipal servicePrincipal() {
+        return this.innerProperties() == null ? null : this.innerProperties().servicePrincipal();
+    }
+
+    /**
+     * Set the servicePrincipal property: The managed instance's service principal.
+     *
+     * @param servicePrincipal the servicePrincipal value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withServicePrincipal(ServicePrincipal servicePrincipal) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withServicePrincipal(servicePrincipal);
         return this;
     }
 

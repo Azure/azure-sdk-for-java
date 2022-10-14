@@ -32,6 +32,10 @@ public final class ElasticPoolUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ElasticPoolUpdate class. */
+    public ElasticPoolUpdate() {
+    }
+
     /**
      * Get the sku property: An ARM Resource SKU.
      *
@@ -105,6 +109,29 @@ public final class ElasticPoolUpdate {
     }
 
     /**
+     * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @return the minCapacity value.
+     */
+    public Double minCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().minCapacity();
+    }
+
+    /**
+     * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set.
+     * @return the ElasticPoolUpdate object itself.
+     */
+    public ElasticPoolUpdate withMinCapacity(Double minCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withMinCapacity(minCapacity);
+        return this;
+    }
+
+    /**
      * Get the perDatabaseSettings property: The per database settings for the elastic pool.
      *
      * @return the perDatabaseSettings value.
@@ -172,6 +199,56 @@ public final class ElasticPoolUpdate {
             this.innerProperties = new ElasticPoolUpdateProperties();
         }
         this.innerProperties().withLicenseType(licenseType);
+        return this;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ElasticPoolUpdate object itself.
+     */
+    public ElasticPoolUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @return the highAvailabilityReplicaCount value.
+     */
+    public Integer highAvailabilityReplicaCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().highAvailabilityReplicaCount();
+    }
+
+    /**
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
+     * @return the ElasticPoolUpdate object itself.
+     */
+    public ElasticPoolUpdate withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withHighAvailabilityReplicaCount(highAvailabilityReplicaCount);
         return this;
     }
 

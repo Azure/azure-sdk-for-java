@@ -24,6 +24,10 @@ public final class JobAgentProperties {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private JobAgentState state;
 
+    /** Creates an instance of JobAgentProperties class. */
+    public JobAgentProperties() {
+    }
+
     /**
      * Get the databaseId property: Resource ID of the database to store job metadata in.
      *

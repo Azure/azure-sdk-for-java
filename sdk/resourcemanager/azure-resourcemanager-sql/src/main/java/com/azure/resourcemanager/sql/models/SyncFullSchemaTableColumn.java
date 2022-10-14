@@ -52,6 +52,10 @@ public final class SyncFullSchemaTableColumn {
     @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
+    /** Creates an instance of SyncFullSchemaTableColumn class. */
+    public SyncFullSchemaTableColumn() {
+    }
+
     /**
      * Get the dataSize property: Data size of the column.
      *

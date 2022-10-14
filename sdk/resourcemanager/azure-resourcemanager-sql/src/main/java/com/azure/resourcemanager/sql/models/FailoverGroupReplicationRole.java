@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FailoverGroupReplicationRole. */
+/** Local replication role of the failover group instance. */
 public final class FailoverGroupReplicationRole extends ExpandableStringEnum<FailoverGroupReplicationRole> {
     /** Static value Primary for FailoverGroupReplicationRole. */
     public static final FailoverGroupReplicationRole PRIMARY = fromString("Primary");

@@ -22,6 +22,10 @@ public final class ElasticPoolPerDatabaseSettings {
     @JsonProperty(value = "maxCapacity")
     private Double maxCapacity;
 
+    /** Creates an instance of ElasticPoolPerDatabaseSettings class. */
+    public ElasticPoolPerDatabaseSettings() {
+    }
+
     /**
      * Get the minCapacity property: The minimum capacity all databases are guaranteed.
      *

@@ -22,6 +22,10 @@ public final class LogSizeCapability {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private LogSizeUnit unit;
 
+    /** Creates an instance of LogSizeCapability class. */
+    public LogSizeCapability() {
+    }
+
     /**
      * Get the limit property: The log size limit (see 'unit' for the units).
      *

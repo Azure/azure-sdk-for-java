@@ -36,11 +36,14 @@ public final class JobSchedule {
     private Boolean enabled;
 
     /*
-     * Value of the schedule's recurring interval, if the schedule type is
-     * recurring. ISO8601 duration format.
+     * Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601 duration format.
      */
     @JsonProperty(value = "interval")
     private String interval;
+
+    /** Creates an instance of JobSchedule class. */
+    public JobSchedule() {
+    }
 
     /**
      * Get the startTime property: Schedule start time.
@@ -123,7 +126,7 @@ public final class JobSchedule {
     }
 
     /**
-     * Get the interval property: Value of the schedule's recurring interval, if the schedule type is recurring. ISO8601
+     * Get the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
      *
      * @return the interval value.
@@ -133,7 +136,7 @@ public final class JobSchedule {
     }
 
     /**
-     * Set the interval property: Value of the schedule's recurring interval, if the schedule type is recurring. ISO8601
+     * Set the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
      *
      * @param interval the interval value to set.

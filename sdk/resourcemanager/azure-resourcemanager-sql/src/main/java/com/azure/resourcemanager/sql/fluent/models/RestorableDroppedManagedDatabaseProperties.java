@@ -35,6 +35,10 @@ public final class RestorableDroppedManagedDatabaseProperties {
     @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
+    /** Creates an instance of RestorableDroppedManagedDatabaseProperties class. */
+    public RestorableDroppedManagedDatabaseProperties() {
+    }
+
     /**
      * Get the databaseName property: The name of the database.
      *

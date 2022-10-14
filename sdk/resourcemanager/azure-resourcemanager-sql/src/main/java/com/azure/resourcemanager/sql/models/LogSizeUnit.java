@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LogSizeUnit. */
+/** The units that the limit is expressed in. */
 public final class LogSizeUnit extends ExpandableStringEnum<LogSizeUnit> {
     /** Static value Megabytes for LogSizeUnit. */
     public static final LogSizeUnit MEGABYTES = fromString("Megabytes");

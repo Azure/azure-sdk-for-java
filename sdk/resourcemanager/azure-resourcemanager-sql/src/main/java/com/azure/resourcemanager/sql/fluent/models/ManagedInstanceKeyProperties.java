@@ -20,8 +20,7 @@ public final class ManagedInstanceKeyProperties {
     private ServerKeyType serverKeyType;
 
     /*
-     * The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI
-     * is required.
+     * The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
      */
     @JsonProperty(value = "uri")
     private String uri;
@@ -37,6 +36,16 @@ public final class ManagedInstanceKeyProperties {
      */
     @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
+
+    /*
+     * Key auto rotation opt-in flag. Either true or false.
+     */
+    @JsonProperty(value = "autoRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean autoRotationEnabled;
+
+    /** Creates an instance of ManagedInstanceKeyProperties class. */
+    public ManagedInstanceKeyProperties() {
+    }
 
     /**
      * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
@@ -94,6 +103,15 @@ public final class ManagedInstanceKeyProperties {
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.autoRotationEnabled;
     }
 
     /**

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 /** Samples for SyncMembers CreateOrUpdate. */
 public final class SyncMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncMemberCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberCreate.json
      */
     /**
      * Sample code: Create a new sync member.
@@ -30,9 +30,12 @@ public final class SyncMembersCreateOrUpdateSamples {
                 "syncgroupcrud-8475",
                 "syncgroupcrud-4328",
                 "syncgroupcrud-3187",
-                "syncgroupcrud-4879",
+                "syncmembercrud-4879",
                 new SyncMemberInner()
                     .withDatabaseType(SyncMemberDbType.AZURE_SQL_DATABASE)
+                    .withSyncMemberAzureDatabaseResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-65440/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328")
+                    .withUsePrivateLinkConnection(true)
                     .withServerName("syncgroupcrud-3379.database.windows.net")
                     .withDatabaseName("syncgroupcrud-7421")
                     .withUsername("myUser")
@@ -41,7 +44,7 @@ public final class SyncMembersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncMemberUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberUpdate.json
      */
     /**
      * Sample code: Update a sync member.
@@ -59,9 +62,12 @@ public final class SyncMembersCreateOrUpdateSamples {
                 "syncgroupcrud-8475",
                 "syncgroupcrud-4328",
                 "syncgroupcrud-3187",
-                "syncgroupcrud-4879",
+                "syncmembercrud-4879",
                 new SyncMemberInner()
                     .withDatabaseType(SyncMemberDbType.AZURE_SQL_DATABASE)
+                    .withSyncMemberAzureDatabaseResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-65440/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328")
+                    .withUsePrivateLinkConnection(true)
                     .withServerName("syncgroupcrud-3379.database.windows.net")
                     .withDatabaseName("syncgroupcrud-7421")
                     .withUsername("myUser")

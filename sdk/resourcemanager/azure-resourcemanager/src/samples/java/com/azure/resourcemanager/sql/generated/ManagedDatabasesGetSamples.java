@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedDatabases Get. */
 public final class ManagedDatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseGet.json
      */
     /**
      * Sample code: Gets a managed database.

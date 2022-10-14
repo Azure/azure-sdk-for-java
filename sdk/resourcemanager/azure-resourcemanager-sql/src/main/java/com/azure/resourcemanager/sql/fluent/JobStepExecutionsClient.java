@@ -50,8 +50,8 @@ public interface JobStepExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top);
+        Long skip,
+        Long top);
 
     /**
      * Lists the step executions of a job execution.
@@ -123,8 +123,8 @@ public interface JobStepExecutionsClient {
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top,
+        Long skip,
+        Long top,
         Context context);
 
     /**
@@ -185,30 +185,6 @@ public interface JobStepExecutionsClient {
      * @param jobName The name of the job to get.
      * @param jobExecutionId The unique id of the job execution.
      * @param stepName The name of the step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobExecutionInner get(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName);
-
-    /**
-     * Gets a step execution of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The unique id of the job execution.
-     * @param stepName The name of the step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -224,4 +200,28 @@ public interface JobStepExecutionsClient {
         UUID jobExecutionId,
         String stepName,
         Context context);
+
+    /**
+     * Gets a step execution of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The unique id of the job execution.
+     * @param stepName The name of the step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a step execution of a job execution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobExecutionInner get(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        String stepName);
 }

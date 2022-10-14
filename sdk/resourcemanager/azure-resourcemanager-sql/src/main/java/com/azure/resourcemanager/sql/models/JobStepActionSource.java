@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStepActionSource. */
+/** The source of the action to execute. */
 public final class JobStepActionSource extends ExpandableStringEnum<JobStepActionSource> {
     /** Static value Inline for JobStepActionSource. */
     public static final JobStepActionSource INLINE = fromString("Inline");

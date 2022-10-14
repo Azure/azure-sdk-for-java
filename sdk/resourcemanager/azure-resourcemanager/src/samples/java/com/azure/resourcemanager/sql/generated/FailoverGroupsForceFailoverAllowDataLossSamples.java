@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FailoverGroups ForceFailoverAllowDataLoss. */
 public final class FailoverGroupsForceFailoverAllowDataLossSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/FailoverGroupForceFailoverAllowDataLoss.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupForceFailoverAllowDataLoss.json
      */
     /**
      * Sample code: Forced failover of a failover group allowing data loss.

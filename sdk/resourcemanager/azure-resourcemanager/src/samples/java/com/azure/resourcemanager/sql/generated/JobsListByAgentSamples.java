@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Jobs ListByAgent. */
 public final class JobsListByAgentSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ListJobsByAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobsByAgent.json
      */
     /**
      * Sample code: List jobs in a job agent.

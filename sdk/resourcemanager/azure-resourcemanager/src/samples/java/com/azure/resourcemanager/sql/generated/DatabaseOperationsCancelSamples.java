@@ -10,7 +10,7 @@ import java.util.UUID;
 /** Samples for DatabaseOperations Cancel. */
 public final class DatabaseOperationsCancelSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/CancelDatabaseOperation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CancelDatabaseOperation.json
      */
     /**
      * Sample code: Cancel the database management operation.

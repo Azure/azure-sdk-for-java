@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerDnsAliases CreateOrUpdate. */
 public final class ServerDnsAliasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ServerDnsAliasCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDnsAliasCreateOrUpdate.json
      */
     /**
      * Sample code: Create server DNS alias.

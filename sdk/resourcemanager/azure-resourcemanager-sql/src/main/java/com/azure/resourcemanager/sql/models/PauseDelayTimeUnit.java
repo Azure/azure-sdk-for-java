@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PauseDelayTimeUnit. */
+/** Unit of time that delay is expressed in. */
 public final class PauseDelayTimeUnit extends ExpandableStringEnum<PauseDelayTimeUnit> {
     /** Static value Minutes for PauseDelayTimeUnit. */
     public static final PauseDelayTimeUnit MINUTES = fromString("Minutes");

@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for JobTargetGroups CreateOrUpdate. */
 public final class JobTargetGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobTargetGroupMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMin.json
      */
     /**
      * Sample code: Create or update a target group with minimal properties.
@@ -38,7 +38,7 @@ public final class JobTargetGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobTargetGroupMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMax.json
      */
     /**
      * Sample code: Create or update a target group with all properties.
@@ -83,7 +83,6 @@ public final class JobTargetGroupsCreateOrUpdateSamples {
                                     .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
                                     .withType(JobTargetType.SQL_SHARD_MAP)
                                     .withServerName("server3")
-                                    .withDatabaseName("database1")
                                     .withShardMapName("shardMap1")
                                     .withRefreshCredential(
                                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/credentials/testCredential"))),

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstanceOperations ListByManagedInstance. */
 public final class ManagedInstanceOperationsListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ListManagedInstanceOperations.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListManagedInstanceOperations.json
      */
     /**
      * Sample code: List the managed instance management operations.

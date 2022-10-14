@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LongTermRetentionBackups ListByResourceGroupServer. */
 public final class LongTermRetentionBackupsListByResourceGroupServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ResourceGroupBasedLongTermRetentionBackupListByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ResourceGroupBasedLongTermRetentionBackupListByServer.json
      */
     /**
      * Sample code: Get all long term retention backups under the server.

@@ -22,6 +22,10 @@ public final class PartnerRegionInfo {
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceFailoverGroupReplicationRole replicationRole;
 
+    /** Creates an instance of PartnerRegionInfo class. */
+    public PartnerRegionInfo() {
+    }
+
     /**
      * Get the location property: Geo location of the partner managed instances.
      *

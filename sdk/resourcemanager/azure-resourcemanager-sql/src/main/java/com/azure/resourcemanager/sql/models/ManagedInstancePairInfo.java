@@ -22,6 +22,10 @@ public final class ManagedInstancePairInfo {
     @JsonProperty(value = "partnerManagedInstanceId")
     private String partnerManagedInstanceId;
 
+    /** Creates an instance of ManagedInstancePairInfo class. */
+    public ManagedInstancePairInfo() {
+    }
+
     /**
      * Get the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
      *

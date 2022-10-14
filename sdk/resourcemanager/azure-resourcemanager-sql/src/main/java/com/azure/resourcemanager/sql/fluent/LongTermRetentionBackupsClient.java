@@ -14,13 +14,971 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupInner;
-import com.azure.resourcemanager.sql.models.LongTermRetentionDatabaseState;
+import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupOperationResultInner;
+import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameters;
+import com.azure.resourcemanager.sql.models.DatabaseState;
+import com.azure.resourcemanager.sql.models.UpdateLongTermRetentionBackupParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LongTermRetentionBackupsClient. */
 public interface LongTermRetentionBackupsClient {
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByLocation(
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByServer(
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> getAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LongTermRetentionBackupInner> getWithResponse(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        Context context);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner get(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        Context context);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        Context context);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> copyWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        CopyLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopyAsync(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopy(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopy(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters,
+            Context context);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupOperationResultInner> copyAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        CopyLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner copy(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        CopyLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Copy an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner copy(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        CopyLongTermRetentionBackupParameters parameters,
+        Context context);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdateAsync(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdate(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdate(
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters,
+            Context context);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupOperationResultInner> updateAsync(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner update(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
+
+    /**
+     * Updates an existing long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner update(
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters,
+        Context context);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName, String locationName);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName,
+        String locationName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
+        String resourceGroupName, String locationName, String longTermRetentionServerName);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
+        String resourceGroupName, String locationName, String longTermRetentionServerName);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
+     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState,
+        Context context);
+
     /**
      * Gets a long term retention backup.
      *
@@ -74,28 +1032,6 @@ public interface LongTermRetentionBackupsClient {
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupInner getByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Gets a long term retention backup.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,6 +1046,28 @@ public interface LongTermRetentionBackupsClient {
         String longTermRetentionDatabaseName,
         String backupName,
         Context context);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner getByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName);
 
     /**
      * Deletes a long term retention backup.
@@ -268,653 +1226,354 @@ public interface LongTermRetentionBackupsClient {
         Context context);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Copy an existing long term retention backup to a different server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState);
-
-    /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName);
-
-    /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName);
-
-    /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
-        Context context);
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState);
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName, String locationName);
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName, String locationName);
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
-        Context context);
-
-    /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState);
-
-    /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
-        String resourceGroupName, String locationName, String longTermRetentionServerName);
-
-    /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
-        String resourceGroupName, String locationName, String longTermRetentionServerName);
-
-    /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
-        Context context);
-
-    /**
-     * Gets a long term retention backup.
-     *
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Gets a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupInner> getAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Gets a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupInner get(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Gets a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LongTermRetentionBackupInner> getWithResponse(
+    Mono<Response<Flux<ByteBuffer>>> copyByResourceGroupWithResponseAsync(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName,
-        Context context);
+        CopyLongTermRetentionBackupParameters parameters);
 
     /**
-     * Deletes a long term retention backup.
+     * Copy an existing long term retention backup to a different server.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopyByResourceGroupAsync(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters);
 
     /**
-     * Deletes a long term retention backup.
+     * Copy an existing long term retention backup to a different server.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopyByResourceGroup(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters);
 
     /**
-     * Deletes a long term retention backup.
+     * Copy an existing long term retention backup to a different server.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginCopyByResourceGroup(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            CopyLongTermRetentionBackupParameters parameters,
+            Context context);
+
+    /**
+     * Copy an existing long term retention backup to a different server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupOperationResultInner> copyByResourceGroupAsync(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName,
-        Context context);
+        CopyLongTermRetentionBackupParameters parameters);
 
     /**
-     * Deletes a long term retention backup.
+     * Copy an existing long term retention backup to a different server.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
      * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
-
-    /**
-     * Deletes a long term retention backup.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
+    LongTermRetentionBackupOperationResultInner copyByResourceGroup(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName,
-        Context context);
+        CopyLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Copy an existing long term retention backup to a different server.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param backupName The backup name.
+     * @param parameters The parameters needed for long term retention copy request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner copyByResourceGroup(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState);
+        String backupName,
+        CopyLongTermRetentionBackupParameters parameters,
+        Context context);
 
     /**
-     * Lists all long term retention backups for a database.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
-
-    /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
-        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
-
-    /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateByResourceGroupWithResponseAsync(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
-        Context context);
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
-        String locationName, Boolean onlyLatestPerDatabase, LongTermRetentionDatabaseState databaseState);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdateByResourceGroupAsync(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdateByResourceGroup(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists the long term retention backups for a given location.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName);
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByLocation(
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
+        beginUpdateByResourceGroup(
+            String resourceGroupName,
+            String locationName,
+            String longTermRetentionServerName,
+            String longTermRetentionDatabaseName,
+            String backupName,
+            UpdateLongTermRetentionBackupParameters parameters,
+            Context context);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupOperationResultInner> updateByResourceGroupAsync(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState);
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
+     * @return a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner updateByResourceGroup(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters);
 
     /**
-     * Lists the long term retention backups for a given server.
+     * Updates an existing long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName);
-
-    /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param longTermRetentionDatabaseName The name of the database.
+     * @param backupName The backup name.
+     * @param parameters The requested backup resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     * @return a LongTermRetentionBackup operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByServer(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupOperationResultInner updateByResourceGroup(
+        String resourceGroupName,
         String locationName,
         String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        LongTermRetentionDatabaseState databaseState,
+        String longTermRetentionDatabaseName,
+        String backupName,
+        UpdateLongTermRetentionBackupParameters parameters,
         Context context);
 }

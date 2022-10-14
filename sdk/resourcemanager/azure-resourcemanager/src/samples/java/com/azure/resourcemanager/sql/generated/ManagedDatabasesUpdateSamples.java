@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ManagedDatabases Update. */
 public final class ManagedDatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMax.json
      */
     /**
      * Sample code: Updates a managed database with maximal properties.
@@ -35,7 +35,7 @@ public final class ManagedDatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMin.json
      */
     /**
      * Sample code: Updates a managed database with minimal properties.

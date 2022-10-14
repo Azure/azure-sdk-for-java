@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for InstanceFailoverGroups CreateOrUpdate. */
 public final class InstanceFailoverGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/InstanceFailoverGroupCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InstanceFailoverGroupCreateOrUpdate.json
      */
     /**
      * Sample code: Create failover group.

@@ -10,6 +10,10 @@ import com.azure.core.management.ProxyResource;
 /** A job version. */
 @Immutable
 public final class JobVersionInner extends ProxyResource {
+    /** Creates an instance of JobVersionInner class. */
+    public JobVersionInner() {
+    }
+
     /**
      * Validates the instance.
      *

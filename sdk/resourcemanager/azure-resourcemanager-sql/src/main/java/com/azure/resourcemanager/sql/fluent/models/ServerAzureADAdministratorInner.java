@@ -19,6 +19,10 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdministratorProperties innerProperties;
 
+    /** Creates an instance of ServerAzureADAdministratorInner class. */
+    public ServerAzureADAdministratorInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *
@@ -127,20 +131,6 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
      */
     public Boolean azureADOnlyAuthentication() {
         return this.innerProperties() == null ? null : this.innerProperties().azureADOnlyAuthentication();
-    }
-
-    /**
-     * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
-     * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
-     * @return the ServerAzureADAdministratorInner object itself.
-     */
-    public ServerAzureADAdministratorInner withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AdministratorProperties();
-        }
-        this.innerProperties().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
-        return this;
     }
 
     /**

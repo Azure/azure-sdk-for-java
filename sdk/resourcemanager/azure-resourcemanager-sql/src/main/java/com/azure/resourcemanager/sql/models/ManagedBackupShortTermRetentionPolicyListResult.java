@@ -24,6 +24,10 @@ public final class ManagedBackupShortTermRetentionPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ManagedBackupShortTermRetentionPolicyListResult class. */
+    public ManagedBackupShortTermRetentionPolicyListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

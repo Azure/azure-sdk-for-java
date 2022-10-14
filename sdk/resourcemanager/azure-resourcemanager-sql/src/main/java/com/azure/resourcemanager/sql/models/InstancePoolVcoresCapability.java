@@ -40,6 +40,10 @@ public final class InstancePoolVcoresCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of InstancePoolVcoresCapability class. */
+    public InstancePoolVcoresCapability() {
+    }
+
     /**
      * Get the name property: The virtual cores identifier.
      *

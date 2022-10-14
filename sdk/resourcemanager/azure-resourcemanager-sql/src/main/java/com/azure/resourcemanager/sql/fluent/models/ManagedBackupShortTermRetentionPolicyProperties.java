@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedBackupShortTermRetentionPolicyProperties {
     /*
-     * The backup retention period in days. This is how many days Point-in-Time
-     * Restore will be supported.
+     * The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
      */
     @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
+
+    /** Creates an instance of ManagedBackupShortTermRetentionPolicyProperties class. */
+    public ManagedBackupShortTermRetentionPolicyProperties() {
+    }
 
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore

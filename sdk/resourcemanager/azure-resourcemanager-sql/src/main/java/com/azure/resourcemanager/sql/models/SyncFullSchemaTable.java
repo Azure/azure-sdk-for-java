@@ -41,6 +41,10 @@ public final class SyncFullSchemaTable {
     @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
+    /** Creates an instance of SyncFullSchemaTable class. */
+    public SyncFullSchemaTable() {
+    }
+
     /**
      * Get the columns property: List of columns in the table of database full schema.
      *

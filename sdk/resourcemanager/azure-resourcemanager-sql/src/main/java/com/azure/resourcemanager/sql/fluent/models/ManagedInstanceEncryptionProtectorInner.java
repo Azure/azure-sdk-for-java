@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
     /*
-     * Kind of encryption protector. This is metadata used for the Azure portal
-     * experience.
+     * Kind of encryption protector. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
@@ -24,6 +23,10 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
      */
     @JsonProperty(value = "properties")
     private ManagedInstanceEncryptionProtectorProperties innerProperties;
+
+    /** Creates an instance of ManagedInstanceEncryptionProtectorInner class. */
+    public ManagedInstanceEncryptionProtectorInner() {
+    }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
@@ -105,6 +108,29 @@ public final class ManagedInstanceEncryptionProtectorInner extends ProxyResource
      */
     public String thumbprint() {
         return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRotationEnabled();
+    }
+
+    /**
+     * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @param autoRotationEnabled the autoRotationEnabled value to set.
+     * @return the ManagedInstanceEncryptionProtectorInner object itself.
+     */
+    public ManagedInstanceEncryptionProtectorInner withAutoRotationEnabled(Boolean autoRotationEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceEncryptionProtectorProperties();
+        }
+        this.innerProperties().withAutoRotationEnabled(autoRotationEnabled);
+        return this;
     }
 
     /**

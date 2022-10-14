@@ -26,6 +26,10 @@ public final class InstancePoolInner extends Resource {
     @JsonProperty(value = "properties")
     private InstancePoolProperties innerProperties;
 
+    /** Creates an instance of InstancePoolInner class. */
+    public InstancePoolInner() {
+    }
+
     /**
      * Get the sku property: The name and tier of the SKU.
      *

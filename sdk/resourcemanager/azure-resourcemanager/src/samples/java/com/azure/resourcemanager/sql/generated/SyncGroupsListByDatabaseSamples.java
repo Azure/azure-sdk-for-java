@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncGroups ListByDatabase. */
 public final class SyncGroupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupListByDatabase.json
      */
     /**
      * Sample code: List sync groups under a given database.

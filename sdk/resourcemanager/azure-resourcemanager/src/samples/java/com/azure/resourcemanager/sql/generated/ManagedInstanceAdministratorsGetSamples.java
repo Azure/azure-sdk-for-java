@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.sql.models.AdministratorName;
 
 /** Samples for ManagedInstanceAdministrators Get. */
 public final class ManagedInstanceAdministratorsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ManagedInstanceAdministratorGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorGet.json
      */
     /**
      * Sample code: Get administrator of managed instance.
@@ -22,6 +23,7 @@ public final class ManagedInstanceAdministratorsGetSamples {
             .manager()
             .serviceClient()
             .getManagedInstanceAdministrators()
-            .getWithResponse("Default-SQL-SouthEastAsia", "managedInstance", Context.NONE);
+            .getWithResponse(
+                "Default-SQL-SouthEastAsia", "managedInstance", AdministratorName.ACTIVE_DIRECTORY, Context.NONE);
     }
 }

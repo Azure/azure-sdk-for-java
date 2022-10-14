@@ -34,6 +34,10 @@ public final class AutomaticTuningServerOptions {
     @JsonProperty(value = "reasonDesc", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningServerReason reasonDesc;
 
+    /** Creates an instance of AutomaticTuningServerOptions class. */
+    public AutomaticTuningServerOptions() {
+    }
+
     /**
      * Get the desiredState property: Automatic tuning option desired state.
      *

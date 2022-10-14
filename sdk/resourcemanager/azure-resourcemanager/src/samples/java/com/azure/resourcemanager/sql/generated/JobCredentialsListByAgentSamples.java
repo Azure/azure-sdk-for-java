@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobCredentials ListByAgent. */
 public final class JobCredentialsListByAgentSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ListJobCredentialsByAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobCredentialsByAgent.json
      */
     /**
      * Sample code: List credentials in a job agent.

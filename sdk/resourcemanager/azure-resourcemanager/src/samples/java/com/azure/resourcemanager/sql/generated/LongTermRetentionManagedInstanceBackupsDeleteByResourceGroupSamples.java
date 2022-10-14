@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LongTermRetentionManagedInstanceBackups DeleteByResourceGroup. */
 public final class LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
      */
     /**
      * Sample code: Delete the long term retention backup.

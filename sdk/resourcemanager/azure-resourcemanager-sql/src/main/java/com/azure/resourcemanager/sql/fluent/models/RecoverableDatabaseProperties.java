@@ -8,17 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a recoverable database. */
+/** The recoverable database's properties. */
 @Immutable
 public final class RecoverableDatabaseProperties {
     /*
-     * The edition of the database
+     * The edition of the database.
      */
     @JsonProperty(value = "edition", access = JsonProperty.Access.WRITE_ONLY)
     private String edition;
 
     /*
-     * The service level objective name of the database
+     * The service level objective name of the database.
      */
     @JsonProperty(value = "serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
@@ -30,10 +30,14 @@ public final class RecoverableDatabaseProperties {
     private String elasticPoolName;
 
     /*
-     * The last available backup date of the database (ISO8601 format)
+     * The last available backup date.
      */
     @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAvailableBackupDate;
+
+    /** Creates an instance of RecoverableDatabaseProperties class. */
+    public RecoverableDatabaseProperties() {
+    }
 
     /**
      * Get the edition property: The edition of the database.
@@ -63,7 +67,7 @@ public final class RecoverableDatabaseProperties {
     }
 
     /**
-     * Get the lastAvailableBackupDate property: The last available backup date of the database (ISO8601 format).
+     * Get the lastAvailableBackupDate property: The last available backup date.
      *
      * @return the lastAvailableBackupDate value.
      */

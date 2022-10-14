@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseStatus. */
+/** The status of the database. */
 public final class DatabaseStatus extends ExpandableStringEnum<DatabaseStatus> {
     /** Static value Online for DatabaseStatus. */
     public static final DatabaseStatus ONLINE = fromString("Online");
@@ -74,6 +74,15 @@ public final class DatabaseStatus extends ExpandableStringEnum<DatabaseStatus> {
 
     /** Static value Disabled for DatabaseStatus. */
     public static final DatabaseStatus DISABLED = fromString("Disabled");
+
+    /** Static value Stopping for DatabaseStatus. */
+    public static final DatabaseStatus STOPPING = fromString("Stopping");
+
+    /** Static value Stopped for DatabaseStatus. */
+    public static final DatabaseStatus STOPPED = fromString("Stopped");
+
+    /** Static value Starting for DatabaseStatus. */
+    public static final DatabaseStatus STARTING = fromString("Starting");
 
     /**
      * Creates or finds a DatabaseStatus from its string representation.

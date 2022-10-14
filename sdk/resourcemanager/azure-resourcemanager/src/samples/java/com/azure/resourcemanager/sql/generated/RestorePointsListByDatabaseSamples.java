@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorePoints ListByDatabase. */
 public final class RestorePointsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DatabaseRestorePointsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsListByDatabase.json
      */
     /**
      * Sample code: List database restore points.
@@ -26,7 +26,7 @@ public final class RestorePointsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DataWarehouseRestorePointsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataWarehouseRestorePointsListByDatabase.json
      */
     /**
      * Sample code: List datawarehouse database restore points.

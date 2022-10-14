@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedDatabases ListByInstance. */
 public final class ManagedDatabasesListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseListByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseListByManagedInstance.json
      */
     /**
      * Sample code: List databases by managed instances.

@@ -24,6 +24,10 @@ public final class JobStepListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of JobStepListResult class. */
+    public JobStepListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

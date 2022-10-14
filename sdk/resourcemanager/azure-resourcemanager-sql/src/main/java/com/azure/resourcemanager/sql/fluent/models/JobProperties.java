@@ -29,6 +29,10 @@ public final class JobProperties {
     @JsonProperty(value = "schedule")
     private JobSchedule schedule;
 
+    /** Creates an instance of JobProperties class. */
+    public JobProperties() {
+    }
+
     /**
      * Get the description property: User-defined description of the job.
      *

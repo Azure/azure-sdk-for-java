@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -46,6 +47,16 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
      */
     @JsonProperty(value = "backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupExpirationTime;
+
+    /*
+     * The storage redundancy type of the backup
+     */
+    @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private BackupStorageRedundancy backupStorageRedundancy;
+
+    /** Creates an instance of ManagedInstanceLongTermRetentionBackupProperties class. */
+    public ManagedInstanceLongTermRetentionBackupProperties() {
+    }
 
     /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
@@ -99,6 +110,15 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
      */
     public OffsetDateTime backupExpirationTime() {
         return this.backupExpirationTime;
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.backupStorageRedundancy;
     }
 
     /**

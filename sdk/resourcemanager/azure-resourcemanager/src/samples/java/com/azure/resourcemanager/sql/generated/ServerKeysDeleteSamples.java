@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerKeys Delete. */
 public final class ServerKeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/ServerKeyDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyDelete.json
      */
     /**
      * Sample code: Delete the server key.

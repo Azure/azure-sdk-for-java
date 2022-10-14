@@ -16,6 +16,10 @@ public final class RecoverableManagedDatabaseProperties {
     @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAvailableBackupDate;
 
+    /** Creates an instance of RecoverableManagedDatabaseProperties class. */
+    public RecoverableManagedDatabaseProperties() {
+    }
+
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
      *

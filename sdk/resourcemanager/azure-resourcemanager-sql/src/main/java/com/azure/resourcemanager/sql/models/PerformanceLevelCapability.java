@@ -22,6 +22,10 @@ public final class PerformanceLevelCapability {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelUnit unit;
 
+    /** Creates an instance of PerformanceLevelCapability class. */
+    public PerformanceLevelCapability() {
+    }
+
     /**
      * Get the value property: Performance level value.
      *

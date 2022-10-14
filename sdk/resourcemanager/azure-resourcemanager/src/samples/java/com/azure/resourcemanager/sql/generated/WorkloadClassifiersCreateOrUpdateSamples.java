@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.fluent.models.WorkloadClassifierInner;
 /** Samples for WorkloadClassifiers CreateOrUpdate. */
 public final class WorkloadClassifiersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/CreateOrUpdateWorkloadClassifierMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateWorkloadClassifierMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
@@ -35,7 +35,7 @@ public final class WorkloadClassifiersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/CreateOrUpdateWorkloadClassifierMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateWorkloadClassifierMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.

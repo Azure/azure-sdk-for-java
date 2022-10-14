@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobSteps Get. */
 public final class JobStepsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/GetJobStepByJob.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetJobStepByJob.json
      */
     /**
      * Sample code: Get the latest version of a job step.

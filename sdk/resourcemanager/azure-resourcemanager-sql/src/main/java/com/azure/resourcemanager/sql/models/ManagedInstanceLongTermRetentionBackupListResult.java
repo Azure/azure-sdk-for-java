@@ -24,6 +24,10 @@ public final class ManagedInstanceLongTermRetentionBackupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ManagedInstanceLongTermRetentionBackupListResult class. */
+    public ManagedInstanceLongTermRetentionBackupListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

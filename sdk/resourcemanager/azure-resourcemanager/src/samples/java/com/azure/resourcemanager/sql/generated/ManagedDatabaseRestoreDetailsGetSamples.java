@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.RestoreDetailsName;
 /** Samples for ManagedDatabaseRestoreDetails Get. */
 public final class ManagedDatabaseRestoreDetailsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ManagedDatabaseRestoreDetails.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseRestoreDetails.json
      */
     /**
      * Sample code: Managed database restore details.

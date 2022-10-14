@@ -6,8 +6,10 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.PrivateEndpointProperty;
+import com.azure.resourcemanager.sql.models.PrivateEndpointProvisioningState;
 import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of a private endpoint connection. */
 @Fluent
@@ -19,6 +21,12 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpointProperty privateEndpoint;
 
     /*
+     * Group IDs.
+     */
+    @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> groupIds;
+
+    /*
      * Connection state of the private endpoint connection.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
@@ -28,7 +36,11 @@ public final class PrivateEndpointConnectionProperties {
      * State of the private endpoint connection.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private PrivateEndpointProvisioningState provisioningState;
+
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
@@ -48,6 +60,15 @@ public final class PrivateEndpointConnectionProperties {
     public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
+    }
+
+    /**
+     * Get the groupIds property: Group IDs.
+     *
+     * @return the groupIds value.
+     */
+    public List<String> groupIds() {
+        return this.groupIds;
     }
 
     /**
@@ -76,7 +97,7 @@ public final class PrivateEndpointConnectionProperties {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public PrivateEndpointProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

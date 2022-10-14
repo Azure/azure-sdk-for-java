@@ -21,6 +21,50 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in InstanceFailoverGroupsClient. */
 public interface InstanceFailoverGroupsClient {
     /**
+     * Lists the failover groups in a location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<InstanceFailoverGroupInner> listByLocationAsync(String resourceGroupName, String locationName);
+
+    /**
+     * Lists the failover groups in a location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstanceFailoverGroupInner> listByLocation(String resourceGroupName, String locationName);
+
+    /**
+     * Lists the failover groups in a location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstanceFailoverGroupInner> listByLocation(
+        String resourceGroupName, String locationName, Context context);
+
+    /**
      * Gets a failover group.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -58,21 +102,6 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InstanceFailoverGroupInner get(String resourceGroupName, String locationName, String failoverGroupName);
-
-    /**
-     * Gets a failover group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,6 +111,21 @@ public interface InstanceFailoverGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<InstanceFailoverGroupInner> getWithResponse(
         String resourceGroupName, String locationName, String failoverGroupName, Context context);
+
+    /**
+     * Gets a failover group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    InstanceFailoverGroupInner get(String resourceGroupName, String locationName, String failoverGroupName);
 
     /**
      * Creates or updates a failover group.
@@ -320,50 +364,6 @@ public interface InstanceFailoverGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String locationName, String failoverGroupName, Context context);
-
-    /**
-     * Lists the failover groups in a location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<InstanceFailoverGroupInner> listByLocationAsync(String resourceGroupName, String locationName);
-
-    /**
-     * Lists the failover groups in a location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstanceFailoverGroupInner> listByLocation(String resourceGroupName, String locationName);
-
-    /**
-     * Lists the failover groups in a location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstanceFailoverGroupInner> listByLocation(
-        String resourceGroupName, String locationName, Context context);
 
     /**
      * Fails over from the current primary managed instance to this managed instance.

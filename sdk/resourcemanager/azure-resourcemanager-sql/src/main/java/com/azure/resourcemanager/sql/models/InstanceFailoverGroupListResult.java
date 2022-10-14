@@ -24,6 +24,10 @@ public final class InstanceFailoverGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of InstanceFailoverGroupListResult class. */
+    public InstanceFailoverGroupListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

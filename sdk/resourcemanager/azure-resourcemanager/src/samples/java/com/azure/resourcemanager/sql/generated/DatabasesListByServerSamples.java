@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases ListByServer. */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ListVCoreDatabasesByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListVCoreDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of databases.
@@ -22,6 +22,6 @@ public final class DatabasesListByServerSamples {
             .manager()
             .serviceClient()
             .getDatabases()
-            .listByServer("Default-SQL-SouthEastAsia", "testsvr", Context.NONE);
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, Context.NONE);
     }
 }

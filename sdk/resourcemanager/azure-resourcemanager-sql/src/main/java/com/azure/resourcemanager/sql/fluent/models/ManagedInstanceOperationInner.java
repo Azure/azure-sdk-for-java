@@ -4,20 +4,26 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationParametersPair;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationSteps;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A managed instance operation. */
-@Fluent
+@Immutable
 public final class ManagedInstanceOperationInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private ManagedInstanceOperationProperties innerProperties;
+
+    /** Creates an instance of ManagedInstanceOperationInner class. */
+    public ManagedInstanceOperationInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -143,6 +149,24 @@ public final class ManagedInstanceOperationInner extends ProxyResource {
      */
     public Boolean isCancellable() {
         return this.innerProperties() == null ? null : this.innerProperties().isCancellable();
+    }
+
+    /**
+     * Get the operationParameters property: The operation parameters.
+     *
+     * @return the operationParameters value.
+     */
+    public ManagedInstanceOperationParametersPair operationParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationParameters();
+    }
+
+    /**
+     * Get the operationSteps property: The operation steps.
+     *
+     * @return the operationSteps value.
+     */
+    public ManagedInstanceOperationSteps operationSteps() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationSteps();
     }
 
     /**

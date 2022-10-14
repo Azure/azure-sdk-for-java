@@ -24,6 +24,10 @@ public final class SyncGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SyncGroupListResult class. */
+    public SyncGroupListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

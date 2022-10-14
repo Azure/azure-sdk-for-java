@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for FailoverGroups Update. */
 public final class FailoverGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/FailoverGroupUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupUpdate.json
      */
     /**
      * Sample code: Update failover group.
