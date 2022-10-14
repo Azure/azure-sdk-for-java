@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
@@ -86,7 +88,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
                 (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(azure));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
         });
     }
 
@@ -98,7 +100,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
                 (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(arm));
-            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
         });
     }
 
@@ -112,13 +114,11 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
                        .orElse(null);
     }
 
-    private Object[] expectedHeaders(AadClientRegistrationRepository repository) {
-        return new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes())
-            .getHttpHeaders(null)
-            .entrySet()
-            .stream()
-            .filter(entry -> !entry.getKey().equals("client-request-id"))
-            .toArray();
+    private Object[] expectedHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("x-client-SKU", Collections.singletonList(AzureSpringIdentifier.AZURE_SPRING_AAD));
+        httpHeaders.put("x-client-VER", Collections.singletonList(AzureSpringIdentifier.VERSION));
+        return httpHeaders.entrySet().toArray();
     }
 
     private MultiValueMap<String, String> convertedBodyOf(AadClientRegistrationRepository repository,

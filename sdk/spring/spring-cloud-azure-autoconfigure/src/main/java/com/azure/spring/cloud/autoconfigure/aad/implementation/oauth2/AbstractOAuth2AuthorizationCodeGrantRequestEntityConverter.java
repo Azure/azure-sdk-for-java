@@ -38,7 +38,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
      * Additional default headers information.
      * @return HttpHeaders
      */
-    public HttpHeaders getHttpHeaders(OAuth2AuthorizationCodeGrantRequest request) {
+    protected HttpHeaders getHttpHeaders(OAuth2AuthorizationCodeGrantRequest request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put("x-client-SKU", Collections.singletonList(getApplicationId()));
         httpHeaders.put("x-client-VER", Collections.singletonList(AzureSpringIdentifier.VERSION));
@@ -51,7 +51,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
      * @param request OAuth2AuthorizationCodeGrantRequest
      * @return MultiValueMap
      */
-    public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
+    protected MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
         return EMPTY_MULTI_VALUE_MAP;
     }
 }
