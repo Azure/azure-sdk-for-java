@@ -7,6 +7,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
+
 class FileInputStreamTest extends APISpec {
     DataLakeFileClient fc
 
@@ -38,23 +40,22 @@ class FileInputStreamTest extends APISpec {
     @Unroll
     def "BlobInputStream read to large buffer"() {
         setup:
-        byte[] data = getRandomByteArray(dataSize)
+        def data = getRandomByteArray(dataSize)
         fc.upload(new ByteArrayInputStream(data), data.length, true)
         def is = fc.openInputStream().getInputStream()
-        byte[] outArr = new byte[10 * 1024 * 1024]
+        def outArr = new byte[10 * 1024 * 1024]
+        def emptyArr = new byte[outArr.length - dataSize]
 
         when:
         def count = is.read(outArr)
 
         then:
-        for (int i=0; i < dataSize; i++) {
-            assert data[i] == outArr[i]
-        }
-        for (int i=dataSize; i < (outArr.length); i++) {
-            assert outArr[i] == (byte) 0
-        }
-
         count == retVal
+
+        // ByteBuffer can represent a range of a byte array and offer an optimized comparison compared to comparing
+        // the arrays byte-by-byte.
+        ByteBuffer.wrap(data, 0, dataSize) == ByteBuffer.wrap(outArr, 0, dataSize)
+        ByteBuffer.wrap(emptyArr) == ByteBuffer.wrap(outArr, dataSize, outArr.length)
 
         where:
         dataSize        || retVal

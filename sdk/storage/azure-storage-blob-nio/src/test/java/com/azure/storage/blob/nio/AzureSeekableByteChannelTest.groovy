@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.nio;
+package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.BlobOutputStream
-import org.mockito.Answers
 import org.mockito.Mockito
 import spock.lang.Unroll
 
@@ -56,7 +55,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (count < sourceFileSize) {
-            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            def buffer = ByteBuffer.allocate(1024 + rand.nextInt(1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
             count += readAmount
@@ -76,10 +75,10 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (System.currentTimeMillis() < timeLimit) { // ensures test duration is bounded
-            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            def buffer = ByteBuffer.allocate(1024 + rand.nextInt(1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             if (readAmount == -1) {
-                break; // reached EOF
+                break // reached EOF
             }
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
         }
