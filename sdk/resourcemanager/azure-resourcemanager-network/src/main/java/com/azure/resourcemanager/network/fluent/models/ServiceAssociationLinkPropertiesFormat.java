@@ -42,6 +42,10 @@ public final class ServiceAssociationLinkPropertiesFormat {
     @JsonProperty(value = "locations")
     private List<String> locations;
 
+    /** Creates an instance of ServiceAssociationLinkPropertiesFormat class. */
+    public ServiceAssociationLinkPropertiesFormat() {
+    }
+
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
      *

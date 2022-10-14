@@ -138,6 +138,10 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     @JsonProperty(value = "peeredConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PeerExpressRouteCircuitConnectionInner> peeredConnections;
 
+    /** Creates an instance of ExpressRouteCircuitPeeringPropertiesFormatInner class. */
+    public ExpressRouteCircuitPeeringPropertiesFormatInner() {
+    }
+
     /**
      * Get the peeringType property: The peering type.
      *

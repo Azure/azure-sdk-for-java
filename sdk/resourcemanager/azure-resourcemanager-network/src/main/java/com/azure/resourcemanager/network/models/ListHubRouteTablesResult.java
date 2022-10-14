@@ -24,6 +24,10 @@ public final class ListHubRouteTablesResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListHubRouteTablesResult class. */
+    public ListHubRouteTablesResult() {
+    }
+
     /**
      * Get the value property: List of RouteTables.
      *

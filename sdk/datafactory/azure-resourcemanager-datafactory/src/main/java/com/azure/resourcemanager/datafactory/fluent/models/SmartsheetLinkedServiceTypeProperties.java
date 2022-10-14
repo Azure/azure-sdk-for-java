@@ -25,6 +25,10 @@ public final class SmartsheetLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SmartsheetLinkedServiceTypeProperties class. */
+    public SmartsheetLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the apiToken property: The api token for the Smartsheet source.
      *

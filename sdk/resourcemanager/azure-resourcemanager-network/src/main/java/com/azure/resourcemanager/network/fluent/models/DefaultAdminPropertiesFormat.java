@@ -83,6 +83,10 @@ public final class DefaultAdminPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of DefaultAdminPropertiesFormat class. */
+    public DefaultAdminPropertiesFormat() {
+    }
+
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
      *

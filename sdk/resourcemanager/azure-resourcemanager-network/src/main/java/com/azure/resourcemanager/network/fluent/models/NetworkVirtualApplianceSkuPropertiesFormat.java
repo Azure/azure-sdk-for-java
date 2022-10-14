@@ -34,6 +34,10 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
     @JsonProperty(value = "availableScaleUnits")
     private List<NetworkVirtualApplianceSkuInstances> availableScaleUnits;
 
+    /** Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class. */
+    public NetworkVirtualApplianceSkuPropertiesFormat() {
+    }
+
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.
      *

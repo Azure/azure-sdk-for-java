@@ -24,6 +24,10 @@ public final class UpdateIntegrationRuntimeRequest {
     @JsonProperty(value = "updateDelayOffset")
     private String updateDelayOffset;
 
+    /** Creates an instance of UpdateIntegrationRuntimeRequest class. */
+    public UpdateIntegrationRuntimeRequest() {
+    }
+
     /**
      * Get the autoUpdate property: Enables or disables the auto-update feature of the self-hosted integration runtime.
      * See https://go.microsoft.com/fwlink/?linkid=854189.

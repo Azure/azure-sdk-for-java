@@ -27,6 +27,10 @@ public final class ExpressRouteCircuitConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRouteCircuitConnectionListResult class. */
+    public ExpressRouteCircuitConnectionListResult() {
+    }
+
     /**
      * Get the value property: The global reach connection associated with Private Peering in an ExpressRoute Circuit.
      *

@@ -24,6 +24,10 @@ public final class CatalogProperties extends CatalogUpdateProperties {
     @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
+    /** Creates an instance of CatalogProperties class. */
+    public CatalogProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

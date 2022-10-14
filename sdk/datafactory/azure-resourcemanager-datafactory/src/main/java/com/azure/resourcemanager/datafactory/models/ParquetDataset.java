@@ -23,6 +23,10 @@ public final class ParquetDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private ParquetDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of ParquetDataset class. */
+    public ParquetDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Parquet dataset properties.
      *

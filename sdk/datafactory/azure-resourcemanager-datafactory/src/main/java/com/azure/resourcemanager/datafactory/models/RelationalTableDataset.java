@@ -23,6 +23,10 @@ public final class RelationalTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private RelationalTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of RelationalTableDataset class. */
+    public RelationalTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Relational table dataset properties.
      *

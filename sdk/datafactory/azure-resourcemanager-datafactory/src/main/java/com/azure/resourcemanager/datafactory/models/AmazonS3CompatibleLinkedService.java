@@ -25,6 +25,10 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
     private AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties =
         new AmazonS3CompatibleLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonS3CompatibleLinkedService class. */
+    public AmazonS3CompatibleLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon S3 Compatible linked service properties.
      *

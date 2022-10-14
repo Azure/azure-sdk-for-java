@@ -28,6 +28,10 @@ public final class ForwardProxy {
     @JsonProperty(value = "customProtoHeaderName")
     private String customProtoHeaderName;
 
+    /** Creates an instance of ForwardProxy class. */
+    public ForwardProxy() {
+    }
+
     /**
      * Get the convention property: The convention used to determine the url of the request made.
      *

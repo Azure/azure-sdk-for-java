@@ -67,6 +67,10 @@ public final class FactoryProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /** Creates an instance of FactoryProperties class. */
+    public FactoryProperties() {
+    }
+
     /**
      * Get the provisioningState property: Factory provisioning state, example Succeeded.
      *

@@ -51,6 +51,10 @@ public final class OdbcLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of OdbcLinkedServiceTypeProperties class. */
+    public OdbcLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.

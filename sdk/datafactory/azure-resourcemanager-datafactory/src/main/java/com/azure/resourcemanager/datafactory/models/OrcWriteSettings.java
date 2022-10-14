@@ -28,6 +28,10 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
+    /** Creates an instance of OrcWriteSettings class. */
+    public OrcWriteSettings() {
+    }
+
     /**
      * Get the maxRowsPerFile property: Limit the written file's row count to be smaller than or equal to the specified
      * count. Type: integer (or Expression with resultType integer).

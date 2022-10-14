@@ -76,6 +76,13 @@ public interface NginxCertificate {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.nginx.fluent.models.NginxCertificateInner object.
      *
      * @return the inner object.
@@ -162,6 +169,53 @@ public interface NginxCertificate {
              * @return the next definition stage.
              */
             WithCreate withProperties(NginxCertificateProperties properties);
+        }
+    }
+    /**
+     * Begins update for the NginxCertificate resource.
+     *
+     * @return the stage of resource update.
+     */
+    NginxCertificate.Update update();
+
+    /** The template for NginxCertificate update. */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        NginxCertificate apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        NginxCertificate apply(Context context);
+    }
+    /** The NginxCertificate update stages. */
+    interface UpdateStages {
+        /** The stage of the NginxCertificate update allowing to specify tags. */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             *
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the NginxCertificate update allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The properties property..
+             *
+             * @param properties The properties property.
+             * @return the next definition stage.
+             */
+            Update withProperties(NginxCertificateProperties properties);
         }
     }
     /**

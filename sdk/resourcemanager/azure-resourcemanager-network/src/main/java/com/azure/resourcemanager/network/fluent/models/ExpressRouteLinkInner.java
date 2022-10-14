@@ -39,6 +39,10 @@ public final class ExpressRouteLinkInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ExpressRouteLinkInner class. */
+    public ExpressRouteLinkInner() {
+    }
+
     /**
      * Get the innerProperties property: ExpressRouteLink Resource Properties
      *
@@ -120,6 +124,15 @@ public final class ExpressRouteLinkInner extends SubResource {
      */
     public String rackId() {
         return this.innerProperties() == null ? null : this.innerProperties().rackId();
+    }
+
+    /**
+     * Get the coloLocation property: Cololocation for ExpressRoute Hybrid Direct.
+     *
+     * @return the coloLocation value.
+     */
+    public String coloLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().coloLocation();
     }
 
     /**

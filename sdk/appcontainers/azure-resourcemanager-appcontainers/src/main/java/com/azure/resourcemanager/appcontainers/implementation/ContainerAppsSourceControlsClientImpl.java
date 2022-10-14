@@ -101,7 +101,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
                 + "/{containerAppName}/sourcecontrols/{sourceControlName}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -459,22 +459,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SourceControl of a Container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner get(String resourceGroupName, String containerAppName, String sourceControlName) {
-        return getAsync(resourceGroupName, containerAppName, sourceControlName).block();
-    }
-
-    /**
-     * Get a SourceControl of a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -485,6 +469,22 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     public Response<SourceControlInner> getWithResponse(
         String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
         return getWithResponseAsync(resourceGroupName, containerAppName, sourceControlName, context).block();
+    }
+
+    /**
+     * Get a SourceControl of a Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param sourceControlName Name of the Container App SourceControl.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SourceControl of a Container App.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner get(String resourceGroupName, String containerAppName, String sourceControlName) {
+        return getWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE).getValue();
     }
 
     /**
@@ -1082,7 +1082,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,7 +1120,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

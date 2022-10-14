@@ -57,6 +57,10 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     @JsonProperty(value = "adminState")
     private LoadBalancerBackendAddressAdminState adminState;
 
+    /** Creates an instance of LoadBalancerBackendAddressPropertiesFormat class. */
+    public LoadBalancerBackendAddressPropertiesFormat() {
+    }
+
     /**
      * Get the virtualNetwork property: Reference to an existing virtual network.
      *

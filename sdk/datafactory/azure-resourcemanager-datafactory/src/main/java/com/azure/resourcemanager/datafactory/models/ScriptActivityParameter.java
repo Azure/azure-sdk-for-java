@@ -40,6 +40,10 @@ public final class ScriptActivityParameter {
     @JsonProperty(value = "size")
     private Integer size;
 
+    /** Creates an instance of ScriptActivityParameter class. */
+    public ScriptActivityParameter() {
+    }
+
     /**
      * Get the name property: The name of the parameter. Type: string (or Expression with resultType string).
      *

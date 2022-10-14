@@ -22,6 +22,10 @@ public final class HttpSource extends CopySource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of HttpSource class. */
+    public HttpSource() {
+    }
+
     /**
      * Get the httpRequestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP
      * server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with

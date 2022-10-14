@@ -194,20 +194,6 @@ public interface HubRouteTablesClient {
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return routeTable resource in a virtual hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HubRouteTableInner get(String resourceGroupName, String virtualHubName, String routeTableName);
-
-    /**
-     * Retrieves the details of a RouteTable.
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @param routeTableName The name of the RouteTable.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,6 +203,20 @@ public interface HubRouteTablesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HubRouteTableInner> getWithResponse(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context);
+
+    /**
+     * Retrieves the details of a RouteTable.
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param routeTableName The name of the RouteTable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return routeTable resource in a virtual hub.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HubRouteTableInner get(String resourceGroupName, String virtualHubName, String routeTableName);
 
     /**
      * Deletes a RouteTable.

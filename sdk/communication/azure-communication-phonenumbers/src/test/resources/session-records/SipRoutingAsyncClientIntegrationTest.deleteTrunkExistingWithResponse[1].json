@@ -1,0 +1,116 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9e2641ff-a6b6-4970-bc22-6a8509f32c09",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "981ms",
+      "MS-CV" : "XYqpkEbW80GUVnxnCyCZ7g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0ZoXZYgAAAADEteRiF3/TRI7U8BQvpY8GUFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"1.fqdn.com\":{\"sipSignalingPort\":1234},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567},\"delete.fqdn.com\":{\"sipSignalingPort\":5678}},\"routes\":[]}",
+      "Date" : "Thu, 21 Jul 2022 16:57:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "768affd9-b5d0-4b77-974c-be4128585cc4"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "223ms",
+      "MS-CV" : "+4VFjTyjl0WHDtV6FPvj1Q.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0Z4XZYgAAAACwFZWWResNS7c+2BCzwPYZUFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"1.fqdn.com\":{\"sipSignalingPort\":1234},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567},\"delete.fqdn.com\":{\"sipSignalingPort\":5678}},\"routes\":[]}",
+      "Date" : "Thu, 21 Jul 2022 16:57:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51a88a22-5b3e-416a-af77-d4973c49e4d8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "259ms",
+      "MS-CV" : "Z5obkpMDUEiKC0kDnF9ejQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0Z4XZYgAAAAAQonzxtXNsTIjSc+DP9QOpUFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"1.fqdn.com\":{\"sipSignalingPort\":1234},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567},\"delete.fqdn.com\":{\"sipSignalingPort\":5678}},\"routes\":[]}",
+      "Date" : "Thu, 21 Jul 2022 16:57:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3b748c2f-fca7-4193-aaec-c7d70bb77a91",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "412ms",
+      "MS-CV" : "Daeqw0rKXEG0zZHG/Oirwg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0aIXZYgAAAADhJnRLkBljQrMl0PXJ0WbWUFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"1.fqdn.com\":{\"sipSignalingPort\":1234},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567}},\"routes\":[]}",
+      "Date" : "Thu, 21 Jul 2022 16:57:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.8 (17; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c00560bf-abde-4a50-a32e-2f5c9a573bf0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
+      "X-Processing-Time" : "296ms",
+      "MS-CV" : "7cLnusEwjkCqCHQHdBlN4w.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0aIXZYgAAAAB/iID6gYnRRLD4+0K0Oge+UFJHMDFFREdFMDkxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"1.fqdn.com\":{\"sipSignalingPort\":1234},\"3.fqdn.com\":{\"sipSignalingPort\":3456},\"2.fqdn.com\":{\"sipSignalingPort\":2345},\"4.fqdn.com\":{\"sipSignalingPort\":4567}},\"routes\":[]}",
+      "Date" : "Thu, 21 Jul 2022 16:57:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

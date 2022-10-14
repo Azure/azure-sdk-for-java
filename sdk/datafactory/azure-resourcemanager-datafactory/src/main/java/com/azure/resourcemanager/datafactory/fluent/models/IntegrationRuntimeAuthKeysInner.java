@@ -22,6 +22,10 @@ public final class IntegrationRuntimeAuthKeysInner {
     @JsonProperty(value = "authKey2")
     private String authKey2;
 
+    /** Creates an instance of IntegrationRuntimeAuthKeysInner class. */
+    public IntegrationRuntimeAuthKeysInner() {
+    }
+
     /**
      * Get the authKey1 property: The primary integration runtime authentication key.
      *

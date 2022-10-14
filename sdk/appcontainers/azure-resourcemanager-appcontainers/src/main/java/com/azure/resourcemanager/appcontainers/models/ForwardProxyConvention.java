@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ForwardProxyConvention. */
+/** The convention used to determine the url of the request made. */
 public enum ForwardProxyConvention {
     /** Enum value NoProxy. */
     NO_PROXY("NoProxy"),
@@ -33,6 +33,9 @@ public enum ForwardProxyConvention {
      */
     @JsonCreator
     public static ForwardProxyConvention fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ForwardProxyConvention[] items = ForwardProxyConvention.values();
         for (ForwardProxyConvention item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ForwardProxyConvention {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

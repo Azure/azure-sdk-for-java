@@ -26,6 +26,10 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
+    /** Creates an instance of AmazonS3CompatibleLocation class. */
+    public AmazonS3CompatibleLocation() {
+    }
+
     /**
      * Get the bucketName property: Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with
      * resultType string).

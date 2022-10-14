@@ -3,10 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -138,6 +140,20 @@ public class ClientCertificateCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
         }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
     }
 
     @Test
@@ -162,6 +178,21 @@ public class ClientCertificateCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+
+            AccessToken accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             Assert.assertNotNull(identityClientMock);
         }
     }
@@ -189,6 +220,21 @@ public class ClientCertificateCredentialTest {
             Assert.assertNotNull(identityClientMock);
         }
 
+        // mock
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemCert).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+
     }
 
     @Test
@@ -208,6 +254,7 @@ public class ClientCertificateCredentialTest {
             // test
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+
             StepVerifier.create(credential.getToken(request2))
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -215,6 +262,18 @@ public class ClientCertificateCredentialTest {
             Assert.assertNotNull(identityClientMock);
         }
 
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+            AccessToken accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
 
     }
 

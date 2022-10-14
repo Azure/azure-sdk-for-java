@@ -24,6 +24,10 @@ public final class GreenplumLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private GreenplumLinkedServiceTypeProperties innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
 
+    /** Creates an instance of GreenplumLinkedService class. */
+    public GreenplumLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Greenplum Database linked service properties.
      *

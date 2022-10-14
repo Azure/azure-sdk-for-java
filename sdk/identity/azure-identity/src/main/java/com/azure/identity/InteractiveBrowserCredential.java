@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -33,6 +34,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
 
     private final Integer port;
     private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final boolean automaticAuthentication;
     private final String authorityHost;
@@ -56,11 +58,14 @@ public class InteractiveBrowserCredential implements TokenCredential {
                                  IdentityClientOptions identityClientOptions) {
         this.port = port;
         this.redirectUrl = redirectUrl;
-        identityClient = new IdentityClientBuilder()
+        IdentityClientBuilder builder = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
-            .identityClientOptions(identityClientOptions)
-            .build();
+            .identityClientOptions(identityClientOptions);
+
+        identityClient = builder.build();
+        identitySyncClient = builder.buildSyncClient();
+
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
@@ -90,6 +95,29 @@ public class InteractiveBrowserCredential implements TokenCredential {
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        if (cachedToken.get() != null) {
+            try {
+                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+            } catch (Exception e) { }
+        }
+        try {
+            if (!automaticAuthentication) {
+                throw LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                    + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                    + "code authentication.", request));
+            }
+            MsalToken accessToken =  identitySyncClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
+            updateCache(accessToken);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return accessToken;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
     }
 
     /**

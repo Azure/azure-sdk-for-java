@@ -16,6 +16,10 @@ public final class NginxPublicIpAddress {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NginxPublicIpAddress class. */
+    public NginxPublicIpAddress() {
+    }
+
     /**
      * Get the id property: The id property.
      *

@@ -60,6 +60,10 @@ public final class ApplicationGatewayOnDemandProbe {
     @JsonProperty(value = "backendHttpSettings")
     private SubResource backendHttpSettings;
 
+    /** Creates an instance of ApplicationGatewayOnDemandProbe class. */
+    public ApplicationGatewayOnDemandProbe() {
+    }
+
     /**
      * Get the protocol property: The protocol used for the probe.
      *

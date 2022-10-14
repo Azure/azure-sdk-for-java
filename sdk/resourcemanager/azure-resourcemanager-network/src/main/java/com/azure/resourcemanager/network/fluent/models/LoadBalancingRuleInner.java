@@ -40,6 +40,10 @@ public final class LoadBalancingRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of LoadBalancingRuleInner class. */
+    public LoadBalancingRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of load balancer load balancing rule.
      *

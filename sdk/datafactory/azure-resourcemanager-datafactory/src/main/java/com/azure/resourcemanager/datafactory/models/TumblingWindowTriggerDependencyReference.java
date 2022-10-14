@@ -27,6 +27,10 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     @JsonProperty(value = "size")
     private String size;
 
+    /** Creates an instance of TumblingWindowTriggerDependencyReference class. */
+    public TumblingWindowTriggerDependencyReference() {
+    }
+
     /**
      * Get the offset property: Timespan applied to the start time of a tumbling window when evaluating dependency.
      *

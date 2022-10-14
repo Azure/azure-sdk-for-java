@@ -74,6 +74,10 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureSqlDatabaseLinkedServiceTypeProperties class. */
+    public AzureSqlDatabaseLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

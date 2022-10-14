@@ -28,6 +28,10 @@ public final class FailActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private FailActivityTypeProperties innerTypeProperties = new FailActivityTypeProperties();
 
+    /** Creates an instance of FailActivity class. */
+    public FailActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Fail activity properties.
      *

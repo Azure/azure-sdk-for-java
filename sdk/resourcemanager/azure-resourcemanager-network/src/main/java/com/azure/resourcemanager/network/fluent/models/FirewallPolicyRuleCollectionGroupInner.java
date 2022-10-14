@@ -38,6 +38,10 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of FirewallPolicyRuleCollectionGroupInner class. */
+    public FirewallPolicyRuleCollectionGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the firewall policy rule collection group.
      *

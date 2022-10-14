@@ -95,6 +95,10 @@ public class CopySource {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CopySource class. */
+    public CopySource() {
+    }
+
     /**
      * Get the sourceRetryCount property: Source retry count. Type: integer (or Expression with resultType integer).
      *

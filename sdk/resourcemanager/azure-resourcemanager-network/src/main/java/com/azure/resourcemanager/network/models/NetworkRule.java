@@ -57,6 +57,10 @@ public final class NetworkRule extends FirewallPolicyRule {
     @JsonProperty(value = "destinationFqdns")
     private List<String> destinationFqdns;
 
+    /** Creates an instance of NetworkRule class. */
+    public NetworkRule() {
+    }
+
     /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
      *

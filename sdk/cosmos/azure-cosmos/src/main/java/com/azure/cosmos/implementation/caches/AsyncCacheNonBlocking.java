@@ -137,6 +137,10 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             if (backgroundRefreshTask != null) {
                 backgroundRefreshTask
                         .subscribeOn(CosmosSchedulers.ASYNC_CACHE_BACKGROUND_REFRESH_BOUNDED_ELASTIC)
+                        .onErrorResume(throwable -> {
+                            logger.debug("Background address refresh task failed for {}", key, throwable);
+                            return Mono.empty();
+                        })
                         .subscribe();
             }
         }

@@ -28,6 +28,10 @@ public final class AmazonRedshiftSource extends TabularSource {
     @JsonProperty(value = "redshiftUnloadSettings")
     private RedshiftUnloadSettings redshiftUnloadSettings;
 
+    /** Creates an instance of AmazonRedshiftSource class. */
+    public AmazonRedshiftSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

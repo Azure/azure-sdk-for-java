@@ -45,20 +45,6 @@ public interface ContainerAppsSourceControls {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SourceControl of a Container App.
-     */
-    SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName);
-
-    /**
-     * Get a SourceControl of a Container App.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -68,6 +54,20 @@ public interface ContainerAppsSourceControls {
      */
     Response<SourceControl> getWithResponse(
         String resourceGroupName, String containerAppName, String sourceControlName, Context context);
+
+    /**
+     * Get a SourceControl of a Container App.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param sourceControlName Name of the Container App SourceControl.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SourceControl of a Container App.
+     */
+    SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
      * Delete a Container App SourceControl.

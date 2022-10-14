@@ -30,6 +30,10 @@ public final class ManagedRuleSet {
     @JsonProperty(value = "ruleGroupOverrides")
     private List<ManagedRuleGroupOverride> ruleGroupOverrides;
 
+    /** Creates an instance of ManagedRuleSet class. */
+    public ManagedRuleSet() {
+    }
+
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
      *

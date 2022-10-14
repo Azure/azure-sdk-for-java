@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Evaluation results for the provided partial resource content. */
 @Fluent
 public final class CheckRestrictionsResultContentEvaluationResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CheckRestrictionsResultContentEvaluationResult.class);
-
     /*
-     * Policy evaluation results against the given resource content. This will
-     * indicate if the partial content that was provided will be denied as-is.
+     * Policy evaluation results against the given resource content. This will indicate if the partial content that was
+     * provided will be denied as-is.
      */
     @JsonProperty(value = "policyEvaluations")
     private List<PolicyEvaluationResult> policyEvaluations;
+
+    /** Creates an instance of CheckRestrictionsResultContentEvaluationResult class. */
+    public CheckRestrictionsResultContentEvaluationResult() {
+    }
 
     /**
      * Get the policyEvaluations property: Policy evaluation results against the given resource content. This will

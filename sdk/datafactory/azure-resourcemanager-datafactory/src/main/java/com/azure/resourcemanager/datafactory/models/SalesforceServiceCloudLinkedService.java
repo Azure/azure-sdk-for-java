@@ -25,6 +25,10 @@ public final class SalesforceServiceCloudLinkedService extends LinkedService {
     private SalesforceServiceCloudLinkedServiceTypeProperties innerTypeProperties =
         new SalesforceServiceCloudLinkedServiceTypeProperties();
 
+    /** Creates an instance of SalesforceServiceCloudLinkedService class. */
+    public SalesforceServiceCloudLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Salesforce Service Cloud linked service properties.
      *

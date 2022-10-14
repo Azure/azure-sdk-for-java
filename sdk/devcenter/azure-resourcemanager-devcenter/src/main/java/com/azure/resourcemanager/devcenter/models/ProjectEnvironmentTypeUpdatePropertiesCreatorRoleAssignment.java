@@ -19,6 +19,10 @@ public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EnvironmentRole> roles;
 
+    /** Creates an instance of ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment class. */
+    public ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment() {
+    }
+
     /**
      * Get the roles property: A map of roles to assign to the environment creator.
      *

@@ -39,6 +39,10 @@ public final class ManagedIntegrationRuntimeStatusTypeProperties {
     @JsonProperty(value = "lastOperation", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedIntegrationRuntimeOperationResult lastOperation;
 
+    /** Creates an instance of ManagedIntegrationRuntimeStatusTypeProperties class. */
+    public ManagedIntegrationRuntimeStatusTypeProperties() {
+    }
+
     /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
      *

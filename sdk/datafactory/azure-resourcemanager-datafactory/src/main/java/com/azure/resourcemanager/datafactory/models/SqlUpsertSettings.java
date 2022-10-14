@@ -30,6 +30,10 @@ public final class SqlUpsertSettings {
     @JsonProperty(value = "keys")
     private Object keys;
 
+    /** Creates an instance of SqlUpsertSettings class. */
+    public SqlUpsertSettings() {
+    }
+
     /**
      * Get the useTempDB property: Specifies whether to use temp db for upsert interim table. Type: boolean (or
      * Expression with resultType boolean).

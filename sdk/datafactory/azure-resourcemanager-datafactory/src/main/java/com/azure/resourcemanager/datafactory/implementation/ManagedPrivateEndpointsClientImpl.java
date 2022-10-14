@@ -520,39 +520,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @param managedPrivateEndpoint Managed private endpoint resource definition.
-     * @param ifMatch ETag of the managed private endpoint entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedPrivateEndpointResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointResourceInner managedPrivateEndpoint,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                factoryName,
-                managedVirtualNetworkName,
-                managedPrivateEndpointName,
-                managedPrivateEndpoint,
-                ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param managedPrivateEndpoint Managed private endpoint resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,37 +541,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 managedPrivateEndpoint,
                 ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param managedPrivateEndpoint Managed private endpoint resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedPrivateEndpointResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointResourceInner managedPrivateEndpoint) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(
-                resourceGroupName,
-                factoryName,
-                managedVirtualNetworkName,
-                managedPrivateEndpointName,
-                managedPrivateEndpoint,
-                ifMatch)
-            .block();
     }
 
     /**
@@ -641,6 +577,38 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 ifMatch,
                 context)
             .block();
+    }
+
+    /**
+     * Creates or updates a managed private endpoint.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @param managedPrivateEndpoint Managed private endpoint resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed private endpoint resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedPrivateEndpointResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointResourceInner managedPrivateEndpoint) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName,
+                factoryName,
+                managedVirtualNetworkName,
+                managedPrivateEndpointName,
+                managedPrivateEndpoint,
+                ifMatch,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -791,32 +759,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param ifNoneMatch ETag of the managed private endpoint entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed private endpoint on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedPrivateEndpointResourceInner> getAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName,
-        String ifNoneMatch) {
-        return getWithResponseAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -832,30 +774,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         return getWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed private endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedPrivateEndpointResourceInner get(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName) {
-        final String ifNoneMatch = null;
-        return getAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch)
-            .block();
     }
 
     /**
@@ -889,6 +807,35 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 ifNoneMatch,
                 context)
             .block();
+    }
+
+    /**
+     * Gets a managed private endpoint.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedPrivateEndpointResourceInner get(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(
+                resourceGroupName,
+                factoryName,
+                managedVirtualNetworkName,
+                managedPrivateEndpointName,
+                ifNoneMatch,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1054,26 +1001,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName) {
-        deleteAsync(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName).block();
-    }
-
-    /**
-     * Deletes a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1090,6 +1017,27 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         return deleteWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, context)
             .block();
+    }
+
+    /**
+     * Deletes a managed private endpoint.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName) {
+        deleteWithResponse(
+            resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, Context.NONE);
     }
 
     /**

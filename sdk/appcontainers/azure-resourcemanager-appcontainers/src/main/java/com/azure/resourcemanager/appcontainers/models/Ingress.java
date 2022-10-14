@@ -30,6 +30,12 @@ public final class Ingress {
     private Integer targetPort;
 
     /*
+     * Exposed Port in containers for TCP traffic from ingress
+     */
+    @JsonProperty(value = "exposedPort")
+    private Integer exposedPort;
+
+    /*
      * Ingress transport protocol
      */
     @JsonProperty(value = "transport")
@@ -48,11 +54,21 @@ public final class Ingress {
     private List<CustomDomain> customDomains;
 
     /*
-     * Bool indicating if HTTP connections to is allowed. If set to false HTTP
-     * connections are automatically redirected to HTTPS connections
+     * Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected
+     * to HTTPS connections
      */
     @JsonProperty(value = "allowInsecure")
     private Boolean allowInsecure;
+
+    /*
+     * Rules to restrict incoming IP address.
+     */
+    @JsonProperty(value = "ipSecurityRestrictions")
+    private List<IpSecurityRestrictionRule> ipSecurityRestrictions;
+
+    /** Creates an instance of Ingress class. */
+    public Ingress() {
+    }
 
     /**
      * Get the fqdn property: Hostname.
@@ -100,6 +116,26 @@ public final class Ingress {
      */
     public Ingress withTargetPort(Integer targetPort) {
         this.targetPort = targetPort;
+        return this;
+    }
+
+    /**
+     * Get the exposedPort property: Exposed Port in containers for TCP traffic from ingress.
+     *
+     * @return the exposedPort value.
+     */
+    public Integer exposedPort() {
+        return this.exposedPort;
+    }
+
+    /**
+     * Set the exposedPort property: Exposed Port in containers for TCP traffic from ingress.
+     *
+     * @param exposedPort the exposedPort value to set.
+     * @return the Ingress object itself.
+     */
+    public Ingress withExposedPort(Integer exposedPort) {
+        this.exposedPort = exposedPort;
         return this;
     }
 
@@ -186,6 +222,26 @@ public final class Ingress {
     }
 
     /**
+     * Get the ipSecurityRestrictions property: Rules to restrict incoming IP address.
+     *
+     * @return the ipSecurityRestrictions value.
+     */
+    public List<IpSecurityRestrictionRule> ipSecurityRestrictions() {
+        return this.ipSecurityRestrictions;
+    }
+
+    /**
+     * Set the ipSecurityRestrictions property: Rules to restrict incoming IP address.
+     *
+     * @param ipSecurityRestrictions the ipSecurityRestrictions value to set.
+     * @return the Ingress object itself.
+     */
+    public Ingress withIpSecurityRestrictions(List<IpSecurityRestrictionRule> ipSecurityRestrictions) {
+        this.ipSecurityRestrictions = ipSecurityRestrictions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -196,6 +252,9 @@ public final class Ingress {
         }
         if (customDomains() != null) {
             customDomains().forEach(e -> e.validate());
+        }
+        if (ipSecurityRestrictions() != null) {
+            ipSecurityRestrictions().forEach(e -> e.validate());
         }
     }
 }

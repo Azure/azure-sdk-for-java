@@ -23,6 +23,10 @@ public final class AzureFirewallFqdnTagPropertiesFormat {
     @JsonProperty(value = "fqdnTagName", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdnTagName;
 
+    /** Creates an instance of AzureFirewallFqdnTagPropertiesFormat class. */
+    public AzureFirewallFqdnTagPropertiesFormat() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
      *

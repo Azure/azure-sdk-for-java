@@ -41,6 +41,10 @@ public final class TroubleshootingDetails {
     @JsonProperty(value = "recommendedActions")
     private List<TroubleshootingRecommendedActions> recommendedActions;
 
+    /** Creates an instance of TroubleshootingDetails class. */
+    public TroubleshootingDetails() {
+    }
+
     /**
      * Get the id property: The id of the get troubleshoot operation.
      *

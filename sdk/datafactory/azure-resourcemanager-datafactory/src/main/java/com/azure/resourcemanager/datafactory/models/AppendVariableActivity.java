@@ -23,6 +23,10 @@ public final class AppendVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private AppendVariableActivityTypeProperties innerTypeProperties = new AppendVariableActivityTypeProperties();
 
+    /** Creates an instance of AppendVariableActivity class. */
+    public AppendVariableActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Append Variable activity properties.
      *
