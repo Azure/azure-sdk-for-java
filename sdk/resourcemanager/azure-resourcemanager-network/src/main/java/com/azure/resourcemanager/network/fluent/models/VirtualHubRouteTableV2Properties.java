@@ -31,6 +31,10 @@ public final class VirtualHubRouteTableV2Properties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VirtualHubRouteTableV2Properties class. */
+    public VirtualHubRouteTableV2Properties() {
+    }
+
     /**
      * Get the routes property: List of all routes.
      *

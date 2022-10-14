@@ -22,6 +22,10 @@ public final class FirewallPolicyCertificateAuthority {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of FirewallPolicyCertificateAuthority class. */
+    public FirewallPolicyCertificateAuthority() {
+    }
+
     /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.

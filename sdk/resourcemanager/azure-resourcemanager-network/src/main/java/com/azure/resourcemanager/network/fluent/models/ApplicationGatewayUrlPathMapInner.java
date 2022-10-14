@@ -37,6 +37,10 @@ public final class ApplicationGatewayUrlPathMapInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayUrlPathMapInner class. */
+    public ApplicationGatewayUrlPathMapInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway URL path map.
      *

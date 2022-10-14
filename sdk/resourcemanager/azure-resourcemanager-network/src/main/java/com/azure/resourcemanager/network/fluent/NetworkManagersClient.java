@@ -59,19 +59,6 @@ public interface NetworkManagersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkManagerInner getByResourceGroup(String resourceGroupName, String networkManagerName);
-
-    /**
-     * Gets the specified Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,6 +68,19 @@ public interface NetworkManagersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkManagerInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkManagerName, Context context);
+
+    /**
+     * Gets the specified Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Network Manager.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerInner getByResourceGroup(String resourceGroupName, String networkManagerName);
 
     /**
      * Creates or updates a Network Manager.
@@ -118,21 +118,6 @@ public interface NetworkManagersClient
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkManagerInner createOrUpdate(
-        String resourceGroupName, String networkManagerName, NetworkManagerInner parameters);
-
-    /**
-     * Creates or updates a Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,6 +127,21 @@ public interface NetworkManagersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkManagerInner> createOrUpdateWithResponse(
         String resourceGroupName, String networkManagerName, NetworkManagerInner parameters, Context context);
+
+    /**
+     * Creates or updates a Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which network manager is.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerInner createOrUpdate(
+        String resourceGroupName, String networkManagerName, NetworkManagerInner parameters);
 
     /**
      * Deletes a network manager.
@@ -180,15 +180,26 @@ public interface NetworkManagersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName);
+
+    /**
+     * Deletes a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName);
 
     /**
      * Deletes a network manager.
@@ -234,20 +245,6 @@ public interface NetworkManagersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName);
-
-    /**
-     * Deletes a network manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String networkManagerName, Boolean force);
 
     /**
      * Deletes a network manager.
@@ -311,20 +308,6 @@ public interface NetworkManagersClient
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkManagerInner patch(String resourceGroupName, String networkManagerName, PatchObject parameters);
-
-    /**
-     * Patch NetworkManager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -334,6 +317,20 @@ public interface NetworkManagersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkManagerInner> patchWithResponse(
         String resourceGroupName, String networkManagerName, PatchObject parameters, Context context);
+
+    /**
+     * Patch NetworkManager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which network manager is.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Managed Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerInner patch(String resourceGroupName, String networkManagerName, PatchObject parameters);
 
     /**
      * List all network managers in a subscription.

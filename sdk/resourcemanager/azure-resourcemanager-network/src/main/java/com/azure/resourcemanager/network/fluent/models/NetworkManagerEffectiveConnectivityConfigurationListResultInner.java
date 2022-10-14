@@ -28,6 +28,10 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
+    /** Creates an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner class. */
+    public NetworkManagerEffectiveConnectivityConfigurationListResultInner() {
+    }
+
     /**
      * Get the value property: Gets a page of NetworkManagerEffectiveConnectivityConfiguration.
      *

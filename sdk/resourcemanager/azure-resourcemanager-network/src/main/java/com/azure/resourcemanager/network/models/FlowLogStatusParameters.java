@@ -17,6 +17,10 @@ public final class FlowLogStatusParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
+    /** Creates an instance of FlowLogStatusParameters class. */
+    public FlowLogStatusParameters() {
+    }
+
     /**
      * Get the targetResourceId property: The target resource where getting the flow log and traffic analytics
      * (optional) status.

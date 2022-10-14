@@ -56,19 +56,6 @@ public interface VpnSitesClient
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnSiteInner getByResourceGroup(String resourceGroupName, String vpnSiteName);
-
-    /**
-     * Retrieves the details of a VPN site.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,6 +65,19 @@ public interface VpnSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnSiteInner> getByResourceGroupWithResponse(
         String resourceGroupName, String vpnSiteName, Context context);
+
+    /**
+     * Retrieves the details of a VPN site.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnSiteInner getByResourceGroup(String resourceGroupName, String vpnSiteName);
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
@@ -220,20 +220,6 @@ public interface VpnSitesClient
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnSiteInner updateTags(String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters);
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,6 +229,20 @@ public interface VpnSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnSiteInner> updateTagsWithResponse(
         String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters, Context context);
+
+    /**
+     * Updates VpnSite tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being updated.
+     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnSiteInner updateTags(String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters);
 
     /**
      * Deletes a VpnSite.

@@ -10,6 +10,10 @@ import com.azure.core.management.SubResource;
 /** Reference to container resource in remote resource provider. */
 @Fluent
 public final class Container extends SubResource {
+    /** Creates an instance of Container class. */
+    public Container() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public Container withId(String id) {

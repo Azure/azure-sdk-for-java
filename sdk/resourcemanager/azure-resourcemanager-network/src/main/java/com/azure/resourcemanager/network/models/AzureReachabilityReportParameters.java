@@ -43,6 +43,10 @@ public final class AzureReachabilityReportParameters {
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of AzureReachabilityReportParameters class. */
+    public AzureReachabilityReportParameters() {
+    }
+
     /**
      * Get the providerLocation property: Parameters that define a geographic location.
      *

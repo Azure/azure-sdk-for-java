@@ -74,6 +74,10 @@ public final class InboundNatPoolPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of InboundNatPoolPropertiesFormat class. */
+    public InboundNatPoolPropertiesFormat() {
+    }
+
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
      *

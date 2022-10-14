@@ -30,6 +30,10 @@ public class EffectiveConnectivityConfiguration {
     @JsonProperty(value = "configurationGroups")
     private List<ConfigurationGroup> configurationGroups;
 
+    /** Creates an instance of EffectiveConnectivityConfiguration class. */
+    public EffectiveConnectivityConfiguration() {
+    }
+
     /**
      * Get the id property: Connectivity configuration ID.
      *

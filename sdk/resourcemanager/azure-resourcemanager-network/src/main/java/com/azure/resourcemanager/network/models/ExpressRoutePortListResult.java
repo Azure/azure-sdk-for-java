@@ -28,6 +28,10 @@ public final class ExpressRoutePortListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRoutePortListResult class. */
+    public ExpressRoutePortListResult() {
+    }
+
     /**
      * Get the value property: A list of ExpressRoutePort resources.
      *

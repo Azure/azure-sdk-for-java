@@ -75,6 +75,10 @@ public final class LoadBalancerPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of LoadBalancerPropertiesFormat class. */
+    public LoadBalancerPropertiesFormat() {
+    }
+
     /**
      * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
      *

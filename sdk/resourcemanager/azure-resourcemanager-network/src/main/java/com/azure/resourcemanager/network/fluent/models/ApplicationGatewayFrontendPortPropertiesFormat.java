@@ -23,6 +23,10 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayFrontendPortPropertiesFormat class. */
+    public ApplicationGatewayFrontendPortPropertiesFormat() {
+    }
+
     /**
      * Get the port property: Frontend port.
      *

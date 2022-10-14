@@ -64,6 +64,10 @@ public final class VpnGatewayNatRuleProperties {
     @JsonProperty(value = "ingressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ingressVpnSiteLinkConnections;
 
+    /** Creates an instance of VpnGatewayNatRuleProperties class. */
+    public VpnGatewayNatRuleProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
      *

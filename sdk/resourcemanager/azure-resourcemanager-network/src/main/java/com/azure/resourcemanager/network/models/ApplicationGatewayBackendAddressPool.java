@@ -38,6 +38,10 @@ public final class ApplicationGatewayBackendAddressPool extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayBackendAddressPool class. */
+    public ApplicationGatewayBackendAddressPool() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway backend address pool.
      *
