@@ -25,9 +25,11 @@ import java.util.List;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreatorTest.RestTemplateProxyCustomizerConfiguration.FACTORY;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.isA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AadRestTemplateCreatorTest {
 
@@ -53,8 +55,8 @@ class AadRestTemplateCreatorTest {
         ResponseErrorHandler handler = restTemplate.getErrorHandler();
         assertEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        assertTrue(hasItemOfClass(converters, FormHttpMessageConverter.class));
-        assertTrue(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
+        assertThat(converters, hasItem(isA(FormHttpMessageConverter.class)));
+        assertThat(converters, hasItem(isA(OAuth2AccessTokenResponseHttpMessageConverter.class)));
     }
 
     @Test
@@ -67,11 +69,6 @@ class AadRestTemplateCreatorTest {
                     RestTemplate restTemplate = context.getBean(RestTemplateBuilder.class).build();
                     assertSame(restTemplate.getRequestFactory(), FACTORY);
                 });
-    }
-
-    static boolean hasItemOfClass(List<?> list, Class<?> clazz) {
-        return list.stream()
-                .anyMatch(item -> item.getClass().equals(clazz));
     }
 
     @Configuration
