@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 @EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class AuditableConfig {
 
-
     @Bean(name = "auditingDateTimeProvider")
     public StubDateTimeProvider stubDateTimeProvider() {
         return new StubDateTimeProvider();
