@@ -51,6 +51,7 @@
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
