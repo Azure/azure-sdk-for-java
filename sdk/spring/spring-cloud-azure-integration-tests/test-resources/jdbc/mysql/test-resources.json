@@ -206,6 +206,10 @@
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"
+    },
+    "AZURE_MYSQL_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
     }
   }
 }
