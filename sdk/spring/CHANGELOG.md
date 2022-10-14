@@ -5,6 +5,7 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
+- Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
 
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
