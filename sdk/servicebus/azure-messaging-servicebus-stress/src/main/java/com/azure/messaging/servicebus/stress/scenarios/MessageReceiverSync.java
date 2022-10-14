@@ -22,7 +22,7 @@ import java.time.Duration;
 public class MessageReceiverSync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverSync.class);
 
-    private static final int MAX_MESSAGE_COUNT = 1000;
+    private static final int MAX_RECEIVED_MESSAGES = 1000;
 
     @Override
     public void run() {
@@ -55,7 +55,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
             .buildClient();
 
 
-        IterableStream<ServiceBusReceivedMessage> receivedMessages = client.receiveMessages(MAX_MESSAGE_COUNT);
+        IterableStream<ServiceBusReceivedMessage> receivedMessages = client.receiveMessages(MAX_RECEIVED_MESSAGES);
         try {
             for (ServiceBusReceivedMessage receivedMessage : receivedMessages) {
                 try {
@@ -75,7 +75,7 @@ public class MessageReceiverSync extends ServiceBusScenario {
                 }
             }
         } catch (ServiceBusException | AmqpException err) {
-            LOGGER.error("Iterating iterable from receiveMessages({}) error", MAX_MESSAGE_COUNT, err);
+            LOGGER.error("Iterating iterable from receiveMessages({}) error", MAX_RECEIVED_MESSAGES, err);
         }
     }
 }
