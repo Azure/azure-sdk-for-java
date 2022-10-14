@@ -39,6 +39,10 @@ public final class SapHanaSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
 
+    /** Creates an instance of SapHanaSource class. */
+    public SapHanaSource() {
+    }
+
     /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
      *

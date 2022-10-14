@@ -20,6 +20,10 @@ public final class AzureBlobFSLocation extends DatasetLocation {
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
 
+    /** Creates an instance of AzureBlobFSLocation class. */
+    public AzureBlobFSLocation() {
+    }
+
     /**
      * Get the fileSystem property: Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType
      * string).

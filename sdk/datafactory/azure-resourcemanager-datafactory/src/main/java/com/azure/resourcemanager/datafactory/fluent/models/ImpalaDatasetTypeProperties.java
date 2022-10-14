@@ -28,6 +28,10 @@ public final class ImpalaDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of ImpalaDatasetTypeProperties class. */
+    public ImpalaDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

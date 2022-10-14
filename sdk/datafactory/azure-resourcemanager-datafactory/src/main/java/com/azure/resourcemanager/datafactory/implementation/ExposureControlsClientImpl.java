@@ -225,22 +225,6 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      *
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlResponseInner getFeatureValue(
-        String locationId, ExposureControlRequest exposureControlRequest) {
-        return getFeatureValueAsync(locationId, exposureControlRequest).block();
-    }
-
-    /**
-     * Get exposure control feature for specific location.
-     *
-     * @param locationId The location identifier.
-     * @param exposureControlRequest The exposure control request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,6 +235,22 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
     public Response<ExposureControlResponseInner> getFeatureValueWithResponse(
         String locationId, ExposureControlRequest exposureControlRequest, Context context) {
         return getFeatureValueWithResponseAsync(locationId, exposureControlRequest, context).block();
+    }
+
+    /**
+     * Get exposure control feature for specific location.
+     *
+     * @param locationId The location identifier.
+     * @param exposureControlRequest The exposure control request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return exposure control feature for specific location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExposureControlResponseInner getFeatureValue(
+        String locationId, ExposureControlRequest exposureControlRequest) {
+        return getFeatureValueWithResponse(locationId, exposureControlRequest, Context.NONE).getValue();
     }
 
     /**
@@ -391,23 +391,6 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific factory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlResponseInner getFeatureValueByFactory(
-        String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
-        return getFeatureValueByFactoryAsync(resourceGroupName, factoryName, exposureControlRequest).block();
-    }
-
-    /**
-     * Get exposure control feature for specific factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param exposureControlRequest The exposure control request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -420,6 +403,25 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
         return getFeatureValueByFactoryWithResponseAsync(
                 resourceGroupName, factoryName, exposureControlRequest, context)
             .block();
+    }
+
+    /**
+     * Get exposure control feature for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlRequest The exposure control request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return exposure control feature for specific factory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExposureControlResponseInner getFeatureValueByFactory(
+        String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
+        return getFeatureValueByFactoryWithResponse(
+                resourceGroupName, factoryName, exposureControlRequest, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -565,23 +567,6 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of exposure control features for specific factory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlBatchResponseInner queryFeatureValuesByFactory(
-        String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
-        return queryFeatureValuesByFactoryAsync(resourceGroupName, factoryName, exposureControlBatchRequest).block();
-    }
-
-    /**
-     * Get list of exposure control features for specific factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param exposureControlBatchRequest The exposure control request for list of features.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -597,5 +582,24 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
         return queryFeatureValuesByFactoryWithResponseAsync(
                 resourceGroupName, factoryName, exposureControlBatchRequest, context)
             .block();
+    }
+
+    /**
+     * Get list of exposure control features for specific factory.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param exposureControlBatchRequest The exposure control request for list of features.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of exposure control features for specific factory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExposureControlBatchResponseInner queryFeatureValuesByFactory(
+        String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
+        return queryFeatureValuesByFactoryWithResponse(
+                resourceGroupName, factoryName, exposureControlBatchRequest, Context.NONE)
+            .getValue();
     }
 }

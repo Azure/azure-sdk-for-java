@@ -25,6 +25,10 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     private AzureDatabricksDetltaLakeLinkedServiceTypeProperties innerTypeProperties =
         new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureDatabricksDeltaLakeLinkedService class. */
+    public AzureDatabricksDeltaLakeLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Databricks Delta Lake linked service properties.
      *

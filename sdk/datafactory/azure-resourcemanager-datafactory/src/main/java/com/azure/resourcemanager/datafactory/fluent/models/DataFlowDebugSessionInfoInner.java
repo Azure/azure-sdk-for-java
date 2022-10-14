@@ -74,6 +74,10 @@ public final class DataFlowDebugSessionInfoInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DataFlowDebugSessionInfoInner class. */
+    public DataFlowDebugSessionInfoInner() {
+    }
+
     /**
      * Get the dataFlowName property: The name of the data flow.
      *

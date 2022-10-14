@@ -75,6 +75,10 @@ public final class TextFormat extends DatasetStorageFormat {
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
 
+    /** Creates an instance of TextFormat class. */
+    public TextFormat() {
+    }
+
     /**
      * Get the columnDelimiter property: The column delimiter. Type: string (or Expression with resultType string).
      *

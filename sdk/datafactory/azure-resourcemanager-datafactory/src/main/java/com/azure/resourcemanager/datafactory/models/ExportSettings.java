@@ -34,6 +34,10 @@ public class ExportSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ExportSettings class. */
+    public ExportSettings() {
+    }
+
     /**
      * Get the additionalProperties property: Export command settings.
      *

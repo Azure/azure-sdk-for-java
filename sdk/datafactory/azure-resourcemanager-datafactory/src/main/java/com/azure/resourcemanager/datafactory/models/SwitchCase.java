@@ -23,6 +23,10 @@ public final class SwitchCase {
     @JsonProperty(value = "activities")
     private List<Activity> activities;
 
+    /** Creates an instance of SwitchCase class. */
+    public SwitchCase() {
+    }
+
     /**
      * Get the value property: Expected value that satisfies the expression result of the 'on' property.
      *

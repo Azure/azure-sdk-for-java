@@ -22,6 +22,10 @@ public final class AzureMySqlTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of AzureMySqlTableDatasetTypeProperties class. */
+    public AzureMySqlTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).

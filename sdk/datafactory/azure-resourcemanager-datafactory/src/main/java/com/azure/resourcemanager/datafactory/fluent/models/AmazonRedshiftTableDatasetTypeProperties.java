@@ -28,6 +28,10 @@ public final class AmazonRedshiftTableDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of AmazonRedshiftTableDatasetTypeProperties class. */
+    public AmazonRedshiftTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

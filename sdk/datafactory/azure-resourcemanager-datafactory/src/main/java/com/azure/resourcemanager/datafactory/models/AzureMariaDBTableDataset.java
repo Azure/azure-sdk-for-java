@@ -23,6 +23,10 @@ public final class AzureMariaDBTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureMariaDBTableDataset class. */
+    public AzureMariaDBTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

@@ -64,6 +64,10 @@ public final class XeroLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of XeroLinkedServiceTypeProperties class. */
+    public XeroLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionProperties property: Properties used to connect to Xero. It is mutually exclusive with any
      * other properties in the linked service. Type: object.

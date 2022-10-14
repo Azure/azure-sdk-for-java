@@ -22,6 +22,10 @@ public final class ComponentSetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private LicensedComponentSetupTypeProperties innerTypeProperties = new LicensedComponentSetupTypeProperties();
 
+    /** Creates an instance of ComponentSetup class. */
+    public ComponentSetup() {
+    }
+
     /**
      * Get the innerTypeProperties property: Install 3rd party component type properties.
      *

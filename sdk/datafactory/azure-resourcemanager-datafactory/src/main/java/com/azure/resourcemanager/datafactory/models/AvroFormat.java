@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AvroFormat")
 @Fluent
 public final class AvroFormat extends DatasetStorageFormat {
+    /** Creates an instance of AvroFormat class. */
+    public AvroFormat() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AvroFormat withSerializer(Object serializer) {

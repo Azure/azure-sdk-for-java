@@ -47,6 +47,10 @@ public final class SqlDWSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
+    /** Creates an instance of SqlDWSource class. */
+    public SqlDWSource() {
+    }
+
     /**
      * Get the sqlReaderQuery property: SQL Data Warehouse reader query. Type: string (or Expression with resultType
      * string).

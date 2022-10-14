@@ -26,6 +26,10 @@ public final class BinarySource extends CopySource {
     @JsonProperty(value = "formatSettings")
     private BinaryReadSettings formatSettings;
 
+    /** Creates an instance of BinarySource class. */
+    public BinarySource() {
+    }
+
     /**
      * Get the storeSettings property: Binary store settings.
      *

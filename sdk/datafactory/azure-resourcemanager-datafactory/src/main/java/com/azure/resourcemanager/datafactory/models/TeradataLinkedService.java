@@ -24,6 +24,10 @@ public final class TeradataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TeradataLinkedServiceTypeProperties innerTypeProperties = new TeradataLinkedServiceTypeProperties();
 
+    /** Creates an instance of TeradataLinkedService class. */
+    public TeradataLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Teradata linked service properties.
      *

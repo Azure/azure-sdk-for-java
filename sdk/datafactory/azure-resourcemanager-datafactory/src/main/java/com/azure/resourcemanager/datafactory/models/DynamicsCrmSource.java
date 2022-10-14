@@ -28,6 +28,10 @@ public final class DynamicsCrmSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of DynamicsCrmSource class. */
+    public DynamicsCrmSource() {
+    }
+
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online
      * &amp; on-premises). Type: string (or Expression with resultType string).

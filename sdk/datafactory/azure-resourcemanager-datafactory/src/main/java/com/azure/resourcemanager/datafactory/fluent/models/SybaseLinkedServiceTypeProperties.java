@@ -56,6 +56,10 @@ public final class SybaseLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SybaseLinkedServiceTypeProperties class. */
+    public SybaseLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
      *

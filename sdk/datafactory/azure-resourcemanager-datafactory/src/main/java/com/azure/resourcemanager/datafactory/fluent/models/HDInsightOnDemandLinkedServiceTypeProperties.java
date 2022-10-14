@@ -231,6 +231,10 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of HDInsightOnDemandLinkedServiceTypeProperties class. */
+    public HDInsightOnDemandLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
      * Expression with resultType string).

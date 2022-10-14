@@ -25,6 +25,10 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     private DatabricksNotebookActivityTypeProperties innerTypeProperties =
         new DatabricksNotebookActivityTypeProperties();
 
+    /** Creates an instance of DatabricksNotebookActivity class. */
+    public DatabricksNotebookActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Databricks Notebook activity properties.
      *
