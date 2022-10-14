@@ -4,6 +4,7 @@
 
 ### Features Added
 - `GetTokenSync` method implementation/support in Token Credentials.
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
 
 ### Other Changes
 #### Dependency Updates

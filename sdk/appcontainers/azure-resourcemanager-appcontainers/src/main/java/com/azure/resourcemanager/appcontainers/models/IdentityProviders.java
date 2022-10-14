@@ -58,13 +58,16 @@ public final class IdentityProviders {
     private AzureStaticWebApps azureStaticWebApps;
 
     /*
-     * The map of the name of the alias of each custom Open ID Connect provider
-     * to the
+     * The map of the name of the alias of each custom Open ID Connect provider to the
      * configuration settings of the custom Open ID Connect provider.
      */
     @JsonProperty(value = "customOpenIdConnectProviders")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
+
+    /** Creates an instance of IdentityProviders class. */
+    public IdentityProviders() {
+    }
 
     /**
      * Get the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.

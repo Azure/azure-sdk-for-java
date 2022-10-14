@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Scheme. */
+/** Scheme to use for connecting to the host. Defaults to HTTP. */
 public final class Scheme extends ExpandableStringEnum<Scheme> {
     /** Static value HTTP for Scheme. */
     public static final Scheme HTTP = fromString("HTTP");

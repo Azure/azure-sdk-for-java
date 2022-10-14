@@ -21,20 +21,6 @@ public interface CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxCertificateInner get(String resourceGroupName, String deploymentName, String certificateName);
-
-    /**
-     * Get a certificate of given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,20 +32,33 @@ public interface CertificatesClient {
         String resourceGroupName, String deploymentName, String certificateName, Context context);
 
     /**
+     * Get a certificate of given Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a certificate of given Nginx deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NginxCertificateInner get(String resourceGroupName, String deploymentName, String certificateName);
+
+    /**
      * Create or update the Nginx certificates for given Nginx deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
      * @param certificateName The name of certificate.
-     * @param body The certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreate(
-        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body);
+    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, String certificateName);
 
     /**
      * Create or update the Nginx certificates for given Nginx deployment.
@@ -75,7 +74,7 @@ public interface CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreate(
+    SyncPoller<PollResult<NginxCertificateInner>, NginxCertificateInner> beginCreateOrUpdate(
         String resourceGroupName,
         String deploymentName,
         String certificateName,
@@ -88,29 +87,13 @@ public interface CertificatesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
      * @param certificateName The name of certificate.
-     * @param body The certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxCertificateInner create(
-        String resourceGroupName, String deploymentName, String certificateName, NginxCertificateInner body);
-
-    /**
-     * Create or update the Nginx certificates for given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxCertificateInner create(String resourceGroupName, String deploymentName, String certificateName);
+    NginxCertificateInner createOrUpdate(String resourceGroupName, String deploymentName, String certificateName);
 
     /**
      * Create or update the Nginx certificates for given Nginx deployment.
@@ -126,7 +109,7 @@ public interface CertificatesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxCertificateInner create(
+    NginxCertificateInner createOrUpdate(
         String resourceGroupName,
         String deploymentName,
         String certificateName,

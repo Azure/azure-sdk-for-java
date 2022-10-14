@@ -7,7 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -492,9 +492,9 @@ public class ServiceBusProcessorTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
 
-        ServiceBusReceiverTracer sbTracer = new ServiceBusReceiverTracer(tracer, NAMESPACE, ENTITY_NAME, false);
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(
-            new FluxTrace(messageFlux, sbTracer).publishOn(Schedulers.boundedElastic()));
+            new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
