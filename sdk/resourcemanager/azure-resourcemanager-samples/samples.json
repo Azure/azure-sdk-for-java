@@ -717,12 +717,6 @@
     },
     {
       "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/sql/samples/GettingSqlServerMetrics.java",
-      "githubPath": "Azure-Samples/sql-database-java-get-sql-metrics",
-      "description": "Get SQL Database metrics using Java"
-    },
-    {
-      "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/sql/samples/ManageSqlDatabase.java",
       "githubPath": "Azure-Samples/sql-database-java-manage-db",
       "description": "Getting started on managing SQL databases using Java"

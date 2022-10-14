@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.samples;
 
-import com.azure.resourcemanager.sql.samples.GettingSqlServerMetrics;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabase;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabaseInElasticPool;
 import com.azure.resourcemanager.sql.samples.ManageSqlDatabasesAcrossDifferentDataCenters;
@@ -71,14 +70,6 @@ public class SqlSampleTests extends SamplesTestBase {
     @Test
     public void testManageSqlFailoverGroups() {
         Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azureResourceManager));
-    }
-
-    @Test
-    public void testGettingSqlServerMetrics() throws SQLException, ClassNotFoundException {
-        // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
-        if (!isPlaybackMode()) {
-            Assertions.assertTrue(GettingSqlServerMetrics.runSample(azureResourceManager));
-        }
     }
 
     @Test
