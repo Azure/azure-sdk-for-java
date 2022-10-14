@@ -24,6 +24,9 @@ public final class CosmosSimpleTypes {
         COSMOS_SIMPLE_TYPES = Collections.unmodifiableSet(simpleTypes);
     }
 
+    /**
+     * The Cosmos {@link SimpleTypeHolder}. 
+     */
     public static final SimpleTypeHolder HOLDER = new SimpleTypeHolder(COSMOS_SIMPLE_TYPES, true) {
 
         @Override

@@ -18,6 +18,9 @@ public class CosmosMappingContext
 
     private ApplicationContext context;
 
+    /**
+     * Construct a {@link CosmosMappingContext} instance, with the {@link CosmosSimpleTypes} as simple type holder.
+     */
     public CosmosMappingContext() {
         setSimpleTypeHolder(CosmosSimpleTypes.HOLDER);
     }
