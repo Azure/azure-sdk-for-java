@@ -74,11 +74,11 @@ export AZ_LOCAL_IP_ADDRESS={YOUR_LOCAL_IP_ADDRESS}
 
 Replace the placeholders with the following values, which are used throughout this article:
 
-- <YOUR_DATABASE_NAME>: The name of your MySQL server. It should be unique across Azure.
-- <YOUR_AZURE_REGION>: The Azure region you'll use. You can use eastus by default, but we recommend that you configure a
+- ${YOUR_DATABASE_NAME}: The name of your MySQL server. It should be unique across Azure.
+- ${YOUR_AZURE_REGION}: The Azure region you'll use. You can use eastus by default, but we recommend that you configure a
   region closer to where you live. You can have the full list of available regions by entering az account
   list-locations.
-- <YOUR_LOCAL_IP_ADDRESS>: The IP address of your local computer, from which you'll run your Spring Boot application.
+- ${YOUR_LOCAL_IP_ADDRESS}: The IP address of your local computer, from which you'll run your Spring Boot application.
   One convenient way to find it's to point your browser to [whatismyip.akamai.com][whatismyip.akamai.com].
 
 #### Create an Azure Database for MySQL server
