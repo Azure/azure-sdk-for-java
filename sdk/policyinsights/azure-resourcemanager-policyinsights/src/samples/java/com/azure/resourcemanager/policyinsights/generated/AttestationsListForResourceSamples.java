@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations ListForResource. */
 public final class AttestationsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceScope_WithQuery.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_ListResourceScope_WithQuery.json
      */
     /**
      * Sample code: List attestations at individual resource scope with query parameters.
@@ -30,7 +30,7 @@ public final class AttestationsListForResourceSamples {
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_ListResourceScope.json
      */
     /**
      * Sample code: List attestations at individual resource scope.
