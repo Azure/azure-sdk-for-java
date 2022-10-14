@@ -1,16 +1,14 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
+## 1.7.0-beta.2 (2022-10-13)
 
 ### Features Added
-
+- `GetTokenSync` method implementation/support in Token Credentials.
 - Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` from `1.13.1` to `1.13.2`
 
 ## 1.6.1 (2022-10-11)
 
