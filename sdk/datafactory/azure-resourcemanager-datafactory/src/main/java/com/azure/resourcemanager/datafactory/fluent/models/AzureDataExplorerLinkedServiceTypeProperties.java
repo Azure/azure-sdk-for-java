@@ -52,6 +52,10 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureDataExplorerLinkedServiceTypeProperties class. */
+    public AzureDataExplorerLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
      * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType

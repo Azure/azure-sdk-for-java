@@ -24,6 +24,10 @@ public final class TeamDeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TeamDeskLinkedServiceTypeProperties innerTypeProperties = new TeamDeskLinkedServiceTypeProperties();
 
+    /** Creates an instance of TeamDeskLinkedService class. */
+    public TeamDeskLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: TeamDesk linked service properties.
      *

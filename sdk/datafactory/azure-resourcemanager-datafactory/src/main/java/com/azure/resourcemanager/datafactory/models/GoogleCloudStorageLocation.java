@@ -26,6 +26,10 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
+    /** Creates an instance of GoogleCloudStorageLocation class. */
+    public GoogleCloudStorageLocation() {
+    }
+
     /**
      * Get the bucketName property: Specify the bucketName of Google Cloud Storage. Type: string (or Expression with
      * resultType string).

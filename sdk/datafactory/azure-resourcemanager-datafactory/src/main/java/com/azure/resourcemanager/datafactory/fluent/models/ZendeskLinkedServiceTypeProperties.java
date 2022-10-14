@@ -50,6 +50,10 @@ public final class ZendeskLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ZendeskLinkedServiceTypeProperties class. */
+    public ZendeskLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the authenticationType property: The authentication type to use.
      *

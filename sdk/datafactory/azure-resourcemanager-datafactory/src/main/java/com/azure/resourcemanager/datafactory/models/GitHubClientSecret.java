@@ -22,6 +22,10 @@ public final class GitHubClientSecret {
     @JsonProperty(value = "byoaSecretName")
     private String byoaSecretName;
 
+    /** Creates an instance of GitHubClientSecret class. */
+    public GitHubClientSecret() {
+    }
+
     /**
      * Get the byoaSecretAkvUrl property: Bring your own app client secret AKV URL.
      *

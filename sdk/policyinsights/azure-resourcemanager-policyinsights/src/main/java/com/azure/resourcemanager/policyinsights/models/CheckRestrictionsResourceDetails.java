@@ -6,17 +6,14 @@ package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information about the resource that will be evaluated. */
 @Fluent
 public final class CheckRestrictionsResourceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckRestrictionsResourceDetails.class);
-
     /*
-     * The resource content. This should include whatever properties are
-     * already known and can be a partial set of all resource properties.
+     * The resource content. This should include whatever properties are already known and can be a partial set of all
+     * resource properties.
      */
     @JsonProperty(value = "resourceContent", required = true)
     private Object resourceContent;
@@ -28,12 +25,15 @@ public final class CheckRestrictionsResourceDetails {
     private String apiVersion;
 
     /*
-     * The scope where the resource is being created. For example, if the
-     * resource is a child resource this would be the parent resource's
-     * resource ID.
+     * The scope where the resource is being created. For example, if the resource is a child resource this would be
+     * the parent resource's resource ID.
      */
     @JsonProperty(value = "scope")
     private String scope;
+
+    /** Creates an instance of CheckRestrictionsResourceDetails class. */
+    public CheckRestrictionsResourceDetails() {
+    }
 
     /**
      * Get the resourceContent property: The resource content. This should include whatever properties are already known
@@ -106,10 +106,12 @@ public final class CheckRestrictionsResourceDetails {
      */
     public void validate() {
         if (resourceContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceContent in model CheckRestrictionsResourceDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckRestrictionsResourceDetails.class);
 }

@@ -16,6 +16,10 @@ public final class CmkIdentityDefinition {
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
+    /** Creates an instance of CmkIdentityDefinition class. */
+    public CmkIdentityDefinition() {
+    }
+
     /**
      * Get the userAssignedIdentity property: The resource id of the user assigned identity to authenticate to
      * customer's key vault.

@@ -480,31 +480,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
-     * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        PipelineResourceInner pipeline,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -516,25 +491,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch).block();
     }
 
     /**
@@ -562,6 +518,26 @@ public final class PipelinesClientImpl implements PipelinesClient {
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @param pipeline Pipeline resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pipeline resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -680,26 +656,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,23 +666,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineResourceInner get(String resourceGroupName, String factoryName, String pipelineName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch).block();
     }
 
     /**
@@ -747,6 +686,23 @@ public final class PipelinesClientImpl implements PipelinesClient {
     public Response<PipelineResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineResourceInner get(String resourceGroupName, String factoryName, String pipelineName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, pipelineName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -875,21 +831,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String pipelineName) {
-        deleteAsync(resourceGroupName, factoryName, pipelineName).block();
-    }
-
-    /**
-     * Deletes a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -900,6 +841,21 @@ public final class PipelinesClientImpl implements PipelinesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String pipelineName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, pipelineName, context).block();
+    }
+
+    /**
+     * Deletes a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String pipelineName) {
+        deleteWithResponse(resourceGroupName, factoryName, pipelineName, Context.NONE);
     }
 
     /**
@@ -1057,49 +1013,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     *     run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     *     the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     *     activities will run.
-     * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     *     property will be used only if startActivityName is not specified.
-     * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     *     specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CreateRunResponseInner> createRunAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters) {
-        return createRunWithResponseAsync(
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a run of a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1123,36 +1036,6 @@ public final class PipelinesClientImpl implements PipelinesClient {
                 startFromFailure,
                 parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a run of a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName) {
-        final String referencePipelineRunId = null;
-        final Boolean isRecovery = null;
-        final String startActivityName = null;
-        final Boolean startFromFailure = null;
-        final Map<String, Object> parameters = null;
-        return createRunAsync(
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters)
-            .block();
     }
 
     /**
@@ -1199,6 +1082,37 @@ public final class PipelinesClientImpl implements PipelinesClient {
                 parameters,
                 context)
             .block();
+    }
+
+    /**
+     * Creates a run of a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body with a run identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName) {
+        final String referencePipelineRunId = null;
+        final Boolean isRecovery = null;
+        final String startActivityName = null;
+        final Boolean startFromFailure = null;
+        final Map<String, Object> parameters = null;
+        return createRunWithResponse(
+                resourceGroupName,
+                factoryName,
+                pipelineName,
+                referencePipelineRunId,
+                isRecovery,
+                startActivityName,
+                startFromFailure,
+                parameters,
+                Context.NONE)
+            .getValue();
     }
 
     /**

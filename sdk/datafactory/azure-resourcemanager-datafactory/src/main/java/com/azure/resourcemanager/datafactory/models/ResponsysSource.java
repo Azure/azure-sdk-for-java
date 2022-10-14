@@ -20,6 +20,10 @@ public final class ResponsysSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of ResponsysSource class. */
+    public ResponsysSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

@@ -36,6 +36,10 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AzureDataLakeStoreDatasetTypeProperties class. */
+    public AzureDataLakeStoreDatasetTypeProperties() {
+    }
+
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).

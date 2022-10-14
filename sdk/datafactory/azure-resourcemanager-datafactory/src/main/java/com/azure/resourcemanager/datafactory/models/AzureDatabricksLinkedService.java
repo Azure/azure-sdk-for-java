@@ -25,6 +25,10 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     private AzureDatabricksLinkedServiceTypeProperties innerTypeProperties =
         new AzureDatabricksLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureDatabricksLinkedService class. */
+    public AzureDatabricksLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Databricks linked service properties.
      *

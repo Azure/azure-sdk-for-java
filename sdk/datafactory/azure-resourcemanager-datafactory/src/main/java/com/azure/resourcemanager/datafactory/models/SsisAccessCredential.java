@@ -29,6 +29,10 @@ public final class SsisAccessCredential {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
+    /** Creates an instance of SsisAccessCredential class. */
+    public SsisAccessCredential() {
+    }
+
     /**
      * Get the domain property: Domain for windows authentication.
      *

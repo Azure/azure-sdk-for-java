@@ -16,6 +16,10 @@ public final class IntegrationRuntimeNodeIpAddressInner {
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
+    /** Creates an instance of IntegrationRuntimeNodeIpAddressInner class. */
+    public IntegrationRuntimeNodeIpAddressInner() {
+    }
+
     /**
      * Get the ipAddress property: The IP address of self-hosted integration runtime node.
      *

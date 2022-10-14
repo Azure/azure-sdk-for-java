@@ -24,6 +24,10 @@ public final class Office365Dataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private Office365DatasetTypeProperties innerTypeProperties = new Office365DatasetTypeProperties();
 
+    /** Creates an instance of Office365Dataset class. */
+    public Office365Dataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Office365 dataset properties.
      *

@@ -27,6 +27,10 @@ public final class AvroSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of AvroSource class. */
+    public AvroSource() {
+    }
+
     /**
      * Get the storeSettings property: Avro store settings.
      *

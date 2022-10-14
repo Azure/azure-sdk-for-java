@@ -25,6 +25,10 @@ public final class GlobalParameterListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GlobalParameterListResponse class. */
+    public GlobalParameterListResponse() {
+    }
+
     /**
      * Get the value property: List of global parameters.
      *

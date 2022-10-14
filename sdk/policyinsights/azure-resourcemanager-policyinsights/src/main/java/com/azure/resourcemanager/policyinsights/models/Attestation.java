@@ -110,6 +110,27 @@ public interface Attestation {
     OffsetDateTime lastComplianceStateChangeAt();
 
     /**
+     * Gets the assessmentDate property: The time the evidence was assessed.
+     *
+     * @return the assessmentDate value.
+     */
+    OffsetDateTime assessmentDate();
+
+    /**
+     * Gets the metadata property: Additional metadata for this attestation.
+     *
+     * @return the metadata value.
+     */
+    Object metadata();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.policyinsights.fluent.models.AttestationInner object.
      *
      * @return the inner object.
@@ -160,7 +181,9 @@ public interface Attestation {
                 DefinitionStages.WithExpiresOn,
                 DefinitionStages.WithOwner,
                 DefinitionStages.WithComments,
-                DefinitionStages.WithEvidence {
+                DefinitionStages.WithEvidence,
+                DefinitionStages.WithAssessmentDate,
+                DefinitionStages.WithMetadata {
             /**
              * Executes the create request.
              *
@@ -244,6 +267,26 @@ public interface Attestation {
              */
             WithCreate withEvidence(List<AttestationEvidence> evidence);
         }
+        /** The stage of the Attestation definition allowing to specify assessmentDate. */
+        interface WithAssessmentDate {
+            /**
+             * Specifies the assessmentDate property: The time the evidence was assessed.
+             *
+             * @param assessmentDate The time the evidence was assessed.
+             * @return the next definition stage.
+             */
+            WithCreate withAssessmentDate(OffsetDateTime assessmentDate);
+        }
+        /** The stage of the Attestation definition allowing to specify metadata. */
+        interface WithMetadata {
+            /**
+             * Specifies the metadata property: Additional metadata for this attestation.
+             *
+             * @param metadata Additional metadata for this attestation.
+             * @return the next definition stage.
+             */
+            WithCreate withMetadata(Object metadata);
+        }
     }
     /**
      * Begins update for the Attestation resource.
@@ -260,7 +303,9 @@ public interface Attestation {
             UpdateStages.WithExpiresOn,
             UpdateStages.WithOwner,
             UpdateStages.WithComments,
-            UpdateStages.WithEvidence {
+            UpdateStages.WithEvidence,
+            UpdateStages.WithAssessmentDate,
+            UpdateStages.WithMetadata {
         /**
          * Executes the update request.
          *
@@ -357,6 +402,26 @@ public interface Attestation {
              * @return the next definition stage.
              */
             Update withEvidence(List<AttestationEvidence> evidence);
+        }
+        /** The stage of the Attestation update allowing to specify assessmentDate. */
+        interface WithAssessmentDate {
+            /**
+             * Specifies the assessmentDate property: The time the evidence was assessed.
+             *
+             * @param assessmentDate The time the evidence was assessed.
+             * @return the next definition stage.
+             */
+            Update withAssessmentDate(OffsetDateTime assessmentDate);
+        }
+        /** The stage of the Attestation update allowing to specify metadata. */
+        interface WithMetadata {
+            /**
+             * Specifies the metadata property: Additional metadata for this attestation.
+             *
+             * @param metadata Additional metadata for this attestation.
+             * @return the next definition stage.
+             */
+            Update withMetadata(Object metadata);
         }
     }
     /**

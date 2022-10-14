@@ -26,6 +26,10 @@ public final class UntilActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private UntilActivityTypeProperties innerTypeProperties = new UntilActivityTypeProperties();
 
+    /** Creates an instance of UntilActivity class. */
+    public UntilActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Until activity properties.
      *

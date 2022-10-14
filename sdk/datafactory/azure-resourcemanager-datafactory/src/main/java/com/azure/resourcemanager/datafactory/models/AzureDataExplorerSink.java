@@ -32,6 +32,10 @@ public final class AzureDataExplorerSink extends CopySink {
     @JsonProperty(value = "flushImmediately")
     private Object flushImmediately;
 
+    /** Creates an instance of AzureDataExplorerSink class. */
+    public AzureDataExplorerSink() {
+    }
+
     /**
      * Get the ingestionMappingName property: A name of a pre-created csv mapping that was defined on the target Kusto
      * table. Type: string.

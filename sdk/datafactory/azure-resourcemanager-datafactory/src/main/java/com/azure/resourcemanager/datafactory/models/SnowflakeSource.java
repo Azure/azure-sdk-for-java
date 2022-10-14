@@ -26,6 +26,10 @@ public final class SnowflakeSource extends CopySource {
     @JsonProperty(value = "exportSettings")
     private SnowflakeExportCopyCommand exportSettings;
 
+    /** Creates an instance of SnowflakeSource class. */
+    public SnowflakeSource() {
+    }
+
     /**
      * Get the query property: Snowflake Sql query. Type: string (or Expression with resultType string).
      *

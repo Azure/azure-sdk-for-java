@@ -23,6 +23,10 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private CommonDataServiceForAppsEntityDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of CommonDataServiceForAppsEntityDataset class. */
+    public CommonDataServiceForAppsEntityDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Common Data Service for Apps entity dataset properties.
      *

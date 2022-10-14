@@ -152,6 +152,10 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureDatabricksLinkedServiceTypeProperties class. */
+    public AzureDatabricksLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).

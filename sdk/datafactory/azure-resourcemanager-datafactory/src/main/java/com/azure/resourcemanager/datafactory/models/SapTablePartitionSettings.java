@@ -38,6 +38,10 @@ public final class SapTablePartitionSettings {
     @JsonProperty(value = "maxPartitionsNumber")
     private Object maxPartitionsNumber;
 
+    /** Creates an instance of SapTablePartitionSettings class. */
+    public SapTablePartitionSettings() {
+    }
+
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
      * Type: string (or Expression with resultType string).

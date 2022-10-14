@@ -50,6 +50,10 @@ public final class MagentoLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MagentoLinkedServiceTypeProperties class. */
+    public MagentoLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The URL of the Magento instance. (i.e. 192.168.222.110/magento3).
      *

@@ -25,6 +25,10 @@ public final class WebTableDatasetTypeProperties {
     @JsonProperty(value = "path")
     private Object path;
 
+    /** Creates an instance of WebTableDatasetTypeProperties class. */
+    public WebTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.

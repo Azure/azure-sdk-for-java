@@ -22,6 +22,10 @@ public final class SnowflakeDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of SnowflakeDatasetTypeProperties class. */
+    public SnowflakeDatasetTypeProperties() {
+    }
+
     /**
      * Get the schema property: The schema name of the Snowflake database. Type: string (or Expression with resultType
      * string).

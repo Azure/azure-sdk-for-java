@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Component state details. */
 @Fluent
 public final class ComponentStateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentStateDetails.class);
-
     /*
      * Component Id.
      */
@@ -53,6 +50,10 @@ public final class ComponentStateDetails {
      * Component state details.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ComponentStateDetails class. */
+    public ComponentStateDetails() {
+    }
 
     /**
      * Get the id property: Component Id.
