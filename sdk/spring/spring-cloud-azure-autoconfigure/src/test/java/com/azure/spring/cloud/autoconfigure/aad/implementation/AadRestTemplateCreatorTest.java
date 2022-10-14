@@ -43,21 +43,21 @@ class AadRestTemplateCreatorTest {
 
                     RestTemplate restTemplate = createRestTemplate(builder);
                     ResponseErrorHandler handler = restTemplate.getErrorHandler();
-                    assertNotEquals(handler.getClass(), OAuth2ErrorResponseErrorHandler.class);
+                    assertNotEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
                     List<HttpMessageConverter<?>>  converters = restTemplate.getMessageConverters();
                     assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
                     assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
 
                     restTemplate = createOAuth2ErrorResponseHandledRestTemplate(builder);
                     handler = restTemplate.getErrorHandler();
-                    assertEquals(handler.getClass(), OAuth2ErrorResponseErrorHandler.class);
+                    assertEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
                     converters = restTemplate.getMessageConverters();
                     assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
                     assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
 
                     restTemplate = createOAuth2AccessTokenResponseClientRestTemplate(builder);
                     handler = restTemplate.getErrorHandler();
-                    assertEquals(handler.getClass(), OAuth2ErrorResponseErrorHandler.class);
+                    assertEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
                     converters = restTemplate.getMessageConverters();
                     assertTrue(hasItemOfClass(converters, FormHttpMessageConverter.class));
                     assertTrue(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
