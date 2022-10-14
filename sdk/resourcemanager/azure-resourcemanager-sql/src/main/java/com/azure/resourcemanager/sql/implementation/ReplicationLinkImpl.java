@@ -94,11 +94,6 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     }
 
     @Override
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    @Override
     public boolean isTerminationAllowed() {
         return this.innerModel().isTerminationAllowed();
     }
@@ -132,7 +127,8 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
             .sqlServerManager
             .serviceClient()
             .getReplicationLinks()
-            .failoverAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
+            .failoverAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name())
+            .then();
     }
 
     @Override
@@ -150,7 +146,8 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
             .sqlServerManager
             .serviceClient()
             .getReplicationLinks()
-            .failoverAllowDataLossAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
+            .failoverAllowDataLossAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name())
+            .then();
     }
 
     @Override

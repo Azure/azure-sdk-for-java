@@ -7,9 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
-import com.azure.resourcemanager.sql.models.ExtensionName;
-import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
-import com.azure.resourcemanager.sql.models.ImportOperationMode;
+import com.azure.resourcemanager.sql.models.ImportExistingDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportRequest;
@@ -25,12 +23,12 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
 
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
-    private ImportExtensionRequest inner;
+    private ImportExistingDatabaseDefinition inner;
 
     SqlDatabaseImportRequestImpl(SqlDatabaseImpl sqlDatabase, SqlServerManager sqlServerManager) {
         this.sqlDatabase = sqlDatabase;
         this.sqlServerManager = sqlServerManager;
-        this.inner = new ImportExtensionRequest();
+        this.inner = new ImportExistingDatabaseDefinition();
     }
 
     @Override
@@ -39,7 +37,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public ImportExtensionRequest innerModel() {
+    public ImportExistingDatabaseDefinition innerModel() {
         return this.inner;
     }
 
@@ -50,11 +48,10 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .createImportOperationAsync(
+            .importMethodAsync(
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
-                ExtensionName.IMPORT,
                 this.innerModel())
             .flatMap(
                 importExportResponseInner ->
@@ -90,10 +87,9 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     @Override
     public SqlDatabaseImportRequestImpl importFrom(String storageUri) {
         if (this.inner == null) {
-            this.inner = new ImportExtensionRequest();
+            this.inner = new ImportExistingDatabaseDefinition();
         }
         this.inner.withStorageUri(storageUri);
-        this.inner.withOperationMode(ImportOperationMode.IMPORT);
         return this;
     }
 
@@ -104,9 +100,8 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(fileName);
         if (this.inner == null) {
-            this.inner = new ImportExtensionRequest();
+            this.inner = new ImportExistingDatabaseDefinition();
         }
-        this.inner.withOperationMode(ImportOperationMode.IMPORT);
         this
             .addDependency(
                 context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
@@ -130,14 +125,14 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     @Override
     public SqlDatabaseImportRequestImpl withSqlAdministratorLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.SQL);
+        this.inner.withAuthenticationType(AuthenticationType.SQL.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 
     @Override
     public SqlDatabaseImportRequestImpl withActiveDirectoryLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD);
+        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 

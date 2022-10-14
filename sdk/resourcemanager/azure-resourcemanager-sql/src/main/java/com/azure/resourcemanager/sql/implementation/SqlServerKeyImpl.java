@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 /** Implementation for SQL Server Key interface. */
 public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, ServerKeyInner, SqlServerImpl, SqlServer>
-    implements SqlServerKey, SqlServerKey.Update, SqlServerKeyOperations.SqlServerKeyOperationsDefinition {
+    implements SqlServerKey, SqlServerKeyOperations.SqlServerKeyOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -141,18 +141,6 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
     }
 
     @Override
-    public SqlServerKeyImpl withThumbprint(String thumbprint) {
-        this.innerModel().withThumbprint(thumbprint);
-        return this;
-    }
-
-    @Override
-    public SqlServerKeyImpl withCreationDate(OffsetDateTime creationDate) {
-        this.innerModel().withCreationDate(creationDate);
-        return this;
-    }
-
-    @Override
     public Mono<SqlServerKey> createResourceAsync() {
         final SqlServerKeyImpl self = this;
         return this
@@ -247,11 +235,5 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
     @Override
     public Mono<Void> deleteAsync() {
         return this.deleteResourceAsync();
-    }
-
-    @Override
-    public Update update() {
-        super.prepareUpdate();
-        return this;
     }
 }

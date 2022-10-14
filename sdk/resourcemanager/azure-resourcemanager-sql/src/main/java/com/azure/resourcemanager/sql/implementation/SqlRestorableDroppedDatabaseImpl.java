@@ -42,22 +42,12 @@ public class SqlRestorableDroppedDatabaseImpl
 
     @Override
     public String edition() {
-        return this.innerModel().edition();
+        return this.innerModel().sku().tier();
     }
 
     @Override
     public String maxSizeBytes() {
-        return this.innerModel().maxSizeBytes();
-    }
-
-    @Override
-    public String serviceLevelObjective() {
-        return this.innerModel().serviceLevelObjective();
-    }
-
-    @Override
-    public String elasticPoolName() {
-        return this.innerModel().elasticPoolName();
+        return this.innerModel().maxSizeBytes() == null ? null : this.innerModel().maxSizeBytes().toString();
     }
 
     @Override

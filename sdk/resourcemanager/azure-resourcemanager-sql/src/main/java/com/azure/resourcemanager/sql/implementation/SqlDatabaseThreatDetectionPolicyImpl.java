@@ -5,15 +5,19 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyEmailAccountAdmins;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
+import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
-import java.util.Objects;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Implementation for SQL database threat detection policy. */
 public class SqlDatabaseThreatDetectionPolicyImpl
@@ -38,8 +42,6 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         this.sqlServerManager = sqlServerManager;
         this.resourceGroupName = parent.resourceGroupName();
         this.sqlServerName = parent.sqlServerName();
-
-        this.innerModel().withLocation(parent.regionName());
     }
 
     @Override
@@ -59,32 +61,41 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public Region region() {
-        return Region.fromName(this.innerModel().location());
+        return Region.fromName(parent().regionName());
     }
 
     @Override
     public String kind() {
-        return this.innerModel().kind();
+        return parent().parent().kind();
     }
 
     @Override
     public SecurityAlertPolicyState currentState() {
-        return this.innerModel().state();
+        return this.innerModel().state() == null ? null : SecurityAlertPolicyState.fromString(this.innerModel().state().toString());
     }
 
     @Override
     public String disabledAlerts() {
-        return this.innerModel().disabledAlerts();
+        List<String> disabledAlerts = this.innerModel().disabledAlerts();
+        if (disabledAlerts == null) {
+            return null;
+        }
+        return String.join(";", disabledAlerts);
     }
 
     @Override
     public String emailAddresses() {
-        return this.innerModel().emailAddresses();
+        List<String> emailAddresses = this.innerModel().emailAddresses();
+        if (emailAddresses == null) {
+            return null;
+        }
+        return String.join(";", emailAddresses);
     }
 
     @Override
     public boolean emailAccountAdmins() {
-        return this.innerModel().emailAccountAdmins() == SecurityAlertPolicyEmailAccountAdmins.ENABLED;
+        // TODO (xiaofeicao) whether enabled by default?
+        return Boolean.TRUE.equals(this.innerModel().emailAccountAdmins());
     }
 
     @Override
@@ -104,7 +115,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public boolean isDefaultSecurityAlertPolicy() {
-        return this.innerModel().useServerDefault() == SecurityAlertPolicyUseServerDefault.ENABLED;
+        return true;
     }
 
     @Override
@@ -112,7 +123,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         return this
             .sqlServerManager
             .serviceClient()
-            .getDatabaseThreatDetectionPolicies()
+            .getDatabaseSecurityAlertPolicies()
             .getAsync(
                 this.resourceGroupName, this.sqlServerName, this.parent().name(), SecurityAlertPolicyName.DEFAULT);
     }
@@ -123,7 +134,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         return this
             .sqlServerManager
             .serviceClient()
-            .getDatabaseThreatDetectionPolicies()
+            .getDatabaseSecurityAlertPolicies()
             .createOrUpdateAsync(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -155,28 +166,25 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyEnabled() {
-        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.innerModel().withState(SecurityAlertPolicyState.ENABLED);
+        this.innerModel().withState(SecurityAlertsPolicyState.ENABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyDisabled() {
-        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.innerModel().withState(SecurityAlertPolicyState.DISABLED);
+        this.innerModel().withState(SecurityAlertsPolicyState.DISABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyNew() {
-        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.DISABLED);
-        this.innerModel().withState(SecurityAlertPolicyState.NEW);
+        // todo (xiaofeicao) Is NEW removed from possible states?
+//        this.innerModel().withState(SecurityAlertsPolicyState.NEW);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withDefaultSecurityAlertPolicy() {
-        this.innerModel().withUseServerDefault(SecurityAlertPolicyUseServerDefault.ENABLED);
         return this;
     }
 
@@ -194,13 +202,17 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withAlertsFilter(String alertsFilter) {
-        this.innerModel().withDisabledAlerts(alertsFilter);
+        if (alertsFilter != null) {
+            this.innerModel().withDisabledAlerts(Stream.of(alertsFilter.split(Pattern.quote(";"))).collect(Collectors.toList()));
+        }
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailAddresses(String addresses) {
-        this.innerModel().withEmailAddresses(addresses);
+        if (addresses != null) {
+            this.innerModel().withEmailAddresses(Stream.of(addresses.split(Pattern.quote(";"))).collect(Collectors.toList()));
+        }
         return this;
     }
 
@@ -212,13 +224,13 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withEmailToAccountAdmins() {
-        this.innerModel().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.ENABLED);
+        this.innerModel().withEmailAccountAdmins(true);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withoutEmailToAccountAdmins() {
-        this.innerModel().withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins.DISABLED);
+        this.innerModel().withEmailAccountAdmins(false);
         return this;
     }
 }

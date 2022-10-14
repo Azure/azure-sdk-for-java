@@ -20,11 +20,6 @@ public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> 
     }
 
     @Override
-    public String resourceName() {
-        return this.innerModel().resourceName();
-    }
-
-    @Override
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -42,10 +37,5 @@ public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> 
     @Override
     public String unit() {
         return this.innerModel().unit();
-    }
-
-    @Override
-    public OffsetDateTime nextResetTime() {
-        return this.innerModel().nextResetTime();
     }
 }

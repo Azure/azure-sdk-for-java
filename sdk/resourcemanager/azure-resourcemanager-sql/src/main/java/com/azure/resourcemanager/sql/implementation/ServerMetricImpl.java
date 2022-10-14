@@ -20,11 +20,6 @@ class ServerMetricImpl extends WrapperImpl<ServerUsageInner> implements ServerMe
     }
 
     @Override
-    public String resourceName() {
-        return this.innerModel().resourceName();
-    }
-
-    @Override
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -42,10 +37,5 @@ class ServerMetricImpl extends WrapperImpl<ServerUsageInner> implements ServerMe
     @Override
     public String unit() {
         return this.innerModel().unit();
-    }
-
-    @Override
-    public OffsetDateTime nextResetTime() {
-        return this.innerModel().nextResetTime();
     }
 }

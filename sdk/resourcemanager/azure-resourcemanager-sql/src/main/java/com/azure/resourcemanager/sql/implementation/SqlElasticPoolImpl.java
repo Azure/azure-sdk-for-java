@@ -8,23 +8,18 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
-import com.azure.resourcemanager.sql.fluent.models.ElasticPoolDatabaseActivityInner;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
@@ -49,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlElasticPool. */
 public class SqlElasticPoolImpl
@@ -201,13 +195,13 @@ public class SqlElasticPoolImpl
     @Override
     public List<ElasticPoolActivity> listActivities() {
         List<ElasticPoolActivity> elasticPoolActivities = new ArrayList<>();
-        PagedIterable<ElasticPoolActivityInner> elasticPoolActivityInners =
+        PagedIterable<ElasticPoolOperationInner> elasticPoolActivityInners =
             this
                 .sqlServerManager
                 .serviceClient()
-                .getElasticPoolActivities()
+                .getElasticPoolOperations()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
-        for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
+        for (ElasticPoolOperationInner inner : elasticPoolActivityInners) {
             elasticPoolActivities.add(new ElasticPoolActivityImpl(inner));
         }
         return Collections.unmodifiableList(elasticPoolActivities);
@@ -218,86 +212,9 @@ public class SqlElasticPoolImpl
         return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
-            .getElasticPoolActivities()
+            .getElasticPoolOperations()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name()),
             ElasticPoolActivityImpl::new);
-    }
-
-    @Override
-    public List<ElasticPoolDatabaseActivity> listDatabaseActivities() {
-        List<ElasticPoolDatabaseActivity> elasticPoolDatabaseActivities = new ArrayList<>();
-        PagedIterable<ElasticPoolDatabaseActivityInner> elasticPoolDatabaseActivityInners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getElasticPoolDatabaseActivities()
-                .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
-        for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
-            elasticPoolDatabaseActivities.add(new ElasticPoolDatabaseActivityImpl(inner));
-        }
-        return Collections.unmodifiableList(elasticPoolDatabaseActivities);
-    }
-
-    @Override
-    public PagedFlux<ElasticPoolDatabaseActivity> listDatabaseActivitiesAsync() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getElasticPoolDatabaseActivities()
-            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name()),
-            ElasticPoolDatabaseActivityImpl::new);
-    }
-
-    @Override
-    public List<SqlDatabaseMetric> listDatabaseMetrics(String filter) {
-        List<SqlDatabaseMetric> databaseMetrics = new ArrayList<>();
-        PagedIterable<MetricInner> inners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getElasticPools()
-                .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
-        for (MetricInner inner : inners) {
-            databaseMetrics.add(new SqlDatabaseMetricImpl(inner));
-        }
-
-        return Collections.unmodifiableList(databaseMetrics);
-    }
-
-    @Override
-    public PagedFlux<SqlDatabaseMetric> listDatabaseMetricsAsync(String filter) {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getElasticPools()
-            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter),
-            SqlDatabaseMetricImpl::new);
-    }
-
-    @Override
-    public List<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitions() {
-        List<SqlDatabaseMetricDefinition> databaseMetricDefinitions = new ArrayList<>();
-        PagedIterable<MetricDefinitionInner> inners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getElasticPools()
-                .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
-        for (MetricDefinitionInner inner : inners) {
-            databaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(inner));
-        }
-
-        return Collections.unmodifiableList(databaseMetricDefinitions);
-    }
-
-    @Override
-    public PagedFlux<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitionsAsync() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getElasticPools()
-            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name()),
-            SqlDatabaseMetricDefinitionImpl::new);
     }
 
     @Override
