@@ -2359,12 +2359,10 @@ class BlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        def blobBeginCopyOptions = new BlobBeginCopyOptions(bc.getBlobUrl()).setSourceRequestConditions(mac)
-        if (environment.testMode == TestMode.PLAYBACK) {
-            // Default poll duration is 1 second to reduce the number of calls to the service, but this is playback
-            // go as fast as possible.
-            blobBeginCopyOptions = blobBeginCopyOptions.setPollInterval(Duration.ofMillis(10))
-        }
+        def blobBeginCopyOptions = new BlobBeginCopyOptions(bc.getBlobUrl())
+            .setSourceRequestConditions(mac)
+            // Either use the default live test duration of 1000 millis or in playback use duration of 1 millis
+            .setPollInterval(getPollingDuration(1000))
         def poller = copyDestBlob.beginCopy(blobBeginCopyOptions)
         def response = poller.blockLast()
 
