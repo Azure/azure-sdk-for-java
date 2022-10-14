@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.policyinsights.fluent.AttestationsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AttestationsClient. */
 public final class AttestationsClientImpl implements AttestationsClient {
-    private final ClientLogger logger = new ClientLogger(AttestationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AttestationsService service;
 
@@ -268,7 +265,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listSinglePageAsync(Integer top, String filter) {
@@ -284,7 +282,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -319,7 +317,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listSinglePageAsync(Integer top, String filter, Context context) {
@@ -335,7 +334,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -359,7 +358,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listAsync(Integer top, String filter) {
@@ -372,7 +371,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listAsync() {
@@ -391,7 +390,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listAsync(Integer top, String filter, Context context) {
@@ -405,7 +404,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> list() {
@@ -423,7 +422,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the subscription.
+     * @return all attestations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> list(Integer top, String filter, Context context) {
@@ -438,7 +437,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionWithResponseAsync(
@@ -464,7 +463,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -490,7 +489,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionWithResponseAsync(
@@ -516,7 +515,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -538,7 +537,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscriptionAsync(
@@ -564,7 +563,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscriptionAsync(
@@ -586,7 +585,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
@@ -603,7 +602,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
@@ -619,7 +618,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtSubscriptionAsync(
@@ -638,7 +637,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtSubscriptionAsync(
@@ -687,7 +686,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at subscription scope.
+     * @return an existing attestation at subscription scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getAtSubscriptionWithResponseAsync(String attestationName) {
@@ -707,7 +707,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -731,7 +731,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at subscription scope.
+     * @return an existing attestation at subscription scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getAtSubscriptionWithResponseAsync(
@@ -752,7 +753,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -772,19 +773,26 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at subscription scope.
+     * @return an existing attestation at subscription scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> getAtSubscriptionAsync(String attestationName) {
-        return getAtSubscriptionWithResponseAsync(attestationName)
-            .flatMap(
-                (Response<AttestationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionWithResponseAsync(attestationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing attestation at subscription scope.
+     *
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing attestation at subscription scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationInner> getAtSubscriptionWithResponse(String attestationName, Context context) {
+        return getAtSubscriptionWithResponseAsync(attestationName, context).block();
     }
 
     /**
@@ -798,22 +806,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationInner getAtSubscription(String attestationName) {
-        return getAtSubscriptionAsync(attestationName).block();
-    }
-
-    /**
-     * Gets an existing attestation at subscription scope.
-     *
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at subscription scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationInner> getAtSubscriptionWithResponse(String attestationName, Context context) {
-        return getAtSubscriptionWithResponseAsync(attestationName, context).block();
+        return getAtSubscriptionWithResponse(attestationName, Context.NONE).getValue();
     }
 
     /**
@@ -823,7 +816,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtSubscriptionWithResponseAsync(String attestationName) {
@@ -843,7 +836,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -867,7 +860,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtSubscriptionWithResponseAsync(String attestationName, Context context) {
@@ -887,7 +880,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -907,11 +900,26 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtSubscriptionAsync(String attestationName) {
-        return deleteAtSubscriptionWithResponseAsync(attestationName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtSubscriptionWithResponseAsync(attestationName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing attestation at subscription scope.
+     *
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAtSubscriptionWithResponse(String attestationName, Context context) {
+        return deleteAtSubscriptionWithResponseAsync(attestationName, context).block();
     }
 
     /**
@@ -924,22 +932,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscription(String attestationName) {
-        deleteAtSubscriptionAsync(attestationName).block();
-    }
-
-    /**
-     * Deletes an existing attestation at subscription scope.
-     *
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtSubscriptionWithResponse(String attestationName, Context context) {
-        return deleteAtSubscriptionWithResponseAsync(attestationName, context).block();
+        deleteAtSubscriptionWithResponse(attestationName, Context.NONE);
     }
 
     /**
@@ -951,7 +944,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listByResourceGroupSinglePageAsync(
@@ -972,7 +966,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1009,7 +1003,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listByResourceGroupSinglePageAsync(
@@ -1030,7 +1025,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1063,7 +1058,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listByResourceGroupAsync(String resourceGroupName, Integer top, String filter) {
@@ -1079,7 +1074,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1100,7 +1095,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listByResourceGroupAsync(
@@ -1117,7 +1112,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> listByResourceGroup(String resourceGroupName) {
@@ -1136,7 +1131,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for the resource group.
+     * @return all attestations for the resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> listByResourceGroup(
@@ -1153,7 +1148,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtResourceGroupWithResponseAsync(
@@ -1183,7 +1178,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1211,7 +1206,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtResourceGroupWithResponseAsync(
@@ -1241,7 +1236,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1265,7 +1260,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroupAsync(
@@ -1292,7 +1287,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroupAsync(
@@ -1315,7 +1310,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
@@ -1333,7 +1328,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
@@ -1351,7 +1346,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtResourceGroupAsync(
@@ -1371,7 +1366,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtResourceGroupAsync(
@@ -1424,7 +1419,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource group scope.
+     * @return an existing attestation at resource group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getByResourceGroupWithResponseAsync(
@@ -1449,7 +1445,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1475,7 +1471,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource group scope.
+     * @return an existing attestation at resource group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getByResourceGroupWithResponseAsync(
@@ -1500,7 +1497,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1522,19 +1519,29 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource group scope.
+     * @return an existing attestation at resource group scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> getByResourceGroupAsync(String resourceGroupName, String attestationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, attestationName)
-            .flatMap(
-                (Response<AttestationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing attestation at resource group scope.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing attestation at resource group scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String attestationName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, attestationName, context).block();
     }
 
     /**
@@ -1549,24 +1556,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationInner getByResourceGroup(String resourceGroupName, String attestationName) {
-        return getByResourceGroupAsync(resourceGroupName, attestationName).block();
-    }
-
-    /**
-     * Gets an existing attestation at resource group scope.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource group scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String attestationName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, attestationName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, attestationName, Context.NONE).getValue();
     }
 
     /**
@@ -1577,7 +1567,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String attestationName) {
@@ -1601,7 +1591,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1627,7 +1617,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1652,7 +1642,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1674,12 +1664,27 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String attestationName) {
-        return deleteWithResponseAsync(resourceGroupName, attestationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, attestationName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing attestation at resource group scope.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String attestationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, attestationName, context).block();
     }
 
     /**
@@ -1693,23 +1698,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String attestationName) {
-        deleteAsync(resourceGroupName, attestationName).block();
-    }
-
-    /**
-     * Deletes an existing attestation at resource group scope.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String attestationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, attestationName, context).block();
+        deleteWithResponse(resourceGroupName, attestationName, Context.NONE);
     }
 
     /**
@@ -1721,7 +1710,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceSinglePageAsync(
@@ -1735,7 +1725,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1765,7 +1755,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceSinglePageAsync(
@@ -1779,7 +1770,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1804,7 +1795,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listForResourceAsync(String resourceId, Integer top, String filter) {
@@ -1820,7 +1811,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listForResourceAsync(String resourceId) {
@@ -1841,7 +1832,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttestationInner> listForResourceAsync(
@@ -1858,7 +1849,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> listForResource(String resourceId) {
@@ -1877,7 +1868,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all attestations for a resource.
+     * @return all attestations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttestationInner> listForResource(
@@ -1894,7 +1885,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtResourceWithResponseAsync(
@@ -1917,7 +1908,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1944,7 +1935,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtResourceWithResponseAsync(
@@ -1967,7 +1958,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1984,7 +1975,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceAsync(
@@ -2011,7 +2002,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link PollerFlux} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceAsync(
@@ -2034,7 +2025,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
@@ -2052,7 +2043,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
@@ -2069,7 +2060,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtResourceAsync(
@@ -2089,7 +2080,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an attestation resource.
+     * @return an attestation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> createOrUpdateAtResourceAsync(
@@ -2142,7 +2133,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource scope.
+     * @return an existing attestation at resource scope along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getAtResourceWithResponseAsync(String resourceId, String attestationName) {
@@ -2159,7 +2151,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2179,7 +2171,8 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource scope.
+     * @return an existing attestation at resource scope along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationInner>> getAtResourceWithResponseAsync(
@@ -2197,7 +2190,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2212,19 +2205,29 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource scope.
+     * @return an existing attestation at resource scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationInner> getAtResourceAsync(String resourceId, String attestationName) {
         return getAtResourceWithResponseAsync(resourceId, attestationName)
-            .flatMap(
-                (Response<AttestationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing attestation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing attestation at resource scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AttestationInner> getAtResourceWithResponse(
+        String resourceId, String attestationName, Context context) {
+        return getAtResourceWithResponseAsync(resourceId, attestationName, context).block();
     }
 
     /**
@@ -2239,24 +2242,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationInner getAtResource(String resourceId, String attestationName) {
-        return getAtResourceAsync(resourceId, attestationName).block();
-    }
-
-    /**
-     * Gets an existing attestation at resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing attestation at resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationInner> getAtResourceWithResponse(
-        String resourceId, String attestationName, Context context) {
-        return getAtResourceWithResponseAsync(resourceId, attestationName, context).block();
+        return getAtResourceWithResponse(resourceId, attestationName, Context.NONE).getValue();
     }
 
     /**
@@ -2267,7 +2253,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtResourceWithResponseAsync(String resourceId, String attestationName) {
@@ -2284,7 +2270,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2304,7 +2290,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtResourceWithResponseAsync(
@@ -2322,7 +2308,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter attestationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2337,12 +2323,27 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtResourceAsync(String resourceId, String attestationName) {
-        return deleteAtResourceWithResponseAsync(resourceId, attestationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtResourceWithResponseAsync(resourceId, attestationName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing attestation at individual resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param attestationName The name of the attestation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAtResourceWithResponse(String resourceId, String attestationName, Context context) {
+        return deleteAtResourceWithResponseAsync(resourceId, attestationName, context).block();
     }
 
     /**
@@ -2356,33 +2357,18 @@ public final class AttestationsClientImpl implements AttestationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtResource(String resourceId, String attestationName) {
-        deleteAtResourceAsync(resourceId, attestationName).block();
-    }
-
-    /**
-     * Deletes an existing attestation at individual resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param attestationName The name of the attestation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtResourceWithResponse(String resourceId, String attestationName, Context context) {
-        return deleteAtResourceWithResponseAsync(resourceId, attestationName, context).block();
+        deleteAtResourceWithResponse(resourceId, attestationName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForSubscriptionNextSinglePageAsync(String nextLink) {
@@ -2414,12 +2400,13 @@ public final class AttestationsClientImpl implements AttestationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForSubscriptionNextSinglePageAsync(
@@ -2451,11 +2438,12 @@ public final class AttestationsClientImpl implements AttestationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2487,12 +2475,13 @@ public final class AttestationsClientImpl implements AttestationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceGroupNextSinglePageAsync(
@@ -2524,11 +2513,12 @@ public final class AttestationsClientImpl implements AttestationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceNextSinglePageAsync(String nextLink) {
@@ -2559,12 +2549,13 @@ public final class AttestationsClientImpl implements AttestationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of attestations.
+     * @return list of attestations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttestationInner>> listForResourceNextSinglePageAsync(String nextLink, Context context) {

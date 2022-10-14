@@ -103,6 +103,10 @@ public final class PipelineRunInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of PipelineRunInner class. */
+    public PipelineRunInner() {
+    }
+
     /**
      * Get the runId property: Identifier of a run.
      *

@@ -30,6 +30,10 @@ public final class ApplicationGatewayFirewallRuleGroup {
     @JsonProperty(value = "rules", required = true)
     private List<ApplicationGatewayFirewallRule> rules;
 
+    /** Creates an instance of ApplicationGatewayFirewallRuleGroup class. */
+    public ApplicationGatewayFirewallRuleGroup() {
+    }
+
     /**
      * Get the ruleGroupName property: The name of the web application firewall rule group.
      *

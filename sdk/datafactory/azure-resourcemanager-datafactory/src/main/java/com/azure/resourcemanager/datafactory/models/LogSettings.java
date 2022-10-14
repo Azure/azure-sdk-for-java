@@ -29,6 +29,10 @@ public final class LogSettings {
     @JsonProperty(value = "logLocationSettings", required = true)
     private LogLocationSettings logLocationSettings;
 
+    /** Creates an instance of LogSettings class. */
+    public LogSettings() {
+    }
+
     /**
      * Get the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
      * Expression with resultType boolean).

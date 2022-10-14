@@ -39,6 +39,10 @@ public final class ProbeInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ProbeInner class. */
+    public ProbeInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of load balancer probe.
      *
@@ -205,6 +209,35 @@ public final class ProbeInner extends SubResource {
             this.innerProperties = new ProbePropertiesFormat();
         }
         this.innerProperties().withNumberOfProbes(numberOfProbes);
+        return this;
+    }
+
+    /**
+     * Get the probeThreshold property: The number of consecutive successful or failed probes in order to allow or deny
+     * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
+     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
+     * be placed back in rotation.
+     *
+     * @return the probeThreshold value.
+     */
+    public Integer probeThreshold() {
+        return this.innerProperties() == null ? null : this.innerProperties().probeThreshold();
+    }
+
+    /**
+     * Set the probeThreshold property: The number of consecutive successful or failed probes in order to allow or deny
+     * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
+     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
+     * be placed back in rotation.
+     *
+     * @param probeThreshold the probeThreshold value to set.
+     * @return the ProbeInner object itself.
+     */
+    public ProbeInner withProbeThreshold(Integer probeThreshold) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withProbeThreshold(probeThreshold);
         return this;
     }
 

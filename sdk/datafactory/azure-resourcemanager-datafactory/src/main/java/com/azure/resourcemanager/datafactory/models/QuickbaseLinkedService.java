@@ -24,6 +24,10 @@ public final class QuickbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private QuickbaseLinkedServiceTypeProperties innerTypeProperties = new QuickbaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of QuickbaseLinkedService class. */
+    public QuickbaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Quickbase linked service properties.
      *

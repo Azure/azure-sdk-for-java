@@ -16,6 +16,10 @@ public final class MySqlTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of MySqlTableDatasetTypeProperties class. */
+    public MySqlTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The MySQL table name. Type: string (or Expression with resultType string).
      *

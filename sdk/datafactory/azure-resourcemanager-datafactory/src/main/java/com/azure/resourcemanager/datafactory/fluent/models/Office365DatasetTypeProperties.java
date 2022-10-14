@@ -24,6 +24,10 @@ public final class Office365DatasetTypeProperties {
     @JsonProperty(value = "predicate")
     private Object predicate;
 
+    /** Creates an instance of Office365DatasetTypeProperties class. */
+    public Office365DatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
      * resultType string).

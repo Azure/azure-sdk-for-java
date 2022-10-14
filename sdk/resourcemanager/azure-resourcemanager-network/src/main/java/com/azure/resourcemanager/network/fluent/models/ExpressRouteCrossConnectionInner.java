@@ -34,6 +34,10 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ExpressRouteCrossConnectionInner class. */
+    public ExpressRouteCrossConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the express route cross connection.
      *

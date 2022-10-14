@@ -26,6 +26,10 @@ public final class ExecutePipelineActivityPolicy {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ExecutePipelineActivityPolicy class. */
+    public ExecutePipelineActivityPolicy() {
+    }
+
     /**
      * Get the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.

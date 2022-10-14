@@ -194,15 +194,6 @@ public interface IntegrationRuntimeResource {
     /**
      * Gets detailed status information for an integration runtime.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
-     */
-    IntegrationRuntimeStatusResponse getStatus();
-
-    /**
-     * Gets detailed status information for an integration runtime.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,15 +203,13 @@ public interface IntegrationRuntimeResource {
     Response<IntegrationRuntimeStatusResponse> getStatusWithResponse(Context context);
 
     /**
-     * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
-     * credentials.
+     * Gets detailed status information for an integration runtime.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     * @return detailed status information for an integration runtime.
      */
-    IntegrationRuntimeConnectionInfo getConnectionInfo();
+    IntegrationRuntimeStatusResponse getStatus();
 
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
@@ -236,15 +225,15 @@ public interface IntegrationRuntimeResource {
     Response<IntegrationRuntimeConnectionInfo> getConnectionInfoWithResponse(Context context);
 
     /**
-     * Regenerates the authentication key for an integration runtime.
+     * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
+     * credentials.
      *
-     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the on-premises integration runtime connection information for encrypting the on-premises data source
+     *     credentials.
      */
-    IntegrationRuntimeAuthKeys regenerateAuthKey(IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
+    IntegrationRuntimeConnectionInfo getConnectionInfo();
 
     /**
      * Regenerates the authentication key for an integration runtime.
@@ -260,13 +249,15 @@ public interface IntegrationRuntimeResource {
         IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters, Context context);
 
     /**
-     * Retrieves the authentication keys for an integration runtime.
+     * Regenerates the authentication key for an integration runtime.
      *
+     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys.
      */
-    IntegrationRuntimeAuthKeys listAuthKeys();
+    IntegrationRuntimeAuthKeys regenerateAuthKey(IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * Retrieves the authentication keys for an integration runtime.
@@ -278,6 +269,15 @@ public interface IntegrationRuntimeResource {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     Response<IntegrationRuntimeAuthKeys> listAuthKeysWithResponse(Context context);
+
+    /**
+     * Retrieves the authentication keys for an integration runtime.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    IntegrationRuntimeAuthKeys listAuthKeys();
 
     /**
      * Starts a ManagedReserved type integration runtime.
@@ -323,17 +323,6 @@ public interface IntegrationRuntimeResource {
      * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
      * node than using this API directly.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void syncCredentials();
-
-    /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -343,15 +332,15 @@ public interface IntegrationRuntimeResource {
     Response<Void> syncCredentialsWithResponse(Context context);
 
     /**
-     * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     * integration runtime.
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
      */
-    IntegrationRuntimeMonitoringData getMonitoringData();
+    void syncCredentials();
 
     /**
      * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
@@ -367,12 +356,15 @@ public interface IntegrationRuntimeResource {
     Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(Context context);
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availability.
+     * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
+     * integration runtime.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
+     *     integration runtime.
      */
-    void upgrade();
+    IntegrationRuntimeMonitoringData getMonitoringData();
 
     /**
      * Upgrade self-hosted integration runtime to latest version if availability.
@@ -386,14 +378,12 @@ public interface IntegrationRuntimeResource {
     Response<Void> upgradeWithResponse(Context context);
 
     /**
-     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     * Upgrade self-hosted integration runtime to latest version if availability.
      *
-     * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void removeLinks(LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest);
+    void upgrade();
 
     /**
      * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
@@ -409,16 +399,14 @@ public interface IntegrationRuntimeResource {
         LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest, Context context);
 
     /**
-     * Create a linked integration runtime entry in a shared integration runtime.
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
      *
-     * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
+     * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
+    void removeLinks(LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest);
 
     /**
      * Create a linked integration runtime entry in a shared integration runtime.
@@ -432,4 +420,16 @@ public interface IntegrationRuntimeResource {
      */
     Response<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeWithResponse(
         CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest, Context context);
+
+    /**
+     * Create a linked integration runtime entry in a shared integration runtime.
+     *
+     * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration runtime status response.
+     */
+    IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
+        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
 }

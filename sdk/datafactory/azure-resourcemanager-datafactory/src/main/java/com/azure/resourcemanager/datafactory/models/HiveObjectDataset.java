@@ -23,6 +23,10 @@ public final class HiveObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private HiveDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of HiveObjectDataset class. */
+    public HiveObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

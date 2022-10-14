@@ -23,6 +23,10 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureFunctionActivityTypeProperties innerTypeProperties = new AzureFunctionActivityTypeProperties();
 
+    /** Creates an instance of AzureFunctionActivity class. */
+    public AzureFunctionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Function activity properties.
      *

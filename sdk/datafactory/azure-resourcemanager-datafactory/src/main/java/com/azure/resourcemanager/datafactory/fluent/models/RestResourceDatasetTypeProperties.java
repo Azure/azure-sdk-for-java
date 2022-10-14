@@ -44,6 +44,10 @@ public final class RestResourceDatasetTypeProperties {
     @JsonProperty(value = "paginationRules")
     private Object paginationRules;
 
+    /** Creates an instance of RestResourceDatasetTypeProperties class. */
+    public RestResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
      * Expression with resultType string).

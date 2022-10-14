@@ -23,6 +23,10 @@ public final class AzureSqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureSqlTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureSqlTableDataset class. */
+    public AzureSqlTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure SQL dataset properties.
      *

@@ -134,6 +134,10 @@ public final class SubnetPropertiesFormatInner {
     @JsonProperty(value = "applicationGatewayIpConfigurations")
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
+    /** Creates an instance of SubnetPropertiesFormatInner class. */
+    public SubnetPropertiesFormatInner() {
+    }
+
     /**
      * Get the addressPrefix property: The address prefix for the subnet.
      *

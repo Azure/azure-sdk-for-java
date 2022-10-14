@@ -31,6 +31,10 @@ public final class AzureMySqlLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureMySqlLinkedServiceTypeProperties class. */
+    public AzureMySqlLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

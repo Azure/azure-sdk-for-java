@@ -24,6 +24,10 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRouteCircuitsArpTableListResultInner class. */
+    public ExpressRouteCircuitsArpTableListResultInner() {
+    }
+
     /**
      * Get the value property: A list of the ARP tables.
      *

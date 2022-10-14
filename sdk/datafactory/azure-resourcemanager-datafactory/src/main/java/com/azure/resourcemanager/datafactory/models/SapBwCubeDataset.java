@@ -15,6 +15,10 @@ import java.util.Map;
 @JsonTypeName("SapBwCube")
 @Fluent
 public final class SapBwCubeDataset extends Dataset {
+    /** Creates an instance of SapBwCubeDataset class. */
+    public SapBwCubeDataset() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SapBwCubeDataset withDescription(String description) {

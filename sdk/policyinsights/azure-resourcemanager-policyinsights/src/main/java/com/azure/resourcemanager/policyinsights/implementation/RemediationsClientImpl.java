@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.RemediationsClient;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationDeploymentInner;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RemediationsClient. */
 public final class RemediationsClientImpl implements RemediationsClient {
-    private final ClientLogger logger = new ClientLogger(RemediationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RemediationsService service;
 
@@ -494,7 +491,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtManagementGroupSinglePageAsync(
@@ -551,7 +549,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtManagementGroupSinglePageAsync(
@@ -604,7 +603,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtManagementGroupAsync(
@@ -622,7 +621,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtManagementGroupAsync(
@@ -643,7 +642,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtManagementGroupAsync(
@@ -661,7 +660,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtManagementGroup(
@@ -680,7 +680,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtManagementGroup(
@@ -697,7 +698,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtManagementGroupWithResponseAsync(
@@ -743,7 +744,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtManagementGroupWithResponseAsync(
@@ -785,19 +786,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> cancelAtManagementGroupAsync(String managementGroupId, String remediationName) {
         return cancelAtManagementGroupWithResponseAsync(managementGroupId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancels a remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> cancelAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, Context context) {
+        return cancelAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
     }
 
     /**
@@ -812,24 +823,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner cancelAtManagementGroup(String managementGroupId, String remediationName) {
-        return cancelAtManagementGroupAsync(managementGroupId, remediationName).block();
-    }
-
-    /**
-     * Cancels a remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> cancelAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        return cancelAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
+        return cancelAtManagementGroupWithResponse(managementGroupId, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -841,7 +835,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForManagementGroupSinglePageAsync(
@@ -894,7 +889,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForManagementGroupSinglePageAsync(
@@ -943,7 +939,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForManagementGroupAsync(
@@ -960,7 +956,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForManagementGroupAsync(String managementGroupId) {
@@ -981,7 +977,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForManagementGroupAsync(
@@ -998,7 +994,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listForManagementGroup(String managementGroupId) {
@@ -1017,7 +1013,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listForManagementGroup(
@@ -1034,7 +1030,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtManagementGroupWithResponseAsync(
@@ -1087,7 +1083,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtManagementGroupWithResponseAsync(
@@ -1136,20 +1132,32 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> createOrUpdateAtManagementGroupAsync(
         String managementGroupId, String remediationName, RemediationInner parameters) {
         return createOrUpdateAtManagementGroupWithResponseAsync(managementGroupId, remediationName, parameters)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> createOrUpdateAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, RemediationInner parameters, Context context) {
+        return createOrUpdateAtManagementGroupWithResponseAsync(managementGroupId, remediationName, parameters, context)
+            .block();
     }
 
     /**
@@ -1166,26 +1174,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner createOrUpdateAtManagementGroup(
         String managementGroupId, String remediationName, RemediationInner parameters) {
-        return createOrUpdateAtManagementGroupAsync(managementGroupId, remediationName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> createOrUpdateAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, RemediationInner parameters, Context context) {
-        return createOrUpdateAtManagementGroupWithResponseAsync(managementGroupId, remediationName, parameters, context)
-            .block();
+        return createOrUpdateAtManagementGroupWithResponse(managementGroupId, remediationName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1196,7 +1186,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at management group scope.
+     * @return an existing remediation at management group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtManagementGroupWithResponseAsync(
@@ -1242,7 +1233,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at management group scope.
+     * @return an existing remediation at management group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtManagementGroupWithResponseAsync(
@@ -1284,19 +1276,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at management group scope.
+     * @return an existing remediation at management group scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> getAtManagementGroupAsync(String managementGroupId, String remediationName) {
         return getAtManagementGroupWithResponseAsync(managementGroupId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing remediation at management group scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> getAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, Context context) {
+        return getAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
     }
 
     /**
@@ -1311,24 +1313,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner getAtManagementGroup(String managementGroupId, String remediationName) {
-        return getAtManagementGroupAsync(managementGroupId, remediationName).block();
-    }
-
-    /**
-     * Gets an existing remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at management group scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> getAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        return getAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
+        return getAtManagementGroupWithResponse(managementGroupId, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -1339,7 +1324,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtManagementGroupWithResponseAsync(
@@ -1385,7 +1370,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtManagementGroupWithResponseAsync(
@@ -1427,19 +1412,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> deleteAtManagementGroupAsync(String managementGroupId, String remediationName) {
         return deleteAtManagementGroupWithResponseAsync(managementGroupId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes an existing remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> deleteAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, Context context) {
+        return deleteAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
     }
 
     /**
@@ -1454,24 +1449,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner deleteAtManagementGroup(String managementGroupId, String remediationName) {
-        return deleteAtManagementGroupAsync(managementGroupId, remediationName).block();
-    }
-
-    /**
-     * Deletes an existing remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> deleteAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        return deleteAtManagementGroupWithResponseAsync(managementGroupId, remediationName, context).block();
+        return deleteAtManagementGroupWithResponse(managementGroupId, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -1482,7 +1460,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtSubscriptionSinglePageAsync(
@@ -1538,7 +1517,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtSubscriptionSinglePageAsync(
@@ -1590,7 +1570,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtSubscriptionAsync(
@@ -1607,7 +1587,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtSubscriptionAsync(String remediationName) {
@@ -1626,7 +1606,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtSubscriptionAsync(
@@ -1643,7 +1623,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtSubscription(String remediationName) {
@@ -1660,7 +1640,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtSubscription(
@@ -1675,7 +1655,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtSubscriptionWithResponseAsync(String remediationName) {
@@ -1719,7 +1699,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtSubscriptionWithResponseAsync(
@@ -1760,19 +1740,26 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> cancelAtSubscriptionAsync(String remediationName) {
-        return cancelAtSubscriptionWithResponseAsync(remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return cancelAtSubscriptionWithResponseAsync(remediationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancels a remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> cancelAtSubscriptionWithResponse(String remediationName, Context context) {
+        return cancelAtSubscriptionWithResponseAsync(remediationName, context).block();
     }
 
     /**
@@ -1786,22 +1773,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner cancelAtSubscription(String remediationName) {
-        return cancelAtSubscriptionAsync(remediationName).block();
-    }
-
-    /**
-     * Cancels a remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> cancelAtSubscriptionWithResponse(String remediationName, Context context) {
-        return cancelAtSubscriptionWithResponseAsync(remediationName, context).block();
+        return cancelAtSubscriptionWithResponse(remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -1812,7 +1784,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listSinglePageAsync(Integer top, String filter) {
@@ -1863,7 +1836,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listSinglePageAsync(Integer top, String filter, Context context) {
@@ -1903,7 +1877,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listAsync(Integer top, String filter) {
@@ -1916,7 +1890,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listAsync() {
@@ -1935,7 +1909,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listAsync(Integer top, String filter, Context context) {
@@ -1949,7 +1923,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> list() {
@@ -1967,7 +1941,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> list(Integer top, String filter, Context context) {
@@ -1982,7 +1956,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtSubscriptionWithResponseAsync(
@@ -2034,7 +2008,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtSubscriptionWithResponseAsync(
@@ -2082,20 +2056,30 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> createOrUpdateAtSubscriptionAsync(
         String remediationName, RemediationInner parameters) {
         return createOrUpdateAtSubscriptionWithResponseAsync(remediationName, parameters)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> createOrUpdateAtSubscriptionWithResponse(
+        String remediationName, RemediationInner parameters, Context context) {
+        return createOrUpdateAtSubscriptionWithResponseAsync(remediationName, parameters, context).block();
     }
 
     /**
@@ -2110,24 +2094,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner createOrUpdateAtSubscription(String remediationName, RemediationInner parameters) {
-        return createOrUpdateAtSubscriptionAsync(remediationName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> createOrUpdateAtSubscriptionWithResponse(
-        String remediationName, RemediationInner parameters, Context context) {
-        return createOrUpdateAtSubscriptionWithResponseAsync(remediationName, parameters, context).block();
+        return createOrUpdateAtSubscriptionWithResponse(remediationName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -2137,7 +2104,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at subscription scope.
+     * @return an existing remediation at subscription scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtSubscriptionWithResponseAsync(String remediationName) {
@@ -2181,7 +2149,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at subscription scope.
+     * @return an existing remediation at subscription scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtSubscriptionWithResponseAsync(
@@ -2222,19 +2191,26 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at subscription scope.
+     * @return an existing remediation at subscription scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> getAtSubscriptionAsync(String remediationName) {
-        return getAtSubscriptionWithResponseAsync(remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionWithResponseAsync(remediationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing remediation at subscription scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> getAtSubscriptionWithResponse(String remediationName, Context context) {
+        return getAtSubscriptionWithResponseAsync(remediationName, context).block();
     }
 
     /**
@@ -2248,22 +2224,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner getAtSubscription(String remediationName) {
-        return getAtSubscriptionAsync(remediationName).block();
-    }
-
-    /**
-     * Gets an existing remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at subscription scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> getAtSubscriptionWithResponse(String remediationName, Context context) {
-        return getAtSubscriptionWithResponseAsync(remediationName, context).block();
+        return getAtSubscriptionWithResponse(remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -2273,7 +2234,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtSubscriptionWithResponseAsync(String remediationName) {
@@ -2317,7 +2278,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtSubscriptionWithResponseAsync(
@@ -2358,19 +2319,26 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> deleteAtSubscriptionAsync(String remediationName) {
-        return deleteAtSubscriptionWithResponseAsync(remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return deleteAtSubscriptionWithResponseAsync(remediationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes an existing remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> deleteAtSubscriptionWithResponse(String remediationName, Context context) {
+        return deleteAtSubscriptionWithResponseAsync(remediationName, context).block();
     }
 
     /**
@@ -2384,22 +2352,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner deleteAtSubscription(String remediationName) {
-        return deleteAtSubscriptionAsync(remediationName).block();
-    }
-
-    /**
-     * Deletes an existing remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> deleteAtSubscriptionWithResponse(String remediationName, Context context) {
-        return deleteAtSubscriptionWithResponseAsync(remediationName, context).block();
+        return deleteAtSubscriptionWithResponse(remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -2411,7 +2364,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceGroupSinglePageAsync(
@@ -2473,7 +2427,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceGroupSinglePageAsync(
@@ -2531,7 +2486,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceGroupAsync(
@@ -2549,7 +2504,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceGroupAsync(
@@ -2570,7 +2525,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceGroupAsync(
@@ -2588,7 +2543,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtResourceGroup(
@@ -2607,7 +2563,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtResourceGroup(
@@ -2624,7 +2581,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtResourceGroupWithResponseAsync(
@@ -2675,7 +2632,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtResourceGroupWithResponseAsync(
@@ -2722,19 +2679,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> cancelAtResourceGroupAsync(String resourceGroupName, String remediationName) {
         return cancelAtResourceGroupWithResponseAsync(resourceGroupName, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> cancelAtResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, Context context) {
+        return cancelAtResourceGroupWithResponseAsync(resourceGroupName, remediationName, context).block();
     }
 
     /**
@@ -2749,24 +2716,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner cancelAtResourceGroup(String resourceGroupName, String remediationName) {
-        return cancelAtResourceGroupAsync(resourceGroupName, remediationName).block();
-    }
-
-    /**
-     * Cancels a remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> cancelAtResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        return cancelAtResourceGroupWithResponseAsync(resourceGroupName, remediationName, context).block();
+        return cancelAtResourceGroupWithResponse(resourceGroupName, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -2778,7 +2728,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listByResourceGroupSinglePageAsync(
@@ -2836,7 +2787,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listByResourceGroupSinglePageAsync(
@@ -2890,7 +2842,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listByResourceGroupAsync(String resourceGroupName, Integer top, String filter) {
@@ -2906,7 +2858,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -2927,7 +2879,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listByResourceGroupAsync(
@@ -2944,7 +2896,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listByResourceGroup(String resourceGroupName) {
@@ -2963,7 +2915,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listByResourceGroup(
@@ -2980,7 +2932,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtResourceGroupWithResponseAsync(
@@ -3038,7 +2990,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtResourceGroupWithResponseAsync(
@@ -3092,20 +3044,32 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> createOrUpdateAtResourceGroupAsync(
         String resourceGroupName, String remediationName, RemediationInner parameters) {
         return createOrUpdateAtResourceGroupWithResponseAsync(resourceGroupName, remediationName, parameters)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> createOrUpdateAtResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, RemediationInner parameters, Context context) {
+        return createOrUpdateAtResourceGroupWithResponseAsync(resourceGroupName, remediationName, parameters, context)
+            .block();
     }
 
     /**
@@ -3122,26 +3086,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner createOrUpdateAtResourceGroup(
         String resourceGroupName, String remediationName, RemediationInner parameters) {
-        return createOrUpdateAtResourceGroupAsync(resourceGroupName, remediationName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> createOrUpdateAtResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, RemediationInner parameters, Context context) {
-        return createOrUpdateAtResourceGroupWithResponseAsync(resourceGroupName, remediationName, parameters, context)
-            .block();
+        return createOrUpdateAtResourceGroupWithResponse(resourceGroupName, remediationName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3152,7 +3098,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource group scope.
+     * @return an existing remediation at resource group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getByResourceGroupWithResponseAsync(
@@ -3203,7 +3150,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource group scope.
+     * @return an existing remediation at resource group scope along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getByResourceGroupWithResponseAsync(
@@ -3250,19 +3198,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource group scope.
+     * @return an existing remediation at resource group scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> getByResourceGroupAsync(String resourceGroupName, String remediationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing remediation at resource group scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, remediationName, context).block();
     }
 
     /**
@@ -3277,24 +3235,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner getByResourceGroup(String resourceGroupName, String remediationName) {
-        return getByResourceGroupAsync(resourceGroupName, remediationName).block();
-    }
-
-    /**
-     * Gets an existing remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource group scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, remediationName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -3305,7 +3246,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteWithResponseAsync(String resourceGroupName, String remediationName) {
@@ -3355,7 +3296,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteWithResponseAsync(
@@ -3402,19 +3343,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> deleteAsync(String resourceGroupName, String remediationName) {
         return deleteWithResponseAsync(resourceGroupName, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes an existing remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> deleteWithResponse(
+        String resourceGroupName, String remediationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, remediationName, context).block();
     }
 
     /**
@@ -3429,24 +3380,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner delete(String resourceGroupName, String remediationName) {
-        return deleteAsync(resourceGroupName, remediationName).block();
-    }
-
-    /**
-     * Deletes an existing remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> deleteWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, remediationName, context).block();
+        return deleteWithResponse(resourceGroupName, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -3458,7 +3392,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceSinglePageAsync(
@@ -3506,7 +3441,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceSinglePageAsync(
@@ -3550,7 +3486,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceAsync(
@@ -3568,7 +3504,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceAsync(
@@ -3589,7 +3525,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationDeploymentInner> listDeploymentsAtResourceAsync(
@@ -3607,7 +3543,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtResource(
@@ -3626,7 +3562,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationDeploymentInner> listDeploymentsAtResource(
@@ -3642,7 +3578,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtResourceWithResponseAsync(
@@ -3680,7 +3616,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> cancelAtResourceWithResponseAsync(
@@ -3713,19 +3649,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> cancelAtResourceAsync(String resourceId, String remediationName) {
         return cancelAtResourceWithResponseAsync(resourceId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel a remediation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> cancelAtResourceWithResponse(
+        String resourceId, String remediationName, Context context) {
+        return cancelAtResourceWithResponseAsync(resourceId, remediationName, context).block();
     }
 
     /**
@@ -3740,24 +3686,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner cancelAtResource(String resourceId, String remediationName) {
-        return cancelAtResourceAsync(resourceId, remediationName).block();
-    }
-
-    /**
-     * Cancel a remediation at resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> cancelAtResourceWithResponse(
-        String resourceId, String remediationName, Context context) {
-        return cancelAtResourceWithResponseAsync(resourceId, remediationName, context).block();
+        return cancelAtResourceWithResponse(resourceId, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -3769,7 +3698,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceSinglePageAsync(
@@ -3813,7 +3743,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceSinglePageAsync(
@@ -3852,7 +3783,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForResourceAsync(String resourceId, Integer top, String filter) {
@@ -3868,7 +3799,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForResourceAsync(String resourceId) {
@@ -3889,7 +3820,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemediationInner> listForResourceAsync(
@@ -3906,7 +3837,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listForResource(String resourceId) {
@@ -3925,7 +3856,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemediationInner> listForResource(
@@ -3942,7 +3873,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtResourceWithResponseAsync(
@@ -3992,7 +3923,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> createOrUpdateAtResourceWithResponseAsync(
@@ -4032,20 +3963,31 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> createOrUpdateAtResourceAsync(
         String resourceId, String remediationName, RemediationInner parameters) {
         return createOrUpdateAtResourceWithResponseAsync(resourceId, remediationName, parameters)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a remediation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> createOrUpdateAtResourceWithResponse(
+        String resourceId, String remediationName, RemediationInner parameters, Context context) {
+        return createOrUpdateAtResourceWithResponseAsync(resourceId, remediationName, parameters, context).block();
     }
 
     /**
@@ -4062,25 +4004,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner createOrUpdateAtResource(
         String resourceId, String remediationName, RemediationInner parameters) {
-        return createOrUpdateAtResourceAsync(resourceId, remediationName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a remediation at resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> createOrUpdateAtResourceWithResponse(
-        String resourceId, String remediationName, RemediationInner parameters, Context context) {
-        return createOrUpdateAtResourceWithResponseAsync(resourceId, remediationName, parameters, context).block();
+        return createOrUpdateAtResourceWithResponse(resourceId, remediationName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -4091,7 +4015,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource scope.
+     * @return an existing remediation at resource scope along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtResourceWithResponseAsync(String resourceId, String remediationName) {
@@ -4128,7 +4053,8 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource scope.
+     * @return an existing remediation at resource scope along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> getAtResourceWithResponseAsync(
@@ -4161,19 +4087,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource scope.
+     * @return an existing remediation at resource scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> getAtResourceAsync(String resourceId, String remediationName) {
         return getAtResourceWithResponseAsync(resourceId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing remediation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing remediation at resource scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> getAtResourceWithResponse(
+        String resourceId, String remediationName, Context context) {
+        return getAtResourceWithResponseAsync(resourceId, remediationName, context).block();
     }
 
     /**
@@ -4188,24 +4124,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner getAtResource(String resourceId, String remediationName) {
-        return getAtResourceAsync(resourceId, remediationName).block();
-    }
-
-    /**
-     * Gets an existing remediation at resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> getAtResourceWithResponse(
-        String resourceId, String remediationName, Context context) {
-        return getAtResourceWithResponseAsync(resourceId, remediationName, context).block();
+        return getAtResourceWithResponse(resourceId, remediationName, Context.NONE).getValue();
     }
 
     /**
@@ -4216,7 +4135,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtResourceWithResponseAsync(
@@ -4254,7 +4173,7 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemediationInner>> deleteAtResourceWithResponseAsync(
@@ -4287,19 +4206,29 @@ public final class RemediationsClientImpl implements RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return the remediation definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemediationInner> deleteAtResourceAsync(String resourceId, String remediationName) {
         return deleteAtResourceWithResponseAsync(resourceId, remediationName)
-            .flatMap(
-                (Response<RemediationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes an existing remediation at individual resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemediationInner> deleteAtResourceWithResponse(
+        String resourceId, String remediationName, Context context) {
+        return deleteAtResourceWithResponseAsync(resourceId, remediationName, context).block();
     }
 
     /**
@@ -4314,34 +4243,19 @@ public final class RemediationsClientImpl implements RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemediationInner deleteAtResource(String resourceId, String remediationName) {
-        return deleteAtResourceAsync(resourceId, remediationName).block();
-    }
-
-    /**
-     * Deletes an existing remediation at individual resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemediationInner> deleteAtResourceWithResponse(
-        String resourceId, String remediationName, Context context) {
-        return deleteAtResourceWithResponseAsync(resourceId, remediationName, context).block();
+        return deleteAtResourceWithResponse(resourceId, remediationName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtManagementGroupNextSinglePageAsync(
@@ -4375,12 +4289,14 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtManagementGroupNextSinglePageAsync(
@@ -4412,11 +4328,12 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForManagementGroupNextSinglePageAsync(String nextLink) {
@@ -4448,12 +4365,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForManagementGroupNextSinglePageAsync(
@@ -4485,11 +4403,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtSubscriptionNextSinglePageAsync(
@@ -4523,12 +4443,14 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtSubscriptionNextSinglePageAsync(
@@ -4560,11 +4482,12 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForSubscriptionNextSinglePageAsync(String nextLink) {
@@ -4596,12 +4519,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForSubscriptionNextSinglePageAsync(
@@ -4633,11 +4557,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceGroupNextSinglePageAsync(
@@ -4671,12 +4597,14 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceGroupNextSinglePageAsync(
@@ -4708,11 +4636,12 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -4744,12 +4673,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceGroupNextSinglePageAsync(
@@ -4781,11 +4711,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceNextSinglePageAsync(
@@ -4818,12 +4750,14 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments for a remediation.
+     * @return list of deployments for a remediation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationDeploymentInner>> listDeploymentsAtResourceNextSinglePageAsync(
@@ -4855,11 +4789,12 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceNextSinglePageAsync(String nextLink) {
@@ -4890,12 +4825,13 @@ public final class RemediationsClientImpl implements RemediationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of remediations.
+     * @return list of remediations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemediationInner>> listForResourceNextSinglePageAsync(String nextLink, Context context) {

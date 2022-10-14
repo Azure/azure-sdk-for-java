@@ -23,6 +23,10 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of IpConfigurationProfilePropertiesFormatInner class. */
+    public IpConfigurationProfilePropertiesFormatInner() {
+    }
+
     /**
      * Get the subnet property: The reference to the subnet resource to create a container network interface ip
      * configuration.

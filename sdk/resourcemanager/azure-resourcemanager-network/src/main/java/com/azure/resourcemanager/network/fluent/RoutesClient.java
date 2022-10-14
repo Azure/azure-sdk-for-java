@@ -156,20 +156,6 @@ public interface RoutesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteInner get(String resourceGroupName, String routeTableName, String routeName);
-
-    /**
-     * Gets the specified route from a route table.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,6 +165,20 @@ public interface RoutesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteInner> getWithResponse(
         String resourceGroupName, String routeTableName, String routeName, Context context);
+
+    /**
+     * Gets the specified route from a route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param routeName The name of the route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified route from a route table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteInner get(String resourceGroupName, String routeTableName, String routeName);
 
     /**
      * Creates or updates a route in the specified route table.

@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-geolocation</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-geolocation;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-geolocation;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for azure-maps-geolocation service</name>

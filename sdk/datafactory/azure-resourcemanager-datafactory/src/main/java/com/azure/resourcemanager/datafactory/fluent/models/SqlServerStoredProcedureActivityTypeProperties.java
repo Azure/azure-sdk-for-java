@@ -23,6 +23,10 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
+    /** Creates an instance of SqlServerStoredProcedureActivityTypeProperties class. */
+    public SqlServerStoredProcedureActivityTypeProperties() {
+    }
+
     /**
      * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      *

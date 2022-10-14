@@ -24,6 +24,10 @@ public final class LoadBalancerOutboundRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LoadBalancerOutboundRuleListResult class. */
+    public LoadBalancerOutboundRuleListResult() {
+    }
+
     /**
      * Get the value property: A list of outbound rules in a load balancer.
      *

@@ -28,6 +28,10 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of CommonDataServiceForAppsSource class. */
+    public CommonDataServiceForAppsSource() {
+    }
+
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
      * for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).

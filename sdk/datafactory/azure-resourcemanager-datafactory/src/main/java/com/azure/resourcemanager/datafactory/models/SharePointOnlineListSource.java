@@ -28,6 +28,10 @@ public final class SharePointOnlineListSource extends CopySource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of SharePointOnlineListSource class. */
+    public SharePointOnlineListSource() {
+    }
+
     /**
      * Get the query property: The OData query to filter the data in SharePoint Online list. For example, "$top=1".
      * Type: string (or Expression with resultType string).

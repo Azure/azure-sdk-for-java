@@ -37,6 +37,10 @@ public final class AmazonRdsForOraclePartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
+    /** Creates an instance of AmazonRdsForOraclePartitionSettings class. */
+    public AmazonRdsForOraclePartitionSettings() {
+    }
+
     /**
      * Get the partitionNames property: Names of the physical partitions of AmazonRdsForOracle table.
      *

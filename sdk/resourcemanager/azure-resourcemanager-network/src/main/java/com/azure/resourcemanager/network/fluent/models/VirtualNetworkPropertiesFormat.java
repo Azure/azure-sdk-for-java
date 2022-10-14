@@ -96,6 +96,10 @@ public final class VirtualNetworkPropertiesFormat {
     @JsonProperty(value = "ipAllocations")
     private List<SubResource> ipAllocations;
 
+    /** Creates an instance of VirtualNetworkPropertiesFormat class. */
+    public VirtualNetworkPropertiesFormat() {
+    }
+
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.

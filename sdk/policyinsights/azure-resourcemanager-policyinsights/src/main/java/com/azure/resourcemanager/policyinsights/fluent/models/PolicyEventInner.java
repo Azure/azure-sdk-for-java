@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.ComponentEventDetails;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -19,18 +18,14 @@ import java.util.Map;
 /** Policy event record. */
 @Fluent
 public final class PolicyEventInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyEventInner.class);
-
     /*
-     * OData entity ID; always set to null since policy event records do not
-     * have an entity ID.
+     * OData entity ID; always set to null since policy event records do not have an entity ID.
      */
     @JsonProperty(value = "@odata.id")
     private String odataId;
 
     /*
-     * OData context string; used by OData clients to resolve type information
-     * based on metadata.
+     * OData context string; used by OData clients to resolve type information based on metadata.
      */
     @JsonProperty(value = "@odata.context")
     private String odataContext;
@@ -66,8 +61,7 @@ public final class PolicyEventInner {
     private String effectiveParameters;
 
     /*
-     * Flag which states whether the resource is compliant against the policy
-     * assignment it was evaluated against.
+     * Flag which states whether the resource is compliant against the policy assignment it was evaluated against.
      */
     @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
@@ -151,43 +145,38 @@ public final class PolicyEventInner {
     private String policySetDefinitionId;
 
     /*
-     * Policy set definition name, if the policy assignment is for a policy
-     * set.
+     * Policy set definition name, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionName")
     private String policySetDefinitionName;
 
     /*
-     * Policy set definition owner, if the policy assignment is for a policy
-     * set.
+     * Policy set definition owner, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionOwner")
     private String policySetDefinitionOwner;
 
     /*
-     * Policy set definition category, if the policy assignment is for a policy
-     * set.
+     * Policy set definition category, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionCategory")
     private String policySetDefinitionCategory;
 
     /*
-     * Policy set definition parameters, if the policy assignment is for a
-     * policy set.
+     * Policy set definition parameters, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policySetDefinitionParameters")
     private String policySetDefinitionParameters;
 
     /*
-     * Comma separated list of management group IDs, which represent the
-     * hierarchy of the management groups the resource is under.
+     * Comma separated list of management group IDs, which represent the hierarchy of the management groups the
+     * resource is under.
      */
     @JsonProperty(value = "managementGroupIds")
     private String managementGroupIds;
 
     /*
-     * Reference ID for the policy definition inside the policy set, if the
-     * policy assignment is for a policy set.
+     * Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
@@ -205,15 +194,13 @@ public final class PolicyEventInner {
     private String tenantId;
 
     /*
-     * Principal object ID for the user who initiated the resource operation
-     * that triggered the policy event.
+     * Principal object ID for the user who initiated the resource operation that triggered the policy event.
      */
     @JsonProperty(value = "principalOid")
     private String principalOid;
 
     /*
-     * Components events records populated only when URL contains
-     * $expand=components clause.
+     * Components events records populated only when URL contains $expand=components clause.
      */
     @JsonProperty(value = "components")
     private List<ComponentEventDetails> components;
@@ -222,6 +209,10 @@ public final class PolicyEventInner {
      * Policy event record.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of PolicyEventInner class. */
+    public PolicyEventInner() {
+    }
 
     /**
      * Get the odataId property: OData entity ID; always set to null since policy event records do not have an entity

@@ -78,6 +78,10 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
+    /** Creates an instance of GoogleCloudStorageReadSettings class. */
+    public GoogleCloudStorageReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).

@@ -26,6 +26,10 @@ public final class ParquetSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private ParquetWriteSettings formatSettings;
 
+    /** Creates an instance of ParquetSink class. */
+    public ParquetSink() {
+    }
+
     /**
      * Get the storeSettings property: Parquet store settings.
      *

@@ -56,6 +56,10 @@ public final class IntegrationRuntimeConnectionInfoInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeConnectionInfoInner class. */
+    public IntegrationRuntimeConnectionInfoInner() {
+    }
+
     /**
      * Get the serviceToken property: The token generated in service. Callers use this token to authenticate to
      * integration runtime.

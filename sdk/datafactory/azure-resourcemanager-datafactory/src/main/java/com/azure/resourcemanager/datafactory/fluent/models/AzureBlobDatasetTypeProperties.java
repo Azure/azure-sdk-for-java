@@ -54,6 +54,10 @@ public final class AzureBlobDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AzureBlobDatasetTypeProperties class. */
+    public AzureBlobDatasetTypeProperties() {
+    }
+
     /**
      * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
      * string).

@@ -25,6 +25,10 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     private AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties =
         new AmazonRdsForSqlServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonRdsForSqlServerLinkedService class. */
+    public AmazonRdsForSqlServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon RDS for SQL Server linked service properties.
      *

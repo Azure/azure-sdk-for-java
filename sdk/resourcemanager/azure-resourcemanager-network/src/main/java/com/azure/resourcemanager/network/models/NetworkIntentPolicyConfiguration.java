@@ -22,6 +22,10 @@ public final class NetworkIntentPolicyConfiguration {
     @JsonProperty(value = "sourceNetworkIntentPolicy")
     private NetworkIntentPolicy sourceNetworkIntentPolicy;
 
+    /** Creates an instance of NetworkIntentPolicyConfiguration class. */
+    public NetworkIntentPolicyConfiguration() {
+    }
+
     /**
      * Get the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target
      * subscription.

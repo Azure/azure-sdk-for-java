@@ -23,6 +23,10 @@ public final class HubPublicIpAddresses {
     @JsonProperty(value = "count")
     private Integer count;
 
+    /** Creates an instance of HubPublicIpAddresses class. */
+    public HubPublicIpAddresses() {
+    }
+
     /**
      * Get the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be
      * retained.

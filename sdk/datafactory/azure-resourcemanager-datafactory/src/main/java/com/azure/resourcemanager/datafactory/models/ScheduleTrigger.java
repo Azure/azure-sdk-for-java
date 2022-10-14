@@ -23,6 +23,10 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties", required = true)
     private ScheduleTriggerTypeProperties innerTypeProperties = new ScheduleTriggerTypeProperties();
 
+    /** Creates an instance of ScheduleTrigger class. */
+    public ScheduleTrigger() {
+    }
+
     /**
      * Get the innerTypeProperties property: Schedule Trigger properties.
      *

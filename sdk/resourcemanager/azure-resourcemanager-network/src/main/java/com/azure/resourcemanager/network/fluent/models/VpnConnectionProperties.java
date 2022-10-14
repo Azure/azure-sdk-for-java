@@ -132,6 +132,10 @@ public final class VpnConnectionProperties {
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
+    /** Creates an instance of VpnConnectionProperties class. */
+    public VpnConnectionProperties() {
+    }
+
     /**
      * Get the remoteVpnSite property: Id of the connected vpn site.
      *

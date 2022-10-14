@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResourcesResourceType;
 
 /** Samples for PolicyTrackedResources ListQueryResultsForSubscription. */
 public final class PolicyTrackedResourcesListQueryResultsForSubscriptionSamples {
@@ -21,6 +22,7 @@ public final class PolicyTrackedResourcesListQueryResultsForSubscriptionSamples 
         manager
             .policyTrackedResources()
             .listQueryResultsForSubscription(
+                PolicyTrackedResourcesResourceType.DEFAULT,
                 1,
                 "PolicyAssignmentId eq"
                     + " '/subscriptions/fff8dfdb-fff3-fff0-fff4-fffdcbe6b2ef/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/myPolicyAssignment'"
@@ -39,6 +41,8 @@ public final class PolicyTrackedResourcesListQueryResultsForSubscriptionSamples 
      */
     public static void queryAtSubscriptionScope(
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager.policyTrackedResources().listQueryResultsForSubscription(null, null, Context.NONE);
+        manager
+            .policyTrackedResources()
+            .listQueryResultsForSubscription(PolicyTrackedResourcesResourceType.DEFAULT, null, null, Context.NONE);
     }
 }

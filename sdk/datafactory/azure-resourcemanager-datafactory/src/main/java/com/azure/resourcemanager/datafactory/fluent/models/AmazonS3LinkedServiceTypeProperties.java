@@ -52,6 +52,10 @@ public final class AmazonS3LinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonS3LinkedServiceTypeProperties class. */
+    public AmazonS3LinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
      * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
