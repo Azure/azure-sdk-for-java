@@ -13,50 +13,29 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.context.annotation.Bean;
 
+@EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class AuditableConfig {
 
-    @EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
-    public static class AuditableConfiguration {
-        @Bean(name = "auditingDateTimeProvider")
-        public StubDateTimeProvider stubDateTimeProvider() {
-            return new StubDateTimeProvider();
-        }
 
-        @Bean
-        public StubAuditorProvider auditorProvider() {
-            return new StubAuditorProvider();
-        }
-
-//        private static final DateTimeFormatter ISO_8601_FORMATTER = DateTimeFormatter
-//            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-//            .withZone(ZoneId.of("UTC"));
-        @Bean(Constants.OBJECT_MAPPER_BEAN_NAME)
-        public ObjectMapper objectMapper() {
-            ObjectMapper objectMapper = new ObjectMapper()
-                .registerModule(new ParameterNamesModule())
-                .registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-            return objectMapper;
-
-        }
+    @Bean(name = "auditingDateTimeProvider")
+    public StubDateTimeProvider stubDateTimeProvider() {
+        return new StubDateTimeProvider();
     }
 
-    @EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
-    public static class ReactiveAuditableConfiguration {
-
-        @Bean(name = "auditingDateTimeProvider")
-        public StubDateTimeProvider stubDateTimeProvider() {
-            return new StubDateTimeProvider();
-        }
-
-        @Bean
-        public StubAuditorProvider auditorProvider() {
-            return new StubAuditorProvider();
-        }
+    @Bean
+    public StubAuditorProvider auditorProvider() {
+        return new StubAuditorProvider();
     }
 
+    @Bean(Constants.OBJECT_MAPPER_BEAN_NAME)
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new ParameterNamesModule())
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper;
+    }
 
 }
