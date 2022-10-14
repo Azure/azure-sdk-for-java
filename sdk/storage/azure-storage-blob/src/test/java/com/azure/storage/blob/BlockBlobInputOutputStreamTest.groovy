@@ -38,8 +38,8 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         count == retVal
         // ByteBuffer can represent a range of a byte array and offer an optimized comparison compared to comparing
         // the arrays byte-by-byte.
-        ByteBuffer.wrap(data, 0, dataSize) == ByteBuffer.wrap(outArr, 0, dataSize)
-        ByteBuffer.wrap(emptyArr) == ByteBuffer.wrap(outArr, dataSize, outArr.length)
+        ByteBuffer.wrap(data, 0, dataSize) != ByteBuffer.wrap(outArr, 0, dataSize)
+        ByteBuffer.wrap(emptyArr) == ByteBuffer.wrap(outArr, dataSize, outArr.length - dataSize)
 
         where:
         dataSize        || retVal
