@@ -201,6 +201,7 @@ stages:
                       $artifactPaths = @('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Where-Object -Not "skipPublishPackage" | ForEach-Object { "$($_.groupId)/$($_.name)/**" })
                       $filterPaths = $artifactPaths + 'PackageInfos/**'
                       Write-Host "##vso[task.setvariable variable=filterPaths;]$($filterPaths -join '%0D%0A')" # URL encoded \r\n to for multiline variable
+                    displayName: Set the artifact filterPaths variable
                   - download: current
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
