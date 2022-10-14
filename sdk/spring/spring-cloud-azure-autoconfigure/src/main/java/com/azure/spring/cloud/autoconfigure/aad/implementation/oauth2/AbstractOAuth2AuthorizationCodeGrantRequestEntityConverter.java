@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
 import org.springframework.util.MultiValueMap;
@@ -34,11 +33,6 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
      * @return the application ID
      */
     protected abstract String getApplicationId();
-
-    @Override
-    public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
-        return super.convert(request);
-    }
 
     /**
      * Additional default headers information.
