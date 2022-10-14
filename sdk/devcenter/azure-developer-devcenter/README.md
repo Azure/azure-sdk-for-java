@@ -1,7 +1,5 @@
 # Azure DevCenter client library for Java
 
-Azure DevCenter client library for Java.
-
 This package contains Microsoft Azure DevCenter client library.
 
 ## Documentation

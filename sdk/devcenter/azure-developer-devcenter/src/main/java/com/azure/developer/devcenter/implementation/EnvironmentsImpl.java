@@ -653,7 +653,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentsSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentsSinglePageAsync(
             String projectName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -855,7 +855,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentsByUserSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentsByUserSinglePageAsync(
             String projectName, String userId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1278,6 +1278,7 @@ public final class EnvironmentsImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1565,6 +1566,7 @@ public final class EnvironmentsImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1670,6 +1672,7 @@ public final class EnvironmentsImpl {
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -1788,6 +1791,7 @@ public final class EnvironmentsImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1905,6 +1909,7 @@ public final class EnvironmentsImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1978,7 +1983,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentSinglePageAsync(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2127,7 +2132,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathSinglePageAsync(
             String projectName,
             String userId,
             String environmentName,
@@ -2296,7 +2301,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCatalogItemsSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listCatalogItemsSinglePageAsync(
             String projectName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2553,7 +2558,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCatalogItemVersionsSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listCatalogItemVersionsSinglePageAsync(
             String projectName, String catalogItemId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2926,7 +2931,7 @@ public final class EnvironmentsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentTypesSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentTypesSinglePageAsync(
             String projectName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3085,7 +3090,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3154,7 +3159,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentsByUserNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentsByUserNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3211,7 +3216,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3268,7 +3273,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listArtifactsByEnvironmentAndPathNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3321,7 +3326,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCatalogItemsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listCatalogItemsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3410,7 +3415,7 @@ public final class EnvironmentsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCatalogItemVersionsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listCatalogItemVersionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3463,7 +3468,7 @@ public final class EnvironmentsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listEnvironmentTypesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listEnvironmentTypesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(

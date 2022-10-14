@@ -448,7 +448,8 @@ public final class DevBoxesImpl {
      * @return the Pool list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listPoolsSinglePageAsync(String projectName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listPoolsSinglePageAsync(
+            String projectName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -744,7 +745,7 @@ public final class DevBoxesImpl {
      * @return the Schedule list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSchedulesByPoolSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSchedulesByPoolSinglePageAsync(
             String projectName, String poolName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1014,7 +1015,7 @@ public final class DevBoxesImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listDevBoxesByUserSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listDevBoxesByUserSinglePageAsync(
             String projectName, String userId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1549,6 +1550,7 @@ public final class DevBoxesImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1793,6 +1795,7 @@ public final class DevBoxesImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -1995,6 +1998,7 @@ public final class DevBoxesImpl {
                 () -> this.startDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -2199,6 +2203,7 @@ public final class DevBoxesImpl {
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
+                        null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
@@ -2383,7 +2388,7 @@ public final class DevBoxesImpl {
      * @return the Pool list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listPoolsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listPoolsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2437,7 +2442,7 @@ public final class DevBoxesImpl {
      * @return the Schedule list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSchedulesByPoolNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSchedulesByPoolNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2519,7 +2524,7 @@ public final class DevBoxesImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listDevBoxesByUserNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listDevBoxesByUserNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(

@@ -247,7 +247,7 @@ public final class DevCentersImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listProjectsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listProjectsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -485,7 +485,7 @@ public final class DevCentersImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listAllDevBoxesSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listAllDevBoxesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -726,7 +726,7 @@ public final class DevCentersImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserSinglePageAsync(
             String userId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -932,7 +932,7 @@ public final class DevCentersImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listProjectsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listProjectsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1014,7 +1014,7 @@ public final class DevCentersImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listAllDevBoxesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listAllDevBoxesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1096,7 +1096,7 @@ public final class DevCentersImpl {
      * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
