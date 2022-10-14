@@ -5,6 +5,7 @@ package com.azure.spring.cloud.core.implementation.factory;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolvers;
@@ -106,7 +107,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private ServiceConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
-    protected final Configuration configuration = new Configuration();
+    protected final Configuration configuration = new ConfigurationBuilder().build();
     protected AzureCredentialResolver<TokenCredential> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
     protected TokenCredential defaultTokenCredential = DEFAULT_DEFAULT_TOKEN_CREDENTIAL;
 
