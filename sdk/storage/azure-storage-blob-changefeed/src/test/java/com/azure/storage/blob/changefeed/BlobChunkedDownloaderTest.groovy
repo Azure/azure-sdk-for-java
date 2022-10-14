@@ -120,10 +120,8 @@ class BlobChunkedDownloaderTest extends APISpec {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, downloadSize))
 
         then:
-        assert output.length == downloadSize
-        for (int i = 0; i < downloadSize; i++) {
-            assert output[i] == input[i]
-        }
+        output.length == downloadSize
+        ByteBuffer.wrap(output, 0, downloadSize) == ByteBuffer.wrap(input, 0, downloadSize)
         1 * bc.downloadWithResponse(_,_,_,_)
 
         where:

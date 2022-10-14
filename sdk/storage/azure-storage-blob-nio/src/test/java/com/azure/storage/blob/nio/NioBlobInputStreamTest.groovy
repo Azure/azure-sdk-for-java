@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.BlobStorageException
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.file.ClosedFileSystemException
 
 class NioBlobInputStreamTest extends APISpec {
@@ -58,7 +59,7 @@ class NioBlobInputStreamTest extends APISpec {
         fileStream.read(fileBytes)
 
         then:
-        nioBytes == fileBytes
+        ByteBuffer.wrap(nioBytes) == ByteBuffer.wrap(fileBytes)
 
         where:
         size            | _

@@ -33,7 +33,7 @@ class StorageBlockingSinkTest extends Specification {
     def "producer, delayed consumer"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 100
+        def delay = 50
 
         when:
         blockingSink.asFlux()
@@ -64,7 +64,7 @@ class StorageBlockingSinkTest extends Specification {
     def "producer, delayed consumer random buffers"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 100
+        def delay = 50
         def num = 50
         def rand = new Random()
         def buffers = new ByteBuffer[num]
@@ -97,7 +97,7 @@ class StorageBlockingSinkTest extends Specification {
     def "delayed producer, consumer"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 100
+        def delay = 50
 
         when:
         blockingSink.asFlux()
@@ -128,7 +128,7 @@ class StorageBlockingSinkTest extends Specification {
     def "delayed producer, consumer random buffers"() {
         setup:
         def blockingSink = new StorageBlockingSink()
-        def delay = 100
+        def delay = 50
         def num = 50
         def rand = new Random()
         def buffers = new ByteBuffer[num]

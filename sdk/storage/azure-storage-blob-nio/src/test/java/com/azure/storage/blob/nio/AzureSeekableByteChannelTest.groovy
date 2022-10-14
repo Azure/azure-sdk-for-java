@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.BlobOutputStream
+import io.netty.buffer.ByteBuf
 import org.mockito.Mockito
 import spock.lang.Unroll
 
@@ -49,20 +50,20 @@ class AzureSeekableByteChannelTest extends APISpec {
         setup:
         def fileContent = new byte[sourceFileSize]
         fileStream.read(fileContent)
-        def os = new ByteArrayOutputStream()
-        int count = 0
+        def os = new ByteArrayOutputStream(sourceFileSize)
+        def count = 0
         def rand = new Random()
 
         when:
         while (count < sourceFileSize) {
-            def buffer = ByteBuffer.allocate(1024 + rand.nextInt(1024 * 1024))
-            int readAmount = readByteChannel.read(buffer)
+            def buffer = ByteBuffer.allocate(8 * 1024 + rand.nextInt(1024 * 1024))
+            def readAmount = readByteChannel.read(buffer)
             os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
             count += readAmount
         }
 
         then:
-        os.toByteArray() == fileContent
+        ByteBuffer.wrap(os.toByteArray()) == ByteBuffer.wrap(fileContent)
     }
 
     def "Read loop until EOF"() {
@@ -75,7 +76,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         when:
         while (System.currentTimeMillis() < timeLimit) { // ensures test duration is bounded
-            def buffer = ByteBuffer.allocate(1024 + rand.nextInt(1024 * 1024))
+            def buffer = ByteBuffer.allocate(8 * 1024 + rand.nextInt(1024 * 1024))
             int readAmount = readByteChannel.read(buffer)
             if (readAmount == -1) {
                 break // reached EOF
@@ -84,7 +85,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         }
 
         then:
-        os.toByteArray() == fileContent
+        ByteBuffer.wrap(os.toByteArray()) == ByteBuffer.wrap(fileContent)
         System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
     }
 
