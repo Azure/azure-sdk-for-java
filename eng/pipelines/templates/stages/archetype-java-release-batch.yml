@@ -198,14 +198,14 @@ stages:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
                           WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                  - pwsh: |
+                      $artifactPaths = @('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Where-Object -Not "skipPublishPackage" | ForEach-Object { "$($_.groupId)/$($_.name)/**" })
+                      $filterPaths = $artifactPaths + 'PackageInfos/**'
+                      Write-Host "##vso[task.setvariable variable=filterPaths;]$($filterPaths -join '%0D%0A')" # URL encoded \r\n to for multiline variable
                   - download: current
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
-                    patterns: |
-                      PackageInfo/**
-                      ${{ each artifact in parameters.Artifacts }}:
-                        ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                          ${{artifact.groupId}}/${{artifact.name}}/**
+                    patterns: $(filterPaths)
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                   - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
                     - template: /eng/pipelines/templates/steps/java-publishing.yml
