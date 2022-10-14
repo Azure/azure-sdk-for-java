@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-import static com.azure.spring.cloud.autoconfigure.PrivateFieldGetter.getField;
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 
 public class UserAgentTestUtil {
 
