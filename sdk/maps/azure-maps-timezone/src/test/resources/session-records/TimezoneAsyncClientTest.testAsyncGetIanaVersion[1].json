@@ -13,9 +13,9 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 6FEBE29DBBE64DBAABF0E36F3F739F1E Ref B: PAOEDGE0521 Ref C: 2022-10-13T21:14:22Z",
-      "Body" : "{\"Version\":\"2022e\"}",
-      "Date" : "Thu, 13 Oct 2022 21:14:22 GMT",
+      "X-MSEdge-Ref" : "Ref A: 04A7BE3A94D24DCE92F81C0B709298DE Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:54Z",
+      "Body" : "{\"Version\":\"2022d\"}",
+      "Date" : "Thu, 29 Sep 2022 21:00:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
