@@ -5,12 +5,13 @@ package com.azure.spring.integration.core.implementation.instrumentation;
 
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
-import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import java.util.function.BiConsumer;
 
 /**
  *
  */
-public class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
+public class InstrumentationSendCallback implements BiConsumer<Void, Throwable> {
 
     private final InstrumentationManager instrumentationManager;
 
@@ -28,13 +29,13 @@ public class InstrumentationSendCallback implements ListenableFutureCallback<Voi
     }
 
     @Override
-    public void onFailure(Throwable ex) {
-        this.instrumentationManager.getHealthInstrumentation(instrumentationId)
-                                   .setStatus(Instrumentation.Status.DOWN, ex);
-    }
-
-    @Override
-    public void onSuccess(Void result) {
-        this.instrumentationManager.getHealthInstrumentation(instrumentationId).setStatus(Instrumentation.Status.UP);
+    public void accept(Void unused, Throwable ex) {
+        if (ex == null) {
+            this.instrumentationManager.getHealthInstrumentation(instrumentationId)
+                                       .setStatus(Instrumentation.Status.UP);
+        } else {
+            this.instrumentationManager.getHealthInstrumentation(instrumentationId)
+                                       .setStatus(Instrumentation.Status.DOWN, ex);
+        }
     }
 }
