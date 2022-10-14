@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LogSettings {
     /*
-     * Specifies whether to enable copy activity log. Type: boolean (or
-     * Expression with resultType boolean).
+     * Specifies whether to enable copy activity log. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableCopyActivityLog")
     private Object enableCopyActivityLog;
@@ -29,6 +28,10 @@ public final class LogSettings {
      */
     @JsonProperty(value = "logLocationSettings", required = true)
     private LogLocationSettings logLocationSettings;
+
+    /** Creates an instance of LogSettings class. */
+    public LogSettings() {
+    }
 
     /**
      * Get the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or

@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class MongoDbCollectionDataset extends Dataset {
     /*
-     * The table name of the MongoDB database. Type: string (or Expression with
-     * resultType string).
+     * The table name of the MongoDB database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;

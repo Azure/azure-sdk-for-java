@@ -43,19 +43,6 @@ public interface Galleries {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery.
-     */
-    Gallery get(String resourceGroupName, String devCenterName, String galleryName);
-
-    /**
-     * Gets a gallery.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,6 +51,19 @@ public interface Galleries {
      */
     Response<Gallery> getWithResponse(
         String resourceGroupName, String devCenterName, String galleryName, Context context);
+
+    /**
+     * Gets a gallery.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gallery.
+     */
+    Gallery get(String resourceGroupName, String devCenterName, String galleryName);
 
     /**
      * Deletes a gallery resource.

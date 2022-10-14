@@ -49,6 +49,10 @@ public final class ApplicationGatewayListenerPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayListenerPropertiesFormat class. */
+    public ApplicationGatewayListenerPropertiesFormat() {
+    }
+
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
      *

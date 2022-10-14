@@ -16,6 +16,10 @@ public final class IntegrationRuntimeCustomerVirtualNetwork {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
+    /** Creates an instance of IntegrationRuntimeCustomerVirtualNetwork class. */
+    public IntegrationRuntimeCustomerVirtualNetwork() {
+    }
+
     /**
      * Get the subnetId property: The ID of subnet to which Azure-SSIS integration runtime will join.
      *

@@ -17,11 +17,13 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -56,9 +58,20 @@ public class BlobEventProcessorClientStoreTest {
     @Mock
     private BlobAsyncClient blobAsyncClient;
 
+    private AutoCloseable autoCloseable;
+
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    public void beforeEach() {
+        this.autoCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (autoCloseable != null) {
+            autoCloseable.close();
+        }
+
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

@@ -510,22 +510,6 @@ public final class CatalogsClientImpl implements CatalogsClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a catalog.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CatalogInner get(String resourceGroupName, String devCenterName, String catalogName) {
-        return getAsync(resourceGroupName, devCenterName, catalogName).block();
-    }
-
-    /**
-     * Gets a catalog.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -536,6 +520,22 @@ public final class CatalogsClientImpl implements CatalogsClient {
     public Response<CatalogInner> getWithResponse(
         String resourceGroupName, String devCenterName, String catalogName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, catalogName, context).block();
+    }
+
+    /**
+     * Gets a catalog.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a catalog.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CatalogInner get(String resourceGroupName, String devCenterName, String catalogName) {
+        return getWithResponse(resourceGroupName, devCenterName, catalogName, Context.NONE).getValue();
     }
 
     /**
@@ -1605,7 +1605,8 @@ public final class CatalogsClientImpl implements CatalogsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1641,7 +1642,8 @@ public final class CatalogsClientImpl implements CatalogsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

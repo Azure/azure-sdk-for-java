@@ -52,27 +52,6 @@ public interface ManagedPrivateEndpointsClient {
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @param managedPrivateEndpoint Managed private endpoint resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointResourceInner managedPrivateEndpoint);
-
-    /**
-     * Creates or updates a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param managedPrivateEndpoint Managed private endpoint resource definition.
      * @param ifMatch ETag of the managed private endpoint entity. Should only be specified for update, for which it
      *     should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -92,23 +71,25 @@ public interface ManagedPrivateEndpointsClient {
         Context context);
 
     /**
-     * Gets a managed private endpoint.
+     * Creates or updates a managed private endpoint.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
+     * @param managedPrivateEndpoint Managed private endpoint resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed private endpoint.
+     * @return managed private endpoint resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointResourceInner get(
+    ManagedPrivateEndpointResourceInner createOrUpdate(
         String resourceGroupName,
         String factoryName,
         String managedVirtualNetworkName,
-        String managedPrivateEndpointName);
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointResourceInner managedPrivateEndpoint);
 
     /**
      * Gets a managed private endpoint.
@@ -135,7 +116,7 @@ public interface ManagedPrivateEndpointsClient {
         Context context);
 
     /**
-     * Deletes a managed private endpoint.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -144,9 +125,10 @@ public interface ManagedPrivateEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
+    ManagedPrivateEndpointResourceInner get(
         String resourceGroupName,
         String factoryName,
         String managedVirtualNetworkName,
@@ -172,4 +154,22 @@ public interface ManagedPrivateEndpointsClient {
         String managedVirtualNetworkName,
         String managedPrivateEndpointName,
         Context context);
+
+    /**
+     * Deletes a managed private endpoint.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName);
 }

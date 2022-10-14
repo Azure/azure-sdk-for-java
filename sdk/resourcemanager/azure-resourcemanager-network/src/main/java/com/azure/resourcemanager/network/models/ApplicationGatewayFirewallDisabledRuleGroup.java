@@ -24,6 +24,10 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
     @JsonProperty(value = "rules")
     private List<Integer> rules;
 
+    /** Creates an instance of ApplicationGatewayFirewallDisabledRuleGroup class. */
+    public ApplicationGatewayFirewallDisabledRuleGroup() {
+    }
+
     /**
      * Get the ruleGroupName property: The name of the rule group that will be disabled.
      *

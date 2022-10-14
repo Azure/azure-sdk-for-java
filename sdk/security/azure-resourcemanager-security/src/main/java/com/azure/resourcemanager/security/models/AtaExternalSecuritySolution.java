@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ATA")
 @Fluent
 public final class AtaExternalSecuritySolution extends ExternalSecuritySolutionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AtaExternalSecuritySolution.class);
-
     /*
      * The external security solution properties for ATA solutions
      */

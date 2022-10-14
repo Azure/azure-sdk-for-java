@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SnowflakeSink extends CopySink {
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -26,6 +25,10 @@ public final class SnowflakeSink extends CopySink {
      */
     @JsonProperty(value = "importSettings")
     private SnowflakeImportCopyCommand importSettings;
+
+    /** Creates an instance of SnowflakeSink class. */
+    public SnowflakeSink() {
+    }
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).

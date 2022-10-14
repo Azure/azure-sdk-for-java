@@ -38,15 +38,6 @@ public final class DatasetsImpl implements Datasets {
         return Utils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
     }
 
-    public DatasetResource get(String resourceGroupName, String factoryName, String datasetName) {
-        DatasetResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, datasetName);
-        if (inner != null) {
-            return new DatasetResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DatasetResource> getWithResponse(
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context) {
         Response<DatasetResourceInner> inner =
@@ -62,13 +53,22 @@ public final class DatasetsImpl implements Datasets {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String datasetName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, datasetName);
+    public DatasetResource get(String resourceGroupName, String factoryName, String datasetName) {
+        DatasetResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, datasetName);
+        if (inner != null) {
+            return new DatasetResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String datasetName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, datasetName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String datasetName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, datasetName);
     }
 
     public DatasetResource getById(String id) {

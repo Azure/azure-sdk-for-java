@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ODataResourceDatasetTypeProperties {
     /*
-     * The OData resource path. Type: string (or Expression with resultType
-     * string).
+     * The OData resource path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
+
+    /** Creates an instance of ODataResourceDatasetTypeProperties class. */
+    public ODataResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the path property: The OData resource path. Type: string (or Expression with resultType string).

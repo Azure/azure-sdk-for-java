@@ -36,6 +36,10 @@ public class FirewallPolicyRule {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of FirewallPolicyRule class. */
+    public FirewallPolicyRule() {
+    }
+
     /**
      * Get the name property: Name of the rule.
      *

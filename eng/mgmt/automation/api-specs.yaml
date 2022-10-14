@@ -34,6 +34,8 @@ datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+developerhub:
+  service: devhub
 dnc:
   service: delegatednetwork
 dns:
@@ -41,6 +43,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+hybridaks:
+  service: hybridcontainerservice
 keyvault:
   suffix: generated
 machinelearningservices:

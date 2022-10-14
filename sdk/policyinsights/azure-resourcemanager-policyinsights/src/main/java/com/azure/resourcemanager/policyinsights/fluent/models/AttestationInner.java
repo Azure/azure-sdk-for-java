@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.AttestationEvidence;
 import com.azure.resourcemanager.policyinsights.models.ComplianceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 /** An attestation resource. */
 @Fluent
 public final class AttestationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationInner.class);
-
     /*
      * Properties for the attestation.
      */
@@ -27,11 +24,14 @@ public final class AttestationInner extends ProxyResource {
     private AttestationProperties innerProperties = new AttestationProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AttestationInner class. */
+    public AttestationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties for the attestation.
@@ -241,13 +241,59 @@ public final class AttestationInner extends ProxyResource {
     }
 
     /**
+     * Get the assessmentDate property: The time the evidence was assessed.
+     *
+     * @return the assessmentDate value.
+     */
+    public OffsetDateTime assessmentDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().assessmentDate();
+    }
+
+    /**
+     * Set the assessmentDate property: The time the evidence was assessed.
+     *
+     * @param assessmentDate the assessmentDate value to set.
+     * @return the AttestationInner object itself.
+     */
+    public AttestationInner withAssessmentDate(OffsetDateTime assessmentDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withAssessmentDate(assessmentDate);
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Additional metadata for this attestation.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: Additional metadata for this attestation.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AttestationInner object itself.
+     */
+    public AttestationInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model AttestationInner"));
@@ -255,4 +301,6 @@ public final class AttestationInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AttestationInner.class);
 }

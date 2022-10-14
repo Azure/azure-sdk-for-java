@@ -24,6 +24,10 @@ public final class PrivateDnsZoneConfig {
     @JsonProperty(value = "properties")
     private PrivateDnsZonePropertiesFormat innerProperties;
 
+    /** Creates an instance of PrivateDnsZoneConfig class. */
+    public PrivateDnsZoneConfig() {
+    }
+
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.

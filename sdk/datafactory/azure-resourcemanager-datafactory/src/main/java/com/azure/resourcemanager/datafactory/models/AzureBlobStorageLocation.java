@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobStorageLocation extends DatasetLocation {
     /*
-     * Specify the container of azure blob. Type: string (or Expression with
-     * resultType string).
+     * Specify the container of azure blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "container")
     private Object container;
+
+    /** Creates an instance of AzureBlobStorageLocation class. */
+    public AzureBlobStorageLocation() {
+    }
 
     /**
      * Get the container property: Specify the container of azure blob. Type: string (or Expression with resultType

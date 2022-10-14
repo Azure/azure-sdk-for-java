@@ -527,9 +527,12 @@ public class StoreReader {
 
         AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
 
+        AtomicReference<Uri> primaryUriReference = new AtomicReference<>(null);
+
         Mono<StoreResult> storeResultObs = primaryUriObs.flatMap(
                 primaryUri -> {
                     try {
+                        primaryUriReference.set(primaryUri);
                         if (useSessionToken) {
                             SessionTokenHelper.setPartitionLocalSessionToken(entity, this.sessionContainer);
                         } else {
@@ -585,7 +588,7 @@ public class StoreReader {
                         storeTaskException,
                         requiresValidLsn,
                         true,
-                        null,
+                        primaryUriReference.get(),
                         replicaStatusList.get());
                 return Mono.just(storeResult);
             } catch (CosmosException e) {

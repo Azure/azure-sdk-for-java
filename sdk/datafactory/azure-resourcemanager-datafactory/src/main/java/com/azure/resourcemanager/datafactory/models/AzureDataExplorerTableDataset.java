@@ -24,6 +24,10 @@ public final class AzureDataExplorerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureDataExplorerDatasetTypeProperties innerTypeProperties = new AzureDataExplorerDatasetTypeProperties();
 
+    /** Creates an instance of AzureDataExplorerTableDataset class. */
+    public AzureDataExplorerTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Explorer (Kusto) dataset properties.
      *

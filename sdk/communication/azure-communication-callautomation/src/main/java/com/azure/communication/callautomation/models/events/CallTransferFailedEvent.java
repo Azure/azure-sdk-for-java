@@ -10,37 +10,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class CallTransferFailedEvent extends CallAutomationEventBase {
     /*
-     * Operation context
+     * Contains the resulting SIP code/sub-code and message from NGC services.
      */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
-
-    /*
-     * The resultInfo property.
-     */
-    @JsonProperty(value = "resultInfo")
-    private final ResultInfo resultInfo;
+    @JsonProperty(value = "resultInformation")
+    private final ResultInformation resultInformation;
 
     private CallTransferFailedEvent() {
-        this.resultInfo = null;
-        this.operationContext = null;
+        this.resultInformation = null;
     }
 
     /**
-     * Get the operationContext property: Operation context.
+     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
      *
-     * @return the operationContext value.
+     * @return the resultInformation value.
      */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInfo property: The resultInfo property.
-     *
-     * @return the resultInfo value.
-     */
-    public ResultInfo getResultInfo() {
-        return this.resultInfo;
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 }

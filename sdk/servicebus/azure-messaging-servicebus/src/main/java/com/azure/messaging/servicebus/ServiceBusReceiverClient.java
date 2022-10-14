@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -64,6 +65,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
     private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
+    private final ServiceBusTracer tracer;
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -77,6 +79,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.tracer = asyncClient.getInstrumentation().getTracer();
     }
 
     /**
@@ -105,6 +108,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public String getSessionId() {
         return asyncClient.getSessionId();
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusReceiverClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusReceiverClient}.
+     */
+    public String getIdentifier() {
+        return asyncClient.getIdentifier();
     }
 
     /**
@@ -386,10 +398,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sessionId)
             .timeout(operationTimeout);
 
-        // Subscribe so we can kick off this operation.
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -436,10 +449,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sequenceNumber,
             sessionId).timeout(operationTimeout);
 
-        // Subscribe so we can kick off this operation.
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -493,9 +507,16 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
         final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+
         queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(emitter.asFlux());
+        final Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveMessages", messagesFlux);
+
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
+        messagesFlux.subscribe();
+
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -562,13 +583,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
+
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers,
             sessionId).timeout(operationTimeout);
 
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch", messages);
         // Subscribe so we can kick off this operation.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**

@@ -28,6 +28,10 @@ public final class FirewallPolicyInsights {
     @JsonProperty(value = "logAnalyticsResources")
     private FirewallPolicyLogAnalyticsResources logAnalyticsResources;
 
+    /** Creates an instance of FirewallPolicyInsights class. */
+    public FirewallPolicyInsights() {
+    }
+
     /**
      * Get the isEnabled property: A flag to indicate if the insights are enabled on the policy.
      *

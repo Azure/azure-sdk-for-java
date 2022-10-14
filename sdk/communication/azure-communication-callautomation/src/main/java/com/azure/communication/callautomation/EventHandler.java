@@ -11,8 +11,12 @@ import com.azure.communication.callautomation.models.events.CallDisconnectedEven
 import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.PlayCanceledEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCanceledEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCompletedEvent;
+import com.azure.communication.callautomation.models.events.RecognizeFailedEvent;
+import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
+import com.azure.communication.callautomation.models.events.PlayFailedEvent;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
@@ -106,9 +110,17 @@ public final class EventHandler {
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
                 ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
-                ret = mapper.convertValue(eventData, PlayCompleted.class);
+                ret = mapper.convertValue(eventData, PlayCompletedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
-                ret = mapper.convertValue(eventData, PlayFailed.class);
+                ret = mapper.convertValue(eventData, PlayFailedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCanceled")) {
+                ret = mapper.convertValue(eventData, PlayCanceledEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
+                ret = mapper.convertValue(eventData, RecognizeCompletedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeFailed")) {
+                ret = mapper.convertValue(eventData, RecognizeFailedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCanceled")) {
+                ret = mapper.convertValue(eventData, RecognizeCanceledEvent.class);
             }
 
             return ret;

@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>4.5.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -51,19 +51,37 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.3</version>   <!-- NOTE: This should be updated manually. -->
+        <version>1.2.6</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <!-- TODO (zhihaoguo): Pin the version of azure-identity to 1.6.0-beta.1 for we want to use the caching ability for MI. -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>1.7.0-beta.1</version> <!-- {x-version-update;beta_com.azure:azure-identity;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.26.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+        <version>3.29.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager</artifactId>
-        <version>2.18.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+        <version>2.19.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
@@ -280,6 +298,16 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure-storage-queue</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-jdbc-postgresql</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

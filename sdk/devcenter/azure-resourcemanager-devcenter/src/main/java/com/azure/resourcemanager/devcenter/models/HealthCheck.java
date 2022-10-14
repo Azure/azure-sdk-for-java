@@ -53,6 +53,10 @@ public final class HealthCheck {
     @JsonProperty(value = "additionalDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetails;
 
+    /** Creates an instance of HealthCheck class. */
+    public HealthCheck() {
+    }
+
     /**
      * Get the status property: The status of the health check item.
      *

@@ -4,7 +4,17 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
+      Clouds: 'Public,UsGov,China'
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          Location: 'chinanorth'
       TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
         - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
@@ -17,6 +27,6 @@ stages:
           safeName: springcloudazureintegrationtests
       TimeoutInMinutes: 240
       ServiceDirectory: spring
-      TestName: IntegrationTestInAzureGlobal
+      TestName: SpringIntegrationTests
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false'

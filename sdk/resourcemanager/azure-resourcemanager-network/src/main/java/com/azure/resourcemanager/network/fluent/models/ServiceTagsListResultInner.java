@@ -53,6 +53,10 @@ public final class ServiceTagsListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ServiceTagsListResultInner class. */
+    public ServiceTagsListResultInner() {
+    }
+
     /**
      * Get the name property: The name of the cloud.
      *

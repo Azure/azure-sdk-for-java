@@ -26,10 +26,17 @@ public abstract class CallAutomationEventBase {
     @JsonProperty(value = "correlationId")
     private final String correlationId;
 
+    /*
+     * Operation context
+     */
+    @JsonProperty(value = "operationContext")
+    private final String operationContext;
+
     CallAutomationEventBase() {
         this.serverCallId = null;
         this.callConnectionId = null;
         this.correlationId = null;
+        this.operationContext = null;
     }
 
     /**
@@ -58,5 +65,14 @@ public abstract class CallAutomationEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    /**
+     * Get the operationContext property: Operation context.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
     }
 }

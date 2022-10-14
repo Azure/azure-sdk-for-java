@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
-@Fluent
+@Immutable
 public final class ComputeOperationValueInner {
     /*
      * The origin of the compute operation.

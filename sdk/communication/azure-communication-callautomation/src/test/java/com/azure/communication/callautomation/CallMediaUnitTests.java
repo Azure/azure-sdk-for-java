@@ -3,11 +3,9 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.RecognizeConfigurations;
-import com.azure.communication.callautomation.models.RecognizeInputType;
-import com.azure.communication.callautomation.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -64,8 +62,8 @@ public class CallMediaUnitTests {
 
     @Test
     public void recognizeWithResponseTest() {
-        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
-        Response<Void> response = callMedia.recognizeWithResponse(recognizeOptions, Context.NONE);
+        CallMediaRecognizeDtmfOptions callMediaRecognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
+        Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 }

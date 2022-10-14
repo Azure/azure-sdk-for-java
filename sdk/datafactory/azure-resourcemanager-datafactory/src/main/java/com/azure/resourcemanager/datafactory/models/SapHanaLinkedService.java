@@ -24,6 +24,10 @@ public final class SapHanaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapHanaLinkedServiceProperties innerTypeProperties = new SapHanaLinkedServiceProperties();
 
+    /** Creates an instance of SapHanaLinkedService class. */
+    public SapHanaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *

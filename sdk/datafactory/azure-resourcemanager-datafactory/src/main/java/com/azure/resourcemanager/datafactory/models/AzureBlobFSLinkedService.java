@@ -24,6 +24,10 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureBlobFSLinkedServiceTypeProperties innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBlobFSLinkedService class. */
+    public AzureBlobFSLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Lake Storage Gen2 linked service properties.
      *

@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.5.0</version>
+  <version>1.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

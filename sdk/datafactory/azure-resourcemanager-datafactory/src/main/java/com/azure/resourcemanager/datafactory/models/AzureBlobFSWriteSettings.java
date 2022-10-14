@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
     /*
-     * Indicates the block size(MB) when writing data to blob. Type: integer
-     * (or Expression with resultType integer).
+     * Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "blockSizeInMB")
     private Object blockSizeInMB;
+
+    /** Creates an instance of AzureBlobFSWriteSettings class. */
+    public AzureBlobFSWriteSettings() {
+    }
 
     /**
      * Get the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or

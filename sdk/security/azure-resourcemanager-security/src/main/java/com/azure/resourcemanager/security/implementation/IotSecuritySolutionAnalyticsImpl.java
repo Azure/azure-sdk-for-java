@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionAnaly
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionAnalyticsModel;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionAnalyticsModelList;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionAnalytics;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IotSecuritySolutionAnalyticsImpl implements IotSecuritySolutionAnalytics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotSecuritySolutionAnalyticsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IotSecuritySolutionAnalyticsImpl.class);
 
     private final IotSecuritySolutionAnalyticsClient innerClient;
 

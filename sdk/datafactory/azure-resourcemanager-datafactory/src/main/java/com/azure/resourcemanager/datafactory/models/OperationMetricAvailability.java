@@ -22,6 +22,10 @@ public final class OperationMetricAvailability {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
+    /** Creates an instance of OperationMetricAvailability class. */
+    public OperationMetricAvailability() {
+    }
+
     /**
      * Get the timeGrain property: The granularity for the metric.
      *

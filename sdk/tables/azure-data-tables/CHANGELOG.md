@@ -10,6 +10,24 @@
 
 ### Other Changes
 
+## 12.3.5 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` dependency to `1.33.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.6`.
+- Utilizes `jackson-dataformat-xml` version `2.13.4`
+
+## 12.3.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.32.0`
+- Upgraded `azure-core-http-netty` dependency to `1.12.5`
+
 ## 12.3.3 (2022-08-15)
 
 ### Other Changes

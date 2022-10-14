@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -100,7 +101,11 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             final String tenantId = azureProperties.getProfile().getTenantId();
             final String clientId = properties.getClientId();
             final boolean isClientIdSet = StringUtils.hasText(clientId);
-            final String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
+            String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
+
+            if (authorityHost == null) {
+                authorityHost = AzureEnvironment.AZURE.getActiveDirectoryEndpoint();
+            }
 
             if (StringUtils.hasText(tenantId)) {
 
@@ -250,5 +255,9 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
     static class IdentityClientProperties extends AbstractAzureHttpConfigurationProperties {
 
+    }
+
+    IdentityClientProperties getIdentityClientProperties() {
+        return identityClientProperties;
     }
 }

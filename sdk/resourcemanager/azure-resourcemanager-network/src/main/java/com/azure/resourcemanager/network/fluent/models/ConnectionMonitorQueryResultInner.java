@@ -25,6 +25,10 @@ public final class ConnectionMonitorQueryResultInner {
     @JsonProperty(value = "states")
     private List<ConnectionStateSnapshot> states;
 
+    /** Creates an instance of ConnectionMonitorQueryResultInner class. */
+    public ConnectionMonitorQueryResultInner() {
+    }
+
     /**
      * Get the sourceStatus property: Status of connection monitor source.
      *

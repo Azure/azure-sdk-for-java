@@ -35,14 +35,19 @@ public class CreateCallOptions {
     private String sourceCallerId;
 
     /**
-     * The subject
+     * A customer set value used to track the answering of a call.
      */
-    private String subject;
+    private String operationContext;
 
     /**
      * Media Streaming Configuration.
      */
-    private MediaStreamingConfiguration mediaStreamingConfiguration;
+    private MediaStreamingOptions mediaStreamingOptions;
+
+    /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -85,12 +90,12 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the subject.
+     * Get the operationContext: A customer set value used to track the answering of a call.
      *
-     * @return the subject value.
+     * @return the operationContext value.
      */
-    public String getSubject() {
-        return subject;
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
@@ -107,18 +112,27 @@ public class CreateCallOptions {
      *
      * @return the mediaStreamingConfiguration.
      */
-    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
-        return mediaStreamingConfiguration;
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
     }
 
     /**
-     * Set the subject.
+     * Get the Repeatability headers configuration.
      *
-     * @param subject the subject.
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
+     * Set the operationContext: A customer set value used to track the answering of a call.
+     *
+     * @param operationContext A customer set value used to track the answering of a call.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setSubject(String subject) {
-        this.subject = subject;
+    public CreateCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 
@@ -137,11 +151,22 @@ public class CreateCallOptions {
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingConfiguration The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming configuration.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingConfiguration mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

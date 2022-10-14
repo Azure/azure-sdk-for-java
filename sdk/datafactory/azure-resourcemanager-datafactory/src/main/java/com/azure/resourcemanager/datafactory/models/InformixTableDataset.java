@@ -23,6 +23,10 @@ public final class InformixTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private InformixTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of InformixTableDataset class. */
+    public InformixTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Informix table dataset properties.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DnsVerificationTestResult. */
+/** DNS verification test result. */
 public enum DnsVerificationTestResult {
     /** Enum value Passed. */
     PASSED("Passed"),
@@ -33,6 +33,9 @@ public enum DnsVerificationTestResult {
      */
     @JsonCreator
     public static DnsVerificationTestResult fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DnsVerificationTestResult[] items = DnsVerificationTestResult.values();
         for (DnsVerificationTestResult item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum DnsVerificationTestResult {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -40,6 +40,10 @@ public final class NginxDeploymentInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of NginxDeploymentInner class. */
+    public NginxDeploymentInner() {
+    }
+
     /**
      * Get the identity property: The identity property.
      *

@@ -25,12 +25,15 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of PostgreSqlLinkedServiceTypeProperties class. */
+    public PostgreSqlLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string.

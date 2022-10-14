@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzurePostgreSqlSink extends CopySink {
     /*
-     * A query to execute before starting the copy. Type: string (or Expression
-     * with resultType string).
+     * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
+
+    /** Creates an instance of AzurePostgreSqlSink class. */
+    public AzurePostgreSqlSink() {
+    }
 
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with

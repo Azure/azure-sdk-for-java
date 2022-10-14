@@ -47,6 +47,10 @@ public final class ImageProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ImageProperties class. */
+    public ImageProperties() {
+    }
+
     /**
      * Get the description property: The description of the image.
      *

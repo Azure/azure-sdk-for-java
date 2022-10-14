@@ -135,19 +135,29 @@ directive:
 - rename-model:
     from: MediaStreamingConfiguration
     to: MediaStreamingConfigurationInternal
+- rename-model:
+    from: DtmfOptions
+    to: DtmfOptionsInternal
+- rename-model:
+    from: RecognizeOptions
+    to: RecognizeOptionsInternal
     
 # Remove models
-- remove-model: AddParticipantsFailedEvent
-- remove-model: AddParticipantsSucceededEvent
-- remove-model: CallConnectedEvent
-- remove-model: CallDisconnectedEvent
-- remove-model: CallTransferAcceptedEvent
-- remove-model: CallTransferFailedEvent
-- remove-model: ParticipantsUpdatedEvent
-- remove-model: RecordingStateChangedEvent
+- remove-model: AddParticipantsFailed
+- remove-model: AddParticipantsSucceeded
+- remove-model: CallConnected
+- remove-model: CallDisconnected
+- remove-model: CallTransferAccepted
+- remove-model: CallTransferFailed
+- remove-model: ParticipantsUpdated
+- remove-model: RecordingStateChanged
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
+- remove-model: PlayCanceled
 - remove-model: ResultInfo
+- remove-model: RecognizeCompleted
+- remove-model: RecognizeFailed
+- remove-model: RecognizeCanceled
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -275,4 +285,31 @@ directive:
   where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingTransportTypeInternal";
+```
+
+### Rename RecognitionType to RecognitionTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecognitionType["x-ms-enum"]
+  transform: >
+    $.name = "RecognitionTypeInternal";
+```
+
+### Rename Tone to DtmfTone
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Tone["x-ms-enum"]
+  transform: >
+    $.name = "DtmfTone";
+```
+
+### Rename DtmfOptions to DtmfOptionsInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.DtmfOptions["x-ms-enum"]
+  transform: >
+    $.name = "DtmfOptionsInternal";
 ```

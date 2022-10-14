@@ -81,6 +81,10 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     @JsonProperty(value = "hostNames")
     private List<String> hostNames;
 
+    /** Creates an instance of ApplicationGatewayHttpListenerPropertiesFormat class. */
+    public ApplicationGatewayHttpListenerPropertiesFormat() {
+    }
+
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
      *

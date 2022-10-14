@@ -1,7 +1,8 @@
 # Release History
 
-## 7.11.0-beta.1 (Unreleased)
-
+## 7.12.0-beta.1 (Unreleased)
+- Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
+- Enabled metrics to track number of sent messages, receiver lag, settlement calls ([#31283](https://github.com/Azure/azure-sdk-for-java/pull/31283))
 ### Features Added
 
 ### Breaking Changes
@@ -10,6 +11,15 @@
 
 ### Other Changes
 
+## 7.11.0 (2022-09-19)
+
+### Features Added
+- Added identifier to client. ([#28904](https://github.com/Azure/azure-sdk-for-java/issues/28904))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded `azure-core-amqp` from `2.7.0` to `2.7.1`.
+- Upgraded `azure-identity` from `1.5.3` to `1.5.5`.
 ## 7.10.1 (2022-08-18)
 
 ### Bugs Fixed

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlPoolReferenceType. */
+/** SQL pool reference type. */
 public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolReferenceType> {
     /** Static value SqlPoolReference for SqlPoolReferenceType. */
     public static final SqlPoolReferenceType SQL_POOL_REFERENCE = fromString("SqlPoolReference");
@@ -24,7 +24,11 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
         return fromString(name, SqlPoolReferenceType.class);
     }
 
-    /** @return known SqlPoolReferenceType values. */
+    /**
+     * Gets known SqlPoolReferenceType values.
+     *
+     * @return known SqlPoolReferenceType values.
+     */
     public static Collection<SqlPoolReferenceType> values() {
         return values(SqlPoolReferenceType.class);
     }

@@ -25,8 +25,8 @@ public final class CallConnectionProperties {
     private final CallSource source;
     private final List<CommunicationIdentifier> targets;
     private final CallConnectionState callConnectionState;
-    private final String subject;
     private final URI callbackUri;
+    private final String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -48,8 +48,8 @@ public final class CallConnectionProperties {
         this.serverCallId = null;
         this.targets = null;
         this.callConnectionState = null;
-        this.subject = null;
         this.callbackUri = null;
+        this.mediaSubscriptionId = null;
     }
 
     /**
@@ -64,8 +64,8 @@ public final class CallConnectionProperties {
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
         this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
-        this.subject = callConnectionPropertiesInternal.getSubject();
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
+        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
     }
 
     /**
@@ -105,15 +105,6 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Get the subject property.
-     *
-     * @return subject value.
-     */
-    public String getSubject() {
-        return subject;
-    }
-
-    /**
      * Get the callbackUri property.
      *
      * @return callbackUri value.
@@ -131,4 +122,12 @@ public final class CallConnectionProperties {
         return callConnectionId;
     }
 
+    /**
+     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
+     *
+     * @return the mediaSubscriptionId value.
+     */
+    public String getMediaSubscriptionId() {
+        return mediaSubscriptionId;
+    }
 }

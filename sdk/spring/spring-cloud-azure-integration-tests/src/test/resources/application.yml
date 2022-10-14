@@ -11,6 +11,12 @@ spring:
         client-secret: ${AZURE_SPRING_CLIENT_SECRET}
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
+      eventhubs:
+        domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
+      servicebus:
+        domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
+  datasource:
+    url: jdbc:h2:mem:test # used by DataSourceAutoConfiguration
 logging:
   level:
     com.azure:

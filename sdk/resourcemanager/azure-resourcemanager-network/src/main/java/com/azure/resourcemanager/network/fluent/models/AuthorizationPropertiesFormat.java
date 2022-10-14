@@ -30,6 +30,10 @@ public final class AuthorizationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AuthorizationPropertiesFormat class. */
+    public AuthorizationPropertiesFormat() {
+    }
+
     /**
      * Get the authorizationKey property: The authorization key.
      *

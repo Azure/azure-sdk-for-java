@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -16,7 +17,6 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -33,14 +33,17 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
@@ -58,7 +61,7 @@ import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -204,14 +207,14 @@ public final class ServiceBusClientBuilder implements
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
+    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_VERSION;
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
 
     private final Object connectionLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
     private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
@@ -230,6 +233,12 @@ public final class ServiceBusClientBuilder implements
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
     private final AtomicInteger openClients = new AtomicInteger();
+
+    static {
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        LIBRARY_NAME = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        LIBRARY_VERSION = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+    }
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -738,18 +747,15 @@ public final class ServiceBusClientBuilder implements
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
-        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         if (customEndpointAddress == null) {
             return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, product, clientVersion);
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
         } else {
             return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
         }
     }
@@ -953,8 +959,19 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(ServiceBusTracer.getDefaultTracer(),
+                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
+
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
         /**
@@ -1037,8 +1054,7 @@ public final class ServiceBusClientBuilder implements
         private ServiceBusSessionProcessorClientBuilder() {
             sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
             processorClientOptions = new ServiceBusProcessorClientOptions()
-                .setMaxConcurrentCalls(1)
-                .setTracerProvider(tracerProvider);
+                .setMaxConcurrentCalls(1);
             sessionReceiverClientBuilder.maxConcurrentSessions(1);
         }
 
@@ -1425,12 +1441,23 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
-            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
 
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
+                ServiceBusTracer.getDefaultTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
+                entityPath, subscriptionName, false);
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
         /**
@@ -1448,7 +1475,7 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true);
+            return buildAsyncClient(true, false);
         }
 
         /**
@@ -1466,12 +1493,12 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionReceiverClient buildClient() {
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
@@ -1494,9 +1521,19 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
+                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose);
+                entityPath, entityType, receiverOptions, connectionProcessor, instrumentation, messageSerializer,
+                ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 
@@ -1508,42 +1545,82 @@ public final class ServiceBusClientBuilder implements
      * {@link #processError(Consumer)} are necessary. By default, a {@link ServiceBusProcessorClient} is configured
      * with auto-completion and auto-lock renewal capabilities.
      *
-     * <p><strong>Sample code to instantiate a processor client</strong></p>
-     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
+     * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <pre>
-     * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
-     *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
-     *     System.out.printf&#40;&quot;Processing message. Sequence #: %s. Contents: %s%n&quot;,
-     *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
-     * &#125;;
-     *
-     * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
-     *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
-     *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
-     *
-     *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
-     *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
-     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
-     *             exception.getReason&#40;&#41;&#41;;
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+     *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+     *     &#47;&#47; handling message reaches desired state such that it doesn't require Service Bus to redeliver
+     *     &#47;&#47; the same message, then context.complete&#40;&#41; should be called otherwise context.abandon&#40;&#41;.
+     *     final boolean success = Math.random&#40;&#41; &lt; 0.5;
+     *     if &#40;success&#41; &#123;
+     *         try &#123;
+     *             context.complete&#40;&#41;;
+     *         &#125; catch &#40;Exception completionError&#41; &#123;
+     *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
+     *             completionError.printStackTrace&#40;&#41;;
+     *         &#125;
      *     &#125; else &#123;
-     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+     *         try &#123;
+     *             context.abandon&#40;&#41;;
+     *         &#125; catch &#40;Exception abandonError&#41; &#123;
+     *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
+     *             abandonError.printStackTrace&#40;&#41;;
+     *         &#125;
      *     &#125;
      * &#125;;
      *
-     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     * &#47;&#47; Sample code that gets called if there's an error
+     * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     * &#125;;
      *
-     * ServiceBusProcessorClient processor = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;connectionString&#41;
+     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
      *     .processor&#40;&#41;
-     *     .queueName&#40;queueName&#41;
-     *     .processMessage&#40;onMessage&#41;
-     *     .processError&#40;onError&#41;
+     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+     *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+     *     .processMessage&#40;processMessage&#41;
+     *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Start the processor in the background
-     * processor.start&#40;&#41;;
+     * &#47;&#47; Starts the processor in the background and returns immediately
+     * processorClient.start&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
+     * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
+     * <pre>
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+     *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
+     *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+     * &#125;;
+     *
+     * &#47;&#47; Sample code that gets called if there's an error
+     * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     * &#125;;
+     *
+     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+     *     .processor&#40;&#41;
+     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
+     *     .processMessage&#40;processMessage&#41;
+     *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
+     *     .buildProcessorClient&#40;&#41;;
+     *
+     * &#47;&#47; Starts the processor in the background and returns immediately
+     * processorClient.start&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      *
      * @see ServiceBusProcessorClient
      */
@@ -1556,8 +1633,7 @@ public final class ServiceBusClientBuilder implements
         private ServiceBusProcessorClientBuilder() {
             serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
             processorClientOptions = new ServiceBusProcessorClientOptions()
-                .setMaxConcurrentCalls(1)
-                .setTracerProvider(tracerProvider);
+                .setMaxConcurrentCalls(1);
         }
 
         /**
@@ -1882,7 +1958,7 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true);
+            return buildAsyncClient(true, false);
         }
 
         /**
@@ -1900,12 +1976,12 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusReceiverClient buildClient() {
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusReceiverClient(buildAsyncClient(false),
+            return new ServiceBusReceiverClient(buildAsyncClient(false, true),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
+        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
@@ -1928,9 +2004,19 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
+                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 
@@ -1946,5 +2032,10 @@ public final class ServiceBusClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
+    }
+
+    private Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+                clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 }

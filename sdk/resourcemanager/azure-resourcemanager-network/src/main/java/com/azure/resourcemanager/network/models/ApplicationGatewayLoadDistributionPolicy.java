@@ -37,6 +37,10 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayLoadDistributionPolicy class. */
+    public ApplicationGatewayLoadDistributionPolicy() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution policy.
      *

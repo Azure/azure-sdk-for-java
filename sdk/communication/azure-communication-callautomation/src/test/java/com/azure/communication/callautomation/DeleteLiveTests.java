@@ -25,7 +25,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithConnectionStringClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecordingWithConnectionStringClient");
         deleteRecording(callAutomationClient);
     }
@@ -37,7 +37,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithTokenCredentialClient(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingTokenCredential(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecordingWithTokenCredentialClient");
         deleteRecording(callAutomationClient);
     }
@@ -60,7 +60,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording401(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingInvalidTokenCredential(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
         Response<Void> response = callAutomationClient
             .getCallRecording()
@@ -75,7 +75,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording404(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClientBuilder builder = getCallAutomationClientUsingConnectionString(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
         Response<Void> response = callAutomationClient
             .getCallRecording()

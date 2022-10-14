@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class OperationListResponse {
     /*
-     * List of Data Factory operations supported by the Data Factory resource
-     * provider.
+     * List of Data Factory operations supported by the Data Factory resource provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
@@ -24,6 +23,10 @@ public final class OperationListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationListResponse class. */
+    public OperationListResponse() {
+    }
 
     /**
      * Get the value property: List of Data Factory operations supported by the Data Factory resource provider.

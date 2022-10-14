@@ -20,11 +20,14 @@ public final class TriggerRunsQueryResponseInner {
     private List<TriggerRun> value;
 
     /*
-     * The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
+
+    /** Creates an instance of TriggerRunsQueryResponseInner class. */
+    public TriggerRunsQueryResponseInner() {
+    }
 
     /**
      * Get the value property: List of trigger runs.

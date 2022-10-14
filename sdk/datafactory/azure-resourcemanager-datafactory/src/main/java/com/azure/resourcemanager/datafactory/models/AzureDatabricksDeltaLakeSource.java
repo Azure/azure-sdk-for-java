@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /*
-     * Azure Databricks Delta Lake Sql query. Type: string (or Expression with
-     * resultType string).
+     * Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
@@ -26,6 +25,10 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      */
     @JsonProperty(value = "exportSettings")
     private AzureDatabricksDeltaLakeExportCommand exportSettings;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeSource class. */
+    public AzureDatabricksDeltaLakeSource() {
+    }
 
     /**
      * Get the query property: Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType

@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * @see IdentityClient
  */
 public final class IdentityClientBuilder {
-    private IdentityClientOptions identityClientOptions;
+    private IdentityClientOptions identityClientOptions = new IdentityClientOptions();
     private String tenantId;
     private String clientId;
     private String resourceId;
@@ -156,6 +156,12 @@ public final class IdentityClientBuilder {
      */
     public IdentityClient build() {
         return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            identityClientOptions);
+    }
+
+    public IdentitySyncClient buildSyncClient() {
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
             clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }

@@ -27,8 +27,7 @@ public final class SsisPackageLocationTypeProperties {
     private SsisAccessCredential accessCredential;
 
     /*
-     * The configuration file of the package execution. Type: string (or
-     * Expression with resultType string).
+     * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "configurationPath")
     private Object configurationPath;
@@ -46,8 +45,7 @@ public final class SsisPackageLocationTypeProperties {
     private String packageName;
 
     /*
-     * The embedded package content. Type: string (or Expression with
-     * resultType string).
+     * The embedded package content. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageContent")
     private Object packageContent;
@@ -63,6 +61,10 @@ public final class SsisPackageLocationTypeProperties {
      */
     @JsonProperty(value = "childPackages")
     private List<SsisChildPackage> childPackages;
+
+    /** Creates an instance of SsisPackageLocationTypeProperties class. */
+    public SsisPackageLocationTypeProperties() {
+    }
 
     /**
      * Get the packagePassword property: Password of the package.

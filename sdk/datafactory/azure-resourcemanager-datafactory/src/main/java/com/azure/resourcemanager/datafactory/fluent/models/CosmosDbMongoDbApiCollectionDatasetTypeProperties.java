@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CosmosDbMongoDbApiCollectionDatasetTypeProperties {
     /*
-     * The collection name of the CosmosDB (MongoDB API) database. Type: string
-     * (or Expression with resultType string).
+     * The collection name of the CosmosDB (MongoDB API) database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collection", required = true)
     private Object collection;
+
+    /** Creates an instance of CosmosDbMongoDbApiCollectionDatasetTypeProperties class. */
+    public CosmosDbMongoDbApiCollectionDatasetTypeProperties() {
+    }
 
     /**
      * Get the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or

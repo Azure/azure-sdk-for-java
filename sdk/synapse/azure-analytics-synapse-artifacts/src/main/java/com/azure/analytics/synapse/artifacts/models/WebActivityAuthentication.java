@@ -35,8 +35,7 @@ public final class WebActivityAuthentication {
     private SecretBase password;
 
     /*
-     * Resource for which Azure Auth token will be requested when using MSI
-     * Authentication.
+     * Resource for which Azure Auth token will be requested when using MSI Authentication.
      */
     @JsonProperty(value = "resource")
     private String resource;

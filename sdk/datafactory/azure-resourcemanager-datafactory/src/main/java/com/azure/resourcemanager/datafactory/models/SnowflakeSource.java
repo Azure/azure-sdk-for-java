@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SnowflakeSource extends CopySource {
     /*
-     * Snowflake Sql query. Type: string (or Expression with resultType
-     * string).
+     * Snowflake Sql query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
@@ -26,6 +25,10 @@ public final class SnowflakeSource extends CopySource {
      */
     @JsonProperty(value = "exportSettings")
     private SnowflakeExportCopyCommand exportSettings;
+
+    /** Creates an instance of SnowflakeSource class. */
+    public SnowflakeSource() {
+    }
 
     /**
      * Get the query property: Snowflake Sql query. Type: string (or Expression with resultType string).

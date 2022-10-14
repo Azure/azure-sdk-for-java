@@ -14,7 +14,7 @@ public final class NginxConfigurationProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -22,6 +22,12 @@ public final class NginxConfigurationProperties {
      */
     @JsonProperty(value = "files")
     private List<NginxConfigurationFile> files;
+
+    /*
+     * The protectedFiles property.
+     */
+    @JsonProperty(value = "protectedFiles")
+    private List<NginxConfigurationFile> protectedFiles;
 
     /*
      * The package property.
@@ -35,6 +41,10 @@ public final class NginxConfigurationProperties {
     @JsonProperty(value = "rootFile")
     private String rootFile;
 
+    /** Creates an instance of NginxConfigurationProperties class. */
+    public NginxConfigurationProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioningState property.
      *
@@ -42,17 +52,6 @@ public final class NginxConfigurationProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioningState property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the NginxConfigurationProperties object itself.
-     */
-    public NginxConfigurationProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -72,6 +71,26 @@ public final class NginxConfigurationProperties {
      */
     public NginxConfigurationProperties withFiles(List<NginxConfigurationFile> files) {
         this.files = files;
+        return this;
+    }
+
+    /**
+     * Get the protectedFiles property: The protectedFiles property.
+     *
+     * @return the protectedFiles value.
+     */
+    public List<NginxConfigurationFile> protectedFiles() {
+        return this.protectedFiles;
+    }
+
+    /**
+     * Set the protectedFiles property: The protectedFiles property.
+     *
+     * @param protectedFiles the protectedFiles value to set.
+     * @return the NginxConfigurationProperties object itself.
+     */
+    public NginxConfigurationProperties withProtectedFiles(List<NginxConfigurationFile> protectedFiles) {
+        this.protectedFiles = protectedFiles;
         return this;
     }
 
@@ -123,6 +142,9 @@ public final class NginxConfigurationProperties {
     public void validate() {
         if (files() != null) {
             files().forEach(e -> e.validate());
+        }
+        if (protectedFiles() != null) {
+            protectedFiles().forEach(e -> e.validate());
         }
         if (packageProperty() != null) {
             packageProperty().validate();

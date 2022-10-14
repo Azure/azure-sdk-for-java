@@ -28,6 +28,10 @@ public final class ConnectionMonitorTcpConfiguration {
     @JsonProperty(value = "destinationPortBehavior")
     private DestinationPortBehavior destinationPortBehavior;
 
+    /** Creates an instance of ConnectionMonitorTcpConfiguration class. */
+    public ConnectionMonitorTcpConfiguration() {
+    }
+
     /**
      * Get the port property: The port to connect to.
      *

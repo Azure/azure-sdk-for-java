@@ -11,13 +11,19 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.test.utils.metrics.TestGauge;
+import com.azure.core.test.utils.metrics.TestHistogram;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
@@ -28,6 +34,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -79,6 +86,10 @@ import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -102,12 +113,14 @@ class ServiceBusReceiverAsyncClientTest {
     private static final int PREFETCH = 5;
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
+    private static final String SUBSCRIPTION_NAME = "subscription-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String NAMESPACE_CONNECTION_STRING = String.format(
         "Endpoint=sb://%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
         NAMESPACE, "some-name", "something-else");
     private static final Duration CLEANUP_INTERVAL = Duration.ofSeconds(10);
     private static final String SESSION_ID = "my-session-id";
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
@@ -131,8 +144,8 @@ class ServiceBusReceiverAsyncClientTest {
     private TokenCredential tokenCredential;
     @Mock
     private MessageSerializer messageSerializer;
-    @Mock
-    private TracerProvider tracerProvider;
+
+    private ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false);
     @Mock
     private ServiceBusManagementNode managementNode;
     @Mock
@@ -180,9 +193,9 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(managementNode));
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
-            any(MessagingEntityType.class))).thenReturn(Mono.just(amqpReceiveLink));
+            any(MessagingEntityType.class), anyString())).thenReturn(Mono.just(amqpReceiveLink));
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
-            any(MessagingEntityType.class), anyString())).thenReturn(Mono.just(sessionReceiveLink));
+            any(MessagingEntityType.class), anyString(), anyString())).thenReturn(Mono.just(sessionReceiveLink));
 
         connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
@@ -191,12 +204,12 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
-            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
                 null),
-            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
     }
 
     @AfterEach
@@ -206,6 +219,16 @@ class ServiceBusReceiverAsyncClientTest {
         receiver.close();
         mocksCloseable.close();
         Mockito.framework().clearInlineMock(this);
+    }
+
+    /**
+     * Verifies that the correct Service Bus properties are set.
+     */
+    @Test
+    void properties() {
+        Assertions.assertEquals(ENTITY_PATH, receiver.getEntityPath());
+        Assertions.assertEquals(NAMESPACE, receiver.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, receiver.getIdentifier());
     }
 
     /**
@@ -316,7 +339,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
                 false, SESSION_ID, null), connectionProcessor,
-            CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
@@ -408,8 +431,8 @@ class ServiceBusReceiverAsyncClientTest {
     void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         final String lockToken1 = UUID.randomUUID().toString();
 
@@ -428,8 +451,8 @@ class ServiceBusReceiverAsyncClientTest {
     void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
         final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(null);
 
@@ -546,8 +569,8 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Act & Assert
         StepVerifier.create(receiver2.renewMessageLock(receivedMessage, maxDuration))
@@ -571,7 +594,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
+            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock(SESSION_ID))
@@ -643,8 +666,8 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
@@ -691,11 +714,11 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
-            any(MessagingEntityType.class))).thenReturn(Mono.error(new AzureException("some receive link Error.")));
+            any(MessagingEntityType.class), anyString())).thenReturn(Mono.error(new AzureException("some receive link Error.")));
 
         // Act & Assert
         StepVerifier.create(receiver2.receiveMessages().take(1))
@@ -1227,8 +1250,8 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
@@ -1261,8 +1284,8 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, SESSION_ID, null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
-            messageSerializer, onClientClose);
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);
 
@@ -1291,6 +1314,253 @@ class ServiceBusReceiverAsyncClientTest {
         verify(sessionReceiveLink).updateDisposition(lockToken3, Accepted.getInstance());
     }
 
+    @Test
+    void receiveMessagesReportsMetricsAsyncInstr() {
+        // Arrange
+        final List<Message> messages = getMessages();
+        TestMeter meter = new TestMeter();
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH,
+            SUBSCRIPTION_NAME, false);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+
+        // Arrange
+        ServiceBusReceivedMessage receivedMessage1 = mockReceivedMessage(Instant.now().minusSeconds(1000));
+        ServiceBusReceivedMessage receivedMessage2 = mockReceivedMessage(Instant.now().minusSeconds(500));
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage1, receivedMessage2);
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(2))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(2)
+            .verifyComplete();
+
+        TestHistogram receiverLag = meter.getHistograms().get("messaging.servicebus.receiver.lag");
+        assertNotNull(receiverLag);
+        assertEquals(2, receiverLag.getMeasurements().size());
+
+        TestMeasurement<Double> measurement1 = receiverLag.getMeasurements().get(0);
+        TestMeasurement<Double> measurement2 = receiverLag.getMeasurements().get(1);
+        assertEquals(1000d, measurement1.getValue(), 10d);
+        assertEquals(500d, measurement2.getValue(), 10d);
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        Map<String, Object> attributes2 = measurement2.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, SUBSCRIPTION_NAME);
+        assertEquals(3, attributes2.size());
+        assertCommonMetricAttributes(attributes2, SUBSCRIPTION_NAME);
+    }
+
+    @ParameterizedTest()
+    @EnumSource(DispositionStatus.class)
+    void settlementMessagesReportsMetrics(DispositionStatus status) {
+        // Arrange
+        final List<Message> messages = getMessages();
+        TestMeter meter = new TestMeter();
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH,
+            SUBSCRIPTION_NAME, false);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
+        when(receivedMessage.getSequenceNumber()).thenReturn(42L);
+        when(managementNode.updateDisposition(any(), any(), isNull(), isNull(), isNull(),
+            isNull(), isNull(), isNull())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        Mono<Void> settle;
+        switch (status) {
+            case COMPLETED: {
+                settle = receiver.complete(receivedMessage);
+                break;
+            }
+            case ABANDONED: {
+                settle = receiver.abandon(receivedMessage);
+                break;
+            }
+            case DEFERRED: {
+                settle = receiver.defer(receivedMessage);
+                break;
+            }
+            case SUSPENDED: {
+                settle = receiver.deadLetter(receivedMessage);
+                break;
+            }
+            default: {
+                return;
+            }
+        }
+
+        StepVerifier.create(settle).verifyComplete();
+
+        TestHistogram settlementDuration = meter.getHistograms().get("messaging.servicebus.settlement.request.duration");
+        assertNotNull(settlementDuration);
+        assertEquals(1, settlementDuration.getMeasurements().size());
+
+        TestMeasurement<Double> measurement = settlementDuration.getMeasurements().get(0);
+        assertEquals(5000d, measurement.getValue(), 5000d);
+
+        Map<String, Object> attributes = measurement.getAttributes();
+        assertEquals(5, attributes.size());
+        assertCommonMetricAttributes(attributes, SUBSCRIPTION_NAME);
+        assertEquals(status.getValue(), attributes.get("dispositionStatus"));
+        assertEquals("ok", attributes.get("status"));
+
+        TestGauge settlementSeqNo = meter.getGauges().get("messaging.servicebus.settlement.sequence_number");
+
+        // one for each disposition status
+        assertEquals(10, settlementSeqNo.getSubscriptions().size());
+
+        settlementSeqNo.getSubscriptions().forEach(s -> s.measure());
+
+        boolean measurementFound = false;
+        for (TestGauge.Subscription subs : settlementSeqNo.getSubscriptions()) {
+            assertEquals(1, subs.getMeasurements().size());
+            TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
+
+            if (seqNoMeasurement.getAttributes().get("dispositionStatus").equals(status.getValue())
+                && seqNoMeasurement.getAttributes().get("status").equals("ok")) {
+                measurementFound = true;
+                assertEquals(42, seqNoMeasurement.getValue());
+                assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
+            } else {
+                assertEquals(0, seqNoMeasurement.getValue());
+                assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
+            }
+        }
+
+        assertTrue(measurementFound);
+    }
+
+    @Test
+    void receiveWithTracesAndMetrics() {
+        // Arrange
+        final List<Message> messages = getMessages();
+        TestMeter meter = new TestMeter();
+        Tracer tracer = mock(Tracer.class);
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, meter, NAMESPACE, ENTITY_PATH,
+            SUBSCRIPTION_NAME, false);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+
+        // Arrange
+        Context spanReceive1 = new Context("marker1", true);
+        Context spanReceive2 = new Context("marker2", true);
+        Context spanSettle = new Context("marker3", true);
+        when(tracer.start(eq("ServiceBus.process"), any(Context.class), eq(ProcessKind.PROCESS))).thenReturn(spanReceive1, spanReceive2);
+        when(tracer.getSharedSpanBuilder(any(), any(Context.class))).thenReturn(Context.NONE);
+        when(tracer.start(any(), any(Context.class), eq(ProcessKind.SEND))).thenReturn(spanSettle);
+
+        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
+        when(receivedMessage.getSequenceNumber()).thenReturn(42L);
+
+        when(receivedMessage2.getLockToken()).thenReturn("mylockToken");
+        when(receivedMessage2.getSequenceNumber()).thenReturn(43L);
+
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage, receivedMessage2);
+        when(managementNode.updateDisposition(any(), any(), isNull(), isNull(), isNull(),
+            isNull(), isNull(), isNull())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(any(), any())).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(2).flatMap(msg -> receiver.complete(msg)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .verifyComplete();
+
+        TestHistogram receiverLag = meter.getHistograms().get("messaging.servicebus.receiver.lag");
+        assertEquals(2, receiverLag.getMeasurements().size());
+
+        TestMeasurement<Double> measurement1 = receiverLag.getMeasurements().get(0);
+        TestMeasurement<Double> measurement2 = receiverLag.getMeasurements().get(1);
+        assertEquals(spanReceive1, measurement1.getContext());
+        assertEquals(spanReceive2, measurement2.getContext());
+
+        TestHistogram settlementDuration = meter.getHistograms().get("messaging.servicebus.settlement.request.duration");
+        assertEquals(spanSettle, settlementDuration.getMeasurements().get(0).getContext());
+        TestGauge settlementSeqNo = meter.getGauges().get("messaging.servicebus.settlement.sequence_number");
+        TestGauge.Subscription subs = settlementSeqNo.getSubscriptions().get(0);
+        subs.measure();
+        assertSame(Context.NONE, subs.getMeasurements().get(0).getContext());
+    }
+
+    @Test
+    void receiveMessageNegativeLagReportsMetricsAsyncInstr() {
+        // Arrange
+        final List<Message> messages = getMessages();
+        TestMeter meter = new TestMeter();
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH,
+            null, false);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+
+        // Arrange
+        ServiceBusReceivedMessage receivedMessage1 = mockReceivedMessage(Instant.now().plusSeconds(1000));
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage1);
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        TestHistogram receiverLag = meter.getHistograms().get("messaging.servicebus.receiver.lag");
+        assertEquals(1, receiverLag.getMeasurements().size());
+
+        TestMeasurement<Double> measurement = receiverLag.getMeasurements().get(0);
+        assertEquals(0d, measurement.getValue(), 1d);
+        Map<String, Object> attributes = measurement.getAttributes();
+        assertEquals(2, attributes.size());
+        assertCommonMetricAttributes(attributes, null);
+    }
+
+    @Test
+    void receiveMessageNegativeLagReportsMetricsSyncInstr() {
+        // Arrange
+        final List<Message> messages = getMessages();
+        TestMeter meter = new TestMeter();
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter, NAMESPACE, ENTITY_PATH,
+            null, true);
+        receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+
+        // Arrange
+        ServiceBusReceivedMessage receivedMessage1 = mockReceivedMessage(Instant.now());
+        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
+            .thenReturn(receivedMessage1);
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        TestHistogram receiverLag = meter.getHistograms().get("messaging.servicebus.receiver.lag");
+        assertEquals(1, receiverLag.getMeasurements().size());
+
+        TestMeasurement<Double> measurement = receiverLag.getMeasurements().get(0);
+        Map<String, Object> attributes = measurement.getAttributes();
+        assertEquals(2, attributes.size());
+        assertCommonMetricAttributes(attributes, null);
+    }
+
+    private ServiceBusReceivedMessage mockReceivedMessage(Instant enqueuedTime) {
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
+        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(receivedMessage.getEnqueuedTime()).thenReturn(enqueuedTime.atOffset(ZoneOffset.UTC));
+        return receivedMessage;
+    }
+
     private List<Message> getMessages() {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
@@ -1303,5 +1573,11 @@ class ServiceBusReceiverAsyncClientTest {
         return Stream.of(
             Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE),
             Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON));
+    }
+
+    private void assertCommonMetricAttributes(Map<String, Object> attributes, String subscriptionName) {
+        assertEquals(NAMESPACE, attributes.get("hostName"));
+        assertEquals(ENTITY_PATH, attributes.get("entityName"));
+        assertEquals(subscriptionName, attributes.get("subscriptionName"));
     }
 }

@@ -49,22 +49,6 @@ public interface PipelinesClient {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline);
-
-    /**
-     * Creates or updates a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -83,18 +67,20 @@ public interface PipelinesClient {
         Context context);
 
     /**
-     * Gets a pipeline.
+     * Creates or updates a pipeline.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
+     * @param pipeline Pipeline resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return pipeline resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineResourceInner get(String resourceGroupName, String factoryName, String pipelineName);
+    PipelineResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline);
 
     /**
      * Gets a pipeline.
@@ -115,7 +101,7 @@ public interface PipelinesClient {
         String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a pipeline.
+     * Gets a pipeline.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -123,9 +109,10 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String pipelineName);
+    PipelineResourceInner get(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Deletes a pipeline.
@@ -144,7 +131,7 @@ public interface PipelinesClient {
         String resourceGroupName, String factoryName, String pipelineName, Context context);
 
     /**
-     * Creates a run of a pipeline.
+     * Deletes a pipeline.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -152,10 +139,9 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName);
+    void delete(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Creates a run of a pipeline.
@@ -190,4 +176,18 @@ public interface PipelinesClient {
         Boolean startFromFailure,
         Map<String, Object> parameters,
         Context context);
+
+    /**
+     * Creates a run of a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body with a run identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName);
 }

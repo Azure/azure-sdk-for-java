@@ -29,6 +29,10 @@ public final class NetworkManagerConnectionProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of NetworkManagerConnectionProperties class. */
+    public NetworkManagerConnectionProperties() {
+    }
+
     /**
      * Get the networkManagerId property: Network Manager Id.
      *

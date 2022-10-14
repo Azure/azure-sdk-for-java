@@ -20,15 +20,13 @@ public final class TeamDeskLinkedServiceTypeProperties {
     private TeamDeskAuthenticationType authenticationType;
 
     /*
-     * The url to connect TeamDesk source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect TeamDesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * The username of the TeamDesk source. Type: string (or Expression with
-     * resultType string).
+     * The username of the TeamDesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -46,12 +44,15 @@ public final class TeamDeskLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of TeamDeskLinkedServiceTypeProperties class. */
+    public TeamDeskLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the authenticationType property: The authentication type to use.

@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMySqlTableDatasetTypeProperties {
     /*
-     * The Azure MySQL database table name. Type: string (or Expression with
-     * resultType string).
+     * The Azure MySQL database table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The name of Azure MySQL database table. Type: string (or Expression with
-     * resultType string).
+     * The name of Azure MySQL database table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of AzureMySqlTableDatasetTypeProperties class. */
+    public AzureMySqlTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType

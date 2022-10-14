@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -25,13 +26,13 @@ public final class AzureKafkaPropertiesUtils {
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
     public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-                                                         AzureKafkaProperties target) {
+                                                         AzurePasswordlessProperties target) {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
         }
     }
 
-    public static void convertAzurePropertiesToConfigMap(AzureKafkaProperties source,
+    public static void convertAzurePropertiesToConfigMap(AzurePasswordlessProperties source,
                                                          Map<String, String> target) {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
@@ -157,9 +158,9 @@ public final class AzureKafkaPropertiesUtils {
 
         private String propertyKey;
         private Function<AzureProperties, String> getter;
-        private BiConsumer<AzureKafkaProperties, String> setter;
+        private BiConsumer<AzurePasswordlessProperties, String> setter;
 
-        Mapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzureKafkaProperties,
+        Mapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
             String> setter) {
             this.propertyKey = propertyKey;
             this.getter = getter;
@@ -174,7 +175,7 @@ public final class AzureKafkaPropertiesUtils {
             return getter;
         }
 
-        BiConsumer<AzureKafkaProperties, String> setter() {
+        BiConsumer<AzurePasswordlessProperties, String> setter() {
             return setter;
         }
 

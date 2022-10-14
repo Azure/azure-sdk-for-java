@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.13.0-beta.1 (Unreleased)
+### 4.15.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,28 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.14.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.14.1 and above.
+#### Bugs Fixed
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+
+### 4.14.0 (2022-09-30)
+
+#### Features Added
+* Added new config options for Change Feed Modes, Incremental as `LatestVersion` and Full Fidelity as `AllVersionsAndDeletes` changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
+
+### 4.13.1 (2022-09-22)
+
+#### Bugs Fixed
+* Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). This issue could occur when ingesting data into Cosmos DB via structured streaming jobs. - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+### 4.13.0 (2022-09-15)
+
+#### Other Changes
+* Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
 
 ### 4.12.2 (2022-08-04)
 

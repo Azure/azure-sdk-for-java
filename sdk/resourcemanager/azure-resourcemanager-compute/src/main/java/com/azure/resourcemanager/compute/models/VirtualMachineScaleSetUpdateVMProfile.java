@@ -71,6 +71,12 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     @JsonProperty(value = "userData")
     private String userData;
 
+    /*
+     * Specifies the hardware profile related details of a scale set. <br><br>Minimum api-version: 2021-11-01.
+     */
+    @JsonProperty(value = "hardwareProfile")
+    private VirtualMachineScaleSetHardwareProfile hardwareProfile;
+
     /**
      * Get the osProfile property: The virtual machine scale set OS profile.
      *
@@ -280,6 +286,29 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
+     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the hardwareProfile value.
+     */
+    public VirtualMachineScaleSetHardwareProfile hardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @param hardwareProfile the hardwareProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withHardwareProfile(
+        VirtualMachineScaleSetHardwareProfile hardwareProfile) {
+        this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -308,6 +337,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
         }
         if (scheduledEventsProfile() != null) {
             scheduledEventsProfile().validate();
+        }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
         }
     }
 }
