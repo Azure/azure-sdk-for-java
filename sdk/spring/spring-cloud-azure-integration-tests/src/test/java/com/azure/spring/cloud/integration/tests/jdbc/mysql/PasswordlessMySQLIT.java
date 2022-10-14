@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {
     String VALUE = "information_schema,db,mysql,performance_schema,sys";
