@@ -22,7 +22,6 @@ import org.springframework.cloud.endpoint.RefreshEndpoint;
 
 import com.azure.spring.cloud.config.implementation.config.AppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.config.implementation.config.AppConfigurationBootstrapConfiguration;
-import com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration;
 
 public class AppConfigurationWebAutoConfigurationTest {
 
