@@ -6,7 +6,6 @@
 
 - Added SIP routing clients for handling Direct routing numbers.
 
-## 1.1.0-beta.10 (2022-09-13)
 
 ### Other Changes
 
