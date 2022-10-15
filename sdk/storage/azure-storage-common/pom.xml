@@ -166,7 +166,7 @@
         <executions>
           <execution>
             <id>package-test-shared-jar</id>
-            <phase>test-compile</phase>
+            <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
