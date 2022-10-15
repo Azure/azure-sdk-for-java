@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Consumer;
@@ -17,43 +18,87 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
-     * Creates a non session-enabled {@link ServiceBusProcessorClient}.
+     * Creates a non session-enabled {@link ServiceBusProcessorClient} to receive in PeekLock mode.
      */
     @Test
-    public void createServiceBusProcessorClient() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
-        Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
-            System.out.printf("Processing message. Sequence #: %s. Contents: %s%n",
-                message.getSequenceNumber(), message.getBody());
-        };
-
-        Consumer<ServiceBusErrorContext> onError = context -> {
-            System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-                context.getFullyQualifiedNamespace(), context.getEntityPath());
-
-            if (context.getException() instanceof ServiceBusException) {
-                ServiceBusException exception = (ServiceBusException) context.getException();
-                System.out.printf("Error source: %s, reason %s%n", context.getErrorSource(),
-                    exception.getReason());
+    public void createServiceBusProcessorClientInPeekLockMode() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
+        Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            final ServiceBusReceivedMessage message = context.getMessage();
+            // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+            // handling message reaches desired state such that it doesn't require Service Bus to redeliver
+            // the same message, then context.complete() should be called otherwise context.abandon().
+            final boolean success = Math.random() < 0.5;
+            if (success) {
+                try {
+                    context.complete();
+                } catch (Exception completionError) {
+                    System.out.printf("Completion of the message %s failed\n", message.getMessageId());
+                    completionError.printStackTrace();
+                }
             } else {
-                System.out.printf("Error occurred: %s%n", context.getException());
+                try {
+                    context.abandon();
+                } catch (Exception abandonError) {
+                    System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
+                    abandonError.printStackTrace();
+                }
             }
         };
 
-        // Retrieve 'connectionString/queueName' from your configuration.
+        // Sample code that gets called if there's an error
+        Consumer<ServiceBusErrorContext> processError = errorContext -> {
+            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+        };
 
-        ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+        // create the processor client via the builder and its sub-builder
+        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .processor()
-            .queueName(queueName)
-            .processMessage(onMessage)
-            .processError(onError)
+            .queueName("<< QUEUE NAME >>")
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
+            .processMessage(processMessage)
+            .processError(processError)
+            .disableAutoComplete()
             .buildProcessorClient();
 
-        // Start the processor in the background
-        processor.start();
-        // END: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
+        // Starts the processor in the background and returns immediately
+        processorClient.start();
+        // END: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
+    }
+
+    /**
+     * Creates a non session-enabled {@link ServiceBusProcessorClient} to receive in PeekLock mode.
+     */
+    @Test
+    public void createServiceBusProcessorClientInReceiveAndDeleteMode() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
+        Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            final ServiceBusReceivedMessage message = context.getMessage();
+            System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n",
+                message.getSessionId(), message.getSequenceNumber(), message.getBody());
+        };
+
+        // Sample code that gets called if there's an error
+        Consumer<ServiceBusErrorContext> processError = errorContext -> {
+            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+        };
+
+        // create the processor client via the builder and its sub-builder
+        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .processor()
+            .queueName("<< QUEUE NAME >>")
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .processMessage(processMessage)
+            .processError(processError)
+            .disableAutoComplete()
+            .buildProcessorClient();
+
+        // Starts the processor in the background and returns immediately
+        processorClient.start();
+        // END: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
     }
 
     /**

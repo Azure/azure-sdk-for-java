@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -10,9 +11,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample to demonstrate the creation of a {@link ServiceBusProcessorClient} and starting the processor to receive
- * messages.
+ * messages in {@link ServiceBusReceiveMode#PEEK_LOCK}.
+ * @see <a href="https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">PEEK_LOCK</a>
  */
-public class ServiceBusProcessorSample {
+public class ServiceBusProcessorPeekLockReceiveSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
@@ -51,8 +53,16 @@ public class ServiceBusProcessorSample {
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .processor()
+            // Enable PEEK_LOCK receive mode.
+            // see https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            // It's been identified that an underlying thread-hopping race impact the auto-complete (and
+            // associated auto abandon) feature enabled by default. Until it's addressed, it's required
+            // to opt in 'disableAutoComplete' and manually complete or abandon the message as shown
+            // in the 'processMessage' function.
+            .disableAutoComplete()
             .queueName(queueName)
-            .processMessage(ServiceBusProcessorSample::processMessage)
+            .processMessage(ServiceBusProcessorPeekLockReceiveSample::processMessage)
             .processError(context -> processError(context, countdownLatch))
             .buildProcessorClient();
 
@@ -75,14 +85,29 @@ public class ServiceBusProcessorSample {
      * @param context Received message context.
      */
     private static void processMessage(ServiceBusReceivedMessageContext context) {
-        ServiceBusReceivedMessage message = context.getMessage();
+        final ServiceBusReceivedMessage message = context.getMessage();
         System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
             message.getSequenceNumber(), message.getBody());
 
-        // When this message function completes, the message is automatically completed. If an exception is
-        // thrown in here, the message is abandoned.
-        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
-        // when building the session receiver.
+        // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+        // handling message reaches desired state such that it doesn't require Service Bus to redeliver
+        // the same message, then context.complete() should be called otherwise context.abandon().
+        final boolean success = Math.random() < 0.5;
+        if (success) {
+            try {
+                context.complete();
+            } catch (Exception completionError) {
+                System.out.printf("Completion of the message %s failed\n", message.getMessageId());
+                completionError.printStackTrace();
+            }
+        } else {
+            try {
+                context.abandon();
+            } catch (Exception abandonError) {
+                System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
+                abandonError.printStackTrace();
+            }
+        }
     }
 
     /**

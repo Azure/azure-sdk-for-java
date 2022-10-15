@@ -22,9 +22,9 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.timezone.models.IanaId;
-import com.azure.maps.timezone.models.TimezoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimezoneResult;
-import com.azure.maps.timezone.models.TimezoneWindows;
+import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneResult;
+import com.azure.maps.timezone.models.TimeZoneWindows;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.params.provider.Arguments;
@@ -45,39 +45,39 @@ public class TestUtils {
         List<Arguments> argumentsList = new ArrayList<>();
         TestBase.getHttpClients()
             .forEach(httpClient -> {
-                Arrays.stream(TimezoneServiceVersion.values())
+                Arrays.stream(TimeZoneServiceVersion.values())
                     .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }
 
-    static TimezoneResult getExpectedTimezoneById() throws IOException {
+    static TimeZoneResult getExpectedTimezoneById() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("gettimezonebyid.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<TimezoneResult> interimType = new TypeReference<TimezoneResult>(){};
+        TypeReference<TimeZoneResult> interimType = new TypeReference<TimeZoneResult>(){};
         is.close();
-        return jacksonAdapter.<TimezoneResult>deserialize(data, interimType.getJavaType(),
+        return jacksonAdapter.<TimeZoneResult>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
     }
 
-    static TimezoneResult getExpectedTimezoneByCoordinates() throws IOException {
+    static TimeZoneResult getExpectedTimezoneByCoordinates() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("gettimezonebycoordinates.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<TimezoneResult> interimType = new TypeReference<TimezoneResult>(){};
+        TypeReference<TimeZoneResult> interimType = new TypeReference<TimeZoneResult>(){};
         is.close();
-        return jacksonAdapter.<TimezoneResult>deserialize(data, interimType.getJavaType(),
+        return jacksonAdapter.<TimeZoneResult>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
     }
     
-    static List<TimezoneWindows> getExpectedWindowsTimezoneIds() throws IOException {
+    static List<TimeZoneWindows> getExpectedWindowsTimezoneIds() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("getwindowstimezonesids.json");
         String jsonArrayString = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining("\n"));
         ObjectMapper mapper = new ObjectMapper();
-        List<TimezoneWindows> expectedResult = new ArrayList<>();
+        List<TimeZoneWindows> expectedResult = new ArrayList<>();
         try {
-            expectedResult = Arrays.asList(mapper.readValue(jsonArrayString, TimezoneWindows[].class));
+            expectedResult = Arrays.asList(mapper.readValue(jsonArrayString, TimeZoneWindows[].class));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,13 +99,13 @@ public class TestUtils {
         return expectedResult;
     }
 
-    static TimezoneIanaVersionResult getExpectedIanaVersion() throws IOException {
+    static TimeZoneIanaVersionResult getExpectedIanaVersion() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("gettimezoneianaversionresult.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<TimezoneIanaVersionResult> interimType = new TypeReference<TimezoneIanaVersionResult>(){};
+        TypeReference<TimeZoneIanaVersionResult> interimType = new TypeReference<TimeZoneIanaVersionResult>(){};
         is.close();
-        return jacksonAdapter.<TimezoneIanaVersionResult>deserialize(data, interimType.getJavaType(),
+        return jacksonAdapter.<TimeZoneIanaVersionResult>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
     }
 

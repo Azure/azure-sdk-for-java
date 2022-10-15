@@ -6,8 +6,14 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -34,7 +40,13 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
 @ServiceClientBuilder(
     serviceClients = {EventHubBufferedProducerAsyncClient.class, EventHubBufferedProducerClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class EventHubBufferedProducerClientBuilder {
+public final class EventHubBufferedProducerClientBuilder implements
+    TokenCredentialTrait<EventHubBufferedProducerClientBuilder>,
+    AzureNamedKeyCredentialTrait<EventHubBufferedProducerClientBuilder>,
+    ConnectionStringTrait<EventHubBufferedProducerClientBuilder>,
+    AzureSasCredentialTrait<EventHubBufferedProducerClientBuilder>,
+    AmqpTrait<EventHubBufferedProducerClientBuilder>,
+    ConfigurationTrait<EventHubBufferedProducerClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedProducerClientBuilder.class);
 
     private final EventHubClientBuilder builder;
@@ -63,6 +75,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder clientOptions(ClientOptions clientOptions) {
         builder.clientOptions(clientOptions);
         return this;
@@ -78,6 +91,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
         return this;
@@ -107,6 +121,7 @@ public final class EventHubBufferedProducerClientBuilder {
      * @throws AzureException If the shared access signature token credential could not be created using the
      *     connection string.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder connectionString(String connectionString) {
         builder.connectionString(connectionString);
         return this;
@@ -197,6 +212,55 @@ public final class EventHubBufferedProducerClientBuilder {
     public EventHubBufferedProducerClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureSasCredential credential) {
         builder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventHubBufferedProducerClientBuilder credential(AzureNamedKeyCredential credential) {
+        builder.credential(credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The shared access signature credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventHubBufferedProducerClientBuilder credential(AzureSasCredential credential) {
+        builder.credential(credential);
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential The token credential to use for authorization. Access controls may be specified by the
+     *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventHubBufferedProducerClientBuilder credential(TokenCredential credential) {
+        builder.credential(credential);
         return this;
     }
 
@@ -336,6 +400,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         builder.proxyOptions(proxyOptions);
         return this;
@@ -348,6 +413,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         builder.retryOptions(retryOptions);
@@ -362,6 +428,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
+    @Override
     public EventHubBufferedProducerClientBuilder transportType(AmqpTransportType transport) {
         builder.transportType(transport);
         return this;

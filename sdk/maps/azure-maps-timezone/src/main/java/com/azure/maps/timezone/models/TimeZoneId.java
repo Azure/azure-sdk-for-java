@@ -10,9 +10,9 @@ import com.azure.maps.timezone.implementation.models.RepresentativePoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TimezoneId model. */
+/** The TimeZoneId model. */
 @Fluent
-public final class TimezoneId {
+public final class TimeZoneId {
     /*
      * Id property
      */
@@ -20,8 +20,7 @@ public final class TimezoneId {
     private String id;
 
     /*
-     * An array of time zone ID aliases.  Only returned when
-     * [options]=*zoneinfo* or *all*.
+     * An array of time zone ID aliases.  Only returned when [options]=*zoneinfo* or *all*.
      *
      * Note: may be null.
      */
@@ -29,8 +28,7 @@ public final class TimezoneId {
     private List<String> aliases;
 
     /*
-     * An array of country records. Only returned when [options]=*zoneinfo* or
-     * *all*.
+     * An array of country records. Only returned when [options]=*zoneinfo* or *all*.
      */
     @JsonProperty(value = "Countries", access = JsonProperty.Access.WRITE_ONLY)
     private List<CountryRecord> countries;
@@ -39,7 +37,7 @@ public final class TimezoneId {
      * Timezone names object.
      */
     @JsonProperty(value = "Names")
-    private TimezoneNames names;
+    private TimeZoneNames names;
 
     /*
      * Details in effect at the local time.
@@ -54,14 +52,13 @@ public final class TimezoneId {
     private RepresentativePoint representativePoint;
 
     /*
-     * Time zone DST transitions from [transitionsFrom] until timestamp + 1
-     * year.
+     * Time zone DST transitions from [transitionsFrom] until timestamp + 1 year.
      */
     @JsonProperty(value = "TimeTransitions", access = JsonProperty.Access.WRITE_ONLY)
     private List<TimeTransition> timeTransitions;
 
-    /** Set default TimezoneId constructor to private */
-    private TimezoneId() {}
+    /** Set default TimeZoneId constructor to private */
+    private TimeZoneId() {}
 
     /**
      * Get the id property: Id property.
@@ -97,7 +94,7 @@ public final class TimezoneId {
      *
      * @return the names value.
      */
-    public TimezoneNames getNames() {
+    public TimeZoneNames getNames() {
         return this.names;
     }
 
@@ -105,9 +102,9 @@ public final class TimezoneId {
      * Set the names property: Timezone names object.
      *
      * @param names the names value to set.
-     * @return the TimezoneId object itself.
+     * @return the TimeZoneId object itself.
      */
-    public TimezoneId setNames(TimezoneNames names) {
+    public TimeZoneId setNames(TimeZoneNames names) {
         this.names = names;
         return this;
     }
