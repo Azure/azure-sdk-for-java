@@ -67,26 +67,22 @@ public class CertificateClientTest extends CertificateClientTestBase {
                                          String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        CertificateAsyncClient asyncClient = spy(new CertificateClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        CertificateClientImpl implClient = spy(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        certificateClient = new CertificateClient(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
+        certificateClient = new CertificateClient(implClient);
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         //skip paging and polling requests until their sync stack support lands in azure-core.
         BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
             String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("createCertificate") || callerMethod.contains("getCertificates")
+            return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
                 || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover") || callerMethod.contains("list")
+                || callerMethod.contains("recover") || callerMethod.contains("createCertificate")
                 || callerMethod.contains("getCertificateOperation") || callerMethod.contains("setCertificateContacts")
                 || callerMethod.contains("deleteCertificateContacts") || callerMethod.contains("getCertificateContacts")
                 || callerMethod.contains("getCertificateIssuers"));

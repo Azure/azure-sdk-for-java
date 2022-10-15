@@ -59,15 +59,15 @@ import java.util.Objects;
  */
 @ServiceClient(builder = CertificateClientBuilder.class, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateClient {
-    private final CertificateClientImpl certificateClient;
+    private final CertificateClientImpl implClient;
 
     /**
      * Creates a CertificateClient that uses {@code pipeline} to service requests
      *
-     * @param certificateClient The implementation client to route requests through.
+     * @param implClient The implementation client to route requests through.
      */
-    CertificateClient(CertificateClientImpl certificateClient) {
-        this.certificateClient = certificateClient;
+    CertificateClient(CertificateClientImpl implClient) {
+        this.implClient = implClient;
     }
 
     /**
@@ -75,7 +75,7 @@ public final class CertificateClient {
      * @return the vault endpoint url
      */
     public String getVaultUrl() {
-        return certificateClient.getVaultUrl();
+        return implClient.getVaultUrl();
     }
 
     /**
@@ -109,7 +109,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return certificateClient.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags).getSyncPoller();
     }
 
     /**
@@ -141,7 +141,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-        return certificateClient.beginCreateCertificate(certificateName, policy, true, null).getSyncPoller();
+        return implClient.beginCreateCertificate(certificateName, policy, true, null).getSyncPoller();
     }
 
     /**
@@ -167,7 +167,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return certificateClient.getCertificateOperation(certificateName).getSyncPoller();
+        return implClient.getCertificateOperation(certificateName).getSyncPoller();
     }
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
@@ -218,7 +218,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName, Context context) {
-        return certificateClient.getCertificateWithResponse(certificateName, "", context);
+        return implClient.getCertificateWithResponse(certificateName, "", context);
     }
 
     /**
@@ -248,7 +248,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificate> getCertificateVersionWithResponse(String certificateName, String version, Context context) {
-        return certificateClient.getCertificateVersionWithResponse(certificateName, version, context);
+        return implClient.getCertificateVersionWithResponse(certificateName, version, context);
     }
 
     /**
@@ -338,7 +338,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
-        return certificateClient.updateCertificatePropertiesWithResponse(properties, context);
+        return implClient.updateCertificatePropertiesWithResponse(properties, context);
     }
 
     /**
@@ -370,7 +370,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return certificateClient.beginDeleteCertificate(certificateName).getSyncPoller();
+        return implClient.beginDeleteCertificate(certificateName).getSyncPoller();
     }
 
     /**
@@ -427,7 +427,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String certificateName, Context context) {
-        return certificateClient.getDeletedCertificateWithResponse(certificateName, context);
+        return implClient.getDeletedCertificateWithResponse(certificateName, context);
     }
 
     /**
@@ -477,7 +477,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
-        return certificateClient.purgeDeletedCertificateWithResponse(certificateName, context);
+        return implClient.purgeDeletedCertificateWithResponse(certificateName, context);
     }
 
     /**
@@ -509,7 +509,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return certificateClient.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
+        return implClient.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
     }
 
     /**
@@ -562,7 +562,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String certificateName, Context context) {
-        return certificateClient.backupCertificateWithResponse(certificateName, context);
+        return implClient.backupCertificateWithResponse(certificateName, context);
     }
 
     /**
@@ -617,7 +617,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
-        return certificateClient.restoreCertificateBackupWithResponse(backup, context);
+        return implClient.restoreCertificateBackupWithResponse(backup, context);
     }
 
     /**
@@ -646,7 +646,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
-        return new PagedIterable<>(certificateClient.listPropertiesOfCertificates(false, Context.NONE));
+        return new PagedIterable<>(implClient.listPropertiesOfCertificates(false, Context.NONE));
     }
 
     /**
@@ -678,7 +678,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(certificateClient.listPropertiesOfCertificates(includePending, context));
+        return new PagedIterable<>(implClient.listPropertiesOfCertificates(includePending, context));
     }
 
     /**
@@ -729,7 +729,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(certificateClient.listDeletedCertificates(includePending, context));
+        return new PagedIterable<>(implClient.listDeletedCertificates(includePending, context));
     }
 
     /**
@@ -794,7 +794,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return new PagedIterable<>(certificateClient.listPropertiesOfCertificateVersions(certificateName, context));
+        return new PagedIterable<>(implClient.listPropertiesOfCertificateVersions(certificateName, context));
     }
 
     /**
@@ -845,7 +845,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
-        return certificateClient.getCertificatePolicyWithResponse(certificateName, context);
+        return implClient.getCertificatePolicyWithResponse(certificateName, context);
     }
 
     /**
@@ -911,7 +911,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
-        return certificateClient.updateCertificatePolicyWithResponse(certificateName, policy, context);
+        return implClient.updateCertificatePolicyWithResponse(certificateName, policy, context);
     }
 
     /**
@@ -973,7 +973,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        return certificateClient.createIssuerWithResponse(issuer, context);
+        return implClient.createIssuerWithResponse(issuer, context);
     }
 
     /**
@@ -1000,7 +1000,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> getIssuerWithResponse(String issuerName, Context context) {
-        return certificateClient.getIssuerWithResponse(issuerName, context);
+        return implClient.getIssuerWithResponse(issuerName, context);
     }
 
     /**
@@ -1052,7 +1052,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> deleteIssuerWithResponse(String issuerName, Context context) {
-        return certificateClient.deleteIssuerWithResponse(issuerName, context);
+        return implClient.deleteIssuerWithResponse(issuerName, context);
     }
 
     /**
@@ -1133,7 +1133,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
-        return new PagedIterable<>(certificateClient.listPropertiesOfIssuers(context));
+        return new PagedIterable<>(implClient.listPropertiesOfIssuers(context));
     }
 
     /**
@@ -1195,7 +1195,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        return certificateClient.updateIssuerWithResponse(issuer, context);
+        return implClient.updateIssuerWithResponse(issuer, context);
     }
 
     /**
@@ -1251,7 +1251,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedIterable<>(certificateClient.setContacts(contacts, context));
+        return new PagedIterable<>(implClient.setContacts(contacts, context));
     }
 
     /**
@@ -1296,7 +1296,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts(Context context) {
-        return new PagedIterable<>(certificateClient.listContacts(context));
+        return new PagedIterable<>(implClient.listContacts(context));
     }
 
     /**
@@ -1342,7 +1342,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts(Context context) {
-        return new PagedIterable<>(certificateClient.deleteContacts(context));
+        return new PagedIterable<>(implClient.deleteContacts(context));
     }
 
     /**
@@ -1396,7 +1396,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
-        return certificateClient.deleteCertificateOperationWithResponse(certificateName, context);
+        return implClient.deleteCertificateOperationWithResponse(certificateName, context);
     }
 
     /**
@@ -1447,7 +1447,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName, Context context) {
-        return certificateClient.cancelCertificateOperationWithResponse(certificateName, context);
+        return implClient.cancelCertificateOperationWithResponse(certificateName, context);
     }
 
     /**
@@ -1509,7 +1509,7 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
-        return certificateClient.mergeCertificateWithResponse(mergeCertificateOptions, context);
+        return implClient.mergeCertificateWithResponse(mergeCertificateOptions, context);
     }
 
     /**
@@ -1566,6 +1566,6 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
-        return certificateClient.importCertificateWithResponse(importCertificateOptions, context);
+        return implClient.importCertificateWithResponse(importCertificateOptions, context);
     }
 }
