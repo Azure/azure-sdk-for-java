@@ -2178,32 +2178,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public <T> Mono<FeedResponse<T>> readMany(
+    public   <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String collectionLink,
         CosmosQueryRequestOptions options,
         Class<T> klass) {
-
-        return readManyInternal(itemIdentityList, collectionLink, options, klass, false);
-    }
-
-    @Override
-    public <T> Mono<FeedResponse<T>> readMany(
-        List<CosmosItemIdentity> itemIdentityList,
-        String collectionLink,
-        CosmosQueryRequestOptions options,
-        Class<T> klass,
-        boolean usePointReads) {
-        
-        return readManyInternal(itemIdentityList, collectionLink, options, klass, usePointReads);
-    }
-
-    private  <T> Mono<FeedResponse<T>> readManyInternal(
-        List<CosmosItemIdentity> itemIdentityList,
-        String collectionLink,
-        CosmosQueryRequestOptions options,
-        Class<T> klass,
-        boolean usePointReads) {
 
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
@@ -2256,15 +2235,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     List<CosmosItemIdentity> list = new ArrayList<>();
                                     list.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, list);
-
-                                    if (usePointReads) singleItemPartitionRequestMap.put(range, itemIdentity);
+                                    singleItemPartitionRequestMap.put(range, itemIdentity);
                                 } else {
                                     List<CosmosItemIdentity> pairs =
                                         partitionRangeItemKeyMap.get(range);
                                     pairs.add(itemIdentity);
                                     partitionRangeItemKeyMap.put(range, pairs);
-
-                                    if (usePointReads) singleItemPartitionRequestMap.remove(range);
+                                    singleItemPartitionRequestMap.remove(range);
                                 }
 
                             });
@@ -2276,9 +2253,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             singleItemPartitionRequestMap,
                             collection.getPartitionKey());
 
-                        // Create point read requests
-                        var pointReads = usePointReads ? Flux.fromIterable(singleItemPartitionRequestMap.values())
-                            .flatMap(cosmosItemIdentity -> readDocument("", new RequestOptions()))
+                        // create point read requests
+                        var pointReads = singleItemPartitionRequestMap.values().size() > 0 ? Flux.fromIterable(singleItemPartitionRequestMap.values())
+                            .flatMap(cosmosItemIdentity -> readDocument(getDocumentLink(cosmosItemIdentity.getId(), collectionLink), ModelBridgeInternal.toRequestOptions(options)))
                             .map(documentResourceResponse -> toFeedResponsePage(
                                 documentResourceResponse.getResponse(),
                                 ImplementationBridgeHelpers
@@ -2301,10 +2278,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             Collections.unmodifiableMap(rangeQueryMap))
                             .collectList();
 
-                        // Aggregating the result construct a FeedResponse and aggregate RUs.
+                        // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
                             .flatMapIterable(feedResponses -> feedResponses)
                             .collectList()
+                            // aggregating the result to construct a FeedResponse and aggregate RUs.
                             .map(feedList -> {
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
@@ -4365,5 +4343,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static FeedRange toFeedRange(PartitionKeyRange pkRange) {
         return new FeedRangeEpkImpl(pkRange.toRange());
+    }
+
+    private static String getDocumentLink(String itemId, String collectionLink) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(collectionLink);
+        builder.append("/");
+        builder.append(Paths.DOCUMENTS_PATH_SEGMENT);
+        builder.append("/");
+        builder.append(itemId);
+        return builder.toString();
     }
 }

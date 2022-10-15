@@ -299,6 +299,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+        return cosmosQueryRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 

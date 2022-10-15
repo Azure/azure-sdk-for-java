@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
@@ -631,6 +632,25 @@ public class CosmosQueryRequestOptions {
         this.itemFactoryMethod = factoryMethod;
 
         return this;
+    }
+
+    RequestOptions toRequestOptions() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setConsistencyLevel(getConsistencyLevel());
+        requestOptions.setSessionToken(getSessionToken());
+        requestOptions.setPartitionKey(getPartitionKey());
+        requestOptions.setThroughputControlGroupName(getThroughputControlGroupName());
+        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+        requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+        requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+
+        if (this.customOptions != null) {
+            for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
+                requestOptions.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return requestOptions;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
