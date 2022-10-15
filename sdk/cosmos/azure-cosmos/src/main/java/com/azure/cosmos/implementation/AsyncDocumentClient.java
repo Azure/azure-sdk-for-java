@@ -1606,22 +1606,6 @@ public interface AsyncDocumentClient {
         Class<T> klass);
 
     /**
-     * Reads many documents at once
-     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
-     * @param collectionLink link for the documentcollection/container to be queried
-     * @param options the query request options
-     * @param klass class type
-     * @param usePointReads flag to activate usage of point reads
-     * @return a Mono with feed response of documents
-     */
-    <T> Mono<FeedResponse<T>> readMany(
-        List<CosmosItemIdentity> itemIdentityList,
-        String collectionLink,
-        CosmosQueryRequestOptions options,
-        Class<T> klass,
-        boolean usePointReads);
-
-    /**
      * Read all documents of a certain logical partition.
      * <p>
      * After subscription the operation will be performed.
