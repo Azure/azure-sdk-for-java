@@ -27,7 +27,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 
-public class GeoLocationClientTestBase extends TestBase {
+public class GeolocationClientTestBase extends TestBase {
     static final String FAKE_API_KEY = "1234567890";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
@@ -44,8 +44,8 @@ public class GeoLocationClientTestBase extends TestBase {
         interceptorManagerTestBase = interceptorManager;
     }
 
-    GeoLocationClientBuilder getGeoLocationAsyncClientBuilder(HttpClient httpClient, GeoLocationServiceVersion serviceVersion) {
-        GeoLocationClientBuilder builder = new GeoLocationClientBuilder()
+    GeolocationClientBuilder getGeoLocationAsyncClientBuilder(HttpClient httpClient, GeolocationServiceVersion serviceVersion) {
+        GeolocationClientBuilder builder = new GeolocationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
         String endpoint = getEndpoint();

@@ -14,7 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 
 /**
- * {@link GeoLocationClient} instances are created via the {@link GeoLocationClientBuilder}, as shown below.
+ * {@link GeolocationClient} instances are created via the {@link GeolocationClientBuilder}, as shown below.
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.geolocation.sync.builder.key.instantiation -->
  * <pre>
@@ -22,22 +22,22 @@ import com.azure.maps.geolocation.models.IpAddressToLocationResult;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * GeoLocationClient client = new GeoLocationClientBuilder&#40;&#41;
+ * GeolocationClient client = new GeolocationClientBuilder&#40;&#41;
  *     .credential&#40;keyCredential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.geolocation.sync.builder.key.instantiation -->
  */
-@ServiceClient(builder = GeoLocationClientBuilder.class)
-public final class GeoLocationClient {
+@ServiceClient(builder = GeolocationClientBuilder.class)
+public final class GeolocationClient {
     private final GeolocationAsyncClient asyncClient;
 
     /**
-     * Initializes an instance of GeoLocationClient client.
+     * Initializes an instance of GeolocationClient client.
      *
      * @param serviceClient the service client implementation.
      */
-    GeoLocationClient(GeolocationAsyncClient asyncClient) {
+    GeolocationClient(GeolocationAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 

@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder class used to instantiate both synchronous and asynchronous {@link GeoLocationClient} clients.
+ * Builder class used to instantiate both synchronous and asynchronous {@link GeolocationClient} clients.
  * <p><b>Example usage</b></p>
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.geolocation.sync.builder.key.instantiation -->
@@ -50,16 +50,16 @@ import java.util.Objects;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * GeoLocationClient client = new GeoLocationClientBuilder&#40;&#41;
+ * GeolocationClient client = new GeolocationClientBuilder&#40;&#41;
  *     .credential&#40;keyCredential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.geolocation.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {GeoLocationClient.class, GeolocationAsyncClient.class})
-public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<GeoLocationClientBuilder>,
-    TokenCredentialTrait<GeoLocationClientBuilder>, HttpTrait<GeoLocationClientBuilder>,
-    ConfigurationTrait<GeoLocationClientBuilder>, EndpointTrait<GeoLocationClientBuilder> {
+@ServiceClientBuilder(serviceClients = {GeolocationClient.class, GeolocationAsyncClient.class})
+public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<GeolocationClientBuilder>,
+    TokenCredentialTrait<GeolocationClientBuilder>, HttpTrait<GeolocationClientBuilder>,
+    ConfigurationTrait<GeolocationClientBuilder>, EndpointTrait<GeolocationClientBuilder> {
 
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
@@ -72,10 +72,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
     //subscription-key
 
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(GeoLocationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GeolocationClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
     private String endpoint;
-    private GeoLocationServiceVersion serviceVersion;
+    private GeolocationServiceVersion serviceVersion;
     /*
      * Specifies which account is intended for usage in conjunction with the
      * Azure AD security model.  It represents a unique ID for the Azure Maps
@@ -100,7 +100,7 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
     /**
      * Default constructor for the builder class.
      */
-    public GeoLocationClientBuilder() {
+    public GeolocationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -110,9 +110,9 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      *
      * @param clientId the clientId value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
-    public GeoLocationClientBuilder clientId(String clientId) {
+    public GeolocationClientBuilder clientId(String clientId) {
         this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null.");
         return this;
     }
@@ -121,16 +121,16 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Set endpoint of the service.
      *
      * @param endpoint url of the service
-     * @return GeoLocationClientBuilder
+     * @return GeolocationClientBuilder
      */
     @Override
-    public GeoLocationClientBuilder endpoint(String endpoint) {
+    public GeolocationClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link GeoLocationServiceVersion} that is used when making API requests.
+     * Sets the {@link GeolocationServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -138,10 +138,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link GeoLocationServiceVersion} of the service to be used when making requests.
-     * @return the updated GeoLocationClientBuilder object
+     * @param version {@link GeolocationServiceVersion} of the service to be used when making requests.
+     * @return the updated GeolocationClientBuilder object
      */
-    public GeoLocationClientBuilder serviceVersion(GeoLocationServiceVersion version) {
+    public GeolocationClientBuilder serviceVersion(GeolocationServiceVersion version) {
         this.serviceVersion = version;
         return this;
     }
@@ -150,10 +150,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
     @Override
-    public GeoLocationClientBuilder pipeline(HttpPipeline pipeline) {
+    public GeolocationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
         }
@@ -165,10 +165,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
     @Override
-    public GeoLocationClientBuilder httpClient(HttpClient httpClient) {
+    public GeolocationClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -180,10 +180,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
     @Override
-    public GeoLocationClientBuilder configuration(Configuration configuration) {
+    public GeolocationClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
@@ -192,10 +192,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
     @Override
-    public GeoLocationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public GeolocationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'logOptions' cannot be null.");
         return this;
     }
@@ -204,9 +204,9 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
-    public GeoLocationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public GeolocationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
@@ -215,9 +215,9 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets The client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions the clientOptions value.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
-    public GeoLocationClientBuilder clientOptions(ClientOptions clientOptions) {
+    public GeolocationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
@@ -226,10 +226,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the GeoLocationClientBuilder.
+     * @return the GeolocationClientBuilder.
      */
     @Override
-    public GeoLocationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public GeolocationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -238,11 +238,11 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link GeoLocationClientBuilder} object.
+     * @return The updated {@link GeolocationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     @Override
-    public GeoLocationClientBuilder credential(TokenCredential tokenCredential) {
+    public GeolocationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -251,11 +251,11 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
-     * @return The updated {@link GeoLocationClientBuilder} object.
+     * @return The updated {@link GeolocationClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public GeoLocationClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public GeolocationClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -263,10 +263,10 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
     /**
      * Sets retry options
      * @param retryOptions the retry options for the client
-     * @return a reference to this {@code GeoLocationClientBuilder}
+     * @return a reference to this {@code GeolocationClientBuilder}
      */
     @Override
-    public GeoLocationClientBuilder retryOptions(RetryOptions retryOptions) {
+    public GeolocationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -281,7 +281,7 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
             this.endpoint = "https://atlas.microsoft.com";
         }
         if (serviceVersion == null) {
-            this.serviceVersion = GeoLocationServiceVersion.getLatest();
+            this.serviceVersion = GeolocationServiceVersion.getLatest();
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -371,11 +371,11 @@ public final class GeoLocationClientBuilder implements AzureKeyCredentialTrait<G
     }
 
     /**
-     * Builds an instance of GeoLocationClient sync client.
+     * Builds an instance of GeolocationClient sync client.
      *
      * @return an instance of GeoLocationClient.
      */
-    public GeoLocationClient buildClient() {
-        return new GeoLocationClient(buildAsyncClient());
+    public GeolocationClient buildClient() {
+        return new GeolocationClient(buildAsyncClient());
     }
 }

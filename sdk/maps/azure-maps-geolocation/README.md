@@ -55,7 +55,7 @@ With above configuration, `azure` client can be authenticated by following code:
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Creates a client
-GeoLocationClient client = new GeoLocationClientBuilder()
+GeolocationClient client = new GeolocationClientBuilder()
     .credential(tokenCredential)
     .clientId(System.getenv("MAPS_CLIENT_ID"))
     .buildClient();

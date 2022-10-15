@@ -10,12 +10,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import org.junit.jupiter.api.Test;
 
-public class GeoLocationClientBuilderTest {
+public class GeolocationClientBuilderTest {
     // Test for null GeolocationClientId, the client ID value
     @Test
     public void missingClientId() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.clientId(null);
         });
     }
@@ -24,7 +24,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingEndpoint() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.endpoint(null);
         });
     }
@@ -33,7 +33,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingConfiguration() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.configuration(null);
         });
     }
@@ -42,7 +42,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingHttpLogOptions() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.httpLogOptions(null);
         });
     }
@@ -51,7 +51,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingRetryPolicy() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.retryPolicy(null);
         });
     }
@@ -60,7 +60,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingClientOptions() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.clientOptions(null);
         });
     }
@@ -69,7 +69,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingAddPolicy() {
         assertThrows(NullPointerException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.addPolicy(null);
         });
     }
@@ -78,7 +78,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingMapsClientIdValidTokenCredential() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
             builder.credential(tokenCredential);
             builder.buildClient();
@@ -89,7 +89,7 @@ public class GeoLocationClientBuilderTest {
     @Test
     public void missingCredentials() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final GeoLocationClientBuilder builder = new GeoLocationClientBuilder();
+            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
             builder.clientId("geolocationClientId");
             builder.buildClient();
         });

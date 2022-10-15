@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
 * </pre>
 * <!-- end com.azure.maps.geolocation.async.builder.ad.instantiation -->
 */
-@ServiceClient(builder = GeoLocationClientBuilder.class, isAsync = true)
+@ServiceClient(builder = GeolocationClientBuilder.class, isAsync = true)
 public final class GeolocationAsyncClient {
     private final GeolocationsImpl serviceClient;
 
