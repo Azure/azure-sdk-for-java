@@ -35,9 +35,9 @@ public class CreateCallOptions {
     private String sourceCallerId;
 
     /**
-     * The subject
+     * A customer set value used to track the answering of a call.
      */
-    private String subject;
+    private String operationContext;
 
     /**
      * Media Streaming Configuration.
@@ -90,12 +90,12 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the subject.
+     * Get the operationContext: A customer set value used to track the answering of a call.
      *
-     * @return the subject value.
+     * @return the operationContext value.
      */
-    public String getSubject() {
-        return subject;
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
@@ -126,13 +126,13 @@ public class CreateCallOptions {
     }
 
     /**
-     * Set the subject.
+     * Set the operationContext: A customer set value used to track the answering of a call.
      *
-     * @param subject the subject.
+     * @param operationContext A customer set value used to track the answering of a call.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setSubject(String subject) {
-        this.subject = subject;
+    public CreateCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 

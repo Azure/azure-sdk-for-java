@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This object is returned from a successful Timezone IANA Version call. */
 @Immutable
-public final class TimezoneIanaVersionResult {
+public final class TimeZoneIanaVersionResult {
     /*
      * Version property
      */
     @JsonProperty(value = "Version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Set default TimezoneIanaVersionResult constructor to private */
-    private TimezoneIanaVersionResult() {}
+    /** Set default TimeZoneIanaVersionResult constructor to private */
+    private TimeZoneIanaVersionResult() {}
 
     /**
      * Get the version property: Version property.

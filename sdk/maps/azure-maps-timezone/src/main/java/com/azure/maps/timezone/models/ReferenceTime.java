@@ -13,8 +13,8 @@ import java.time.ZoneOffset;
 @Immutable
 public final class ReferenceTime {
     /*
-     * Time zone name in effect at the reference timestamp (i.e. PST or PDT
-     * depending whether Daylight Savings Time is in effect).
+     * Time zone name in effect at the reference timestamp (i.e. PST or PDT depending whether Daylight Savings Time is
+     * in effect).
      */
     @JsonProperty(value = "Tag", access = JsonProperty.Access.WRITE_ONLY)
     private String tag;
@@ -38,8 +38,7 @@ public final class ReferenceTime {
     private String wallTime;
 
     /*
-     * The year this POSIX string is valid for. Note: A POSIX string will only
-     * be valid in the given year.
+     * The year this POSIX string is valid for. Note: A POSIX string will only be valid in the given year.
      */
     @JsonProperty(value = "PosixTzValidYear", access = JsonProperty.Access.WRITE_ONLY)
     private Integer posixTzValidYear;
@@ -51,23 +50,31 @@ public final class ReferenceTime {
     private String posixTz;
 
     /*
-     * Sunrise at the given time zone as shown in the `Tag` property. The
-     * sunrise is described in the ISO8601 format. (Only be populated if the
-     * call is byCoordinates)
+     * Sunrise at the given time zone as shown in the `Tag` property. The sunrise is described in the ISO8601 format.
+     * (Only be populated if the call is byCoordinates)
      */
     @JsonProperty(value = "Sunrise", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime sunrise;
 
     /*
-     * Sunset at the given time zone as shown in the `Tag` property. The sunset
-     * is described in the ISO8601 format.(Only be populated if the call is
-     * byCoordinates)
+     * Sunset at the given time zone as shown in the `Tag` property. The sunset is described in the ISO8601
+     * format.(Only be populated if the call is byCoordinates)
      */
     @JsonProperty(value = "Sunset", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime sunset;
 
-    /** ReferenceTime constructor */
+    /** Set default ReferenceTime constructor to private */
     private ReferenceTime() {}
+
+    /**
+     * Get the tag property: Time zone name in effect at the reference timestamp (i.e. PST or PDT depending whether
+     * Daylight Savings Time is in effect).
+     *
+     * @return the tag value.
+     */
+    public String getTag() {
+        return this.tag;
+    }
 
     /**
      * ReferenceTime constructor
@@ -78,16 +85,6 @@ public final class ReferenceTime {
     private ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
         this.daylightSavings = daylightSavings.toString();
         this.standardOffset = standardOffset.toString();
-    }
-
-    /**
-     * Get the tag property: Time zone name in effect at the reference timestamp (i.e. PST or PDT depending whether
-     * Daylight Savings Time is in effect).
-     *
-     * @return the tag value.
-     */
-    public String getTag() {
-        return this.tag;
     }
 
     /**

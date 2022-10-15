@@ -5,8 +5,8 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
 
-/** The RecognizeCanceled model. */
+/** The PlayCanceledEvent model. */
 @Fluent
-public final class RecognizeCanceled extends CallAutomationEventBase {
+public final class PlayCanceledEvent extends CallAutomationEventBase {
 
 }

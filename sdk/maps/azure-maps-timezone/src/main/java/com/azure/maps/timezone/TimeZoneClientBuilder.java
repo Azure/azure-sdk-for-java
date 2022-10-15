@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder class used to instantiate both synchronous and asynchronous {@link TimezoneClient} clients.
+ * Builder class used to instantiate both synchronous and asynchronous {@link TimeZoneClient} clients.
  * <p><b>Example usage</b></p>
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
@@ -50,17 +50,17 @@ import java.util.Objects;
  * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
  *
  * &#47;&#47; Creates a client
- * TimezoneClient client = new TimezoneClientBuilder&#40;&#41; 
+ * TimeZoneClient client = new TimeZoneClientBuilder&#40;&#41; 
  *     .credential&#40;keyCredential&#41;
  *     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {TimezoneClient.class, TimezoneAsyncClient.class})
-public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<TimezoneClientBuilder>,
-    TokenCredentialTrait<TimezoneClientBuilder>, HttpTrait<TimezoneClientBuilder>,
-    ConfigurationTrait<TimezoneClientBuilder>, EndpointTrait<TimezoneClientBuilder> {
+@ServiceClientBuilder(serviceClients = {TimeZoneClient.class, TimeZoneAsyncClient.class})
+public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<TimeZoneClientBuilder>,
+    TokenCredentialTrait<TimeZoneClientBuilder>, HttpTrait<TimeZoneClientBuilder>,
+    ConfigurationTrait<TimeZoneClientBuilder>, EndpointTrait<TimeZoneClientBuilder> {
 
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
@@ -72,10 +72,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
     private static final String X_MS_CLIENT_ID = "x-ms-client-id";
 
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(TimezoneClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TimeZoneClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
     private String endpoint;
-    private TimezoneServiceVersion serviceVersion;
+    private TimeZoneServiceVersion serviceVersion;
     /*
      * Specifies which account is intended for usage in conjunction with the
      * Azure AD security model.  It represents a unique ID for the Azure Maps
@@ -104,8 +104,8 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
 
-    /** Default constructor for the builder class; Create an instance of the TimezoneClientBuilder. */
-    public TimezoneClientBuilder() {
+    /** Default constructor for the builder class; Create an instance of the TimeZoneClientBuilder. */
+    public TimeZoneClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -116,9 +116,9 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * More details: <a href="https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure Maps AD Authentication</a>
      *
      * @param timezoneClientId the clientId value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
-    public TimezoneClientBuilder timezoneClientId(String timezoneClientId) {
+    public TimeZoneClientBuilder timezoneClientId(String timezoneClientId) {
         this.timezoneClientId = Objects.requireNonNull(timezoneClientId, "'timezoneClientId' cannot be null.");
         return this;
     }
@@ -127,16 +127,16 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Set endpoint of the service.
      *
      * @param endpoint url of the service
-     * @return TimezoneClientBuilder
+     * @return TimeZoneClientBuilder
      */
     @Override
-    public TimezoneClientBuilder endpoint(String endpoint) {
+    public TimeZoneClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link TimezoneServiceVersion} that is used when making API requests.
+     * Sets the {@link TimeZoneServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -144,10 +144,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link TimezoneServiceVersion} of the service to be used when making requests.
-     * @return the updated TimezoneClientBuilder object
+     * @param version {@link TimeZoneServiceVersion} of the service to be used when making requests.
+     * @return the updated TimeZoneClientBuilder object
      */
-    public TimezoneClientBuilder serviceVersion(TimezoneServiceVersion version) {
+    public TimeZoneClientBuilder serviceVersion(TimeZoneServiceVersion version) {
         this.serviceVersion = version;
         return this;
     }
@@ -156,10 +156,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder pipeline(HttpPipeline pipeline) {
+    public TimeZoneClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
         }
@@ -171,10 +171,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder httpClient(HttpClient httpClient) {
+    public TimeZoneClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -186,10 +186,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder configuration(Configuration configuration) {
+    public TimeZoneClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
@@ -198,10 +198,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public TimeZoneClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'logOptions' cannot be null.");
         return this;
     }
@@ -210,9 +210,9 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
-    public TimezoneClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public TimeZoneClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
@@ -221,10 +221,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets The client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions the clientOptions value.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder clientOptions(ClientOptions clientOptions) {
+    public TimeZoneClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
@@ -233,10 +233,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the TimezoneClientBuilder.
+     * @return the TimeZoneClientBuilder.
      */
     @Override
-    public TimezoneClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public TimeZoneClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -245,11 +245,11 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link TimezoneClientBuilder} object.
+     * @return The updated {@link TimeZoneClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     @Override
-    public TimezoneClientBuilder credential(TokenCredential tokenCredential) {
+    public TimeZoneClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -258,11 +258,11 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
-     * @return The updated {@link TimezoneClientBuilder} object.
+     * @return The updated {@link TimeZoneClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public TimezoneClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public TimeZoneClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -270,10 +270,10 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
     /**
      * Sets retry options
      * @param retryOptions the retry options for the client
-     * @return a reference to this {@code TimezoneClientBuilder}
+     * @return a reference to this {@code TimeZoneClientBuilder}
      */
     @Override
-    public TimezoneClientBuilder retryOptions(RetryOptions retryOptions) {
+    public TimeZoneClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -288,7 +288,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
             this.endpoint = "https://atlas.microsoft.com";
         }
         if (serviceVersion == null) {
-            this.serviceVersion = TimezoneServiceVersion.getLatest();
+            this.serviceVersion = TimeZoneServiceVersion.getLatest();
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -369,20 +369,20 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
     }
 
     /**
-     * Builds an instance of TimezoneAsyncClient async client.
+     * Builds an instance of TimeZoneAsyncClient async client.
      *
-     * @return an instance of TimezoneAsyncClient.
+     * @return an instance of TimeZoneAsyncClient.
      */
-    public TimezoneAsyncClient buildAsyncClient() {
-        return new TimezoneAsyncClient(buildInnerClient().getTimezones());
+    public TimeZoneAsyncClient buildAsyncClient() {
+        return new TimeZoneAsyncClient(buildInnerClient().getTimezones());
     }
 
     /**
-     * Builds an instance of TimezoneClient sync client.
+     * Builds an instance of TimeZoneClient sync client.
      *
-     * @return an instance of TimezoneClient.
+     * @return an instance of TimeZoneClient.
      */
-    public TimezoneClient buildClient() {
-        return new TimezoneClient(buildAsyncClient());
+    public TimeZoneClient buildClient() {
+        return new TimeZoneClient(buildAsyncClient());
     }
 }
