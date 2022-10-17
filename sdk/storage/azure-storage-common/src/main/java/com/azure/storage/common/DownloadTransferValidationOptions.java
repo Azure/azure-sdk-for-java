@@ -1,5 +1,7 @@
 package com.azure.storage.common;
 
+import java.util.Objects;
+
 /**
  * Options for additional content integrity checks on download.
  */
@@ -21,11 +23,18 @@ public class DownloadTransferValidationOptions {
         return checksumAlgorithm;
     }
 
+    public StorageChecksumAlgorithm getChecksumAlgorithmResolveAuto() {
+        return checksumAlgorithm == StorageChecksumAlgorithm.Auto
+            ? StorageChecksumAlgorithm.StorageCrc64
+            : checksumAlgorithm;
+    }
+
     /**
      * Sets the identifier of the checksum algorithm to use.
      * @param checksumAlgorithm Checksum algorithm ID.
      */
     public DownloadTransferValidationOptions setChecksumAlgorithm(StorageChecksumAlgorithm checksumAlgorithm) {
+        Objects.requireNonNull(checksumAlgorithm, "'checksumAlgorithm' cannot be null.");
         this.checksumAlgorithm = checksumAlgorithm;
         return this;
     }
