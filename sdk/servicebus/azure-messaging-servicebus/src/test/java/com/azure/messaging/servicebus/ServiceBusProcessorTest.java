@@ -8,7 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
