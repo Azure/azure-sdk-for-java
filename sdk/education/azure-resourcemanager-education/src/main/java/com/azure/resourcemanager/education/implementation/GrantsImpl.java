@@ -48,15 +48,6 @@ public final class GrantsImpl implements Grants {
         return Utils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
     }
 
-    public GrantDetails get(String billingAccountName, String billingProfileName) {
-        GrantDetailsInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new GrantDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GrantDetails> getWithResponse(
         String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context) {
         Response<GrantDetailsInner> inner =
@@ -69,6 +60,15 @@ public final class GrantsImpl implements Grants {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GrantDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GrantDetails get(String billingAccountName, String billingProfileName) {
+        GrantDetailsInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new GrantDetailsImpl(inner, this.manager());
         } else {
             return null;
         }

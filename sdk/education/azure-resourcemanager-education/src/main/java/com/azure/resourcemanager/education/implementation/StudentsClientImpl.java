@@ -511,24 +511,6 @@ public final class StudentsClientImpl implements StudentsClient {
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param studentAlias Student alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details for a specific student in the specified lab by student alias.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StudentDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
-        return getAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias).block();
-    }
-
-    /**
-     * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,6 +526,25 @@ public final class StudentsClientImpl implements StudentsClient {
         Context context) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context)
             .block();
+    }
+
+    /**
+     * Get the details for a specific student in the specified lab by student alias.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param studentAlias Student alias.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for a specific student in the specified lab by student alias.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StudentDetailsInner get(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+        return getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -680,23 +681,6 @@ public final class StudentsClientImpl implements StudentsClient {
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param studentAlias Student alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
-        deleteAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias).block();
-    }
-
-    /**
-     * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -713,6 +697,23 @@ public final class StudentsClientImpl implements StudentsClient {
         return deleteWithResponseAsync(
                 billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context)
             .block();
+    }
+
+    /**
+     * Delete the specified student based on the student alias.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param studentAlias Student alias.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+        deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, Context.NONE);
     }
 
     /**
@@ -879,31 +880,6 @@ public final class StudentsClientImpl implements StudentsClient {
      * @param invoiceSectionName Invoice section name.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return student details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StudentDetailsInner createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
-        return createOrUpdateAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters)
-            .block();
-    }
-
-    /**
-     * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
-     * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param studentAlias Student alias.
-     * @param parameters Request parameters that are provided to update student properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -924,9 +900,36 @@ public final class StudentsClientImpl implements StudentsClient {
     }
 
     /**
+     * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
+     * student must have a valid tenant to accept the lab after they have been added to lab.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param studentAlias Student alias.
+     * @param parameters Request parameters that are provided to update student properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return student details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StudentDetailsInner createOrUpdate(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String studentAlias,
+        StudentDetailsInner parameters) {
+        return createOrUpdateWithResponse(
+                billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -961,7 +964,8 @@ public final class StudentsClientImpl implements StudentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
