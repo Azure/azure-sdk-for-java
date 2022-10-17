@@ -6,6 +6,7 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
 - Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
+- Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
 - Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
 
 ## 4.4.0 (2022-09-26)
