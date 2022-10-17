@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The filters that will be applied to determine which resources to remediate. */
 @Fluent
 public final class RemediationFilters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemediationFilters.class);
-
     /*
      * The resource locations that will be remediated.
      */
     @JsonProperty(value = "locations")
     private List<String> locations;
+
+    /** Creates an instance of RemediationFilters class. */
+    public RemediationFilters() {
+    }
 
     /**
      * Get the locations property: The resource locations that will be remediated.

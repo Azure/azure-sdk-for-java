@@ -36,6 +36,10 @@ public final class DataFlowDebugCommandPayload {
     @JsonProperty(value = "expression")
     private String expression;
 
+    /** Creates an instance of DataFlowDebugCommandPayload class. */
+    public DataFlowDebugCommandPayload() {
+    }
+
     /**
      * Get the streamName property: The stream name which is used for preview.
      *

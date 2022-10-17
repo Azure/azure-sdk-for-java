@@ -23,6 +23,10 @@ public final class AvroDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AvroDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AvroDataset class. */
+    public AvroDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Avro dataset properties.
      *

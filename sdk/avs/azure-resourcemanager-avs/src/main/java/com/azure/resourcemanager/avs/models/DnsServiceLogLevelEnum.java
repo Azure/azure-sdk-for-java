@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DnsServiceLogLevelEnum. */
+/** DNS Service log level. */
 public final class DnsServiceLogLevelEnum extends ExpandableStringEnum<DnsServiceLogLevelEnum> {
     /** Static value DEBUG for DnsServiceLogLevelEnum. */
     public static final DnsServiceLogLevelEnum DEBUG = fromString("DEBUG");
@@ -36,7 +36,11 @@ public final class DnsServiceLogLevelEnum extends ExpandableStringEnum<DnsServic
         return fromString(name, DnsServiceLogLevelEnum.class);
     }
 
-    /** @return known DnsServiceLogLevelEnum values. */
+    /**
+     * Gets known DnsServiceLogLevelEnum values.
+     *
+     * @return known DnsServiceLogLevelEnum values.
+     */
     public static Collection<DnsServiceLogLevelEnum> values() {
         return values(DnsServiceLogLevelEnum.class);
     }

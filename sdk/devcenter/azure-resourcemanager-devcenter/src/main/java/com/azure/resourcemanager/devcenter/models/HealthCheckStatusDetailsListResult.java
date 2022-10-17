@@ -24,6 +24,10 @@ public final class HealthCheckStatusDetailsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of HealthCheckStatusDetailsListResult class. */
+    public HealthCheckStatusDetailsListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

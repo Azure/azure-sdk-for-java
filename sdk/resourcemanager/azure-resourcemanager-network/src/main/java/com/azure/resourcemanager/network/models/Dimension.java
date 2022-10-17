@@ -28,6 +28,10 @@ public final class Dimension {
     @JsonProperty(value = "internalName")
     private String internalName;
 
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
+
     /**
      * Get the name property: The name of the dimension.
      *

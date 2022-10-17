@@ -30,6 +30,10 @@ public final class ExecutePipelineActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ExecutePipelineActivityTypeProperties innerTypeProperties = new ExecutePipelineActivityTypeProperties();
 
+    /** Creates an instance of ExecutePipelineActivity class. */
+    public ExecutePipelineActivity() {
+    }
+
     /**
      * Get the policy property: Execute pipeline activity policy.
      *

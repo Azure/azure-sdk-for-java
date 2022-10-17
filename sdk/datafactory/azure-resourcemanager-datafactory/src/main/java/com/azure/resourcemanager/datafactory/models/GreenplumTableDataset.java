@@ -23,6 +23,10 @@ public final class GreenplumTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GreenplumDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of GreenplumTableDataset class. */
+    public GreenplumTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

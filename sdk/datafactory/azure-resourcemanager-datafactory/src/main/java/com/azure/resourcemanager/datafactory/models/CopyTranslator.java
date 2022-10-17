@@ -29,6 +29,10 @@ public class CopyTranslator {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CopyTranslator class. */
+    public CopyTranslator() {
+    }
+
     /**
      * Get the additionalProperties property: A copy activity translator.
      *

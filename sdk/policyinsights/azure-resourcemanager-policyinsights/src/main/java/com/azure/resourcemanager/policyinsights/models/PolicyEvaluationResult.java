@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a non-compliant policy evaluation against the given resource content. */
 @Immutable
 public final class PolicyEvaluationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyEvaluationResult.class);
-
     /*
      * The details of the policy that was evaluated.
      */
@@ -21,19 +17,21 @@ public final class PolicyEvaluationResult {
     private PolicyReference policyInfo;
 
     /*
-     * The result of the policy evaluation against the resource. This will
-     * typically be 'NonCompliant' but may contain other values if errors were
-     * encountered.
+     * The result of the policy evaluation against the resource. This will typically be 'NonCompliant' but may contain
+     * other values if errors were encountered.
      */
     @JsonProperty(value = "evaluationResult", access = JsonProperty.Access.WRITE_ONLY)
     private String evaluationResult;
 
     /*
-     * The detailed results of the policy expressions and values that were
-     * evaluated.
+     * The detailed results of the policy expressions and values that were evaluated.
      */
     @JsonProperty(value = "evaluationDetails", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyEvaluationDetails evaluationDetails;
+
+    /** Creates an instance of PolicyEvaluationResult class. */
+    public PolicyEvaluationResult() {
+    }
 
     /**
      * Get the policyInfo property: The details of the policy that was evaluated.

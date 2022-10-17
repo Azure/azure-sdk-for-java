@@ -48,6 +48,10 @@ public final class MongoDbCursorMethodsProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MongoDbCursorMethodsProperties class. */
+    public MongoDbCursorMethodsProperties() {
+    }
+
     /**
      * Get the project property: Specifies the fields to return in the documents that match the query filter. To return
      * all fields in the matching documents, omit this parameter. Type: string (or Expression with resultType string).

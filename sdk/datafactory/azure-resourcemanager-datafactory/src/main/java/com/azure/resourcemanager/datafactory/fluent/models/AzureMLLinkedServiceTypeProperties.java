@@ -67,6 +67,10 @@ public final class AzureMLLinkedServiceTypeProperties {
     @JsonProperty(value = "authentication")
     private Object authentication;
 
+    /** Creates an instance of AzureMLLinkedServiceTypeProperties class. */
+    public AzureMLLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the mlEndpoint property: The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type:
      * string (or Expression with resultType string).

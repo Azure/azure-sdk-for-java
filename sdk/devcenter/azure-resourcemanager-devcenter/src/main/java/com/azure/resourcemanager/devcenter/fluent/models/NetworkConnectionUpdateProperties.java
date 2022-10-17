@@ -41,6 +41,10 @@ public class NetworkConnectionUpdateProperties {
     @JsonProperty(value = "domainPassword")
     private String domainPassword;
 
+    /** Creates an instance of NetworkConnectionUpdateProperties class. */
+    public NetworkConnectionUpdateProperties() {
+    }
+
     /**
      * Get the subnetId property: The subnet to attach Virtual Machines to.
      *

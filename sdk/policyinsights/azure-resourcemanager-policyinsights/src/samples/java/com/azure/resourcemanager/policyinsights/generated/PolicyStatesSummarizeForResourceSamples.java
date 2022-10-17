@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResourceType;
 
 /** Samples for PolicyStates SummarizeForResource. */
 public final class PolicyStatesSummarizeForResourceSamples {
@@ -21,6 +22,7 @@ public final class PolicyStatesSummarizeForResourceSamples {
         manager
             .policyStates()
             .summarizeForResourceWithResponse(
+                PolicyStatesSummaryResourceType.LATEST,
                 "subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault",
                 2,
                 null,

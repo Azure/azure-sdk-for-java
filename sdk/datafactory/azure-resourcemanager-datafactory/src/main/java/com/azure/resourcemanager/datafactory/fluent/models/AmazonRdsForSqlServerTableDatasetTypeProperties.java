@@ -22,6 +22,10 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of AmazonRdsForSqlServerTableDatasetTypeProperties class. */
+    public AmazonRdsForSqlServerTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).

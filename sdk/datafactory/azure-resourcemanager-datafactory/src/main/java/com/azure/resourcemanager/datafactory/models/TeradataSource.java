@@ -33,6 +33,10 @@ public final class TeradataSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private TeradataPartitionSettings partitionSettings;
 
+    /** Creates an instance of TeradataSource class. */
+    public TeradataSource() {
+    }
+
     /**
      * Get the query property: Teradata query. Type: string (or Expression with resultType string).
      *

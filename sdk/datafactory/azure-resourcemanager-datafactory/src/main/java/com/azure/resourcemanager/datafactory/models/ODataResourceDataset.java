@@ -23,6 +23,10 @@ public final class ODataResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private ODataResourceDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of ODataResourceDataset class. */
+    public ODataResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: OData dataset properties.
      *

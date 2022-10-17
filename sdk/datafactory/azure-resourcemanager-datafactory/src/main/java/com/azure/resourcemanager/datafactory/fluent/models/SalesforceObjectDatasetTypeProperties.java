@@ -16,6 +16,10 @@ public final class SalesforceObjectDatasetTypeProperties {
     @JsonProperty(value = "objectApiName")
     private Object objectApiName;
 
+    /** Creates an instance of SalesforceObjectDatasetTypeProperties class. */
+    public SalesforceObjectDatasetTypeProperties() {
+    }
+
     /**
      * Get the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
      * string).

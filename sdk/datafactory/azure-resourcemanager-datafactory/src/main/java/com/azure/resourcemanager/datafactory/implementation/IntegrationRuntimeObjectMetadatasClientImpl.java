@@ -504,28 +504,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param getMetadataRequest The parameters for getting a SSIS object metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SsisObjectMetadataListResponseInner> getAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest) {
-        return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,24 +515,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         final GetSsisObjectMetadataRequest getMetadataRequest = null;
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SsisObjectMetadataListResponseInner get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        final GetSsisObjectMetadataRequest getMetadataRequest = null;
-        return getAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest).block();
     }
 
     /**
@@ -579,5 +539,24 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, context)
             .block();
+    }
+
+    /**
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SSIS integration runtime object metadata by specified path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SsisObjectMetadataListResponseInner get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        final GetSsisObjectMetadataRequest getMetadataRequest = null;
+        return getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, Context.NONE)
+            .getValue();
     }
 }

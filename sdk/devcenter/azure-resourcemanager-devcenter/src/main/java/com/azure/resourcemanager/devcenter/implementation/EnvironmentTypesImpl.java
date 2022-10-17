@@ -40,15 +40,6 @@ public final class EnvironmentTypesImpl implements EnvironmentTypes {
         return Utils.mapPage(inner, inner1 -> new EnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public EnvironmentType get(String resourceGroupName, String devCenterName, String environmentTypeName) {
-        EnvironmentTypeInner inner = this.serviceClient().get(resourceGroupName, devCenterName, environmentTypeName);
-        if (inner != null) {
-            return new EnvironmentTypeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EnvironmentType> getWithResponse(
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
         Response<EnvironmentTypeInner> inner =
@@ -64,13 +55,22 @@ public final class EnvironmentTypesImpl implements EnvironmentTypes {
         }
     }
 
-    public void delete(String resourceGroupName, String devCenterName, String environmentTypeName) {
-        this.serviceClient().delete(resourceGroupName, devCenterName, environmentTypeName);
+    public EnvironmentType get(String resourceGroupName, String devCenterName, String environmentTypeName) {
+        EnvironmentTypeInner inner = this.serviceClient().get(resourceGroupName, devCenterName, environmentTypeName);
+        if (inner != null) {
+            return new EnvironmentTypeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
+    }
+
+    public void delete(String resourceGroupName, String devCenterName, String environmentTypeName) {
+        this.serviceClient().delete(resourceGroupName, devCenterName, environmentTypeName);
     }
 
     public EnvironmentType getById(String id) {

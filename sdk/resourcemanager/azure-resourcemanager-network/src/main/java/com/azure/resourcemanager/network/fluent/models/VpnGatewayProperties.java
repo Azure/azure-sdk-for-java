@@ -69,6 +69,10 @@ public final class VpnGatewayProperties {
     @JsonProperty(value = "natRules")
     private List<VpnGatewayNatRuleInner> natRules;
 
+    /** Creates an instance of VpnGatewayProperties class. */
+    public VpnGatewayProperties() {
+    }
+
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
      *

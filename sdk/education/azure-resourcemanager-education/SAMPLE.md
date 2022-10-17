@@ -275,7 +275,7 @@ public final class LabsCreateOrUpdateSamples {
                 "{invoiceSectionName}",
                 new LabDetailsInner()
                     .withDisplayName("example lab")
-                    .withBudgetPerStudent(new Amount().withCurrency("USD").withValue(100.0f))
+                    .withBudgetPerStudent(new Amount().withCurrency("USD").withValue(100.0F))
                     .withDescription("example lab description")
                     .withExpirationDate(OffsetDateTime.parse("2021-12-09T22:11:29.422Z")),
                 Context.NONE);
@@ -329,7 +329,7 @@ public final class LabsGenerateInviteCodeSamples {
                 "{billingAccountName}",
                 "{billingProfileName}",
                 "{invoiceSectionName}",
-                new InviteCodeGenerateRequest().withMaxStudentCount(10.0f),
+                new InviteCodeGenerateRequest().withMaxStudentCount(10.0F),
                 null,
                 Context.NONE);
     }
@@ -563,7 +563,7 @@ public final class StudentsCreateOrUpdateSamples {
                     .withLastName("user")
                     .withEmail("test@contoso.com")
                     .withRole(StudentRole.STUDENT)
-                    .withBudget(new Amount().withCurrency("USD").withValue(100.0f))
+                    .withBudget(new Amount().withCurrency("USD").withValue(100.0F))
                     .withExpirationDate(OffsetDateTime.parse("2021-11-09T22:13:21.795Z")),
                 Context.NONE);
     }

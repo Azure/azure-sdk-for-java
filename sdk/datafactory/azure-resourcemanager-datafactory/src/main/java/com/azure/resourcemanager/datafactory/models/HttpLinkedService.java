@@ -24,6 +24,10 @@ public final class HttpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HttpLinkedServiceTypeProperties innerTypeProperties = new HttpLinkedServiceTypeProperties();
 
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *

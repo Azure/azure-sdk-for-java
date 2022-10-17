@@ -71,7 +71,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
     }
 
     /**
-     * Checks if resource name is available.
+     * Checks the resource name availability.
+     *
+     * <p>Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -130,7 +132,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
     }
 
     /**
-     * Checks if resource name is available.
+     * Checks the resource name availability.
+     *
+     * <p>Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -190,7 +194,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
     }
 
     /**
-     * Checks if resource name is available.
+     * Checks the resource name availability.
+     *
+     * <p>Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -208,24 +214,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
     }
 
     /**
-     * Checks if resource name is available.
+     * Checks the resource name availability.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param checkNameAvailabilityRequest The check name availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(
-        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        return checkNameAvailabilityAsync(resourceGroupName, environmentName, checkNameAvailabilityRequest).block();
-    }
-
-    /**
-     * Checks if resource name is available.
+     * <p>Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -245,5 +236,26 @@ public final class NamespacesClientImpl implements NamespacesClient {
         return checkNameAvailabilityWithResponseAsync(
                 resourceGroupName, environmentName, checkNameAvailabilityRequest, context)
             .block();
+    }
+
+    /**
+     * Checks the resource name availability.
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param checkNameAvailabilityRequest The check name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResponseInner checkNameAvailability(
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        return checkNameAvailabilityWithResponse(
+                resourceGroupName, environmentName, checkNameAvailabilityRequest, Context.NONE)
+            .getValue();
     }
 }

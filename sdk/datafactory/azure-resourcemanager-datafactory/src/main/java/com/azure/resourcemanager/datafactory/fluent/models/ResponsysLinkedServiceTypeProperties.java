@@ -59,6 +59,10 @@ public final class ResponsysLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ResponsysLinkedServiceTypeProperties class. */
+    public ResponsysLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the endpoint property: The endpoint of the Responsys server.
      *

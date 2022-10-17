@@ -23,6 +23,10 @@ public final class RestResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private RestResourceDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of RestResourceDataset class. */
+    public RestResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

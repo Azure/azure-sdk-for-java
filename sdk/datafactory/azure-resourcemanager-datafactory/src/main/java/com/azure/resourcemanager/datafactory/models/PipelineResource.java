@@ -461,15 +461,6 @@ public interface PipelineResource {
     /**
      * Creates a run of a pipeline.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
-    CreateRunResponse createRun();
-
-    /**
-     * Creates a run of a pipeline.
-     *
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
      *     run will be used to create a new run.
      * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
@@ -493,4 +484,13 @@ public interface PipelineResource {
         Boolean startFromFailure,
         Map<String, Object> parameters,
         Context context);
+
+    /**
+     * Creates a run of a pipeline.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body with a run identifier.
+     */
+    CreateRunResponse createRun();
 }

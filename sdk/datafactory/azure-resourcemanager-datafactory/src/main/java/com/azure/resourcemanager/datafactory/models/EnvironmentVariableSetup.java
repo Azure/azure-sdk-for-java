@@ -22,6 +22,10 @@ public final class EnvironmentVariableSetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private EnvironmentVariableSetupTypeProperties innerTypeProperties = new EnvironmentVariableSetupTypeProperties();
 
+    /** Creates an instance of EnvironmentVariableSetup class. */
+    public EnvironmentVariableSetup() {
+    }
+
     /**
      * Get the innerTypeProperties property: Add environment variable type properties.
      *

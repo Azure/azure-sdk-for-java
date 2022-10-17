@@ -12,6 +12,7 @@ trigger:
     exclude:
       - sdk/confidentialledger/pom.xml
       - sdk/confidentialledger/azure-security-confidentialledger/pom.xml
+      - sdk/confidentialledger/azure-resourcemanager-confidentialledger/pom.xml
 
 pr:
   branches:
@@ -26,15 +27,29 @@ pr:
     exclude:
       - sdk/confidentialledger/pom.xml
       - sdk/confidentialledger/azure-security-confidentialledger/pom.xml
+      - sdk/confidentialledger/azure-resourcemanager-confidentialledger/pom.xml
+
+parameters:
+- name: release_azuresecurityconfidentialledger
+  displayName: 'azure-security-confidentialledger'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerconfidentialledger
+  displayName: 'azure-resourcemanager-confidentialledger'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: confidentialledger
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-security-confidentialledger
         groupId: com.azure
         safeName: azuresecurityconfidentialledger
+        releaseInBatch: ${{ parameters.release_azuresecurityconfidentialledger }}
       - name: azure-resourcemanager-confidentialledger
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerconfidentialledger
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerconfidentialledger }}

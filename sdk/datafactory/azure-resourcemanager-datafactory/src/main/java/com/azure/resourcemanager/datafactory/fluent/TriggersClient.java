@@ -51,21 +51,6 @@ public interface TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters);
-
-    /**
-     * Query triggers.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,20 +62,19 @@ public interface TriggersClient {
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context);
 
     /**
-     * Creates or updates a trigger.
+     * Query triggers.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
+     * @param filterParameters Parameters to filter the triggers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
+     * @return a query of triggers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger);
+    TriggerQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters);
 
     /**
      * Creates or updates a trigger.
@@ -117,18 +101,20 @@ public interface TriggersClient {
         Context context);
 
     /**
-     * Gets a trigger.
+     * Creates or updates a trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
+     * @return trigger resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName);
+    TriggerResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger);
 
     /**
      * Gets a trigger.
@@ -149,7 +135,7 @@ public interface TriggersClient {
         String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a trigger.
+     * Gets a trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -157,9 +143,10 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String triggerName);
+    TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Deletes a trigger.
@@ -176,6 +163,19 @@ public interface TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context);
+
+    /**
+     * Deletes a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Subscribe event trigger to events.
@@ -245,21 +245,6 @@ public interface TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName);
-
-    /**
-     * Get a trigger's event subscription status.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,6 +254,21 @@ public interface TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context);
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
+        String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Unsubscribe event trigger from events.

@@ -41,17 +41,6 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
         return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
     }
 
-    public ManagedVirtualNetworkResource get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
-        ManagedVirtualNetworkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, managedVirtualNetworkName);
-        if (inner != null) {
-            return new ManagedVirtualNetworkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ManagedVirtualNetworkResource> getWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -68,6 +57,17 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ManagedVirtualNetworkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ManagedVirtualNetworkResource get(
+        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
+        ManagedVirtualNetworkResourceInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, managedVirtualNetworkName);
+        if (inner != null) {
+            return new ManagedVirtualNetworkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

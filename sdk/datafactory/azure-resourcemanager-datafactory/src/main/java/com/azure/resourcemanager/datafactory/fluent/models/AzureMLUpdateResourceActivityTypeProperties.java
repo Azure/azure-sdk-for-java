@@ -32,6 +32,10 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
     @JsonProperty(value = "trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
 
+    /** Creates an instance of AzureMLUpdateResourceActivityTypeProperties class. */
+    public AzureMLUpdateResourceActivityTypeProperties() {
+    }
+
     /**
      * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
      * Type: string (or Expression with resultType string).

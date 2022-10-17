@@ -26,6 +26,10 @@ public final class DelimitedTextSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private DelimitedTextWriteSettings formatSettings;
 
+    /** Creates an instance of DelimitedTextSink class. */
+    public DelimitedTextSink() {
+    }
+
     /**
      * Get the storeSettings property: DelimitedText store settings.
      *

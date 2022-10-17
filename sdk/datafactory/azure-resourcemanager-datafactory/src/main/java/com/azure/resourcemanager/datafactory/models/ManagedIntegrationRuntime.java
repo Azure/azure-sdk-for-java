@@ -34,6 +34,10 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "managedVirtualNetwork")
     private ManagedVirtualNetworkReference managedVirtualNetwork;
 
+    /** Creates an instance of ManagedIntegrationRuntime class. */
+    public ManagedIntegrationRuntime() {
+    }
+
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
      *

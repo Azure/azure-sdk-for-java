@@ -45,6 +45,10 @@ public final class NetworkInterfaceDnsSettings {
     @JsonProperty(value = "internalDomainNameSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String internalDomainNameSuffix;
 
+    /** Creates an instance of NetworkInterfaceDnsSettings class. */
+    public NetworkInterfaceDnsSettings() {
+    }
+
     /**
      * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
      * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in

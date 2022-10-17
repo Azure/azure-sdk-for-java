@@ -5,8 +5,10 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerGrantRequestEntityConverter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadAzureDelegatedOAuth2AuthorizedClientProvider;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -16,28 +18,39 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.oauth2.client.AuthorizationCodeOAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.DelegatingOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.endpoint.DefaultJwtBearerTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration.FACTORY;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientAndResourceServerRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -221,6 +234,58 @@ class AadOAuth2ClientConfigurationTests {
                 assertThat(parameters).containsKey(OAuth2ParameterNames.CLIENT_ASSERTION_TYPE);
                 verify(jwkResolver).resolve(clientRepository.findByRegistrationId("graph"));
             });
+    }
+
+    @Test
+    void restTemplateWellConfiguredForAllOAuth2AuthorizedClientProvidersWhenNotUsingPrivateKeyJwtMethod() {
+        resourceServerWithOboContextRunner()
+            .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(OAuth2ClientAuthenticationJwkResolver.class);
+                assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(context);
+            });
+    }
+
+    @Test
+    void restTemplateWellConfiguredForAllOAuth2AuthorizedClientProvidersWhenUsingPrivateKeyJwtMethod() {
+        resourceServerWithOboContextRunner()
+                .withPropertyValues(
+                        "spring.cloud.azure.active-directory.enabled=true",
+                        "spring.cloud.azure.active-directory.credential.client-certificate-path=/test/test.pfx",
+                        "spring.cloud.azure.active-directory.credential.client-certificate-password=test",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.client-authentication-method=private_key_jwt",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type=urn:ietf:params:oauth:grant-type:jwt-bearer",
+                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read"
+                )
+                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
+                    assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(context);
+                });
+    }
+
+    private static void assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(ApplicationContext context) {
+        List<OAuth2AuthorizedClientProvider> providers = getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(context);
+        assertEquals(4, providers.size());
+        providers.forEach(provider -> {
+            OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
+            RestTemplate restTemplate = (RestTemplate) getField(client.getClass(), "restOperations", client);
+            assertEquals(FACTORY, restTemplate.getRequestFactory());
+        });
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<OAuth2AuthorizedClientProvider> getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(ApplicationContext context) {
+        final DefaultOAuth2AuthorizedClientManager manager = context.getBean(DefaultOAuth2AuthorizedClientManager.class);
+        DelegatingOAuth2AuthorizedClientProvider delegatingProvider =
+                (DelegatingOAuth2AuthorizedClientProvider) getField(DefaultOAuth2AuthorizedClientManager.class, "authorizedClientProvider", manager);
+        List<OAuth2AuthorizedClientProvider> providers =
+                (List<OAuth2AuthorizedClientProvider>) getField(DelegatingOAuth2AuthorizedClientProvider.class, "authorizedClientProviders", delegatingProvider);
+        return providers.stream()
+                .filter(provider -> !(provider instanceof AuthorizationCodeOAuth2AuthorizedClientProvider))
+                .filter(provider -> !(provider instanceof AadAzureDelegatedOAuth2AuthorizedClientProvider))
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")

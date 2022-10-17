@@ -30,6 +30,10 @@ public final class RedshiftUnloadSettings {
     @JsonProperty(value = "bucketName", required = true)
     private Object bucketName;
 
+    /** Creates an instance of RedshiftUnloadSettings class. */
+    public RedshiftUnloadSettings() {
+    }
+
     /**
      * Get the s3LinkedServiceName property: The name of the Amazon S3 linked service which will be used for the unload
      * operation when copying from the Amazon Redshift source.

@@ -24,6 +24,10 @@ public final class ListVirtualHubRouteTableV2SResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListVirtualHubRouteTableV2SResult class. */
+    public ListVirtualHubRouteTableV2SResult() {
+    }
+
     /**
      * Get the value property: List of VirtualHubRouteTableV2s.
      *

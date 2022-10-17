@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -78,15 +78,15 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
 
     private void configureOAuth2Properties(Map<String, Object> sourceKafkaProperties, Map<String, Object> updateConfigs) {
-        AzureKafkaProperties azureKafkaProperties = buildAzureProperties(sourceKafkaProperties,
+        AzurePasswordlessProperties azurePasswordlessProperties = buildAzureProperties(sourceKafkaProperties,
                 azureGlobalProperties);
-        updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azureKafkaProperties));
+        updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azurePasswordlessProperties));
         updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
         logConfigureOAuthProperties();
     }
 
-    private TokenCredential resolveSpringCloudAzureTokenCredential(AzureKafkaProperties azureKafkaProperties) {
-        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureKafkaProperties);
+    private TokenCredential resolveSpringCloudAzureTokenCredential(AzurePasswordlessProperties azurePasswordlessProperties) {
+        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azurePasswordlessProperties);
         return tokenCredential == null ? defaultTokenCredential : tokenCredential;
     }
 

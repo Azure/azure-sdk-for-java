@@ -23,6 +23,10 @@ public final class RetryPolicy {
     @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
+    /** Creates an instance of RetryPolicy class. */
+    public RetryPolicy() {
+    }
+
     /**
      * Get the count property: Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with
      * resultType integer), minimum: 0.

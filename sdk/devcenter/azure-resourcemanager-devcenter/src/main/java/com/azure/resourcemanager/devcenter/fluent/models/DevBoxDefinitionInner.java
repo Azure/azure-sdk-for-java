@@ -29,6 +29,10 @@ public final class DevBoxDefinitionInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DevBoxDefinitionInner class. */
+    public DevBoxDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: Dev Box definition properties.
      *

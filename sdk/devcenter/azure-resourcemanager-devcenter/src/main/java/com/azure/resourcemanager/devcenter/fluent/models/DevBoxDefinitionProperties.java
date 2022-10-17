@@ -38,6 +38,10 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
     @JsonProperty(value = "activeImageReference", access = JsonProperty.Access.WRITE_ONLY)
     private ImageReference activeImageReference;
 
+    /** Creates an instance of DevBoxDefinitionProperties class. */
+    public DevBoxDefinitionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

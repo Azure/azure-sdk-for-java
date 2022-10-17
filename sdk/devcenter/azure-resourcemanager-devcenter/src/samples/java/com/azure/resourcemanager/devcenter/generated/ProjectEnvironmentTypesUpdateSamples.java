@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for ProjectEnvironmentTypes Update. */
 public final class ProjectEnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Patch.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_Update.

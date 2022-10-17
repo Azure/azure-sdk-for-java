@@ -33,6 +33,10 @@ public final class DelimitedTextSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of DelimitedTextSource class. */
+    public DelimitedTextSource() {
+    }
+
     /**
      * Get the storeSettings property: DelimitedText store settings.
      *

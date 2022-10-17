@@ -60,6 +60,10 @@ public class ExecutionActivity extends Activity {
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
 
+    /** Creates an instance of ExecutionActivity class. */
+    public ExecutionActivity() {
+    }
+
     /**
      * Get the linkedServiceName property: Linked service reference.
      *

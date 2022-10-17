@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptExecutionParameter;
 import com.azure.resourcemanager.avs.models.ScriptExecutionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -18,11 +17,8 @@ import java.util.Map;
 /** Properties of a user-invoked script. */
 @Fluent
 public final class ScriptExecutionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionProperties.class);
-
     /*
-     * A reference to the script cmdlet resource if user is running a AVS
-     * script
+     * A reference to the script cmdlet resource if user is running a AVS script
      */
     @JsonProperty(value = "scriptCmdletId")
     private String scriptCmdletId;
@@ -34,15 +30,14 @@ public final class ScriptExecutionProperties {
     private List<ScriptExecutionParameter> parameters;
 
     /*
-     * Parameters that will be hidden/not visible to ARM, such as passwords and
-     * credentials
+     * Parameters that will be hidden/not visible to ARM, such as passwords and credentials
      */
     @JsonProperty(value = "hiddenParameters")
     private List<ScriptExecutionParameter> hiddenParameters;
 
     /*
-     * Error message if the script was able to run, but if the script itself
-     * had errors or powershell threw an exception
+     * Error message if the script was able to run, but if the script itself had errors or powershell threw an
+     * exception
      */
     @JsonProperty(value = "failureReason")
     private String failureReason;
@@ -54,8 +49,7 @@ public final class ScriptExecutionProperties {
     private String timeout;
 
     /*
-     * Time to live for the resource. If not provided, will be available for 60
-     * days
+     * Time to live for the resource. If not provided, will be available for 60 days
      */
     @JsonProperty(value = "retention")
     private String retention;
@@ -114,6 +108,10 @@ public final class ScriptExecutionProperties {
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> errors;
+
+    /** Creates an instance of ScriptExecutionProperties class. */
+    public ScriptExecutionProperties() {
+    }
 
     /**
      * Get the scriptCmdletId property: A reference to the script cmdlet resource if user is running a AVS script.
@@ -355,10 +353,12 @@ public final class ScriptExecutionProperties {
             hiddenParameters().forEach(e -> e.validate());
         }
         if (timeout() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeout in model ScriptExecutionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionProperties.class);
 }

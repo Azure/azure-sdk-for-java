@@ -30,6 +30,10 @@ public final class PowerQueryTypeProperties {
     @JsonProperty(value = "documentLocale")
     private String documentLocale;
 
+    /** Creates an instance of PowerQueryTypeProperties class. */
+    public PowerQueryTypeProperties() {
+    }
+
     /**
      * Get the sources property: List of sources in Power Query.
      *

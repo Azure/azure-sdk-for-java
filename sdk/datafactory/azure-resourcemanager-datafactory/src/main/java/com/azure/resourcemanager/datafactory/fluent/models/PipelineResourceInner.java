@@ -52,6 +52,10 @@ public final class PipelineResourceInner extends SubResource {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of PipelineResourceInner class. */
+    public PipelineResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the pipeline.
      *

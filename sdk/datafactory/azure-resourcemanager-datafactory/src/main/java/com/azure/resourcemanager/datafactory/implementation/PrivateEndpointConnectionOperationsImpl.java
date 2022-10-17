@@ -27,17 +27,6 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
         this.serviceManager = serviceManager;
     }
 
-    public PrivateEndpointConnectionResource get(
-        String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnectionResource> getWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -59,8 +48,15 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, privateEndpointConnectionName);
+    public PrivateEndpointConnectionResource get(
+        String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionResourceInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -68,6 +64,10 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, privateEndpointConnectionName);
     }
 
     public PrivateEndpointConnectionResource getById(String id) {

@@ -3,10 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -60,6 +62,27 @@ public class ClientSecretCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
         }
+
+        // mock
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret)
+                    .additionallyAllowedTenants("*").build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
     }
 
     @Test
@@ -83,6 +106,23 @@ public class ClientSecretCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad secret".equals(e.getMessage()))
                 .verify();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identitySyncClient.authenticateWithConfidentialClient(request)).thenThrow(new MsalServiceException("bad secret", "BadSecret"));
+            when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        })) {
+            // test
+            ClientSecretCredential credential =
+                new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
+                    .additionallyAllowedTenants("*").build();
+            try {
+                credential.getTokenSync(request);
+            } catch (Exception e) {
+                Assert.assertTrue(e instanceof MsalServiceException && "bad secret".equals(e.getMessage()));
+            }
             Assert.assertNotNull(identityClientMock);
         }
     }

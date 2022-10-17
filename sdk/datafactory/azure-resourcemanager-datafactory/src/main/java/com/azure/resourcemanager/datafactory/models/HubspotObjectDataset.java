@@ -23,6 +23,10 @@ public final class HubspotObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of HubspotObjectDataset class. */
+    public HubspotObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

@@ -23,6 +23,10 @@ public final class OracleServiceCloudObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of OracleServiceCloudObjectDataset class. */
+    public OracleServiceCloudObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

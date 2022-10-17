@@ -39,6 +39,11 @@ public final class AddParticipantsOptions {
     private Duration invitationTimeout;
 
     /**
+     * Repeatability Headers Configuration
+     */
+    private RepeatabilityHeaders repeatabilityHeaders;
+
+    /**
      * Constructor
      *
      * @param participants The list of participants to invite.
@@ -81,6 +86,26 @@ public final class AddParticipantsOptions {
      */
     public Duration getInvitationTimeout() {
         return invitationTimeout;
+    }
+
+    /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the AddParticipantsOptions object itself.
+     */
+    public AddParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
     }
 
     /**

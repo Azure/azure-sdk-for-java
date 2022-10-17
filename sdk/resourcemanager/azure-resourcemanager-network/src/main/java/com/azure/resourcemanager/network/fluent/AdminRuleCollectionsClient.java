@@ -138,22 +138,6 @@ public interface AdminRuleCollectionsClient {
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security admin configuration rule collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AdminRuleCollectionInner get(
-        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
-
-    /**
-     * Gets a network manager security admin configuration rule collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,6 +151,22 @@ public interface AdminRuleCollectionsClient {
         String configurationName,
         String ruleCollectionName,
         Context context);
+
+    /**
+     * Gets a network manager security admin configuration rule collection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
+     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network manager security admin configuration rule collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AdminRuleCollectionInner get(
+        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
 
     /**
      * Creates or updates an admin rule collection.
@@ -218,27 +218,6 @@ public interface AdminRuleCollectionsClient {
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleCollection The Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the admin rule collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AdminRuleCollectionInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        AdminRuleCollectionInner ruleCollection);
-
-    /**
-     * Creates or updates an admin rule collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param ruleCollection The Rule Collection to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,6 +232,27 @@ public interface AdminRuleCollectionsClient {
         String ruleCollectionName,
         AdminRuleCollectionInner ruleCollection,
         Context context);
+
+    /**
+     * Creates or updates an admin rule collection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
+     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
+     * @param ruleCollection The Rule Collection to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the admin rule collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AdminRuleCollectionInner createOrUpdate(
+        String resourceGroupName,
+        String networkManagerName,
+        String configurationName,
+        String ruleCollectionName,
+        AdminRuleCollectionInner ruleCollection);
 
     /**
      * Deletes an admin rule collection.
@@ -305,8 +305,22 @@ public interface AdminRuleCollectionsClient {
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
+
+    /**
+     * Deletes an admin rule collection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param configurationName The name of the network manager Security Configuration.
+     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,11 +328,7 @@ public interface AdminRuleCollectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        Boolean force);
+        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
 
     /**
      * Deletes an admin rule collection.
@@ -381,27 +391,6 @@ public interface AdminRuleCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
         String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
-
-    /**
-     * Deletes an admin rule collection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        Boolean force);
 
     /**
      * Deletes an admin rule collection.

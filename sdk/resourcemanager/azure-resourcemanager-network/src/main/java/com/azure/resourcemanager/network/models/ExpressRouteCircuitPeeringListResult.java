@@ -24,6 +24,10 @@ public final class ExpressRouteCircuitPeeringListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRouteCircuitPeeringListResult class. */
+    public ExpressRouteCircuitPeeringListResult() {
+    }
+
     /**
      * Get the value property: The peerings in an express route circuit.
      *

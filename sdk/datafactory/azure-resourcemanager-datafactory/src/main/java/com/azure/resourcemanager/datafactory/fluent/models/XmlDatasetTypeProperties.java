@@ -40,6 +40,10 @@ public final class XmlDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of XmlDatasetTypeProperties class. */
+    public XmlDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the json data storage.
      *

@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFailureThreshold;
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The remediation properties. */
 @Fluent
 public final class RemediationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemediationProperties.class);
-
     /*
      * The resource ID of the policy assignment that should be remediated.
      */
@@ -26,16 +22,14 @@ public final class RemediationProperties {
     private String policyAssignmentId;
 
     /*
-     * The policy definition reference ID of the individual definition that
-     * should be remediated. Required when the policy assignment being
-     * remediated assigns a policy set definition.
+     * The policy definition reference ID of the individual definition that should be remediated. Required when the
+     * policy assignment being remediated assigns a policy set definition.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
-     * The way resources to remediate are discovered. Defaults to
-     * ExistingNonCompliant if not specified.
+     * The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
      */
     @JsonProperty(value = "resourceDiscoveryMode")
     private ResourceDiscoveryMode resourceDiscoveryMode;
@@ -59,44 +53,39 @@ public final class RemediationProperties {
     private OffsetDateTime lastUpdatedOn;
 
     /*
-     * The filters that will be applied to determine which resources to
-     * remediate.
+     * The filters that will be applied to determine which resources to remediate.
      */
     @JsonProperty(value = "filters")
     private RemediationFilters filters;
 
     /*
-     * The deployment status summary for all deployments created by the
-     * remediation.
+     * The deployment status summary for all deployments created by the remediation.
      */
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RemediationDeploymentSummary deploymentStatus;
 
     /*
-     * The remediation status message. Provides additional details regarding
-     * the state of the remediation.
+     * The remediation status message. Provides additional details regarding the state of the remediation.
      */
     @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
-     * The remediation correlation Id. Can be used to find events related to
-     * the remediation in the activity log.
+     * The remediation correlation Id. Can be used to find events related to the remediation in the activity log.
      */
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
-     * Determines the max number of resources that can be remediated by the
-     * remediation job. If not provided, the default resource count is used.
+     * Determines the max number of resources that can be remediated by the remediation job. If not provided, the
+     * default resource count is used.
      */
     @JsonProperty(value = "resourceCount")
     private Integer resourceCount;
 
     /*
-     * Determines how many resources to remediate at any given time. Can be
-     * used to increase or reduce the pace of the remediation. If not provided,
-     * the default parallel deployments value is used.
+     * Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the
+     * remediation. If not provided, the default parallel deployments value is used.
      */
     @JsonProperty(value = "parallelDeployments")
     private Integer parallelDeployments;
@@ -106,6 +95,10 @@ public final class RemediationProperties {
      */
     @JsonProperty(value = "failureThreshold")
     private RemediationPropertiesFailureThreshold failureThreshold;
+
+    /** Creates an instance of RemediationProperties class. */
+    public RemediationProperties() {
+    }
 
     /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.

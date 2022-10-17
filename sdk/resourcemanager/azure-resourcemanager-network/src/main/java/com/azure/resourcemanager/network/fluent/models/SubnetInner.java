@@ -43,6 +43,10 @@ public final class SubnetInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of SubnetInner class. */
+    public SubnetInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the subnet.
      *

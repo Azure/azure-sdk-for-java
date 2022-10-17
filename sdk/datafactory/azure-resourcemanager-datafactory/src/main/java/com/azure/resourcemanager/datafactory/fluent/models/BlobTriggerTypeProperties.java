@@ -30,6 +30,10 @@ public final class BlobTriggerTypeProperties {
     @JsonProperty(value = "linkedService", required = true)
     private LinkedServiceReference linkedService;
 
+    /** Creates an instance of BlobTriggerTypeProperties class. */
+    public BlobTriggerTypeProperties() {
+    }
+
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
      *
