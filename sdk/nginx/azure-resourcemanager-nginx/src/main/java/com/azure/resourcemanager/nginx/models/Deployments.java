@@ -15,18 +15,6 @@ public interface Deployments {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx deployment.
-     */
-    NginxDeployment getByResourceGroup(String resourceGroupName, String deploymentName);
-
-    /**
-     * Get the Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,6 +23,18 @@ public interface Deployments {
      */
     Response<NginxDeployment> getByResourceGroupWithResponse(
         String resourceGroupName, String deploymentName, Context context);
+
+    /**
+     * Get the Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Nginx deployment.
+     */
+    NginxDeployment getByResourceGroup(String resourceGroupName, String deploymentName);
 
     /**
      * Delete the Nginx deployment resource.

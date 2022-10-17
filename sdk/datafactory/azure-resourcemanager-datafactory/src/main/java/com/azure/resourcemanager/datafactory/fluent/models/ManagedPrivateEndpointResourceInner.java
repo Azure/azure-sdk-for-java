@@ -37,6 +37,10 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ManagedPrivateEndpointResourceInner class. */
+    public ManagedPrivateEndpointResourceInner() {
+    }
+
     /**
      * Get the properties property: Managed private endpoint properties.
      *

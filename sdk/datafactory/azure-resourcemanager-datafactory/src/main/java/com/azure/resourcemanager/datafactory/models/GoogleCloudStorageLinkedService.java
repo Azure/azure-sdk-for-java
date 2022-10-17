@@ -25,6 +25,10 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties =
         new GoogleCloudStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of GoogleCloudStorageLinkedService class. */
+    public GoogleCloudStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Google Cloud Storage linked service properties.
      *

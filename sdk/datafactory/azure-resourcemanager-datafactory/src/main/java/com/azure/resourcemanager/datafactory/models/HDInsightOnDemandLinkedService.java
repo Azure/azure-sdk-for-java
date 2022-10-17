@@ -25,6 +25,10 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     private HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties =
         new HDInsightOnDemandLinkedServiceTypeProperties();
 
+    /** Creates an instance of HDInsightOnDemandLinkedService class. */
+    public HDInsightOnDemandLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight ondemand linked service properties.
      *

@@ -28,6 +28,10 @@ public final class DynamicsAXSource extends TabularSource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of DynamicsAXSource class. */
+    public DynamicsAXSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

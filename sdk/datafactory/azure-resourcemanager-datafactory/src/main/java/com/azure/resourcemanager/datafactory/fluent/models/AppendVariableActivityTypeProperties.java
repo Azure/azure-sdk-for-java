@@ -22,6 +22,10 @@ public final class AppendVariableActivityTypeProperties {
     @JsonProperty(value = "value")
     private Object value;
 
+    /** Creates an instance of AppendVariableActivityTypeProperties class. */
+    public AppendVariableActivityTypeProperties() {
+    }
+
     /**
      * Get the variableName property: Name of the variable whose value needs to be appended to.
      *

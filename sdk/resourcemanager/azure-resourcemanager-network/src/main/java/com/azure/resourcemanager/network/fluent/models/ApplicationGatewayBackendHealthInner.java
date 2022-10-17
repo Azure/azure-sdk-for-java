@@ -18,6 +18,10 @@ public final class ApplicationGatewayBackendHealthInner {
     @JsonProperty(value = "backendAddressPools")
     private List<ApplicationGatewayBackendHealthPool> backendAddressPools;
 
+    /** Creates an instance of ApplicationGatewayBackendHealthInner class. */
+    public ApplicationGatewayBackendHealthInner() {
+    }
+
     /**
      * Get the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
      *

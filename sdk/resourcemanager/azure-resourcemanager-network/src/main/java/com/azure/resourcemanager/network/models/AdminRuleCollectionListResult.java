@@ -24,6 +24,10 @@ public final class AdminRuleCollectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AdminRuleCollectionListResult class. */
+    public AdminRuleCollectionListResult() {
+    }
+
     /**
      * Get the value property: A list of network manager security admin configuration rule collections.
      *

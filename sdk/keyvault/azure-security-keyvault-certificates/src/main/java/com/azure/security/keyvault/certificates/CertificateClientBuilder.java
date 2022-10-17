@@ -29,7 +29,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateIdentifier;
 
 import java.net.MalformedURLException;
@@ -112,7 +114,7 @@ public final class CertificateClientBuilder implements
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL vaultUrl;
+    private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
@@ -151,7 +153,7 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildAsyncClient());
+        return new CertificateClient(buildInnerClient());
     }
 
     /**
@@ -173,10 +175,14 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
+        return new CertificateAsyncClient(buildInnerClient());
+    }
+
+    private CertificateClientImpl buildInnerClient() {
         Configuration buildConfiguration = (configuration != null) ? configuration
             : Configuration.getGlobalConfiguration().clone();
 
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+        String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -186,7 +192,7 @@ public final class CertificateClientBuilder implements
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
+            return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -232,7 +238,7 @@ public final class CertificateClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new CertificateAsyncClient(vaultUrl, pipeline, serviceVersion);
+        return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
@@ -253,7 +259,8 @@ public final class CertificateClientBuilder implements
         }
 
         try {
-            this.vaultUrl = new URL(vaultUrl);
+            URL url = new URL(vaultUrl);
+            this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
         }
@@ -488,7 +495,7 @@ public final class CertificateClientBuilder implements
         return this;
     }
 
-    private URL getBuildEndpoint(Configuration configuration) {
+    private String getBuildEndpoint(Configuration configuration) {
         if (vaultUrl != null) {
             return vaultUrl;
         }
@@ -499,7 +506,8 @@ public final class CertificateClientBuilder implements
         }
 
         try {
-            return new URL(configEndpoint);
+            URL url = new URL(configEndpoint);
+            return url.toString();
         } catch (MalformedURLException ex) {
             return null;
         }

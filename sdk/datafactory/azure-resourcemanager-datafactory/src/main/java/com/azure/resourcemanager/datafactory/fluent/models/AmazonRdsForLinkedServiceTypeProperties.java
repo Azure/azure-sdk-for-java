@@ -31,6 +31,10 @@ public final class AmazonRdsForLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonRdsForLinkedServiceTypeProperties class. */
+    public AmazonRdsForLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

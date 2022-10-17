@@ -26,15 +26,6 @@ public final class DeploymentsImpl implements Deployments {
         this.serviceManager = serviceManager;
     }
 
-    public NginxDeployment getByResourceGroup(String resourceGroupName, String deploymentName) {
-        NginxDeploymentInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deploymentName);
-        if (inner != null) {
-            return new NginxDeploymentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NginxDeployment> getByResourceGroupWithResponse(
         String resourceGroupName, String deploymentName, Context context) {
         Response<NginxDeploymentInner> inner =
@@ -45,6 +36,15 @@ public final class DeploymentsImpl implements Deployments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NginxDeploymentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NginxDeployment getByResourceGroup(String resourceGroupName, String deploymentName) {
+        NginxDeploymentInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deploymentName);
+        if (inner != null) {
+            return new NginxDeploymentImpl(inner, this.manager());
         } else {
             return null;
         }

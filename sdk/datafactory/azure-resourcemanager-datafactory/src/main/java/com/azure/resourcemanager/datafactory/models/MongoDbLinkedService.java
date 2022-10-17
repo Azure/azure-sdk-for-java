@@ -24,6 +24,10 @@ public final class MongoDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbLinkedServiceTypeProperties innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
 
+    /** Creates an instance of MongoDbLinkedService class. */
+    public MongoDbLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB linked service properties.
      *

@@ -34,6 +34,10 @@ public final class TrafficWeight {
     @JsonProperty(value = "label")
     private String label;
 
+    /** Creates an instance of TrafficWeight class. */
+    public TrafficWeight() {
+    }
+
     /**
      * Get the revisionName property: Name of a revision.
      *

@@ -24,6 +24,10 @@ public final class EffectiveNetworkSecurityGroupListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of EffectiveNetworkSecurityGroupListResultInner class. */
+    public EffectiveNetworkSecurityGroupListResultInner() {
+    }
+
     /**
      * Get the value property: A list of effective network security groups.
      *

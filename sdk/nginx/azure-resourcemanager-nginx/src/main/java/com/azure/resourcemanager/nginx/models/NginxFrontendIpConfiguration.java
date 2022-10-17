@@ -23,6 +23,10 @@ public final class NginxFrontendIpConfiguration {
     @JsonProperty(value = "privateIPAddresses")
     private List<NginxPrivateIpAddress> privateIpAddresses;
 
+    /** Creates an instance of NginxFrontendIpConfiguration class. */
+    public NginxFrontendIpConfiguration() {
+    }
+
     /**
      * Get the publicIpAddresses property: The publicIPAddresses property.
      *

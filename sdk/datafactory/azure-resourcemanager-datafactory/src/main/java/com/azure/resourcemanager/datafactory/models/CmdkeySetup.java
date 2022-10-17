@@ -22,6 +22,10 @@ public final class CmdkeySetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private CmdkeySetupTypeProperties innerTypeProperties = new CmdkeySetupTypeProperties();
 
+    /** Creates an instance of CmdkeySetup class. */
+    public CmdkeySetup() {
+    }
+
     /**
      * Get the innerTypeProperties property: Cmdkey command custom setup type properties.
      *

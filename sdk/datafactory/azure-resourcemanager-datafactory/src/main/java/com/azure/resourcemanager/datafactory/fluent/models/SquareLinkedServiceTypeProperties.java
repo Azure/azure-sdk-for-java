@@ -68,6 +68,10 @@ public final class SquareLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SquareLinkedServiceTypeProperties class. */
+    public SquareLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
      * other properties in the linked service. Type: object.

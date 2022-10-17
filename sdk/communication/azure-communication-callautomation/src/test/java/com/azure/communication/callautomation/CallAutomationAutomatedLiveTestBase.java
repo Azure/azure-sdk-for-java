@@ -13,10 +13,12 @@ import com.azure.communication.callautomation.models.events.CallDisconnectedEven
 import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callautomation.models.events.PlayCanceledEvent;
 import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
 import com.azure.communication.callautomation.models.events.PlayFailedEvent;
-import com.azure.communication.callautomation.models.events.RecognizeCompleted;
-import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecognizeCanceledEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCompletedEvent;
+import com.azure.communication.callautomation.models.events.RecognizeFailedEvent;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
@@ -244,10 +246,14 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             eventName = "Microsoft.Communication.PlayCompleted";
         } else if (eventType.equals(PlayFailedEvent.class)) {
             eventName = "Microsoft.Communication.PlayFailed";
-        } else if (eventType.equals(RecognizeCompleted.class)) {
+        }  else if (eventType.equals(PlayCanceledEvent.class)) {
+            eventName = "Microsoft.Communication.PlayCanceled";
+        } else if (eventType.equals(RecognizeCompletedEvent.class)) {
             eventName = "Microsoft.Communication.RecognizeCompleted";
-        } else if (eventType.equals(RecognizeFailed.class)) {
+        } else if (eventType.equals(RecognizeFailedEvent.class)) {
             eventName = "Microsoft.Communication.RecognizeFailed";
+        } else if (eventType.equals(RecognizeCanceledEvent.class)) {
+            eventName = "Microsoft.Communication.RecognizeCanceled";
         } else {
             return null;
         }

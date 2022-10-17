@@ -13,7 +13,7 @@ public final class NginxDeploymentProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -52,6 +52,10 @@ public final class NginxDeploymentProperties {
     @JsonProperty(value = "logging")
     private NginxLogging logging;
 
+    /** Creates an instance of NginxDeploymentProperties class. */
+    public NginxDeploymentProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioningState property.
      *
@@ -59,17 +63,6 @@ public final class NginxDeploymentProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioningState property.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the NginxDeploymentProperties object itself.
-     */
-    public NginxDeploymentProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

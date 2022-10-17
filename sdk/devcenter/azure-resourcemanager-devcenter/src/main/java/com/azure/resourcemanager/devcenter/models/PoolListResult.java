@@ -24,6 +24,10 @@ public final class PoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PoolListResult class. */
+    public PoolListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

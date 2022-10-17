@@ -25,6 +25,10 @@ public final class ReplicaProperties {
     @JsonProperty(value = "containers")
     private List<ReplicaContainer> containers;
 
+    /** Creates an instance of ReplicaProperties class. */
+    public ReplicaProperties() {
+    }
+
     /**
      * Get the createdTime property: Timestamp describing when the pod was created by controller.
      *

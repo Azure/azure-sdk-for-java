@@ -31,6 +31,10 @@ public final class QuickbaseLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of QuickbaseLinkedServiceTypeProperties class. */
+    public QuickbaseLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
      *

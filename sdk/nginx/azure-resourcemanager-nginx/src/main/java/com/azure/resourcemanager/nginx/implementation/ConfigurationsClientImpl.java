@@ -91,6 +91,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
             @PathParam("configurationName") String configurationName,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -106,6 +107,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
             @PathParam("configurationName") String configurationName,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NginxConfigurationInner body,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -122,6 +124,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
             @PathParam("configurationName") String configurationName,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -366,6 +369,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                             resourceGroupName,
                             deploymentName,
                             configurationName,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -420,6 +424,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                 resourceGroupName,
                 deploymentName,
                 configurationName,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -450,23 +455,6 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @param deploymentName The name of targeted Nginx deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
      *     Nginx conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner get(String resourceGroupName, String deploymentName, String configurationName) {
-        return getAsync(resourceGroupName, deploymentName, configurationName).block();
-    }
-
-    /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -477,6 +465,23 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     public Response<NginxConfigurationInner> getWithResponse(
         String resourceGroupName, String deploymentName, String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, configurationName, context).block();
+    }
+
+    /**
+     * Get the Nginx configuration of given Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     *     Nginx conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Nginx configuration of given Nginx deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NginxConfigurationInner get(String resourceGroupName, String deploymentName, String configurationName) {
+        return getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE).getValue();
     }
 
     /**
@@ -532,6 +537,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                             resourceGroupName,
                             deploymentName,
                             configurationName,
+                            this.client.getApiVersion(),
                             body,
                             accept,
                             context))
@@ -594,6 +600,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                 resourceGroupName,
                 deploymentName,
                 configurationName,
+                this.client.getApiVersion(),
                 body,
                 accept,
                 context);
@@ -615,6 +622,34 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
+        return this
+            .client
+            .<NginxConfigurationInner, NginxConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NginxConfigurationInner.class,
+                NginxConfigurationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Create or update the Nginx configuration for given Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     *     Nginx conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String deploymentName, String configurationName) {
+        final NginxConfigurationInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
         return this
@@ -668,7 +703,6 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @param deploymentName The name of targeted Nginx deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
      *     Nginx conf.
-     * @param body The Nginx configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -676,7 +710,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
+        String resourceGroupName, String deploymentName, String configurationName) {
+        final NginxConfigurationInner body = null;
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).getSyncPoller();
     }
 
@@ -780,25 +815,6 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @param deploymentName The name of targeted Nginx deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
      *     Nginx conf.
-     * @param body The Nginx configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner createOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
-        return createOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).block();
-    }
-
-    /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -884,6 +900,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                             resourceGroupName,
                             deploymentName,
                             configurationName,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -937,6 +954,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
                 resourceGroupName,
                 deploymentName,
                 configurationName,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }

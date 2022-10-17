@@ -31,6 +31,13 @@ public interface OperationStatus {
     String status();
 
     /**
+     * Gets the resourceId property: The id of the resource.
+     *
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
      * Gets the startTime property: The start time of the operation.
      *
      * @return the startTime value.

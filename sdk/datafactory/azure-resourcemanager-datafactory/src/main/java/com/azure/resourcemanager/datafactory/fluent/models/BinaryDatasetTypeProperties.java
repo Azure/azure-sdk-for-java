@@ -25,6 +25,10 @@ public final class BinaryDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of BinaryDatasetTypeProperties class. */
+    public BinaryDatasetTypeProperties() {
+    }
+
     /**
      * Get the location property: The location of the Binary storage.
      *

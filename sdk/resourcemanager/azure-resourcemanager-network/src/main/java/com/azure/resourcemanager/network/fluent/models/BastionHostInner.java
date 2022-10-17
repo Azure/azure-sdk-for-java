@@ -40,6 +40,10 @@ public final class BastionHostInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of BastionHostInner class. */
+    public BastionHostInner() {
+    }
+
     /**
      * Get the innerProperties property: Represents the bastion host resource.
      *

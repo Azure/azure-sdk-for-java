@@ -20,6 +20,10 @@ public final class OracleSink extends CopySink {
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
+    /** Creates an instance of OracleSink class. */
+    public OracleSink() {
+    }
+
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
      *

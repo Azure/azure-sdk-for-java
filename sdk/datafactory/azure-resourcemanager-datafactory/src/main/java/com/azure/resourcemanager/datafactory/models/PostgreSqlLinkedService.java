@@ -24,6 +24,10 @@ public final class PostgreSqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PostgreSqlLinkedServiceTypeProperties innerTypeProperties = new PostgreSqlLinkedServiceTypeProperties();
 
+    /** Creates an instance of PostgreSqlLinkedService class. */
+    public PostgreSqlLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: PostgreSQL linked service properties.
      *

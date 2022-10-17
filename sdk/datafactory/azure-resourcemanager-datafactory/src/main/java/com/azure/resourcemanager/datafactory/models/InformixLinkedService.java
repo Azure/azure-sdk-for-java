@@ -24,6 +24,10 @@ public final class InformixLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private InformixLinkedServiceTypeProperties innerTypeProperties = new InformixLinkedServiceTypeProperties();
 
+    /** Creates an instance of InformixLinkedService class. */
+    public InformixLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Informix linked service properties.
      *

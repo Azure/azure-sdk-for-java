@@ -49,6 +49,10 @@ public final class NatGatewayPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NatGatewayPropertiesFormat class. */
+    public NatGatewayPropertiesFormat() {
+    }
+
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
      *

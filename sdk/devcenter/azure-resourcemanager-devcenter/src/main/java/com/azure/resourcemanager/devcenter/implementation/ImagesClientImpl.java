@@ -699,23 +699,6 @@ public final class ImagesClientImpl implements ImagesClient {
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
      * @param imageName The name of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
-        return getAsync(resourceGroupName, devCenterName, galleryName, imageName).block();
-    }
-
-    /**
-     * Gets a gallery image.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param galleryName The name of the gallery.
-     * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -729,9 +712,27 @@ public final class ImagesClientImpl implements ImagesClient {
     }
 
     /**
+     * Gets a gallery image.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param galleryName The name of the gallery.
+     * @param imageName The name of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gallery image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName) {
+        return getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -767,7 +768,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -804,7 +806,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -840,7 +843,8 @@ public final class ImagesClientImpl implements ImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

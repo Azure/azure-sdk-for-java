@@ -34,6 +34,10 @@ public final class AzureFileProperties {
     @JsonProperty(value = "shareName")
     private String shareName;
 
+    /** Creates an instance of AzureFileProperties class. */
+    public AzureFileProperties() {
+    }
+
     /**
      * Get the accountName property: Storage account name for azure file.
      *

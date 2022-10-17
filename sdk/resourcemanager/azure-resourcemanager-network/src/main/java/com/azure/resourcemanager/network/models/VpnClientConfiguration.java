@@ -86,6 +86,16 @@ public final class VpnClientConfiguration {
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;
 
+    /*
+     * per ip address pool connection policy for virtual network gateway P2S client.
+     */
+    @JsonProperty(value = "vngClientConnectionConfigurations")
+    private List<VngClientConnectionConfiguration> vngClientConnectionConfigurations;
+
+    /** Creates an instance of VpnClientConfiguration class. */
+    public VpnClientConfiguration() {
+    }
+
     /**
      * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
      * for P2S VpnClient.
@@ -341,6 +351,29 @@ public final class VpnClientConfiguration {
     }
 
     /**
+     * Get the vngClientConnectionConfigurations property: per ip address pool connection policy for virtual network
+     * gateway P2S client.
+     *
+     * @return the vngClientConnectionConfigurations value.
+     */
+    public List<VngClientConnectionConfiguration> vngClientConnectionConfigurations() {
+        return this.vngClientConnectionConfigurations;
+    }
+
+    /**
+     * Set the vngClientConnectionConfigurations property: per ip address pool connection policy for virtual network
+     * gateway P2S client.
+     *
+     * @param vngClientConnectionConfigurations the vngClientConnectionConfigurations value to set.
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withVngClientConnectionConfigurations(
+        List<VngClientConnectionConfiguration> vngClientConnectionConfigurations) {
+        this.vngClientConnectionConfigurations = vngClientConnectionConfigurations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -360,6 +393,9 @@ public final class VpnClientConfiguration {
         }
         if (radiusServers() != null) {
             radiusServers().forEach(e -> e.validate());
+        }
+        if (vngClientConnectionConfigurations() != null) {
+            vngClientConnectionConfigurations().forEach(e -> e.validate());
         }
     }
 }

@@ -43,6 +43,10 @@ public final class AzureDataExplorerSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of AzureDataExplorerSource class. */
+    public AzureDataExplorerSource() {
+    }
+
     /**
      * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
      * with resultType string).

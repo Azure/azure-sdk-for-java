@@ -17,11 +17,14 @@ public final class CookieExpiration {
     private CookieExpirationConvention convention;
 
     /*
-     * The time after the request is made when the session cookie should
-     * expire.
+     * The time after the request is made when the session cookie should expire.
      */
     @JsonProperty(value = "timeToExpiration")
     private String timeToExpiration;
+
+    /** Creates an instance of CookieExpiration class. */
+    public CookieExpiration() {
+    }
 
     /**
      * Get the convention property: The convention used when determining the session cookie's expiration.

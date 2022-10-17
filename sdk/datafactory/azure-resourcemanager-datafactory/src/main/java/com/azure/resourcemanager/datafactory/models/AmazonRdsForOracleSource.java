@@ -47,6 +47,10 @@ public final class AmazonRdsForOracleSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of AmazonRdsForOracleSource class. */
+    public AmazonRdsForOracleSource() {
+    }
+
     /**
      * Get the oracleReaderQuery property: AmazonRdsForOracle reader query. Type: string (or Expression with resultType
      * string).

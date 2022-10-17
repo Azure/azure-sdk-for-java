@@ -35,6 +35,10 @@ public final class CreateDataFlowDebugSessionRequest {
     @JsonProperty(value = "integrationRuntime")
     private IntegrationRuntimeDebugResource integrationRuntime;
 
+    /** Creates an instance of CreateDataFlowDebugSessionRequest class. */
+    public CreateDataFlowDebugSessionRequest() {
+    }
+
     /**
      * Get the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.

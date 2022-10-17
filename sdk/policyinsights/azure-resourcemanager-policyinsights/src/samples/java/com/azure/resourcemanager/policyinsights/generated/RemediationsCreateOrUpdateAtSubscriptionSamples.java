@@ -55,7 +55,7 @@ public final class RemediationsCreateOrUpdateAtSubscriptionSamples {
                     .withFilters(new RemediationFilters().withLocations(Arrays.asList("eastus", "westus")))
                     .withResourceCount(42)
                     .withParallelDeployments(6)
-                    .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(0.1f)),
+                    .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(0.1F)),
                 Context.NONE);
     }
 }

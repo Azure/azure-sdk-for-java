@@ -24,6 +24,10 @@ public final class AzureFirewallListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AzureFirewallListResult class. */
+    public AzureFirewallListResult() {
+    }
+
     /**
      * Get the value property: List of Azure Firewalls in a resource group.
      *

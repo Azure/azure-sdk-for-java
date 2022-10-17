@@ -11,20 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AuthPlatform {
     /*
-     * <code>true</code> if the Authentication / Authorization feature is
-     * enabled for the current app; otherwise, <code>false</code>.
+     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise,
+     * <code>false</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The RuntimeVersion of the Authentication / Authorization feature in use
-     * for the current app.
-     * The setting in this value can control the behavior of certain features
-     * in the Authentication / Authorization module.
+     * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
      */
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
+
+    /** Creates an instance of AuthPlatform class. */
+    public AuthPlatform() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled

@@ -46,6 +46,10 @@ public final class FactoryInner extends Resource {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of FactoryInner class. */
+    public FactoryInner() {
+    }
+
     /**
      * Get the identity property: Managed service identity of the factory.
      *

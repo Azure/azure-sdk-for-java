@@ -25,6 +25,10 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     private DatabricksSparkPythonActivityTypeProperties innerTypeProperties =
         new DatabricksSparkPythonActivityTypeProperties();
 
+    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    public DatabricksSparkPythonActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Databricks SparkPython activity properties.
      *

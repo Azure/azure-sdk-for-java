@@ -36,6 +36,10 @@ public final class RerunTumblingWindowTriggerTypeProperties {
     @JsonProperty(value = "rerunConcurrency", required = true)
     private int rerunConcurrency;
 
+    /** Creates an instance of RerunTumblingWindowTriggerTypeProperties class. */
+    public RerunTumblingWindowTriggerTypeProperties() {
+    }
+
     /**
      * Get the parentTrigger property: The parent trigger reference.
      *

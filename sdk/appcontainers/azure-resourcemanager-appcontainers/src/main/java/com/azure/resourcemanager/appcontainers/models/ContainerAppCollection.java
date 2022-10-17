@@ -25,6 +25,10 @@ public final class ContainerAppCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ContainerAppCollection class. */
+    public ContainerAppCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

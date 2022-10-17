@@ -23,6 +23,10 @@ public final class BinaryDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private BinaryDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of BinaryDataset class. */
+    public BinaryDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Binary dataset properties.
      *

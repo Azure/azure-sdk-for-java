@@ -24,6 +24,10 @@ public final class RestServiceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private RestServiceLinkedServiceTypeProperties innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
 
+    /** Creates an instance of RestServiceLinkedService class. */
+    public RestServiceLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Rest Service linked service properties.
      *

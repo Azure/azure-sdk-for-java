@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for PolicyRestrictions CheckAtSubscriptionScope. */
 public final class PolicyRestrictionsCheckAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2020-07-01/examples/PolicyRestrictions_CheckAtSubscriptionScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtSubscriptionScope.json
      */
     /**
      * Sample code: Check policy restrictions at subscription scope.

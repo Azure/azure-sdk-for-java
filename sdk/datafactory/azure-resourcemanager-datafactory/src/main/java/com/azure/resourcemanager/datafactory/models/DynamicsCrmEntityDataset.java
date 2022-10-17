@@ -23,6 +23,10 @@ public final class DynamicsCrmEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private DynamicsCrmEntityDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of DynamicsCrmEntityDataset class. */
+    public DynamicsCrmEntityDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dynamics CRM entity dataset properties.
      *

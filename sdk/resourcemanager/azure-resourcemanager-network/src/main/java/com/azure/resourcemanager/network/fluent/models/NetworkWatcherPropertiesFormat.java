@@ -17,6 +17,10 @@ public final class NetworkWatcherPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkWatcherPropertiesFormat class. */
+    public NetworkWatcherPropertiesFormat() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the network watcher resource.
      *

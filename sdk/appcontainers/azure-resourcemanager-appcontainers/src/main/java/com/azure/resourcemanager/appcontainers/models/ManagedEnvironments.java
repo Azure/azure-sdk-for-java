@@ -12,7 +12,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentI
 /** Resource collection API of ManagedEnvironments. */
 public interface ManagedEnvironments {
     /**
-     * Get all Managed Environments for a subscription.
+     * Get all Environments for a subscription.
+     *
+     * <p>Get all Managed Environments for a subscription.
      *
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -22,7 +24,9 @@ public interface ManagedEnvironments {
     PagedIterable<ManagedEnvironment> list();
 
     /**
-     * Get all Managed Environments for a subscription.
+     * Get all Environments for a subscription.
+     *
+     * <p>Get all Managed Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,7 +38,9 @@ public interface ManagedEnvironments {
     PagedIterable<ManagedEnvironment> list(Context context);
 
     /**
-     * Get all the Managed Environments in a resource group.
+     * Get all the Environments in a resource group.
+     *
+     * <p>Get all the Managed Environments in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +52,9 @@ public interface ManagedEnvironments {
     PagedIterable<ManagedEnvironment> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Get all the Managed Environments in a resource group.
+     * Get all the Environments in a resource group.
+     *
+     * <p>Get all the Managed Environments in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -59,20 +67,9 @@ public interface ManagedEnvironments {
     PagedIterable<ManagedEnvironment> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get the properties of a Managed Environment used to host container apps.
+     * Get the properties of a Managed Environment.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment used to host container apps.
-     */
-    ManagedEnvironment getByResourceGroup(String resourceGroupName, String environmentName);
-
-    /**
-     * Get the properties of a Managed Environment used to host container apps.
+     * <p>Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -87,7 +84,24 @@ public interface ManagedEnvironments {
         String resourceGroupName, String environmentName, Context context);
 
     /**
-     * Delete a Managed Environment if it does not have any container apps.
+     * Get the properties of a Managed Environment.
+     *
+     * <p>Get the properties of a Managed Environment used to host container apps.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a Managed Environment used to host container apps.
+     */
+    ManagedEnvironment getByResourceGroup(String resourceGroupName, String environmentName);
+
+    /**
+     * Delete a Managed Environment.
+     *
+     * <p>Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -99,7 +113,9 @@ public interface ManagedEnvironments {
     void deleteByResourceGroup(String resourceGroupName, String environmentName);
 
     /**
-     * Delete a Managed Environment if it does not have any container apps.
+     * Delete a Managed Environment.
+     *
+     * <p>Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -112,7 +128,9 @@ public interface ManagedEnvironments {
     void delete(String resourceGroupName, String environmentName, Context context);
 
     /**
-     * Patches a Managed Environment using JSON Merge Patch.
+     * Update Managed Environment's properties.
+     *
+     * <p>Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -125,7 +143,9 @@ public interface ManagedEnvironments {
     void update(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope);
 
     /**
-     * Patches a Managed Environment using JSON Merge Patch.
+     * Update Managed Environment's properties.
+     *
+     * <p>Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
@@ -140,7 +160,75 @@ public interface ManagedEnvironments {
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope, Context context);
 
     /**
-     * Get the properties of a Managed Environment used to host container apps.
+     * Get auth token for a managed environment
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment Auth Token along with {@link Response}.
+     */
+    Response<EnvironmentAuthToken> getAuthTokenWithResponse(
+        String resourceGroupName, String environmentName, Context context);
+
+    /**
+     * Get auth token for a managed environment
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment Auth Token.
+     */
+    EnvironmentAuthToken getAuthToken(String resourceGroupName, String environmentName);
+
+    /**
+     * Get all workload Profile States for a Premium Managed Environment..
+     *
+     * <p>Get all workload Profile States for a Premium Managed Environment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
+     *     PagedIterable}.
+     */
+    PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(String resourceGroupName, String environmentName);
+
+    /**
+     * Get all workload Profile States for a Premium Managed Environment..
+     *
+     * <p>Get all workload Profile States for a Premium Managed Environment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
+     *     PagedIterable}.
+     */
+    PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(
+        String resourceGroupName, String environmentName, Context context);
+
+    /**
+     * Get the properties of a Managed Environment.
+     *
+     * <p>Get the properties of a Managed Environment used to host container apps.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +240,9 @@ public interface ManagedEnvironments {
     ManagedEnvironment getById(String id);
 
     /**
-     * Get the properties of a Managed Environment used to host container apps.
+     * Get the properties of a Managed Environment.
+     *
+     * <p>Get the properties of a Managed Environment used to host container apps.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -165,7 +255,9 @@ public interface ManagedEnvironments {
     Response<ManagedEnvironment> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Managed Environment if it does not have any container apps.
+     * Delete a Managed Environment.
+     *
+     * <p>Delete a Managed Environment if it does not have any container apps.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +268,9 @@ public interface ManagedEnvironments {
     void deleteById(String id);
 
     /**
-     * Delete a Managed Environment if it does not have any container apps.
+     * Delete a Managed Environment.
+     *
+     * <p>Delete a Managed Environment if it does not have any container apps.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
