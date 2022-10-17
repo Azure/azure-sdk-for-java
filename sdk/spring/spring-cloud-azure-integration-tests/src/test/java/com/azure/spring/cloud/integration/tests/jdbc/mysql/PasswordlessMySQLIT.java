@@ -5,6 +5,7 @@ package com.azure.spring.cloud.integration.tests.jdbc.mysql;
 
 import com.azure.cosmos.implementation.guava25.base.Joiner;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Disabled("Disabled until issue #31476 has been fixed!")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {
     String VALUE = "information_schema,db,mysql,performance_schema,sys";
