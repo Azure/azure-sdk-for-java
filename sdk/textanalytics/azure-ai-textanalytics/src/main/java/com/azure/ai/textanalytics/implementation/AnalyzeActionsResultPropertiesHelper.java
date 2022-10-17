@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyActionResult;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
@@ -48,6 +49,9 @@ public final class AnalyzeActionsResultPropertiesHelper {
             IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults);
         void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults);
+        void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                                      IterableStream<ExtractSummaryActionResult> extractSummaryResults);
+
     }
 
     /**
@@ -107,5 +111,10 @@ public final class AnalyzeActionsResultPropertiesHelper {
     public static void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
         accessor.setAbstractiveSummaryResults(analyzeActionsResult, abstractiveSummaryResults);
+    }
+
+    public static void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        accessor.setExtractSummaryResults(analyzeActionsResult, extractSummaryResults);
     }
 }
