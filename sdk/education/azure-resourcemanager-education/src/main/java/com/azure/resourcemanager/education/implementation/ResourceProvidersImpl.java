@@ -24,12 +24,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public void redeemInvitationCode(RedeemRequest parameters) {
-        this.serviceClient().redeemInvitationCode(parameters);
-    }
-
     public Response<Void> redeemInvitationCodeWithResponse(RedeemRequest parameters, Context context) {
         return this.serviceClient().redeemInvitationCodeWithResponse(parameters, context);
+    }
+
+    public void redeemInvitationCode(RedeemRequest parameters) {
+        this.serviceClient().redeemInvitationCode(parameters);
     }
 
     private ResourceProvidersClient serviceClient() {
