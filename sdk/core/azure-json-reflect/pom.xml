@@ -71,6 +71,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.google.code.gson.</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
         <version>2.13.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
@@ -129,8 +135,8 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-          <testSource>1.8</testSource>
-          <testTarget>1.8</testTarget>
+          <testSource>1.5</testSource>
+          <testTarget>1.5</testTarget>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
