@@ -22,6 +22,20 @@ public final class TrafficIncidentViewportOptions {
     }
 
     /**
+     * TrafficIncidentViewportOptions constructor
+     * @param boundingBox Bounding box of the map viewport in EPSG900913 projection. The boundingbox is represented by two value pairs describing it's corners (first pair for lower left corner and second for upper right).
+     * @param boundingZoom Zoom level of the map viewport. Used to determine whether the view can be zoomed in.
+     * @param overviewBox Bounding box of the overview map in EPSG900913 projection.
+     * @param overviewZoom Zoom level of the overview map. If there is no mini map, use the same zoom level as boundingZoom.
+     */
+    public TrafficIncidentViewportOptions(GeoBoundingBox boundingBox, int boundingZoom, GeoBoundingBox overviewBox, int overviewZoom) {
+        this.boundingbox = boundingBox;
+        this.boundingzoom = boundingZoom;
+        this.overviewbox = overviewBox;
+        this.overviewzoom = overviewZoom;
+    }
+
+    /**
      * get bounding box
      * @return GeoBoundingBox
      */

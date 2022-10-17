@@ -20,6 +20,18 @@ public final class TrafficIncidentTileOptions {
     }
 
     /**
+     * TrafficIncidentTileOptions constructor
+     * @param format Desired format of the response. Possible values are png and pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For raster tiles, value must be in the range: 0-22 (inclusive). For vector tiles, value must be in the range: 0-22 (inclusive). 
+     */
+    public TrafficIncidentTileOptions(TileFormat format, TrafficIncidentTileStyle style, int zoom) {
+        this.format = format;
+        this.style = style;
+        this.zoom = zoom;
+    }
+
+    /**
      * get format
      * @return TileFormat
      */
@@ -29,7 +41,7 @@ public final class TrafficIncidentTileOptions {
 
     /**
      * set format
-     * @param tileFormat The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param tileFormat Desired format of the response. Possible values are png and pbf.
      * @return TrafficIncidentTileOptions
      */
     public TrafficIncidentTileOptions setFormat(TileFormat tileFormat) {

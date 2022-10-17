@@ -20,6 +20,18 @@ public final class TrafficFlowTileOptions {
     }
 
     /**
+     * TrafficFlowTileOptions constructor
+     * @param format Desired format of the response. Possible values are png and pbf.
+     * @param style The style to be used to render the tile.
+     * @param zoom Zoom level for the desired tile.
+     */
+    public TrafficFlowTileOptions(TileFormat format, TrafficFlowTileStyle style, int zoom) {
+        this.format = format;
+        this.style = style;
+        this.zoom = zoom;
+    }
+
+    /**
      * gets format
      * @return TileFormat
      */

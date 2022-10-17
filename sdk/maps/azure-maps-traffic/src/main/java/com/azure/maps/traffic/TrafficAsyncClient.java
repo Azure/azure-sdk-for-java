@@ -381,7 +381,7 @@ public final class TrafficAsyncClient {
             options.getIncidentDetailStyle(),
             Utility.toBoundingBox(options.getBoundingBox()),
             options.getBoundingZoom(),
-            options.getTrafficmodelid(),
+            options.getTrafficIncidentDetailTrafficModelId(),
             options.getLanguage(),
             options.getProjectionStandard(),
             options.getIncidentGeometryType(),

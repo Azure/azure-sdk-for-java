@@ -23,6 +23,18 @@ public final class TrafficFlowSegmentOptions {
     }
 
     /**
+     * Constructor for TrafficFlowSegmentOptions
+     * @param style The style to be used to render the tile.
+     * @param zoom Zoom level for the desired tile.
+     * @param coordinates Coordinates of the point close to the road segment. This parameter is a list of four coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326 projection.
+     */
+    public TrafficFlowSegmentOptions(TrafficFlowSegmentStyle style, int zoom, GeoPosition coordinates) {
+        this.style = style;
+        this.zoom = zoom;
+        this.coordinates = coordinates;
+    }
+
+    /**
      * get TrafficFlowSegmentStyle
      * @return TrafficFlowSegmentStyle
      */

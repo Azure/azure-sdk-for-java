@@ -26,6 +26,20 @@ public final class TrafficIncidentDetailOptions {
     }
 
     /**
+     * TrafficIncidentDetailOptions constructor
+     * @param boundingBox The boundingbox is represented by two value pairs describing it's corners (first pair for lower left corner and second for upper right).
+     * @param style The style that will be used to render the tile in Traffic Incident Tile API.
+     * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles
+     * @param trafficModelId Number referencing traffic model. This can be obtained from the Viewport API.
+     */
+    public TrafficIncidentDetailOptions(GeoBoundingBox boundingBox, IncidentDetailStyle style, int boundingZoom, String trafficModelId) {
+        this.boundingbox = boundingBox;
+        this.style = style;
+        this.boundingZoom = boundingZoom;
+        this.trafficmodelid = trafficModelId;
+    }
+
+    /**
      * get incident detail style
      * @return IncidentDetailStyle
      */
@@ -83,7 +97,7 @@ public final class TrafficIncidentDetailOptions {
      * get traffic model id
      * @return String
      */
-    public String getTrafficmodelid() {
+    public String getTrafficIncidentDetailTrafficModelId() {
         return trafficmodelid;
     }
 
