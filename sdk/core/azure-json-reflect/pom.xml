@@ -160,6 +160,9 @@
     </profile>
     <profile>
       <id>ver-new</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
 
       <dependencies>
         <dependency>
