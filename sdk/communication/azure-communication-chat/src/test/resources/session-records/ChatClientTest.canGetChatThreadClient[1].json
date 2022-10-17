@@ -1,79 +1,115 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.1.8 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "65ecf2a6-460b-46a5-bb83-a93857e28560",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (11.0.12; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "51770a14-7c11-4d3f-a38c-ed60b4fd0f04",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-azure-ref" : "20220504T003036Z-3knzm6g59904z2v1e8tfw6gqqn000000060g0000000089s5",
+      "content-length" : "998",
+      "X-Azure-ExternalError" : "0x80072ee2,OriginTimeout",
+      "Cache-Control" : "no-store",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "096lNYwAAAABw9Xikl0gaR534dSCadozPUFJHMDFFREdFMDkxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "503",
+      "Body" : "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head><meta content='text/html; charset=utf-8' http-equiv='content-type'/><style type='text/css'>body {font-family:Arial; margin-left:40px; }img  { border:0 none; }#content { margin-left: auto; margin-right: auto }#message h2 { font-size: 20px; font-weight: normal; color: #000000; margin: 34px 0px 0px 0px }#message p  { font-size: 13px; color: #000000; margin: 7px 0px 0px0px}#errorref { font-size: 11px; color: #737373; margin-top: 41px }</style><title>Service unavailable</title></head><body><div id='content'><div id='message'><h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p></div><div id='errorref'><span>096lNYwAAAABw9Xikl0gaR534dSCadozPUFJHMDFFREdFMDkxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=</span></div></div></body></html>",
+      "Date" : "Mon, 17 Oct 2022 19:16:25 GMT",
+      "Content-Type" : "text/html"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (11.0.12; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "51770a14-7c11-4d3f-a38c-ed60b4fd0f04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "998",
+      "X-Azure-ExternalError" : "0x80072ee2,OriginTimeout",
+      "Cache-Control" : "no-store",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0C6pNYwAAAADGMvlByOHyQ56xDjHeM9fJUFJHMDFFREdFMDkxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "503",
+      "Body" : "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns='http://www.w3.org/1999/xhtml'><head><meta content='text/html; charset=utf-8' http-equiv='content-type'/><style type='text/css'>body {font-family:Arial; margin-left:40px; }img  { border:0 none; }#content { margin-left: auto; margin-right: auto }#message h2 { font-size: 20px; font-weight: normal; color: #000000; margin: 34px 0px 0px 0px }#message p  { font-size: 13px; color: #000000; margin: 7px 0px 0px0px}#errorref { font-size: 11px; color: #737373; margin-top: 41px }</style><title>Service unavailable</title></head><body><div id='content'><div id='message'><h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p></div><div id='errorref'><span>0C6pNYwAAAADGMvlByOHyQ56xDjHeM9fJUFJHMDFFREdFMDkxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=</span></div></div></body></html>",
+      "Date" : "Mon, 17 Oct 2022 19:16:46 GMT",
+      "Content-Type" : "text/html"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (11.0.12; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "51770a14-7c11-4d3f-a38c-ed60b4fd0f04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "101",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01",
-      "Connection" : "keep-alive",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 04 May 2022 00:30:36 GMT",
+      "Date" : "Mon, 17 Oct 2022 19:16:49 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "88ms",
-      "MS-CV" : "66HBHn2APEuub6imHl5tgg.0",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000011-2c5b-9eb6-92fd-8b3a0d002907\"}}",
-      "x-ms-client-request-id" : "65ecf2a6-460b-46a5-bb83-a93857e28560",
+      "X-Processing-Time" : "95ms",
+      "MS-CV" : "lfjBvUfcwUGVDDCDmxI11g.2.0",
+      "X-Azure-Ref" : "0IKpNYwAAAAD/XXyr0KjpTaulm+dqJgZZUFJHMDFFREdFMDkxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000014-8742-353b-fa5d-573a0d002ebd\"}}",
+      "x-ms-client-request-id" : "51770a14-7c11-4d3f-a38c-ed60b4fd0f04",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.1.8 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c8eaed2a-e006-431d-b6b6-68c1b79645cf",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (11.0.12; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "29d74bc6-e24c-4847-8601-13b9983b6181",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-azure-ref" : "20220504T003038Z-5xztuf8fxp5hdd50m87cxsb53s00000005zg00000000df97",
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "101",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01",
-      "Connection" : "keep-alive",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 04 May 2022 00:30:39 GMT",
+      "Date" : "Mon, 17 Oct 2022 19:16:48 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "89ms",
-      "MS-CV" : "biJY0Zbs9k278ASzgakHwg.0",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000011-2c5b-a04a-80f5-8b3a0d0025c0\"}}",
-      "x-ms-client-request-id" : "c8eaed2a-e006-431d-b6b6-68c1b79645cf",
+      "X-Processing-Time" : "109ms",
+      "MS-CV" : "D06UJMEYpkC19QJd9h6d7w.2.0",
+      "X-Azure-Ref" : "0IapNYwAAAADOgTwJBbIGR7zsboiD2P8gUFJHMDFFREdFMDkxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000014-8742-36d1-655d-573a0d002a8a\"}}",
+      "x-ms-client-request-id" : "29d74bc6-e24c-4847-8601-13b9983b6181",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000011-2c5b-9eb6-92fd-8b3a0d002907/:issueAccessToken?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:357e39d2-a29a-4bf6-88cc-fda0afc2c0ed_00000014-8742-353b-fa5d-573a0d002ebd/:issueAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.1.8 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7766f736-4119-4fdb-8562-e51ded3bc36c",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (11.0.12; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "ef2a377d-f5ff-4027-b222-bb00ecde33e7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-azure-ref" : "20220504T003036Z-3knzm6g59904z2v1e8tfw6gqqn000000060g0000000089yq",
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "804",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01",
-      "Connection" : "keep-alive",
+      "content-length" : "850",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 04 May 2022 00:30:37 GMT",
-      "Accept-Ranges" : "bytes",
+      "Date" : "Mon, 17 Oct 2022 19:16:49 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "159ms",
-      "MS-CV" : "p5JYzHza+EGbkXUoha8OmQ.0",
-      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2022-05-05T00:30:47.0550465+00:00\"}",
-      "x-ms-client-request-id" : "7766f736-4119-4fdb-8562-e51ded3bc36c",
+      "X-Processing-Time" : "166ms",
+      "MS-CV" : "H1bJd7avXkODksMK48VXhw.2.0",
+      "X-Azure-Ref" : "0IapNYwAAAAB+MbcGr33iS46rWTJ4IPyGUFJHMDFFREdFMDkxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2022-10-18T19:16:49.9748122+00:00\"}",
+      "x-ms-client-request-id" : "ef2a377d-f5ff-4027-b222-bb00ecde33e7",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
