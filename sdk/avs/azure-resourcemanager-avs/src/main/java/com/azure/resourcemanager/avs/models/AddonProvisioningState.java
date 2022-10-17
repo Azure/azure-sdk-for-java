@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AddonProvisioningState. */
+/** The state of the addon provisioning. */
 public final class AddonProvisioningState extends ExpandableStringEnum<AddonProvisioningState> {
     /** Static value Succeeded for AddonProvisioningState. */
     public static final AddonProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -28,6 +28,9 @@ public final class AddonProvisioningState extends ExpandableStringEnum<AddonProv
     /** Static value Updating for AddonProvisioningState. */
     public static final AddonProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for AddonProvisioningState. */
+    public static final AddonProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a AddonProvisioningState from its string representation.
      *
@@ -39,7 +42,11 @@ public final class AddonProvisioningState extends ExpandableStringEnum<AddonProv
         return fromString(name, AddonProvisioningState.class);
     }
 
-    /** @return known AddonProvisioningState values. */
+    /**
+     * Gets known AddonProvisioningState values.
+     *
+     * @return known AddonProvisioningState values.
+     */
     public static Collection<AddonProvisioningState> values() {
         return values(AddonProvisioningState.class);
     }

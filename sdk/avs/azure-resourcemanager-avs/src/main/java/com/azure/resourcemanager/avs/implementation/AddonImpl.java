@@ -30,6 +30,10 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AddonInner innerModel() {
         return this.innerObject;
     }

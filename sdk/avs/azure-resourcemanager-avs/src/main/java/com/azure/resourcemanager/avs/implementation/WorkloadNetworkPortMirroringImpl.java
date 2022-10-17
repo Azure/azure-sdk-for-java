@@ -59,6 +59,10 @@ public final class WorkloadNetworkPortMirroringImpl
         return this.innerModel().revision();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkPortMirroringInner innerModel() {
         return this.innerObject;
     }

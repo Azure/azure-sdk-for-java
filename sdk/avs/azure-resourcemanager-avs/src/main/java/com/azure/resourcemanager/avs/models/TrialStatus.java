@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrialStatus. */
+/** Trial status. */
 public final class TrialStatus extends ExpandableStringEnum<TrialStatus> {
     /** Static value TrialAvailable for TrialStatus. */
     public static final TrialStatus TRIAL_AVAILABLE = fromString("TrialAvailable");
@@ -30,7 +30,11 @@ public final class TrialStatus extends ExpandableStringEnum<TrialStatus> {
         return fromString(name, TrialStatus.class);
     }
 
-    /** @return known TrialStatus values. */
+    /**
+     * Gets known TrialStatus values.
+     *
+     * @return known TrialStatus values.
+     */
     public static Collection<TrialStatus> values() {
         return values(TrialStatus.class);
     }

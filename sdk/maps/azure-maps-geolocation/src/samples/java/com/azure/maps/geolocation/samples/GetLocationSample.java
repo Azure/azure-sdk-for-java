@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.maps.geolocation.GeoLocationAsyncClient;
-import com.azure.maps.geolocation.GeoLocationClient;
-import com.azure.maps.geolocation.GeoLocationClientBuilder;
+import com.azure.maps.geolocation.GeolocationAsyncClient;
+import com.azure.maps.geolocation.GeolocationClient;
+import com.azure.maps.geolocation.GeolocationClientBuilder;
 
 public class GetLocationSample {
     public static void main(String[] args) throws IOException {
@@ -22,7 +22,7 @@ public class GetLocationSample {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a client
-        GeoLocationClient client = new GeoLocationClientBuilder()
+        GeolocationClient client = new GeolocationClientBuilder()
             .credential(tokenCredential)
             .clientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -45,7 +45,7 @@ public class GetLocationSample {
         DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a async client
-        GeoLocationAsyncClient asyncClient = new GeoLocationClientBuilder()
+        GeolocationAsyncClient asyncClient = new GeolocationClientBuilder()
             .credential(asyncClientTokenCredential)
             .buildAsyncClient();
 

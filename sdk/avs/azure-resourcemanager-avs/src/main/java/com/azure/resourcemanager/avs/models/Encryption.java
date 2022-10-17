@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of customer managed encryption key. */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
      * Status of customer managed encryption key
      */
@@ -25,6 +21,10 @@ public final class Encryption {
      */
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionKeyVaultProperties keyVaultProperties;
+
+    /** Creates an instance of Encryption class. */
+    public Encryption() {
+    }
 
     /**
      * Get the status property: Status of customer managed encryption key.

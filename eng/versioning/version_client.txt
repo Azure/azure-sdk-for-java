@@ -41,7 +41,7 @@ com.azure:azure-ai-formrecognizer;4.0.1;4.1.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-metricsadvisor;1.1.7;1.1.8
+com.azure:azure-ai-metricsadvisor;1.1.8;1.2.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-textanalytics;5.2.1;5.3.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -57,7 +57,7 @@ com.azure:azure-aot-graalvm-support;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-aot-graalvm-support-netty;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-chat;1.3.1;1.3.2
+com.azure:azure-communication-chat;1.3.2;1.4.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-callautomation;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-common;1.2.2;1.3.0-beta.2
@@ -106,7 +106,7 @@ com.azure:azure-identity;1.6.1;1.7.0-beta.3
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-maps-elevation;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-maps-elevation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-timezone;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-geolocation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-render;1.0.0-beta.1;1.0.0-beta.2
@@ -116,8 +116,8 @@ com.azure:azure-json;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-json-gson;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventgrid;4.12.3;4.13.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.13.1;5.14.0
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.15.1;1.16.0
+com.azure:azure-messaging-eventhubs;5.14.0;5.15.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.16.0;1.17.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -288,7 +288,7 @@ com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.6;1.
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-avs;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-avs;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0-beta.2;1.0.0-beta.3
@@ -349,7 +349,7 @@ com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-loadtestservice;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-loadtestservice;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-securityinsights;1.0.0-beta.4;1.0.0-beta.5
@@ -367,7 +367,7 @@ com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0-beta.1;
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-deviceupdate;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-machinelearning;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-networkfunction;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0-beta.1;1.0.0-beta.2
@@ -391,7 +391,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-ai-formrecognizer;4.0.0
 unreleased_com.azure:azure-identity;1.7.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current

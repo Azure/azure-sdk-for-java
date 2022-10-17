@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Credential")
 @Fluent
 public final class PSCredentialExecutionParameter extends ScriptExecutionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PSCredentialExecutionParameter.class);
-
     /*
      * username for login
      */
@@ -29,6 +25,10 @@ public final class PSCredentialExecutionParameter extends ScriptExecutionParamet
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of PSCredentialExecutionParameter class. */
+    public PSCredentialExecutionParameter() {
+    }
 
     /**
      * Get the username property: username for login.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QuotaEnabled. */
+/** Host quota is active for current subscription. */
 public final class QuotaEnabled extends ExpandableStringEnum<QuotaEnabled> {
     /** Static value Enabled for QuotaEnabled. */
     public static final QuotaEnabled ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class QuotaEnabled extends ExpandableStringEnum<QuotaEnabled> {
         return fromString(name, QuotaEnabled.class);
     }
 
-    /** @return known QuotaEnabled values. */
+    /**
+     * Gets known QuotaEnabled values.
+     *
+     * @return known QuotaEnabled values.
+     */
     public static Collection<QuotaEnabled> values() {
         return values(QuotaEnabled.class);
     }
