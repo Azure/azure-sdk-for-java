@@ -60,7 +60,7 @@
     "**src/**/samples/**/*.json",
     "**/src/**/samples/**/*.ipynb",
     "**/sdk/**/swagger/**",
-    "**/src/**/resources/**"
+    "**/src/**/resources/**",
     "sdk/aot/azure-aot-graalvm-samples/**",
     "sdk/agrifood/azure-verticals-agrifood-farming/**",
     "sdk/advisor/azure-resourcemanager-advisor/**",
