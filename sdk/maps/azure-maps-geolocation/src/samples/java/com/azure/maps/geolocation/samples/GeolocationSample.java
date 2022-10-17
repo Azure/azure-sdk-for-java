@@ -6,18 +6,18 @@ package com.azure.maps.geolocation.samples;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.maps.geolocation.GeoLocationAsyncClient;
-import com.azure.maps.geolocation.GeoLocationClient;
-import com.azure.maps.geolocation.GeoLocationClientBuilder;
+import com.azure.maps.geolocation.GeolocationAsyncClient;
+import com.azure.maps.geolocation.GeolocationClient;
+import com.azure.maps.geolocation.GeolocationClientBuilder;
 
-public class GeoLocationSample {
-    public GeoLocationClient createGeoLocationSyncClientUsingAzureKeyCredential() {
+public class GeolocationSample {
+    public GeolocationClient createGeoLocationSyncClientUsingAzureKeyCredential() {
         // BEGIN: com.azure.maps.geolocation.sync.builder.key.instantiation
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates a client
-        GeoLocationClient client = new GeoLocationClientBuilder()
+        GeolocationClient client = new GeolocationClientBuilder()
             .credential(keyCredential)
             .buildClient();
         // END: com.azure.maps.geolocation.sync.builder.key.instantiation
@@ -25,14 +25,14 @@ public class GeoLocationSample {
         return client;
     }
 
-    public GeoLocationClient createGeoLocationSyncClientUsingAzureADCredential() {
+    public GeolocationClient createGeoLocationSyncClientUsingAzureADCredential() {
         // BEGIN: com.azure.maps.geolocation.sync.builder.ad.instantiation
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a client
-        GeoLocationClient client = new GeoLocationClientBuilder()
+        GeolocationClient client = new GeolocationClientBuilder()
             .credential(tokenCredential)
             .clientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -41,13 +41,13 @@ public class GeoLocationSample {
         return client;
     }
 
-    public GeoLocationAsyncClient createGeoLocationAsyncClientUsingAzureKeyCredential() {
+    public GeolocationAsyncClient createGeoLocationAsyncClientUsingAzureKeyCredential() {
         // BEGIN: com.azure.maps.geolocation.async.builder.key.instantiation
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates an async client
-        GeoLocationAsyncClient asyncClient = new GeoLocationClientBuilder()
+        GeolocationAsyncClient asyncClient = new GeolocationClientBuilder()
             .credential(keyCredential)
             .buildAsyncClient();
         // END: com.azure.maps.geolocation.async.builder.key.instantiation
@@ -55,14 +55,14 @@ public class GeoLocationSample {
         return asyncClient;
     }
 
-    public GeoLocationAsyncClient createGeoLocationAsyncClientUsingAzureADCredential() {
+    public GeolocationAsyncClient createGeoLocationAsyncClientUsingAzureADCredential() {
         // BEGIN: com.azure.maps.geolocation.async.builder.ad.instantiation
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates an async client
-        GeoLocationAsyncClient asyncClient = new GeoLocationClientBuilder()
+        GeolocationAsyncClient asyncClient = new GeolocationClientBuilder()
             .credential(tokenCredential)
             .buildAsyncClient();
         // END: com.azure.maps.geolocation.async.builder.ad.instantiation

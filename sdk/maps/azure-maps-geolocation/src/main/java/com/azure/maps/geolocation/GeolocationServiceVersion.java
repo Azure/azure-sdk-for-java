@@ -8,7 +8,7 @@ import com.azure.core.util.ServiceVersion;
 /**
  * Contains the versions of the GeoLocation Service available for the clients.
  */
-public enum GeoLocationServiceVersion implements ServiceVersion {
+public enum GeolocationServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 1.0}.
      */
@@ -17,20 +17,20 @@ public enum GeoLocationServiceVersion implements ServiceVersion {
     private final String version;
 
     /**
-     * Creates a new {@link GeoLocationServiceVersion} with a version string.
+     * Creates a new {@link GeolocationServiceVersion} with a version string.
      *
      * @param version the version string
      */
-    GeoLocationServiceVersion(String version) {
+    GeolocationServiceVersion(String version) {
         this.version = version;
     }
 
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link GeoLocationServiceVersion}
+     * @return the latest {@link GeolocationServiceVersion}
      */
-    public static GeoLocationServiceVersion getLatest() {
+    public static GeolocationServiceVersion getLatest() {
         return V1_0;
     }
 

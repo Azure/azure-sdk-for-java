@@ -16,7 +16,7 @@ import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 import com.azure.maps.geolocation.implementation.models.JsonFormat;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous GeoLocationClient type. 
+/** Initializes a new instance of the asynchronous GeolocationClient type. 
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.geolocation.async.builder.key.instantiation -->
 * <pre>
@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
 *
 * &#47;&#47; Creates an async client
-* GeoLocationAsyncClient asyncClient = new GeoLocationClientBuilder&#40;&#41;
+* GeolocationAsyncClient asyncClient = new GeolocationClientBuilder&#40;&#41;
 *     .credential&#40;keyCredential&#41;
 *     .buildAsyncClient&#40;&#41;;
 * </pre>
@@ -37,14 +37,14 @@ import reactor.core.publisher.Mono;
 * DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
 *
 * &#47;&#47; Creates an async client
-* GeoLocationAsyncClient asyncClient = new GeoLocationClientBuilder&#40;&#41;
+* GeolocationAsyncClient asyncClient = new GeolocationClientBuilder&#40;&#41;
 *     .credential&#40;tokenCredential&#41;
 *     .buildAsyncClient&#40;&#41;;
 * </pre>
 * <!-- end com.azure.maps.geolocation.async.builder.ad.instantiation -->
 */
-@ServiceClient(builder = GeoLocationClientBuilder.class, isAsync = true)
-public final class GeoLocationAsyncClient {
+@ServiceClient(builder = GeolocationClientBuilder.class, isAsync = true)
+public final class GeolocationAsyncClient {
     private final GeolocationsImpl serviceClient;
 
     /**
@@ -52,7 +52,7 @@ public final class GeoLocationAsyncClient {
      *
      * @param serviceClient the service client implementation.
      */
-    GeoLocationAsyncClient(GeolocationsImpl serviceClient) {
+    GeolocationAsyncClient(GeolocationsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
