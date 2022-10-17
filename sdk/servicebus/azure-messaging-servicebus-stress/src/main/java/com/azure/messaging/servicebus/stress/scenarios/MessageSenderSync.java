@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.stress.scenarios;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * Test ServiceBusSenderClient
+ */
 @Service("MessageSenderSync")
 public class MessageSenderSync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageReceiver.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSenderSync.class);
 
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
@@ -37,12 +40,12 @@ public class MessageSenderSync extends ServiceBusScenario {
             topicName = options.getServicebusTopicName();
         }
 
-        ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
+        ServiceBusSenderClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
             .queueName(queueName)
             .topicName(topicName)
-            .buildAsyncClient();
+            .buildClient();
 
         for (long i = 0; i < sendTimes; i++) {
             List<ServiceBusMessage> eventDataList = new ArrayList<>();

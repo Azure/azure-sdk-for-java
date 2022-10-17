@@ -21,5 +21,8 @@ public abstract class ServiceBusScenario {
     @Autowired
     protected RateMeter rateMeter;
 
+    /**
+     * Run test scenario
+     */
     public abstract void run();
 }

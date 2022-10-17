@@ -4,11 +4,8 @@
 package com.azure.messaging.servicebus.stress.util;
 
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 @Configuration
 public class ScenarioOptions {

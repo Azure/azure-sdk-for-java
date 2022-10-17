@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
+/**
+ * Test ServiceBusReceiverClient
+ */
 @Service("MessageReceiverSync")
 public class MessageReceiverSync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverSync.class);

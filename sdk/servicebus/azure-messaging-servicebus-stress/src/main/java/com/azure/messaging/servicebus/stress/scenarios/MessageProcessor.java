@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
+/**
+ *  Test ServiceBusProcessorClient
+ */
 @Service("MessageProcessor")
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
@@ -51,7 +54,6 @@ public class MessageProcessor extends ServiceBusScenario {
             .disableAutoComplete()
             .prefetchCount(prefetchCount)
             .processMessage(messageContext -> {
-                System.out.printf("messageProcessor %s%n", messageContext.getMessage().getLockToken());
                 LOGGER.info("Before complete. messageId: {}, lockToken: {}",
                     messageContext.getMessage().getMessageId(),
                     messageContext.getMessage().getLockToken());

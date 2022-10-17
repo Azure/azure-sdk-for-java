@@ -3,10 +3,9 @@
 
 package com.azure.messaging.servicebus.stress.config;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,19 +22,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Send metric telemetry periodically
  */
 public class RateMeter {
-    private static final Logger logger = LoggerFactory.getLogger(RateMeter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RateMeter.class);
 
     private final Map<String, AtomicInteger> rateMap = new ConcurrentHashMap<>();
     private final TelemetryClient telemetryClient;
     private final Duration periodicDuration;
     private final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
 
+    /**
+     * Constructor to create RateMeter
+     *
+     * @param telemetryClient The client to send metric telemetry
+     * @param periodicDuration The sending period
+     */
     public RateMeter(TelemetryClient telemetryClient, Duration periodicDuration) {
         this.telemetryClient = telemetryClient;
         this.periodicDuration = periodicDuration;
         this.runMetrics();
     }
 
+    /**
+     * Add count for specific key
+     *
+     * @param key The key to add count
+     * @param count The count to be added
+     */
     public void add(String key, int count) {
         rateMap.computeIfAbsent(key, name -> new AtomicInteger(0));
         rateMap.get(key).addAndGet(count);
@@ -52,7 +63,7 @@ public class RateMeter {
                 metricTelemetryList.add(metricTelemetry);
             });
             metricTelemetryList.forEach(metricTelemetry -> {
-                logger.info("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
+                LOGGER.info("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
                 telemetryClient.trackMetric(metricTelemetry);
             });
         }, periodicDuration.toMillis(), periodicDuration.toMillis(), TimeUnit.MILLISECONDS);

@@ -17,9 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * Test ServiceBusSenderClient and send session messages
+ */
 @Service("MessageSessionSenderSync")
 public class MessageSessionSenderSync extends ServiceBusScenario {
-    private final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderSync.class);
 
     @Value("${SEND_TIMES:100000}")
     private int sendTimes;
