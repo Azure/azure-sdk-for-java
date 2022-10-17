@@ -20,10 +20,10 @@ import java.util.stream.IntStream;
  */
 @Service("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    @Value("${SEND_TIMES:0}")
+    @Value("${SEND_TIMES:100000000}")
     private int sendTimes;
 
-    @Value("${SEND_MESSAGES:1}")
+    @Value("${SEND_MESSAGES:100}")
     private int messagesToSend;
 
     @Override
