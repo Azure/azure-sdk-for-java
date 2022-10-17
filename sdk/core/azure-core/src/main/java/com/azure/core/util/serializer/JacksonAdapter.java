@@ -21,13 +21,11 @@ import java.security.PrivilegedExceptionAction;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
-    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
     private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
 
     private static boolean useAccessHelper;
@@ -37,13 +35,40 @@ public class JacksonAdapter implements SerializerAdapter {
             .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
+    // Enum Singleton Pattern
+    private enum GlobalXmlMapper {
+        XML_MAPPER(ObjectMapperShim.createXmlMapper());
+
+        private final ObjectMapperShim xmlMapper;
+
+        GlobalXmlMapper(ObjectMapperShim xmlMapper) {
+            this.xmlMapper = xmlMapper;
+        }
+
+        private ObjectMapperShim getXmlMapper() {
+            return xmlMapper;
+        }
+    }
+
+    private enum GlobalSerializerAdapter {
+        SERIALIZER_ADAPTER(new JacksonAdapter());
+
+        private final SerializerAdapter serializerAdapter;
+
+        GlobalSerializerAdapter(SerializerAdapter serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+        }
+
+        private SerializerAdapter getSerializerAdapter() {
+            return serializerAdapter;
+        }
+    }
+
     /**
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
      */
     private final ObjectMapperShim mapper;
     private final ObjectMapperShim headerMapper;
-
-    private volatile ObjectMapperShim xmlMapper;
 
     /**
      * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
@@ -105,20 +130,13 @@ public class JacksonAdapter implements SerializerAdapter {
         return rawInnerMapper;
     }
 
-    private static final class SerializerAdapterHolder {
-        /*
-         * The lazily-created serializer for this ServiceClient.
-         */
-        private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
-    }
-
     /**
      * maintain singleton instance of the default serializer adapter.
      *
      * @return the default serializer
      */
     public static SerializerAdapter createDefaultSerializerAdapter() {
-        return SerializerAdapterHolder.SERIALIZER_ADAPTER;
+        return GlobalSerializerAdapter.SERIALIZER_ADAPTER.getSerializerAdapter();
     }
 
     /**
@@ -179,7 +197,7 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             return (String) useAccessHelper(() -> {
                 try {
-                    return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
+                    return removeLeadingAndTrailingQuotes(serialize(object, SerializerEncoding.JSON));
                 } catch (IOException ex) {
                     LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
                     return null;
@@ -188,6 +206,42 @@ public class JacksonAdapter implements SerializerAdapter {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    /*
+     * Used by 'serializeRaw' to removal all leading and trailing quotes (").
+     */
+    static String removeLeadingAndTrailingQuotes(String str) {
+        int strLength = str.length();
+
+        // Continue incrementing the start offset until a non-quote character is found.
+        int startOffset = 0;
+        while (startOffset < strLength) {
+            if (str.charAt(startOffset) != '"') {
+                break;
+            }
+
+            startOffset++;
+        }
+
+        // All characters were quotes, early out return an empty string.
+        if (startOffset == strLength) {
+            return "";
+        }
+
+        // Continue decrementing the end offset until a non-quote character is found.
+        int endOffset = strLength - 1;
+        while (endOffset >= 0) {
+            if (str.charAt(endOffset) != '"') {
+                break;
+            }
+
+            endOffset--;
+        }
+
+        // Return the substring range.
+        // Remember to add one to the end offset as it's exclusive.
+        return str.substring(startOffset, endOffset + 1);
     }
 
     @Override
@@ -249,15 +303,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     private ObjectMapperShim getXmlMapper() {
-        if (xmlMapper == null) {
-            synchronized (mapper) {
-                if (xmlMapper == null) {
-                    xmlMapper = ObjectMapperShim.createXmlMapper();
-                }
-            }
-        }
-
-        return xmlMapper;
+        return GlobalXmlMapper.XML_MAPPER.getXmlMapper();
     }
 
     @SuppressWarnings("removal")
