@@ -4,6 +4,7 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
@@ -19,10 +20,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.BiConsumer;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
  */
 public final class FluxByteBufferContent extends BinaryDataContent {
+    private static final ClientLogger LOGGER = new ClientLogger(FluxByteBufferContent.class);
 
     private final Flux<ByteBuffer> content;
     private final AtomicReference<FluxByteBufferContent> cachedReplayableContent = new AtomicReference<>();
@@ -149,6 +153,10 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
+        if (length != null && length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
         return FluxUtil.collectBytesInByteBufferStream(content)
                 // this doesn't seem to be working (newBoundedElastic() didn't work either)
                 // .publishOn(Schedulers.boundedElastic())

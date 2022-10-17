@@ -397,6 +397,10 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     * <p>
+     * If {@code bufferContent} is true and {@code length} is null the length of the returned {@link BinaryData} will be
+     * based on the length calculated by buffering. If {@code length} is non-null it will always be used as the
+     * {@link BinaryData} length even if buffering determines a different length.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -436,20 +440,19 @@ public final class BinaryData {
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        if (bufferContent && length != null && length > MAX_ARRAY_SIZE) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                String.format("'length' cannot be greater than %d when content buffering is enabled.",
-                    MAX_ARRAY_SIZE)));
+
+        if (!bufferContent) {
+            return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
         }
-        if (bufferContent) {
-            // Buffer the Flux<ByteBuffer> content using ByteBuffers of equal size to the original ByteBuffer.
-            // Previously this was using FluxUtil.collectBytesInByteBufferStream which runs into two issues:
-            //
-            // 1. The content is limited in size as it collects into a byte array which is limited to ~2GB in size.
-            // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
-            //    arrays.
-            long[] trueLength = new long[]{0};
-            return data.map(buffer -> {
+
+        // Buffer the Flux<ByteBuffer> content using ByteBuffers of equal size to the original ByteBuffer.
+        // Previously this was using FluxUtil.collectBytesInByteBufferStream which runs into two issues:
+        //
+        // 1. The content is limited in size as it collects into a byte array which is limited to ~2GB in size.
+        // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
+        //    arrays.
+        long[] trueLength = new long[]{0};
+        return data.map(buffer -> {
                 int bufferSize = buffer.remaining();
                 ByteBuffer copy = ByteBuffer.allocate(bufferSize);
                 trueLength[0] += bufferSize;
@@ -462,12 +465,9 @@ public final class BinaryData {
             .map(buffers -> {
                 // TODO (alzimmer): What should be done when length != null but it differs from the true length
                 //  seen when doing the buffering.
-                return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers)
-                    .map(ByteBuffer::duplicate), (length != null) ? length : trueLength[0], true));
+                return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
+                    (length != null) ? length : trueLength[0], true));
             });
-        } else {
-            return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
-        }
     }
 
     /**
@@ -883,13 +883,19 @@ public final class BinaryData {
     }
 
     /**
-     * Returns a byte array representation of this {@link BinaryData}. This method returns a reference to the underlying
-     * byte array. Modifying the contents of the returned byte array will also change the content of this BinaryData
-     * instance. If the content source of this BinaryData instance is a file, an Inputstream or a
-     * {@code Flux<ByteBuffer>} the source is not modified. To safely update the byte array, it is recommended to make a
-     * copy of the contents first.
+     * Returns a byte array representation of this {@link BinaryData}.
+     * <p>
+     * This method returns a reference to the underlying byte array. Modifying the contents of the returned byte array
+     * may change the content of this BinaryData instance. If the content source of this BinaryData instance is a file,
+     * an {@link InputStream}, or a {@code Flux<ByteBuffer>} the source is not modified. To safely update the byte
+     * array, it is recommended to make a copy of the contents first.
+     * <p>
+     * If the {@link BinaryData} is larger than the maximum size allowed for a {@code byte[]} this will throw an
+     * {@link IllegalStateException}.
      *
      * @return A byte array representing this {@link BinaryData}.
+     * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
+     * {@code byte[]}.
      */
     public byte[] toBytes() {
         return content.toBytes();
@@ -898,8 +904,13 @@ public final class BinaryData {
     /**
      * Returns a {@link String} representation of this {@link BinaryData} by converting its data using the UTF-8
      * character set. A new instance of String is created each time this method is called.
+     * <p>
+     * If the {@link BinaryData} is larger than the maximum size allowed for a {@link String} this will throw an
+     * {@link IllegalStateException}.
      *
      * @return A {@link String} representing this {@link BinaryData}.
+     * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
+     * {@link String}.
      */
     public String toString() {
         return content.toString();

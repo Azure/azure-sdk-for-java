@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  */
 public final class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final Path file;
     private final int chunkSize;
     private final long position;
@@ -138,11 +137,10 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        if (length > Integer.MAX_VALUE) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                String.format("'length' cannot be greater than %d when mapping file to ByteBuffer.",
-                    Integer.MAX_VALUE)));
+        if (length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
+
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
@@ -203,10 +201,9 @@ public final class FileContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                String.format("'length' cannot be greater than %d when buffering content.",
-                    MAX_ARRAY_SIZE)));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
+
         try (InputStream is = this.toStream()) {
             byte[] bytes = new byte[(int) length];
             int pendingBytes = bytes.length;
