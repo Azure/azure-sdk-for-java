@@ -562,25 +562,6 @@ public final class GrantsClientImpl implements GrantsClient {
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
-     * @param includeAllocatedBudget May be used to include information about budget that has been allocated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details for a specific grant linked to the provided billing account and billing profile on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GrantDetailsInner> getAsync(
-        String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget) {
-        return getWithResponseAsync(billingAccountName, billingProfileName, includeAllocatedBudget)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -592,22 +573,6 @@ public final class GrantsClientImpl implements GrantsClient {
         final Boolean includeAllocatedBudget = null;
         return getWithResponseAsync(billingAccountName, billingProfileName, includeAllocatedBudget)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get details for a specific grant linked to the provided billing account and billing profile.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details for a specific grant linked to the provided billing account and billing profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GrantDetailsInner get(String billingAccountName, String billingProfileName) {
-        final Boolean includeAllocatedBudget = null;
-        return getAsync(billingAccountName, billingProfileName, includeAllocatedBudget).block();
     }
 
     /**
@@ -630,9 +595,26 @@ public final class GrantsClientImpl implements GrantsClient {
     }
 
     /**
+     * Get details for a specific grant linked to the provided billing account and billing profile.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details for a specific grant linked to the provided billing account and billing profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GrantDetailsInner get(String billingAccountName, String billingProfileName) {
+        final Boolean includeAllocatedBudget = null;
+        return getWithResponse(billingAccountName, billingProfileName, includeAllocatedBudget, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,7 +649,8 @@ public final class GrantsClientImpl implements GrantsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -703,7 +686,8 @@ public final class GrantsClientImpl implements GrantsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -738,7 +722,8 @@ public final class GrantsClientImpl implements GrantsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -58,22 +58,6 @@ public interface StudentsClient {
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param studentAlias Student alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details for a specific student in the specified lab by student alias.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StudentDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias);
-
-    /**
-     * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,7 +73,7 @@ public interface StudentsClient {
         Context context);
 
     /**
-     * Delete the specified student based on the student alias.
+     * Get the details for a specific student in the specified lab by student alias.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -98,9 +82,11 @@ public interface StudentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for a specific student in the specified lab by student alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias);
+    StudentDetailsInner get(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias);
 
     /**
      * Delete the specified student based on the student alias.
@@ -124,26 +110,18 @@ public interface StudentsClient {
         Context context);
 
     /**
-     * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
-     * student must have a valid tenant to accept the lab after they have been added to lab.
+     * Delete the specified student based on the student alias.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param studentAlias Student alias.
-     * @param parameters Request parameters that are provided to update student properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return student details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StudentDetailsInner createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters);
+    void delete(String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias);
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
@@ -168,4 +146,26 @@ public interface StudentsClient {
         String studentAlias,
         StudentDetailsInner parameters,
         Context context);
+
+    /**
+     * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
+     * student must have a valid tenant to accept the lab after they have been added to lab.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param studentAlias Student alias.
+     * @param parameters Request parameters that are provided to update student properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return student details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StudentDetailsInner createOrUpdate(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String studentAlias,
+        StudentDetailsInner parameters);
 }
