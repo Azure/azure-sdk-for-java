@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.loadtestservice.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner;
+import com.azure.resourcemanager.loadtestservice.models.EncryptionProperties;
 import com.azure.resourcemanager.loadtestservice.models.LoadTestResource;
 import com.azure.resourcemanager.loadtestservice.models.LoadTestResourcePatchRequestBody;
-import com.azure.resourcemanager.loadtestservice.models.LoadTestResourcePatchRequestBodyProperties;
+import com.azure.resourcemanager.loadtestservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtestservice.models.ResourceState;
-import com.azure.resourcemanager.loadtestservice.models.SystemAssignedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -46,8 +47,12 @@ public final class LoadTestResourceImpl
         }
     }
 
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {
@@ -62,12 +67,20 @@ public final class LoadTestResourceImpl
         return this.innerModel().dataPlaneUri();
     }
 
+    public EncryptionProperties encryption() {
+        return this.innerModel().encryption();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public LoadTestResourceInner innerModel() {
@@ -94,8 +107,7 @@ public final class LoadTestResourceImpl
             serviceManager
                 .serviceClient()
                 .getLoadTests()
-                .createOrUpdateWithResponse(resourceGroupName, loadTestName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -104,8 +116,7 @@ public final class LoadTestResourceImpl
             serviceManager
                 .serviceClient()
                 .getLoadTests()
-                .createOrUpdateWithResponse(resourceGroupName, loadTestName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, loadTestName, this.innerModel(), context);
         return this;
     }
 
@@ -125,9 +136,7 @@ public final class LoadTestResourceImpl
             serviceManager
                 .serviceClient()
                 .getLoadTests()
-                .updateWithResponse(
-                    resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, Context.NONE);
         return this;
     }
 
@@ -136,8 +145,7 @@ public final class LoadTestResourceImpl
             serviceManager
                 .serviceClient()
                 .getLoadTests()
-                .updateWithResponse(resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, context)
-                .getValue();
+                .update(resourceGroupName, loadTestName, updateLoadTestResourcePatchRequestBody, context);
         return this;
     }
 
@@ -184,7 +192,7 @@ public final class LoadTestResourceImpl
         return this;
     }
 
-    public LoadTestResourceImpl withIdentity(SystemAssignedServiceIdentity identity) {
+    public LoadTestResourceImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -195,17 +203,27 @@ public final class LoadTestResourceImpl
     }
 
     public LoadTestResourceImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDescription(description);
+            return this;
+        } else {
+            this.updateLoadTestResourcePatchRequestBody.withDescription(description);
+            return this;
+        }
+    }
+
+    public LoadTestResourceImpl withEncryption(EncryptionProperties encryption) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryption(encryption);
+            return this;
+        } else {
+            this.updateLoadTestResourcePatchRequestBody.withEncryption(encryption);
+            return this;
+        }
     }
 
     public LoadTestResourceImpl withTags(Object tags) {
         this.updateLoadTestResourcePatchRequestBody.withTags(tags);
-        return this;
-    }
-
-    public LoadTestResourceImpl withProperties(LoadTestResourcePatchRequestBodyProperties properties) {
-        this.updateLoadTestResourcePatchRequestBody.withProperties(properties);
         return this;
     }
 

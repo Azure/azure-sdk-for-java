@@ -52,6 +52,13 @@ public interface LoadTestClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the QuotasClient object to access its operations.
+     *
+     * @return the QuotasClient object.
+     */
+    QuotasClient getQuotas();
+
+    /**
      * Gets the LoadTestsClient object to access its operations.
      *
      * @return the LoadTestsClient object.

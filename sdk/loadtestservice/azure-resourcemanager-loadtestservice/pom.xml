@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for LoadTest Management</name>
-  <description>This package contains Microsoft Azure SDK for LoadTest Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. LoadTest client provides access to LoadTest Resource and it's status operations. Package tag package-2021-12-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for LoadTest Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. LoadTest client provides access to LoadTest Resource and it's status operations. Package tag package-2022-12-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
