@@ -293,8 +293,7 @@ public abstract class IdentityClientBase {
     }
 
     ConfidentialClientApplication getManagedIdentityConfidentialClient() {
-        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
-            + "/" + tenantId;
+        String authorityUrl = "https://login.microsoftonline.com/dummy-tenant";
 
         // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
         IClientCredential credential = ClientCredentialFactory
@@ -303,6 +302,9 @@ public abstract class IdentityClientBase {
             ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
                 : clientId, credential);
         applicationBuilder.validateAuthority(false);
+
+        String metadata = "{\"tenant_discovery_endpoint\":\"https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration\",\"api-version\":\"1.1\",\"metadata\":[{\"preferred_network\":\"login.microsoftonline.com\",\"preferred_cache\":\"login.windows.net\",\"aliases\":[\"login.microsoftonline.com\",\"login.windows.net\",\"login.microsoft.com\",\"sts.windows.net\"]}]}";
+        applicationBuilder.aadInstanceDiscoveryResponse(metadata);
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
