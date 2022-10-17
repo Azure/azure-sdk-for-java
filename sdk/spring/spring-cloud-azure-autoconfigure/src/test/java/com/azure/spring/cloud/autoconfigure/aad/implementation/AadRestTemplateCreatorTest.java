@@ -71,7 +71,7 @@ class AadRestTemplateCreatorTest {
         ResponseErrorHandler handler = restTemplate.getErrorHandler();
         assertEquals(OAuth2ErrorResponseErrorHandler.class, handler.getClass());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        //assertEquals(2, converters.size());
+        assertEquals(2, converters.size());
         assertThat(converters, hasItem(isA(FormHttpMessageConverter.class)));
         assertThat(converters, hasItem(isA(OAuth2AccessTokenResponseHttpMessageConverter.class)));
 
