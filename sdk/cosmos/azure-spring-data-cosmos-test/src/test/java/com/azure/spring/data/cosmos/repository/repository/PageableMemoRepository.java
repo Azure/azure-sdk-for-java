@@ -7,7 +7,6 @@ import com.azure.spring.data.cosmos.domain.PageableMemo;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

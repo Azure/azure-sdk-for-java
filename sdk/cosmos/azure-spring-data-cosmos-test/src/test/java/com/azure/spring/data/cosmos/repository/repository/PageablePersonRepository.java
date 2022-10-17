@@ -4,7 +4,6 @@ package com.azure.spring.data.cosmos.repository.repository;
 
 import com.azure.spring.data.cosmos.domain.PageablePerson;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
