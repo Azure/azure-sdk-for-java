@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -44,7 +43,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d10-598a3ea36bfbc27e68c026b17982af22");
     protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
         .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
-    protected static final String RANDOM_RESOURCE_IDENTIFIER = "82e890fc-188a-4b67-bb7d-deff073d7d1e";
+    protected static final String RANDOM_RESOURCE_IDENTIFIER = "82e890fc-188a-4b67-bb7d-defRANDOM1e";
     protected static final String ACS_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_USER_ID", String.format("8:acs:%s_00000014-00d6-e250-28df-44482200202a", RANDOM_RESOURCE_IDENTIFIER));
     protected static final String ACS_USER_2 = Configuration.getGlobalConfiguration()
@@ -61,7 +60,8 @@ public class CallAutomationLiveTestBase extends TestBase {
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
-        .add("rawId");
+        .add("rawId")
+        .add("id");
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
@@ -69,7 +69,6 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .serviceVersion(CommunicationIdentityServiceVersion.V2022_06_01)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (getTestMode() == TestMode.RECORD) {
