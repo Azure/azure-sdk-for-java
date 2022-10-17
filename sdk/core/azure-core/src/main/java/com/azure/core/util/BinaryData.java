@@ -453,21 +453,21 @@ public final class BinaryData {
         //    arrays.
         long[] trueLength = new long[]{0};
         return data.map(buffer -> {
-                int bufferSize = buffer.remaining();
-                ByteBuffer copy = ByteBuffer.allocate(bufferSize);
-                trueLength[0] += bufferSize;
-                copy.put(buffer);
-                copy.flip();
+            int bufferSize = buffer.remaining();
+            ByteBuffer copy = ByteBuffer.allocate(bufferSize);
+            trueLength[0] += bufferSize;
+            copy.put(buffer);
+            copy.flip();
 
-                return copy;
-            })
-            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-            .map(buffers -> {
-                // TODO (alzimmer): What should be done when length != null but it differs from the true length
-                //  seen when doing the buffering.
-                return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
-                    (length != null) ? length : trueLength[0], true));
-            });
+            return copy;
+        })
+        .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
+        .map(buffers -> {
+            // TODO (alzimmer): What should be done when length != null but it differs from the true length
+            //  seen when doing the buffering.
+            return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
+                (length != null) ? length : trueLength[0], true));
+        });
     }
 
     /**

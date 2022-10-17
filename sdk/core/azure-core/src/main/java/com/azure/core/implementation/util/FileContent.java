@@ -137,7 +137,7 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        if (length > MAX_ARRAY_SIZE) {
+        if (length > Integer.MAX_VALUE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
