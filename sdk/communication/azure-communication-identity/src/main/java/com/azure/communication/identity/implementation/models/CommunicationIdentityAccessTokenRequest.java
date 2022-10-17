@@ -18,6 +18,14 @@ public final class CommunicationIdentityAccessTokenRequest {
     @JsonProperty(value = "scopes", required = true)
     private List<CommunicationTokenScope> scopes;
 
+    /*
+     * Optional custom validity period of the token within [60,1440] minutes
+     * range. If not provided, the default value of 1440 minutes (24 hours)
+     * will be used.
+     */
+    @JsonProperty(value = "expiresInMinutes")
+    private Integer expiresInMinutes;
+
     /**
      * Get the scopes property: List of scopes attached to the token.
      *
@@ -35,6 +43,28 @@ public final class CommunicationIdentityAccessTokenRequest {
      */
     public CommunicationIdentityAccessTokenRequest setScopes(List<CommunicationTokenScope> scopes) {
         this.scopes = scopes;
+        return this;
+    }
+
+    /**
+     * Get the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
+     * If not provided, the default value of 1440 minutes (24 hours) will be used.
+     *
+     * @return the expiresInMinutes value.
+     */
+    public Integer getExpiresInMinutes() {
+        return this.expiresInMinutes;
+    }
+
+    /**
+     * Set the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
+     * If not provided, the default value of 1440 minutes (24 hours) will be used.
+     *
+     * @param expiresInMinutes the expiresInMinutes value to set.
+     * @return the CommunicationIdentityAccessTokenRequest object itself.
+     */
+    public CommunicationIdentityAccessTokenRequest setExpiresInMinutes(Integer expiresInMinutes) {
+        this.expiresInMinutes = expiresInMinutes;
         return this;
     }
 }

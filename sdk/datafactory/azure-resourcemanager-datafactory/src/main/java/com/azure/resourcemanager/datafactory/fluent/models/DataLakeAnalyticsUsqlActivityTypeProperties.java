@@ -61,6 +61,10 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     @JsonProperty(value = "compilationMode")
     private Object compilationMode;
 
+    /** Creates an instance of DataLakeAnalyticsUsqlActivityTypeProperties class. */
+    public DataLakeAnalyticsUsqlActivityTypeProperties() {
+    }
+
     /**
      * Get the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
      * Expression with resultType string).

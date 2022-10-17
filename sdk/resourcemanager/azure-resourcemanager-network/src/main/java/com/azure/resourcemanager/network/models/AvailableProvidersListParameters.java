@@ -35,6 +35,10 @@ public final class AvailableProvidersListParameters {
     @JsonProperty(value = "city")
     private String city;
 
+    /** Creates an instance of AvailableProvidersListParameters class. */
+    public AvailableProvidersListParameters() {
+    }
+
     /**
      * Get the azureLocations property: A list of Azure regions.
      *

@@ -24,6 +24,10 @@ public final class AzureMLWebServiceFile {
     @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
+    /** Creates an instance of AzureMLWebServiceFile class. */
+    public AzureMLWebServiceFile() {
+    }
+
     /**
      * Get the filePath property: The relative file path, including container name, in the Azure Blob Storage specified
      * by the LinkedService. Type: string (or Expression with resultType string).

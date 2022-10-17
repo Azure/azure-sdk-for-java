@@ -16,6 +16,10 @@ public final class InviteCodeGenerateRequest {
     @JsonProperty(value = "maxStudentCount")
     private Float maxStudentCount;
 
+    /** Creates an instance of InviteCodeGenerateRequest class. */
+    public InviteCodeGenerateRequest() {
+    }
+
     /**
      * Get the maxStudentCount property: the total number of students that can be accepted to the lab.
      *

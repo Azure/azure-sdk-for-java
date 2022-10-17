@@ -24,6 +24,10 @@ public final class AvailablePrivateEndpointTypesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AvailablePrivateEndpointTypesResult class. */
+    public AvailablePrivateEndpointTypesResult() {
+    }
+
     /**
      * Get the value property: An array of available privateEndpoint type.
      *

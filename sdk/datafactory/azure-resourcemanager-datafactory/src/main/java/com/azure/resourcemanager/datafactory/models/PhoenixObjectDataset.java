@@ -23,6 +23,10 @@ public final class PhoenixObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private PhoenixDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of PhoenixObjectDataset class. */
+    public PhoenixObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

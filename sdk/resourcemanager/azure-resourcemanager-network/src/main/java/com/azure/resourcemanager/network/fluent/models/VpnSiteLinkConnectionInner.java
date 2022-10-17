@@ -42,6 +42,10 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of VpnSiteLinkConnectionInner class. */
+    public VpnSiteLinkConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the VPN site link connection.
      *

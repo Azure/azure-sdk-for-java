@@ -21,11 +21,14 @@ public final class LabDetailsInner extends ProxyResource {
     private LabProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of LabDetailsInner class. */
+    public LabDetailsInner() {
+    }
 
     /**
      * Get the innerProperties property: Get lab response properties.

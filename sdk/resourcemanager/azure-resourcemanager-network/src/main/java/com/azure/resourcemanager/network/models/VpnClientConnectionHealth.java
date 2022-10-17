@@ -35,6 +35,10 @@ public final class VpnClientConnectionHealth {
     @JsonProperty(value = "allocatedIpAddresses")
     private List<String> allocatedIpAddresses;
 
+    /** Creates an instance of VpnClientConnectionHealth class. */
+    public VpnClientConnectionHealth() {
+    }
+
     /**
      * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      *

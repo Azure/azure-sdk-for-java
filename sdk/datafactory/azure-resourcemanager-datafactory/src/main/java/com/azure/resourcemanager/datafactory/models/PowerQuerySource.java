@@ -16,6 +16,10 @@ public final class PowerQuerySource extends DataFlowSource {
     @JsonProperty(value = "script")
     private String script;
 
+    /** Creates an instance of PowerQuerySource class. */
+    public PowerQuerySource() {
+    }
+
     /**
      * Get the script property: source script.
      *

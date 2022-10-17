@@ -33,6 +33,10 @@ public final class AzureBlobFSSource extends CopySource {
     @JsonProperty(value = "recursive")
     private Object recursive;
 
+    /** Creates an instance of AzureBlobFSSource class. */
+    public AzureBlobFSSource() {
+    }
+
     /**
      * Get the treatEmptyAsNull property: Treat empty as null. Type: boolean (or Expression with resultType boolean).
      *

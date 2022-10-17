@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX DHCP. */
 @Fluent
 public final class WorkloadNetworkDhcpInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDhcpInner.class);
-
     /*
      * DHCP properties.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkDhcpEntity properties;
+
+    /** Creates an instance of WorkloadNetworkDhcpInner class. */
+    public WorkloadNetworkDhcpInner() {
+    }
 
     /**
      * Get the properties property: DHCP properties.

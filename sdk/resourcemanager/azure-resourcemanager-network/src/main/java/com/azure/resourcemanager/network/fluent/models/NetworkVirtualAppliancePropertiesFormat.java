@@ -87,6 +87,10 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkVirtualAppliancePropertiesFormat class. */
+    public NetworkVirtualAppliancePropertiesFormat() {
+    }
+
     /**
      * Get the nvaSku property: Network Virtual Appliance SKU.
      *

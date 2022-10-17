@@ -17,6 +17,10 @@ public final class SapEccResourceDatasetTypeProperties {
     @JsonProperty(value = "path", required = true)
     private Object path;
 
+    /** Creates an instance of SapEccResourceDatasetTypeProperties class. */
+    public SapEccResourceDatasetTypeProperties() {
+    }
+
     /**
      * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      *

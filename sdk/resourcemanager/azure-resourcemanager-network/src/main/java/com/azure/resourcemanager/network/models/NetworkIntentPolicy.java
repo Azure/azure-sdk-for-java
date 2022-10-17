@@ -24,6 +24,10 @@ public final class NetworkIntentPolicy extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkIntentPolicy class. */
+    public NetworkIntentPolicy() {
+    }
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *

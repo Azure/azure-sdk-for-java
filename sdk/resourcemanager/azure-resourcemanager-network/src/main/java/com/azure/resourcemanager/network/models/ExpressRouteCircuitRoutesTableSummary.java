@@ -42,6 +42,10 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     @JsonProperty(value = "statePfxRcd")
     private String statePfxRcd;
 
+    /** Creates an instance of ExpressRouteCircuitRoutesTableSummary class. */
+    public ExpressRouteCircuitRoutesTableSummary() {
+    }
+
     /**
      * Get the neighbor property: IP address of the neighbor.
      *

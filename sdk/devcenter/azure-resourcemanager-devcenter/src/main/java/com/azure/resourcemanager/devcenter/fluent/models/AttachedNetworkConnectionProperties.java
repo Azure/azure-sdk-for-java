@@ -43,6 +43,10 @@ public final class AttachedNetworkConnectionProperties {
     @JsonProperty(value = "domainJoinType", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinType domainJoinType;
 
+    /** Creates an instance of AttachedNetworkConnectionProperties class. */
+    public AttachedNetworkConnectionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

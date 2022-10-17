@@ -24,6 +24,10 @@ public final class FtpServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private FtpServerLinkedServiceTypeProperties innerTypeProperties = new FtpServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of FtpServerLinkedService class. */
+    public FtpServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *

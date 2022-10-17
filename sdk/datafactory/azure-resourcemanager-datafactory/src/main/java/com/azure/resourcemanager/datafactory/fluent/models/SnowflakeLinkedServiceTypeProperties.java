@@ -31,6 +31,10 @@ public final class SnowflakeLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SnowflakeLinkedServiceTypeProperties class. */
+    public SnowflakeLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string of snowflake. Type: string, SecureString.
      *

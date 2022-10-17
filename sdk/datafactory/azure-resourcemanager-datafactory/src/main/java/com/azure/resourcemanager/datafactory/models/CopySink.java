@@ -110,6 +110,10 @@ public class CopySink {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CopySink class. */
+    public CopySink() {
+    }
+
     /**
      * Get the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.

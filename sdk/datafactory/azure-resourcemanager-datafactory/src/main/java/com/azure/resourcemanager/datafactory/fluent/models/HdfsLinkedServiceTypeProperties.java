@@ -45,6 +45,10 @@ public final class HdfsLinkedServiceTypeProperties {
     @JsonProperty(value = "password")
     private SecretBase password;
 
+    /** Creates an instance of HdfsLinkedServiceTypeProperties class. */
+    public HdfsLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type:
      * string (or Expression with resultType string).

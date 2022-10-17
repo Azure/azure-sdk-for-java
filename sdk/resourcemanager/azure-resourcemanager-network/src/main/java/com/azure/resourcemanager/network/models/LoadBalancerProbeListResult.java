@@ -24,6 +24,10 @@ public final class LoadBalancerProbeListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LoadBalancerProbeListResult class. */
+    public LoadBalancerProbeListResult() {
+    }
+
     /**
      * Get the value property: A list of probes in a load balancer.
      *

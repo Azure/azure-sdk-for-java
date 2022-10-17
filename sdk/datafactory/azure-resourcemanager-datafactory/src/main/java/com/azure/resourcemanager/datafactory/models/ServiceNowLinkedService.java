@@ -24,6 +24,10 @@ public final class ServiceNowLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ServiceNowLinkedServiceTypeProperties innerTypeProperties = new ServiceNowLinkedServiceTypeProperties();
 
+    /** Creates an instance of ServiceNowLinkedService class. */
+    public ServiceNowLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: ServiceNow server linked service properties.
      *

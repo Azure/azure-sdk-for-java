@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loadtestservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of resources page result. */
 @Fluent
 public final class LoadTestResourcePageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestResourcePageList.class);
-
     /*
      * List of resources in current page.
      */
@@ -27,6 +23,10 @@ public final class LoadTestResourcePageList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of LoadTestResourcePageList class. */
+    public LoadTestResourcePageList() {
+    }
 
     /**
      * Get the value property: List of resources in current page.

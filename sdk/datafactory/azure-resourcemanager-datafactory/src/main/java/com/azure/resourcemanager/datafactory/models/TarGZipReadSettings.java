@@ -20,6 +20,10 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     @JsonProperty(value = "preserveCompressionFileNameAsFolder")
     private Object preserveCompressionFileNameAsFolder;
 
+    /** Creates an instance of TarGZipReadSettings class. */
+    public TarGZipReadSettings() {
+    }
+
     /**
      * Get the preserveCompressionFileNameAsFolder property: Preserve the compression file name as folder path. Type:
      * boolean (or Expression with resultType boolean).

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
 
 /** An immutable client-side representation of Image. */
@@ -28,6 +29,13 @@ public interface Image {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the description property: The description of the image.

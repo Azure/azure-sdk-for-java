@@ -36,17 +36,6 @@ public interface StudentLabs {
      * Get the details for a specified lab associated with the student lab.
      *
      * @param studentLabName Student lab name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details for a specified lab associated with the student lab.
-     */
-    StudentLabDetails get(String studentLabName);
-
-    /**
-     * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,4 +43,15 @@ public interface StudentLabs {
      * @return the details for a specified lab associated with the student lab along with {@link Response}.
      */
     Response<StudentLabDetails> getWithResponse(String studentLabName, Context context);
+
+    /**
+     * Get the details for a specified lab associated with the student lab.
+     *
+     * @param studentLabName Student lab name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for a specified lab associated with the student lab.
+     */
+    StudentLabDetails get(String studentLabName);
 }

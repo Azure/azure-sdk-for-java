@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DevCenters Delete. */
 public final class DevCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/DevCenters_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/DevCenters_Delete.json
      */
     /**
      * Sample code: DevCenters_Delete.

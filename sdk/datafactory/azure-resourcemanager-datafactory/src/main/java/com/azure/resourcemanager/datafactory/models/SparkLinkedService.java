@@ -24,6 +24,10 @@ public final class SparkLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SparkLinkedServiceTypeProperties innerTypeProperties = new SparkLinkedServiceTypeProperties();
 
+    /** Creates an instance of SparkLinkedService class. */
+    public SparkLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Spark Server linked service properties.
      *

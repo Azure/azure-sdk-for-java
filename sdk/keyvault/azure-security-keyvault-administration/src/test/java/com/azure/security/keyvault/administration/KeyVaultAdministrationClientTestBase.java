@@ -61,6 +61,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
                 .clientSecret(clientKey)
                 .clientId(clientId)
                 .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
                 .build();
         }
 

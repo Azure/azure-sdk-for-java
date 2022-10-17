@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2022-10-12)
+
+### Features Added
+- Added support to customize the Communication Identity access token’s validity period:
+  - Added methods that provide the ability to create a Communication Identity access token with custom expiration:
+      - CommunicationIdentityClient:
+        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn, Context context)`
+        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn, Context context)`
+      - CommunicationIdentityAsyncClient:
+        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn)`
+- Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`.
 
 ## 1.3.1 (2022-09-08)
 

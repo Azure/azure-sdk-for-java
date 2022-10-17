@@ -51,20 +51,6 @@ public interface DevBoxDefinitionsClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dev Box definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner get(String resourceGroupName, String devCenterName, String devBoxDefinitionName);
-
-    /**
-     * Gets a Dev Box definition.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,6 +60,20 @@ public interface DevBoxDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DevBoxDefinitionInner> getWithResponse(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context);
+
+    /**
+     * Gets a Dev Box definition.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param devBoxDefinitionName The name of the Dev Box definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Dev Box definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DevBoxDefinitionInner get(String resourceGroupName, String devCenterName, String devBoxDefinitionName);
 
     /**
      * Creates or updates a Dev Box definition.
@@ -316,20 +316,6 @@ public interface DevBoxDefinitionsClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dev Box definition configured for a project.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DevBoxDefinitionInner getByProject(String resourceGroupName, String projectName, String devBoxDefinitionName);
-
-    /**
-     * Gets a Dev Box definition configured for a project.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -339,4 +325,18 @@ public interface DevBoxDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DevBoxDefinitionInner> getByProjectWithResponse(
         String resourceGroupName, String projectName, String devBoxDefinitionName, Context context);
+
+    /**
+     * Gets a Dev Box definition configured for a project.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param devBoxDefinitionName The name of the Dev Box definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Dev Box definition configured for a project.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DevBoxDefinitionInner getByProject(String resourceGroupName, String projectName, String devBoxDefinitionName);
 }

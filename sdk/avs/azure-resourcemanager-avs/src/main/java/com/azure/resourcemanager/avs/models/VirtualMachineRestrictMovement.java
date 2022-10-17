@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set VM DRS-driven movement to restricted (enabled) or not (disabled). */
 @Fluent
 public final class VirtualMachineRestrictMovement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRestrictMovement.class);
-
     /*
      * Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
      */
     @JsonProperty(value = "restrictMovement")
     private VirtualMachineRestrictMovementState restrictMovement;
+
+    /** Creates an instance of VirtualMachineRestrictMovement class. */
+    public VirtualMachineRestrictMovement() {
+    }
 
     /**
      * Get the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).

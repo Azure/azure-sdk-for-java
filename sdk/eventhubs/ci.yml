@@ -12,6 +12,7 @@ trigger:
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
     exclude:
@@ -19,6 +20,7 @@ trigger:
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
 
@@ -35,6 +37,7 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
     exclude:
@@ -42,6 +45,7 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
 

@@ -16,6 +16,10 @@ public final class ManagedIdentityTypeProperties {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of ManagedIdentityTypeProperties class. */
+    public ManagedIdentityTypeProperties() {
+    }
+
     /**
      * Get the resourceId property: The resource id of user assigned managed identity.
      *

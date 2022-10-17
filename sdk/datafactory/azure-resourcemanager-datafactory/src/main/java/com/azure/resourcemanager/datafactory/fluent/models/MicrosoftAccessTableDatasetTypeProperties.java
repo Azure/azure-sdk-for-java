@@ -16,6 +16,10 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of MicrosoftAccessTableDatasetTypeProperties class. */
+    public MicrosoftAccessTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
      *

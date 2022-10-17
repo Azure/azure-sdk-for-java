@@ -24,6 +24,10 @@ public final class BastionSessionDeleteResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BastionSessionDeleteResult class. */
+    public BastionSessionDeleteResult() {
+    }
+
     /**
      * Get the value property: List of sessions with their corresponding state.
      *

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.AddonsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AddonsClient. */
 public final class AddonsClientImpl implements AddonsClient {
-    private final ClientLogger logger = new ClientLogger(AddonsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AddonsService service;
 
@@ -149,7 +146,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AddonInner>> listSinglePageAsync(String resourceGroupName, String privateCloudName) {
@@ -207,7 +204,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AddonInner>> listSinglePageAsync(
@@ -262,7 +259,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddonInner> listAsync(String resourceGroupName, String privateCloudName) {
@@ -280,7 +277,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AddonInner> listAsync(String resourceGroupName, String privateCloudName, Context context) {
@@ -297,7 +294,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddonInner> list(String resourceGroupName, String privateCloudName) {
@@ -313,7 +310,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AddonInner> list(String resourceGroupName, String privateCloudName, Context context) {
@@ -329,7 +326,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
+     * @return an addon by name in a private cloud along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddonInner>> getWithResponseAsync(
@@ -384,7 +381,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
+     * @return an addon by name in a private cloud along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddonInner>> getWithResponseAsync(
@@ -435,19 +432,30 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
+     * @return an addon by name in a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AddonInner> getAsync(String resourceGroupName, String privateCloudName, String addonName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, addonName)
-            .flatMap(
-                (Response<AddonInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an addon by name in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param addonName Name of the addon for the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an addon by name in a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AddonInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String addonName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, addonName, context).block();
     }
 
     /**
@@ -463,25 +471,7 @@ public final class AddonsClientImpl implements AddonsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddonInner get(String resourceGroupName, String privateCloudName, String addonName) {
-        return getAsync(resourceGroupName, privateCloudName, addonName).block();
-    }
-
-    /**
-     * Get an addon by name in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon for the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddonInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String addonName, Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, addonName, context).block();
+        return getWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE).getValue();
     }
 
     /**
@@ -494,7 +484,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return an addon resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -556,7 +546,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return an addon resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -614,7 +604,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return the {@link PollerFlux} for polling of an addon resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddonInner>, AddonInner> beginCreateOrUpdateAsync(
@@ -624,7 +614,7 @@ public final class AddonsClientImpl implements AddonsClient {
         return this
             .client
             .<AddonInner, AddonInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AddonInner.class, AddonInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), AddonInner.class, AddonInner.class, this.client.getContext());
     }
 
     /**
@@ -638,7 +628,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return the {@link PollerFlux} for polling of an addon resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddonInner>, AddonInner> beginCreateOrUpdateAsync(
@@ -662,7 +652,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return the {@link SyncPoller} for polling of an addon resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
@@ -681,7 +671,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return the {@link SyncPoller} for polling of an addon resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
@@ -699,7 +689,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return an addon resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AddonInner> createOrUpdateAsync(
@@ -720,7 +710,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon resource.
+     * @return an addon resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AddonInner> createOrUpdateAsync(
@@ -776,7 +766,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -831,7 +821,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -882,7 +872,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -890,7 +880,8 @@ public final class AddonsClientImpl implements AddonsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName, addonName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -903,7 +894,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -925,7 +916,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -943,7 +934,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -960,7 +951,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String addonName) {
@@ -979,7 +970,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1023,11 +1014,12 @@ public final class AddonsClientImpl implements AddonsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AddonInner>> listNextSinglePageAsync(String nextLink) {
@@ -1058,12 +1050,13 @@ public final class AddonsClientImpl implements AddonsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AddonInner>> listNextSinglePageAsync(String nextLink, Context context) {

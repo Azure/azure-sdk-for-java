@@ -28,6 +28,10 @@ public final class PostgreSqlTableDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of PostgreSqlTableDatasetTypeProperties class. */
+    public PostgreSqlTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

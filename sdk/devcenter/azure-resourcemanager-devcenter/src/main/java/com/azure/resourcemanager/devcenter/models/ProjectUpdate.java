@@ -18,6 +18,10 @@ public final class ProjectUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private ProjectUpdateProperties innerProperties;
 
+    /** Creates an instance of ProjectUpdate class. */
+    public ProjectUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a project to be updated.
      *

@@ -37,6 +37,10 @@ public final class FileServerLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of FileServerLinkedServiceTypeProperties class. */
+    public FileServerLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
      *

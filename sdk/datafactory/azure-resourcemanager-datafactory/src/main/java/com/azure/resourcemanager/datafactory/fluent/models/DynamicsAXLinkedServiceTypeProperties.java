@@ -52,6 +52,10 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DynamicsAXLinkedServiceTypeProperties class. */
+    public DynamicsAXLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      *

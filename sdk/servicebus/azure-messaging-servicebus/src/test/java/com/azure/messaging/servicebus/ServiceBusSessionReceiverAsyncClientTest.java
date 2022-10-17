@@ -17,9 +17,9 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -72,7 +72,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(null, NAMESPACE, ENTITY_PATH, false);
+    private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false);
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusSessionManager sessionManager;
@@ -179,7 +179,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, tracer,
+            connectionProcessor, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 
@@ -271,7 +271,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, tracer,
+            connectionProcessor, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 

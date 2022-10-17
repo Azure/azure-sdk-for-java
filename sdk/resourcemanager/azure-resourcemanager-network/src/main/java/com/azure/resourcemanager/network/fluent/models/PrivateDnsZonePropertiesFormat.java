@@ -24,6 +24,10 @@ public final class PrivateDnsZonePropertiesFormat {
     @JsonProperty(value = "recordSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecordSet> recordSets;
 
+    /** Creates an instance of PrivateDnsZonePropertiesFormat class. */
+    public PrivateDnsZonePropertiesFormat() {
+    }
+
     /**
      * Get the privateDnsZoneId property: The resource id of the private dns zone.
      *

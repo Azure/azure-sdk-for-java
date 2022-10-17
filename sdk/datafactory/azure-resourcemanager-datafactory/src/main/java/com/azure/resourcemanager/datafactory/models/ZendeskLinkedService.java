@@ -24,6 +24,10 @@ public final class ZendeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ZendeskLinkedServiceTypeProperties innerTypeProperties = new ZendeskLinkedServiceTypeProperties();
 
+    /** Creates an instance of ZendeskLinkedService class. */
+    public ZendeskLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Zendesk linked service properties.
      *

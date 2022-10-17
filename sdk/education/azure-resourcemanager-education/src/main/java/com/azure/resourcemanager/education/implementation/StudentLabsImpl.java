@@ -37,15 +37,6 @@ public final class StudentLabsImpl implements StudentLabs {
         return Utils.mapPage(inner, inner1 -> new StudentLabDetailsImpl(inner1, this.manager()));
     }
 
-    public StudentLabDetails get(String studentLabName) {
-        StudentLabDetailsInner inner = this.serviceClient().get(studentLabName);
-        if (inner != null) {
-            return new StudentLabDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StudentLabDetails> getWithResponse(String studentLabName, Context context) {
         Response<StudentLabDetailsInner> inner = this.serviceClient().getWithResponse(studentLabName, context);
         if (inner != null) {
@@ -54,6 +45,15 @@ public final class StudentLabsImpl implements StudentLabs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new StudentLabDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StudentLabDetails get(String studentLabName) {
+        StudentLabDetailsInner inner = this.serviceClient().get(studentLabName);
+        if (inner != null) {
+            return new StudentLabDetailsImpl(inner, this.manager());
         } else {
             return null;
         }

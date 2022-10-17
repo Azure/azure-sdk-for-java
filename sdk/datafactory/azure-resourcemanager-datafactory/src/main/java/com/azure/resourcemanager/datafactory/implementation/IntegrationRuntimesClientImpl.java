@@ -695,32 +695,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param integrationRuntime Integration runtime resource definition.
-     * @param ifMatch ETag of the integration runtime entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param integrationRuntime Integration runtime resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,29 +710,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param integrationRuntime Integration runtime resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch)
-            .block();
     }
 
     /**
@@ -787,6 +738,30 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param integrationRuntime Integration runtime resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration runtime resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        IntegrationRuntimeResourceInner integrationRuntime) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -913,26 +888,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -944,24 +899,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResourceInner get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch).block();
     }
 
     /**
@@ -987,6 +924,25 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch, context)
             .block();
+    }
+
+    /**
+     * Gets an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeResourceInner get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1154,28 +1110,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param updateIntegrationRuntimeRequest The parameters for updating an integration runtime.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResourceInner update(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest) {
-        return updateAsync(resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest)
-            .block();
-    }
-
-    /**
-     * Updates an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param updateIntegrationRuntimeRequest The parameters for updating an integration runtime.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1192,6 +1126,29 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return updateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest, context)
             .block();
+    }
+
+    /**
+     * Updates an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param updateIntegrationRuntimeRequest The parameters for updating an integration runtime.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration runtime resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeResourceInner update(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest) {
+        return updateWithResponse(
+                resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1325,21 +1282,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        deleteAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Deletes an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1350,6 +1292,21 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Deletes an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     /**
@@ -1486,23 +1443,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeStatusResponseInner getStatus(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return getStatusAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Gets detailed status information for an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1513,6 +1453,23 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     public Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return getStatusWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Gets detailed status information for an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed status information for an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeStatusResponseInner getStatus(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return getStatusWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE).getValue();
     }
 
     /**
@@ -1654,24 +1611,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .block();
-    }
-
-    /**
-     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1686,6 +1625,25 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return listOutboundNetworkDependenciesEndpointsWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, context)
             .block();
+    }
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return listOutboundNetworkDependenciesEndpointsWithResponse(
+                resourceGroupName, factoryName, integrationRuntimeName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1827,25 +1785,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeConnectionInfoInner getConnectionInfo(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return getConnectionInfoAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
-     * credentials.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1858,6 +1797,26 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return getConnectionInfoWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context)
             .block();
+    }
+
+    /**
+     * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
+     * credentials.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the on-premises integration runtime connection information for encrypting the on-premises data source
+     *     credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeConnectionInfoInner getConnectionInfo(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return getConnectionInfoWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2025,28 +1984,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner regenerateAuthKey(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateAuthKeyAsync(resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters)
-            .block();
-    }
-
-    /**
-     * Regenerates the authentication key for an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2063,6 +2000,29 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return regenerateAuthKeyWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters, context)
             .block();
+    }
+
+    /**
+     * Regenerates the authentication key for an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeAuthKeysInner regenerateAuthKey(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateAuthKeyWithResponse(
+                resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2199,23 +2159,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner listAuthKeys(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return listAuthKeysAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Retrieves the authentication keys for an integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2226,6 +2169,24 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     public Response<IntegrationRuntimeAuthKeysInner> listAuthKeysWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return listAuthKeysWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Retrieves the authentication keys for an integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeAuthKeysInner listAuthKeys(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return listAuthKeysWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2900,24 +2861,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void syncCredentials(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        syncCredentialsAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
-     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
-     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
-     * node than using this API directly.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2929,6 +2872,24 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return syncCredentialsWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context)
             .block();
+    }
+
+    /**
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void syncCredentials(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        syncCredentialsWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     /**
@@ -3070,25 +3031,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeMonitoringDataInner getMonitoringData(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return getMonitoringDataAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     * integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3101,6 +3043,26 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return getMonitoringDataWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context)
             .block();
+    }
+
+    /**
+     * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
+     * integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
+     *     integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeMonitoringDataInner getMonitoringData(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return getMonitoringDataWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3234,21 +3196,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upgrade(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        upgradeAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Upgrade self-hosted integration runtime to latest version if availability.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3259,6 +3206,21 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     public Response<Void> upgradeWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return upgradeWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Upgrade self-hosted integration runtime to latest version if availability.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgrade(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        upgradeWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     /**
@@ -3426,27 +3388,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeLinks(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
-        removeLinksAsync(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest)
-            .block();
-    }
-
-    /**
-     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3463,6 +3404,27 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return removeLinksWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, context)
             .block();
+    }
+
+    /**
+     * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeLinks(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
+        removeLinksWithResponse(
+            resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, Context.NONE);
     }
 
     /**
@@ -3630,29 +3592,6 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeStatusResponseInner createLinkedIntegrationRuntime(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
-        return createLinkedIntegrationRuntimeAsync(
-                resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest)
-            .block();
-    }
-
-    /**
-     * Create a linked integration runtime entry in a shared integration runtime.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3669,6 +3608,33 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         return createLinkedIntegrationRuntimeWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest, context)
             .block();
+    }
+
+    /**
+     * Create a linked integration runtime entry in a shared integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration runtime status response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeStatusResponseInner createLinkedIntegrationRuntime(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
+        return createLinkedIntegrationRuntimeWithResponse(
+                resourceGroupName,
+                factoryName,
+                integrationRuntimeName,
+                createLinkedIntegrationRuntimeRequest,
+                Context.NONE)
+            .getValue();
     }
 
     /**

@@ -28,6 +28,10 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     @JsonProperty(value = "useTempFileRename")
     private Object useTempFileRename;
 
+    /** Creates an instance of SftpWriteSettings class. */
+    public SftpWriteSettings() {
+    }
+
     /**
      * Get the operationTimeout property: Specifies the timeout for writing each chunk to SFTP server. Default value:
      * 01:00:00 (one hour). Type: string (or Expression with resultType string).

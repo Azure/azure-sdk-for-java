@@ -32,6 +32,10 @@ public final class AdminRuleCollectionPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AdminRuleCollectionPropertiesFormat class. */
+    public AdminRuleCollectionPropertiesFormat() {
+    }
+
     /**
      * Get the description property: A description of the admin rule collection.
      *

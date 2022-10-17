@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
@@ -29,12 +30,10 @@ public final class ServiceBusMessageBatch {
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
     private int sizeInBytes;
-    private final ServiceBusSenderTracer tracer;
-    private final String entityPath;
-    private final String hostname;
+    private final ServiceBusTracer tracer;
 
-    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusSenderTracer tracer,
-        MessageSerializer serializer, String entityPath, String hostname) {
+    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
+        MessageSerializer serializer) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
@@ -42,8 +41,6 @@ public final class ServiceBusMessageBatch {
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracer = tracer;
-        this.entityPath = entityPath;
-        this.hostname = hostname;
     }
 
     /**
@@ -92,7 +89,7 @@ public final class ServiceBusMessageBatch {
         if (serviceBusMessage == null) {
             throw LOGGER.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
-        tracer.createMessageSpan(serviceBusMessage);
+        tracer.reportMessageSpan(serviceBusMessage, serviceBusMessage.getContext());
 
         final int size;
         try {

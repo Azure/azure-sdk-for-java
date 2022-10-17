@@ -23,6 +23,10 @@ public final class MicrosoftAccessTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private MicrosoftAccessTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of MicrosoftAccessTableDataset class. */
+    public MicrosoftAccessTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Microsoft Access table dataset properties.
      *

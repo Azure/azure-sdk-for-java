@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-06-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.3.0-beta.1 (11.0.12; Mac OS X; 12.4)",
-      "x-ms-client-request-id" : "426c521b-05f5-46d2-b317-80595992e965",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3843dd07-f95b-4069-962c-b18e8ab6e562",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2021-10-31-preview, 2022-06-01",
+      "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Tue, 02 Aug 2022 12:25:59 GMT",
+      "Date" : "Mon, 05 Sep 2022 18:47:42 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "49ms",
-      "MS-CV" : "rKUDoMjJ80qKHYS7zmm8sw.0",
-      "X-Azure-Ref" : "01xfpYgAAAAC0PQZIa/tfRpkSish1HvEkTE9OMjFFREdFMDEwNwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Processing-Time" : "59ms",
+      "MS-CV" : "1EdweHsPO0ypAx4WFIV7XQ.0",
+      "X-Azure-Ref" : "0T0QWYwAAAAD1qxXEJD7IR4uo3j3IIwphUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"Provided AppId has invalid format.\",\"target\":\"appId\"}}",
-      "x-ms-client-request-id" : "426c521b-05f5-46d2-b317-80595992e965",
+      "x-ms-client-request-id" : "3843dd07-f95b-4069-962c-b18e8ab6e562",
       "Content-Type" : "application/json",
       "Request-Context" : "appId="
     },

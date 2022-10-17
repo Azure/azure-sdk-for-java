@@ -25,6 +25,10 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of AzureKeyVaultLinkedServiceTypeProperties class. */
+    public AzureKeyVaultLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).

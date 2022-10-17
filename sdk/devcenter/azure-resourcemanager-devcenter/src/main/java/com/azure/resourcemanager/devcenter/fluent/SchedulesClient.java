@@ -54,21 +54,6 @@ public interface SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner get(String resourceGroupName, String projectName, String poolName, String scheduleName);
-
-    /**
-     * Gets a schedule resource.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,6 +71,21 @@ public interface SchedulesClient {
         Context context);
 
     /**
+     * Gets a schedule resource.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param scheduleName The name of the schedule that uniquely identifies it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a schedule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduleInner get(String resourceGroupName, String projectName, String poolName, String scheduleName);
+
+    /**
      * Creates or updates a Schedule.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
@@ -93,7 +93,6 @@ public interface SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,12 +100,7 @@ public interface SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top);
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body);
 
     /**
      * Creates or updates a Schedule.
@@ -132,29 +126,6 @@ public interface SchedulesClient {
         ScheduleInner body,
         Integer top,
         Context context);
-
-    /**
-     * Creates or updates a Schedule.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top);
 
     /**
      * Creates or updates a Schedule.
@@ -206,7 +177,6 @@ public interface SchedulesClient {
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
      * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,12 +184,7 @@ public interface SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top);
+        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body);
 
     /**
      * Partially updates a Scheduled.
@@ -245,28 +210,6 @@ public interface SchedulesClient {
         ScheduleUpdate body,
         Integer top,
         Context context);
-
-    /**
-     * Partially updates a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param body Represents a scheduled task.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top);
 
     /**
      * Partially updates a Scheduled.
@@ -315,7 +258,6 @@ public interface SchedulesClient {
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
      * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +265,7 @@ public interface SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top);
+        String resourceGroupName, String projectName, String poolName, String scheduleName);
 
     /**
      * Deletes a Scheduled.
@@ -347,21 +289,6 @@ public interface SchedulesClient {
         String scheduleName,
         Integer top,
         Context context);
-
-    /**
-     * Deletes a Scheduled.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param poolName Name of the pool.
-     * @param scheduleName The name of the schedule that uniquely identifies it.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top);
 
     /**
      * Deletes a Scheduled.

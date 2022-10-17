@@ -175,6 +175,10 @@ public class LinkedService {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of LinkedService class. */
+    public LinkedService() {
+    }
+
     /**
      * Get the connectVia property: The integration runtime reference.
      *

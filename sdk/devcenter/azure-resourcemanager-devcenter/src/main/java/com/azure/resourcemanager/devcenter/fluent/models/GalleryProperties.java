@@ -23,6 +23,10 @@ public final class GalleryProperties {
     @JsonProperty(value = "galleryResourceId", required = true)
     private String galleryResourceId;
 
+    /** Creates an instance of GalleryProperties class. */
+    public GalleryProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

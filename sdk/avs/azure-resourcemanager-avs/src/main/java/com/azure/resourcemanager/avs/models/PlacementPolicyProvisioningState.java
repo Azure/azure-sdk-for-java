@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PlacementPolicyProvisioningState. */
+/** The provisioning state. */
 public final class PlacementPolicyProvisioningState extends ExpandableStringEnum<PlacementPolicyProvisioningState> {
     /** Static value Succeeded for PlacementPolicyProvisioningState. */
     public static final PlacementPolicyProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -25,6 +25,9 @@ public final class PlacementPolicyProvisioningState extends ExpandableStringEnum
     /** Static value Updating for PlacementPolicyProvisioningState. */
     public static final PlacementPolicyProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for PlacementPolicyProvisioningState. */
+    public static final PlacementPolicyProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a PlacementPolicyProvisioningState from its string representation.
      *
@@ -36,7 +39,11 @@ public final class PlacementPolicyProvisioningState extends ExpandableStringEnum
         return fromString(name, PlacementPolicyProvisioningState.class);
     }
 
-    /** @return known PlacementPolicyProvisioningState values. */
+    /**
+     * Gets known PlacementPolicyProvisioningState values.
+     *
+     * @return known PlacementPolicyProvisioningState values.
+     */
     public static Collection<PlacementPolicyProvisioningState> values() {
         return values(PlacementPolicyProvisioningState.class);
     }

@@ -32,6 +32,10 @@ public final class NetworkSecurityGroupInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkSecurityGroupInner class. */
+    public NetworkSecurityGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the network security group.
      *

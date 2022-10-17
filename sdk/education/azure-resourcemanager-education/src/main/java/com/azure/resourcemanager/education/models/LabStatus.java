@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LabStatus. */
+/** The status of this lab. */
 public final class LabStatus extends ExpandableStringEnum<LabStatus> {
     /** Static value Active for LabStatus. */
     public static final LabStatus ACTIVE = fromString("Active");

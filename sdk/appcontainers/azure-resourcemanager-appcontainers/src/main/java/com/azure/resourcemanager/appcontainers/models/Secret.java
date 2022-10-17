@@ -22,6 +22,10 @@ public final class Secret {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of Secret class. */
+    public Secret() {
+    }
+
     /**
      * Get the name property: Secret Name.
      *

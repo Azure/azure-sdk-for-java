@@ -37,6 +37,10 @@ public final class OraclePartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
+    /** Creates an instance of OraclePartitionSettings class. */
+    public OraclePartitionSettings() {
+    }
+
     /**
      * Get the partitionNames property: Names of the physical partitions of Oracle table.
      *

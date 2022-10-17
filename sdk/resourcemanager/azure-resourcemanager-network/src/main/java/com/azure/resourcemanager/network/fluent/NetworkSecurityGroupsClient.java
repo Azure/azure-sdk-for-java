@@ -140,21 +140,6 @@ public interface NetworkSecurityGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkSecurityGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkSecurityGroupName, String expand);
-
-    /**
-     * Gets the specified network security group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,19 +147,6 @@ public interface NetworkSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkSecurityGroupInner> getByResourceGroupAsync(String resourceGroupName, String networkSecurityGroupName);
-
-    /**
-     * Gets the specified network security group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName);
 
     /**
      * Gets the specified network security group.
@@ -191,6 +163,19 @@ public interface NetworkSecurityGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkSecurityGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String networkSecurityGroupName, String expand, Context context);
+
+    /**
+     * Gets the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network security group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName);
 
     /**
      * Creates or updates a network security group in the specified resource group.
@@ -341,21 +326,6 @@ public interface NetworkSecurityGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSecurityGroupInner updateTags(
-        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters);
-
-    /**
-     * Updates a network security group tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to update network security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -365,6 +335,21 @@ public interface NetworkSecurityGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkSecurityGroupInner> updateTagsWithResponse(
         String resourceGroupName, String networkSecurityGroupName, TagsObject parameters, Context context);
+
+    /**
+     * Updates a network security group tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param parameters Parameters supplied to update network security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return networkSecurityGroup resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkSecurityGroupInner updateTags(
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters);
 
     /**
      * Gets all network security groups in a subscription.

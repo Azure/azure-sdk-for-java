@@ -16,6 +16,10 @@ public final class FirewallPolicySku {
     @JsonProperty(value = "tier")
     private FirewallPolicySkuTier tier;
 
+    /** Creates an instance of FirewallPolicySku class. */
+    public FirewallPolicySku() {
+    }
+
     /**
      * Get the tier property: Tier of Firewall Policy.
      *

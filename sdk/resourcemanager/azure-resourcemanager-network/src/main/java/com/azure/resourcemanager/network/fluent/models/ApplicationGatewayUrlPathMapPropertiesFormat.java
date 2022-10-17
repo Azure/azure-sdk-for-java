@@ -55,6 +55,10 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayUrlPathMapPropertiesFormat class. */
+    public ApplicationGatewayUrlPathMapPropertiesFormat() {
+    }
+
     /**
      * Get the defaultBackendAddressPool property: Default backend address pool resource of URL path map.
      *

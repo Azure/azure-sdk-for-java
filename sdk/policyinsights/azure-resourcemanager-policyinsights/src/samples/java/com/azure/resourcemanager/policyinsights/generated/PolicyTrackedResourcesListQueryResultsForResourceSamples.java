@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResourcesResourceType;
 
 /** Samples for PolicyTrackedResources ListQueryResultsForResource. */
 public final class PolicyTrackedResourcesListQueryResultsForResourceSamples {
@@ -22,6 +23,7 @@ public final class PolicyTrackedResourcesListQueryResultsForResourceSamples {
             .policyTrackedResources()
             .listQueryResultsForResource(
                 "subscriptions/fff8dfdb-fff3-fff0-fff4-fffdcbe6b2ef/resourceGroups/myResourceGroup/providers/Microsoft.Example/exampleResourceType/myResource",
+                PolicyTrackedResourcesResourceType.DEFAULT,
                 1,
                 "PolicyAssignmentId eq"
                     + " '/subscriptions/fff8dfdb-fff3-fff0-fff4-fffdcbe6b2ef/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/myPolicyAssignment'"
@@ -43,6 +45,7 @@ public final class PolicyTrackedResourcesListQueryResultsForResourceSamples {
             .policyTrackedResources()
             .listQueryResultsForResource(
                 "subscriptions/fff8dfdb-fff3-fff0-fff4-fffdcbe6b2ef/resourceGroups/myResourceGroup/providers/Microsoft.Example/exampleResourceType/myResource",
+                PolicyTrackedResourcesResourceType.DEFAULT,
                 null,
                 null,
                 Context.NONE);

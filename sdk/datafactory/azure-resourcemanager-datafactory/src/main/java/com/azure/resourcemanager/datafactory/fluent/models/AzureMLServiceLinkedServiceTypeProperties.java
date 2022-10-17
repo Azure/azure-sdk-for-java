@@ -58,6 +58,10 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureMLServiceLinkedServiceTypeProperties class. */
+    public AzureMLServiceLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
      * resultType string).

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MountOptionEnum. */
+/** Mode that describes whether the LUN has to be mounted as a datastore or attached as a LUN. */
 public final class MountOptionEnum extends ExpandableStringEnum<MountOptionEnum> {
     /** Static value MOUNT for MountOptionEnum. */
     public static final MountOptionEnum MOUNT = fromString("MOUNT");
@@ -27,7 +27,11 @@ public final class MountOptionEnum extends ExpandableStringEnum<MountOptionEnum>
         return fromString(name, MountOptionEnum.class);
     }
 
-    /** @return known MountOptionEnum values. */
+    /**
+     * Gets known MountOptionEnum values.
+     *
+     * @return known MountOptionEnum values.
+     */
     public static Collection<MountOptionEnum> values() {
         return values(MountOptionEnum.class);
     }
