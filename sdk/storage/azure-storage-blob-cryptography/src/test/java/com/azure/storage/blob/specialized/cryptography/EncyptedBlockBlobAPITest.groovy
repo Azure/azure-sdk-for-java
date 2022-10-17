@@ -87,9 +87,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        beac = getEncryptionAsyncClient(null)
+        beac = getEncryptionAsyncClient(EncryptionVersion.V1)
 
-        bec = getEncryptionClient(null)
+        bec = getEncryptionClient(EncryptionVersion.V1)
 
         def blobName = generateBlobName()
 
