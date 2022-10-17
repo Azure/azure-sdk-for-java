@@ -1,12 +1,45 @@
-$jdkUri = "https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19%2B36/OpenJDK19U-jdk_x64_linux_hotspot_19_36.tar.gz"
-$jdkZipName = "OpenJDK19U-jdk_x64_linux_hotspot_19_36.tar.gz"
-$jdkUnzipName = "jdk-19+36"
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$JdkFeatureVersion
+)
+
+# Query Adoptium for the list of installs for the JDK feature version.
+$adoptiumApiUrl = "https://api.adoptium.net"
+$os
+
+if ($IsWindows) {
+  $os = "windows"
+} elseif ($IsMacOS) {
+  $os = "mac"
+} else {
+  $os = "linux"
+}
+
+$getInstalls = "$adoptiumApiUrl/v3/assets/latest/$JdkFeatureVersion/hotspot?architecture=x64&image_type=jdk&os=$os&vendor=eclipse"
+$jdkUnzipName = "jdk-$JdkFeatureVersion"
 
 Write-Host "Downloading latest JDK to" (Get-Location)
 
 if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
-  Invoke-WebRequest -URI $jdkUri -OutFile $jdkZipName
-  tar -xvf $jdkZipName
+  # Query Adoptium for the list of installs for the JDK feature version.
+  Write-Host "Inkvoking web request to '$getInstalls' to find JDK $JdkFeatureVersion installs available on $os."
+  $installsAvailable = Invoke-WebRequest -URI $getInstalls | ConvertFrom-Json
+  $jdkLink = $installsAvailable.binary.package.link
+  $jdkZipName = $jdkLink.split("/")[-1]
+
+  Write-Host "Downloading install from '$jdkLink' to '$jdkZipName'."
+  Invoke-WebRequest -URI $jdkLink -OutFile $jdkZipName
+
+  if ($IsWindows) {
+    Expand-Archive -Path $jdkZipName -Destination "jdk-temp"
+    Move-Item -Path (Join-Path -Path "jdk-temp" -ChildPath (Get-ChildItem "jdk-temp")[0].Name) -Destination $jdkUnzipName
+  } else {
+    New-Item -Path "jdk-temp" -ItemType "directory"
+    tar -xvf $jdkZipName -C "jdk-temp"
+    Move-Item -Path (Join-Path -Path "jdk-temp" -ChildPath (Get-ChildItem "jdk-temp")[0].Name) -Destination $jdkUnzipName
+  }
+  
 }
 
 $javaHome = (Convert-Path $jdkUnzipName)

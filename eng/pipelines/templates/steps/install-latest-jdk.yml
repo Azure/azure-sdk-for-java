@@ -4,7 +4,7 @@ steps:
   - task: Cache@2
     inputs:
       key: 'jdk | "$(JavaTestVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
-      path: $(Agent.BuildDirectory)/jdk-19+36
+      path: $(Agent.BuildDirectory)/jdk-$(LatestJdkFeatureVersion)
     displayName: 'Cache Latest JDK'
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
 
@@ -12,6 +12,8 @@ steps:
     displayName: 'Install Latest JDK'
     inputs:
       pwsh: true
+      parameters: >
+        -JdkFeatureVersion $(LatestJdkFeatureVersion)
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
@@ -20,6 +22,6 @@ steps:
       Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
       Write-Host "Java 11 JDK: $Env:JAVA_HOME_11_X64"
       Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
-      Write-Host "Latest JDK: $Env:JAVA_HOME_19_X64"
+      Write-Host "Latest JDK: $Env:JAVA_HOME_$(LatestJdkFeatureVersion)_X64"
     displayName: 'Verify Latest JDK Install'
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])

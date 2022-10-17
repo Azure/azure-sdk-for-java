@@ -6,6 +6,7 @@ variables:
   JavaTestVersion: '1.17'
   # This is the latest JDK version.
   LatestJdkVersion: '1.19'
+  LatestJdkFeatureVersion: '19'
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
 
