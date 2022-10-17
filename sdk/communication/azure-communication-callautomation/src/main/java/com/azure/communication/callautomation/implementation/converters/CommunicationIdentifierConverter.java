@@ -3,7 +3,12 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.implementation.models.*;
+import com.azure.communication.callautomation.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
+import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
