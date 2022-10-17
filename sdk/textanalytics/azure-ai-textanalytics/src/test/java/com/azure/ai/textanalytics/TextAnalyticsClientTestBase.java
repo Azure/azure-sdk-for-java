@@ -3,8 +3,69 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.*;
-import com.azure.ai.textanalytics.util.*;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AssessmentSentiment;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryAction;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.FhirVersion;
+import com.azure.ai.textanalytics.models.HealthcareDocumentType;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SentenceOpinion;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
+import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsActions;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResult;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -19,15 +80,37 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TestUtils.*;
+import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
+import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
+import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
+import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {InvalidDocument}";
@@ -628,9 +711,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Extractive Summarization
-//    @Test
-//    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
-//        TextAnalyticsServiceVersion serviceVersion);
+    @Test
+    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
@@ -673,7 +756,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void detectLanguagesBatchListCountryHintWithOptionsRunner(BiConsumer<List<String>,
         TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-        testRunner.accept(TestUtils.DETECT_LANGUAGE_INPUTS, options);
+        testRunner.accept(DETECT_LANGUAGE_INPUTS, options);
     }
 
     void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
@@ -1515,7 +1598,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed sentence sentiment returned by the service.
      * @param actualSentiment analyzed sentence sentiment returned by the API.
      */
-    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
+    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment,
+        SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
@@ -1680,7 +1764,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateHealthcareEntityRelationRole(HealthcareEntityRelationRole expected,
-        HealthcareEntityRelationRole actual) {
+                                                     HealthcareEntityRelationRole actual) {
         assertEquals(expected.getName(), actual.getName());
         validateHealthcareEntity(expected.getEntity(), actual.getEntity());
     }
@@ -1704,7 +1788,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze tasks
-    static void validateAnalyzeBatchActionsResultList(boolean showStatistics,  boolean includeOpinionMining,
+    static void validateAnalyzeBatchActionsResultList(boolean showStatistics, boolean includeOpinionMining,
         List<AnalyzeActionsResult> expected, List<AnalyzeActionsResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
@@ -1967,7 +2051,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualStatistics the value returned by API.
      */
     private static void validateBatchStatistics(TextDocumentBatchStatistics expectedStatistics,
-         TextDocumentBatchStatistics actualStatistics) {
+                                                TextDocumentBatchStatistics actualStatistics) {
         assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
         assertEquals(expectedStatistics.getInvalidDocumentCount(), actualStatistics.getInvalidDocumentCount());
         assertEquals(expectedStatistics.getValidDocumentCount(), actualStatistics.getValidDocumentCount());
