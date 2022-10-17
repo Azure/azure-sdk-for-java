@@ -12,7 +12,11 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadAzureDe
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jose.util.ResourceRetriever;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -34,6 +38,9 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -52,6 +59,7 @@ import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.ge
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -262,6 +270,24 @@ class AadOAuth2ClientConfigurationTests {
                 .run(context -> {
                     assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
                     assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(context);
+                });
+    }
+
+    @Test
+    void restTemplateWellConfiguredForJwtDecoderCreatedByJwtDecoderFactory() {
+        webApplicationContextRunner()
+                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(JwtDecoderFactory.class);
+                    JwtDecoderFactory<?> factory = context.getBean(JwtDecoderFactory.class);
+                    JwtDecoder jwtDecoder = factory.createDecoder(null);
+                    assertTrue(jwtDecoder instanceof NimbusJwtDecoder);
+                    DefaultJWTProcessor<?> processor = (DefaultJWTProcessor<?>) getField(NimbusJwtDecoder.class, "jwtProcessor", jwtDecoder);
+                    JWSVerificationKeySelector<?> selector = (JWSVerificationKeySelector<?>) processor.getJWSKeySelector();
+                    RemoteJWKSet<?> source = (RemoteJWKSet<?>)selector.getJWKSource();
+                    ResourceRetriever retriever = source.getResourceRetriever();
+                    RestTemplate restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
+                    assertEquals(FACTORY, restTemplate.getRequestFactory());
                 });
     }
 
