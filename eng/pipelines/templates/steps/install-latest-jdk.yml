@@ -12,7 +12,7 @@ steps:
     displayName: 'Install Latest JDK'
     inputs:
       pwsh: true
-      parameters: >
+      arguments: >
         -JdkFeatureVersion $(LatestJdkFeatureVersion)
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
