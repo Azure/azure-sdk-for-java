@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifications of the Dimension of metrics. */
 @Fluent
 public final class MetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);
-
     /*
      * Name of the dimension
      */
@@ -33,11 +29,14 @@ public final class MetricDimension {
     private String internalName;
 
     /*
-     * A boolean flag indicating whether this dimension should be included for
-     * the shoebox export scenario
+     * A boolean flag indicating whether this dimension should be included for the shoebox export scenario
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
 
     /**
      * Get the name property: Name of the dimension.

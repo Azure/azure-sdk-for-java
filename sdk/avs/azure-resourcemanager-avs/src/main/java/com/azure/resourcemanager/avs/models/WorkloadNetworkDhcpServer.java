@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SERVER")
 @Fluent
 public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDhcpServer.class);
-
     /*
      * DHCP Server Address.
      */
@@ -29,6 +25,10 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
      */
     @JsonProperty(value = "leaseTime")
     private Long leaseTime;
+
+    /** Creates an instance of WorkloadNetworkDhcpServer class. */
+    public WorkloadNetworkDhcpServer() {
+    }
 
     /**
      * Get the serverAddress property: DHCP Server Address.

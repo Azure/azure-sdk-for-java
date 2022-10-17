@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatastoreStatus. */
+/** The operational status of the datastore. */
 public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus> {
     /** Static value Unknown for DatastoreStatus. */
     public static final DatastoreStatus UNKNOWN = fromString("Unknown");
@@ -42,7 +42,11 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
         return fromString(name, DatastoreStatus.class);
     }
 
-    /** @return known DatastoreStatus values. */
+    /**
+     * Gets known DatastoreStatus values.
+     *
+     * @return known DatastoreStatus values.
+     */
     public static Collection<DatastoreStatus> values() {
         return values(DatastoreStatus.class);
     }

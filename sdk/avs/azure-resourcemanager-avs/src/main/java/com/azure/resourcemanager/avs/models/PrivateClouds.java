@@ -17,7 +17,7 @@ public interface PrivateClouds {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName);
 
@@ -29,7 +29,7 @@ public interface PrivateClouds {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -38,7 +38,7 @@ public interface PrivateClouds {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> list();
 
@@ -49,9 +49,23 @@ public interface PrivateClouds {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of private clouds.
+     * @return a paged list of private clouds as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateCloud> list(Context context);
+
+    /**
+     * Get a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud along with {@link Response}.
+     */
+    Response<PrivateCloud> getByResourceGroupWithResponse(
+        String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a private cloud.
@@ -64,20 +78,6 @@ public interface PrivateClouds {
      * @return a private cloud.
      */
     PrivateCloud getByResourceGroup(String resourceGroupName, String privateCloudName);
-
-    /**
-     * Get a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
-     */
-    Response<PrivateCloud> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Delete a private cloud.
@@ -153,6 +153,20 @@ public interface PrivateClouds {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return administrative credentials for accessing vCenter and NSX-T along with {@link Response}.
+     */
+    Response<AdminCredentials> listAdminCredentialsWithResponse(
+        String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * List the admin credentials for the private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,27 +175,13 @@ public interface PrivateClouds {
     AdminCredentials listAdminCredentials(String resourceGroupName, String privateCloudName);
 
     /**
-     * List the admin credentials for the private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return administrative credentials for accessing vCenter and NSX-T.
-     */
-    Response<AdminCredentials> listAdminCredentialsWithResponse(
-        String resourceGroupName, String privateCloudName, Context context);
-
-    /**
      * Get a private cloud.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
+     * @return a private cloud along with {@link Response}.
      */
     PrivateCloud getById(String id);
 
@@ -193,7 +193,7 @@ public interface PrivateClouds {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud.
+     * @return a private cloud along with {@link Response}.
      */
     Response<PrivateCloud> getByIdWithResponse(String id, Context context);
 

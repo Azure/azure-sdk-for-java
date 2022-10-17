@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIpProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Public IP Block Properties. */
 @Fluent
 public final class WorkloadNetworkPublicIpProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkPublicIpProperties.class);
-
     /*
      * Display name of the Public IP Block.
      */
@@ -38,6 +34,10 @@ public final class WorkloadNetworkPublicIpProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkPublicIpProvisioningState provisioningState;
+
+    /** Creates an instance of WorkloadNetworkPublicIpProperties class. */
+    public WorkloadNetworkPublicIpProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the Public IP Block.

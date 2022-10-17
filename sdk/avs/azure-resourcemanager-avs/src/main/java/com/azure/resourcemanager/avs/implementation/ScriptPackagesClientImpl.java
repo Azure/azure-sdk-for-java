@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 import com.azure.resourcemanager.avs.models.ScriptPackagesList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ScriptPackagesClient. */
 public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
-    private final ClientLogger logger = new ClientLogger(ScriptPackagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ScriptPackagesService service;
 
@@ -109,7 +106,8 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptPackageInner>> listSinglePageAsync(
@@ -168,7 +166,8 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptPackageInner>> listSinglePageAsync(
@@ -223,7 +222,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScriptPackageInner> listAsync(String resourceGroupName, String privateCloudName) {
@@ -241,7 +240,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScriptPackageInner> listAsync(
@@ -259,7 +258,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptPackageInner> list(String resourceGroupName, String privateCloudName) {
@@ -275,7 +274,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptPackageInner> list(String resourceGroupName, String privateCloudName, Context context) {
@@ -291,7 +290,8 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud.
+     * @return a script package available to run on a private cloud along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptPackageInner>> getWithResponseAsync(
@@ -347,7 +347,8 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud.
+     * @return a script package available to run on a private cloud along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptPackageInner>> getWithResponseAsync(
@@ -399,20 +400,31 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud.
+     * @return a script package available to run on a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScriptPackageInner> getAsync(
         String resourceGroupName, String privateCloudName, String scriptPackageName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, scriptPackageName)
-            .flatMap(
-                (Response<ScriptPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a script package available to run on a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param scriptPackageName Name of the script package in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a script package available to run on a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScriptPackageInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, scriptPackageName, context).block();
     }
 
     /**
@@ -428,35 +440,19 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptPackageInner get(String resourceGroupName, String privateCloudName, String scriptPackageName) {
-        return getAsync(resourceGroupName, privateCloudName, scriptPackageName).block();
-    }
-
-    /**
-     * Get a script package available to run on a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param scriptPackageName Name of the script package in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a script package available to run on a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScriptPackageInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, scriptPackageName, context).block();
+        return getWithResponse(resourceGroupName, privateCloudName, scriptPackageName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptPackageInner>> listNextSinglePageAsync(String nextLink) {
@@ -487,12 +483,14 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the available script packages.
+     * @return a list of the available script packages along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptPackageInner>> listNextSinglePageAsync(String nextLink, Context context) {

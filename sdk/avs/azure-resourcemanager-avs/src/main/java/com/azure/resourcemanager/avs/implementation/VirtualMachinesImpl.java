@@ -14,10 +14,9 @@ import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.avs.models.VirtualMachine;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovement;
 import com.azure.resourcemanager.avs.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 
@@ -42,17 +41,6 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public VirtualMachine get(
-        String resourceGroupName, String privateCloudName, String clusterName, String virtualMachineId) {
-        VirtualMachineInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, virtualMachineId);
-        if (inner != null) {
-            return new VirtualMachineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualMachine> getWithResponse(
         String resourceGroupName,
         String privateCloudName,
@@ -69,6 +57,17 @@ public final class VirtualMachinesImpl implements VirtualMachines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualMachineImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualMachine get(
+        String resourceGroupName, String privateCloudName, String clusterName, String virtualMachineId) {
+        VirtualMachineInner inner =
+            this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, virtualMachineId);
+        if (inner != null) {
+            return new VirtualMachineImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMTypeEnum. */
+/** Virtual machine type. */
 public final class VMTypeEnum extends ExpandableStringEnum<VMTypeEnum> {
     /** Static value REGULAR for VMTypeEnum. */
     public static final VMTypeEnum REGULAR = fromString("REGULAR");
@@ -30,7 +30,11 @@ public final class VMTypeEnum extends ExpandableStringEnum<VMTypeEnum> {
         return fromString(name, VMTypeEnum.class);
     }
 
-    /** @return known VMTypeEnum values. */
+    /**
+     * Gets known VMTypeEnum values.
+     *
+     * @return known VMTypeEnum values.
+     */
     public static Collection<VMTypeEnum> values() {
         return values(VMTypeEnum.class);
     }

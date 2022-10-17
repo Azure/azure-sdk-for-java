@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.QuotaEnabled;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Subscription quotas. */
 @Immutable
 public final class QuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaInner.class);
-
     /*
      * Remaining hosts quota by sku type
      */
@@ -29,6 +25,10 @@ public final class QuotaInner {
      */
     @JsonProperty(value = "quotaEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaEnabled quotaEnabled;
+
+    /** Creates an instance of QuotaInner class. */
+    public QuotaInner() {
+    }
 
     /**
      * Get the hostsRemaining property: Remaining hosts quota by sku type.

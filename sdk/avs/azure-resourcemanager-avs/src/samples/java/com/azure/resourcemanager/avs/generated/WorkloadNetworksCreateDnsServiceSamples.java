@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateDnsService. */
 public final class WorkloadNetworksCreateDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_CreateDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDnsService.

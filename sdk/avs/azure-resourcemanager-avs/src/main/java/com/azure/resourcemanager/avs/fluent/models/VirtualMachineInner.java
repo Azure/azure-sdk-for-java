@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Machine. */
-@Fluent
+@Immutable
 public final class VirtualMachineInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineInner.class);
-
     /*
      * Virtual machine properties.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineInner class. */
+    public VirtualMachineInner() {
+    }
 
     /**
      * Get the innerProperties property: Virtual machine properties.

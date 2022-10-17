@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatastoreProvisioningState. */
+/** The state of the datastore provisioning. */
 public final class DatastoreProvisioningState extends ExpandableStringEnum<DatastoreProvisioningState> {
     /** Static value Succeeded for DatastoreProvisioningState. */
     public static final DatastoreProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -31,6 +31,9 @@ public final class DatastoreProvisioningState extends ExpandableStringEnum<Datas
     /** Static value Deleting for DatastoreProvisioningState. */
     public static final DatastoreProvisioningState DELETING = fromString("Deleting");
 
+    /** Static value Canceled for DatastoreProvisioningState. */
+    public static final DatastoreProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a DatastoreProvisioningState from its string representation.
      *
@@ -42,7 +45,11 @@ public final class DatastoreProvisioningState extends ExpandableStringEnum<Datas
         return fromString(name, DatastoreProvisioningState.class);
     }
 
-    /** @return known DatastoreProvisioningState values. */
+    /**
+     * Gets known DatastoreProvisioningState values.
+     *
+     * @return known DatastoreProvisioningState values.
+     */
     public static Collection<DatastoreProvisioningState> values() {
         return values(DatastoreProvisioningState.class);
     }

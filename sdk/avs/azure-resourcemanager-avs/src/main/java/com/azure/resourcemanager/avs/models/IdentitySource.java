@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** vCenter Single Sign On Identity Source. */
 @Fluent
 public final class IdentitySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentitySource.class);
-
     /*
      * The name of the identity source
      */
@@ -63,18 +59,20 @@ public final class IdentitySource {
     private SslEnum ssl;
 
     /*
-     * The ID of an Active Directory user with a minimum of read-only access to
-     * Base DN for users and group
+     * The ID of an Active Directory user with a minimum of read-only access to Base DN for users and group
      */
     @JsonProperty(value = "username")
     private String username;
 
     /*
-     * The password of the Active Directory user with a minimum of read-only
-     * access to Base DN for users and groups.
+     * The password of the Active Directory user with a minimum of read-only access to Base DN for users and groups.
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of IdentitySource class. */
+    public IdentitySource() {
+    }
 
     /**
      * Get the name property: The name of the identity source.
