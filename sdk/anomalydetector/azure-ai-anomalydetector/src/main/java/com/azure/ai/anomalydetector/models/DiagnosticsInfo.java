@@ -23,6 +23,9 @@ public final class DiagnosticsInfo {
     @JsonProperty(value = "variableStates")
     private List<VariableState> variableStates;
 
+    /** Creates an instance of DiagnosticsInfo class. */
+    public DiagnosticsInfo() {}
+
     /**
      * Get the modelState property: The modelState property.
      *

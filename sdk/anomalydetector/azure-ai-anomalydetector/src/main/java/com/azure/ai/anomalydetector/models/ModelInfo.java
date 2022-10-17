@@ -13,8 +13,8 @@ import java.util.List;
 @Fluent
 public final class ModelInfo {
     /*
-     * An optional field, indicating how many previous points will be used to
-     * compute the anomaly score of the subsequent point.
+     * An optional field, indicating how many previous points will be used to compute the anomaly score of the
+     * subsequent point.
      */
     @JsonProperty(value = "slidingWindow")
     private Integer slidingWindow;
@@ -26,23 +26,20 @@ public final class ModelInfo {
     private AlignPolicy alignPolicy;
 
     /*
-     * Source link to the input variables. Each variable should be a csv file
-     * with two columns, `timestamp` and `value`. By default, the file name of
-     * the variable will be used as its variable name.
+     * Source link to the input variables. Each variable should be a csv file with two columns, `timestamp` and
+     * `value`. By default, the file name of the variable will be used as its variable name.
      */
     @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
-     * A required field, indicating the start time of training data. Should be
-     * date-time.
+     * A required field, indicating the start time of training data. Should be date-time.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * A required field, indicating the end time of training data. Should be
-     * date-time.
+     * A required field, indicating the end time of training data. Should be date-time.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
@@ -70,6 +67,9 @@ public final class ModelInfo {
      */
     @JsonProperty(value = "diagnosticsInfo", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnosticsInfo diagnosticsInfo;
+
+    /** Creates an instance of ModelInfo class. */
+    public ModelInfo() {}
 
     /**
      * Get the slidingWindow property: An optional field, indicating how many previous points will be used to compute

@@ -30,6 +30,9 @@ public final class DetectionResult {
     @JsonProperty(value = "results", required = true)
     private List<AnomalyState> results;
 
+    /** Creates an instance of DetectionResult class. */
+    public DetectionResult() {}
+
     /**
      * Get the resultId property: The resultId property.
      *

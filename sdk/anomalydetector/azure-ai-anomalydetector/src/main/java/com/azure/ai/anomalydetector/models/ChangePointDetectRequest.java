@@ -12,48 +12,48 @@ import java.util.List;
 @Fluent
 public final class ChangePointDetectRequest {
     /*
-     * Time series data points. Points should be sorted by timestamp in
-     * ascending order to match the change point detection result.
+     * Time series data points. Points should be sorted by timestamp in ascending order to match the change point
+     * detection result.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
 
     /*
-     * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or
-     * secondly. Granularity is used for verify whether input series is valid.
+     * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly. Granularity is used for verify
+     * whether input series is valid.
      */
     @JsonProperty(value = "granularity", required = true)
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example,
-     * if the series is 5 minutes, request can be set as
-     * {"granularity":"minutely", "customInterval":5}.
+     * Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can
+     * be set as {"granularity":"minutely", "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null
-     * or does not present, the API will determine the period automatically.
+     * Optional argument, periodic value of a time series. If the value is null or does not present, the API will
+     * determine the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, a default stableTrendWindow
-     * will be used in detection.
+     * Optional argument, advanced model parameter, a default stableTrendWindow will be used in detection.
      */
     @JsonProperty(value = "stableTrendWindow")
     private Integer stableTrendWindow;
 
     /*
-     * Optional argument, advanced model parameter, between 0.0-1.0, the lower
-     * the value is, the larger the trend error will be which means less change
-     * point will be accepted.
+     * Optional argument, advanced model parameter, between 0.0-1.0, the lower the value is, the larger the trend error
+     * will be which means less change point will be accepted.
      */
     @JsonProperty(value = "threshold")
     private Float threshold;
+
+    /** Creates an instance of ChangePointDetectRequest class. */
+    public ChangePointDetectRequest() {}
 
     /**
      * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to

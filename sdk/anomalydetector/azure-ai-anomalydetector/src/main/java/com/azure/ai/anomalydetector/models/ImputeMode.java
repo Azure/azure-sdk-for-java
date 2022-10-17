@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImputeMode. */
+/** Define the impute method, can be one of auto, previous, linear, fixed, zero, notFill. */
 public final class ImputeMode extends ExpandableStringEnum<ImputeMode> {
     /** Static value auto for ImputeMode. */
     public static final ImputeMode AUTO = fromString("auto");
@@ -39,7 +39,11 @@ public final class ImputeMode extends ExpandableStringEnum<ImputeMode> {
         return fromString(name, ImputeMode.class);
     }
 
-    /** @return known ImputeMode values. */
+    /**
+     * Gets known ImputeMode values.
+     *
+     * @return known ImputeMode values.
+     */
     public static Collection<ImputeMode> values() {
         return values(ImputeMode.class);
     }

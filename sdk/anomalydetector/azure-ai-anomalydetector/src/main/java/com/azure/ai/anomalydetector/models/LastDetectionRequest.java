@@ -23,6 +23,9 @@ public final class LastDetectionRequest {
     @JsonProperty(value = "detectingPoints", required = true)
     private int detectingPoints;
 
+    /** Creates an instance of LastDetectionRequest class. */
+    public LastDetectionRequest() {}
+
     /**
      * Get the variables property: variables.
      *

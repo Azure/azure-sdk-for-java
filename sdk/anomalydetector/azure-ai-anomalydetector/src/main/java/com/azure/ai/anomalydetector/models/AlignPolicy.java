@@ -11,16 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AlignPolicy {
     /*
-     * An optional field, indicating how we align different variables to the
-     * same time-range. Either Inner or Outer.
+     * An optional field, indicating how we align different variables to the same time-range. Either Inner or Outer.
      */
     @JsonProperty(value = "alignMode")
     private AlignMode alignMode;
 
     /*
-     * An optional field, indicating how missing values will be filled. One of
-     * Previous, Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to
-     * NotFill, when the alignMode is Outer.
+     * An optional field, indicating how missing values will be filled. One of Previous, Subsequent, Linear, Zero,
+     * Fixed, and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
      */
     @JsonProperty(value = "fillNAMethod")
     private FillNaMethod fillNaMethod;
@@ -30,6 +28,9 @@ public final class AlignPolicy {
      */
     @JsonProperty(value = "paddingValue")
     private Float paddingValue;
+
+    /** Creates an instance of AlignPolicy class. */
+    public AlignPolicy() {}
 
     /**
      * Get the alignMode property: An optional field, indicating how we align different variables to the same

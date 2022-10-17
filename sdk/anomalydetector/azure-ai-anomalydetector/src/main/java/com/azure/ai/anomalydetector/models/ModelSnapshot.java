@@ -48,6 +48,9 @@ public final class ModelSnapshot {
     @JsonProperty(value = "variablesCount", required = true)
     private int variablesCount;
 
+    /** Creates an instance of ModelSnapshot class. */
+    public ModelSnapshot() {}
+
     /**
      * Get the modelId property: Model identifier.
      *

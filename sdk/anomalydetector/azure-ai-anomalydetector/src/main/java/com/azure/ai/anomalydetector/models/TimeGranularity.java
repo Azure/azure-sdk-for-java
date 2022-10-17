@@ -7,7 +7,11 @@ package com.azure.ai.anomalydetector.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TimeGranularity. */
+/**
+ * Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely, secondly, microsecond or none. If
+ * granularity is not present, it will be none by default. If granularity is none, the timestamp property in time series
+ * point can be absent.
+ */
 public enum TimeGranularity {
     /** Enum value yearly. */
     YEARLY("yearly"),
@@ -51,6 +55,9 @@ public enum TimeGranularity {
      */
     @JsonCreator
     public static TimeGranularity fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TimeGranularity[] items = TimeGranularity.values();
         for (TimeGranularity item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +67,7 @@ public enum TimeGranularity {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -12,66 +12,62 @@ import java.util.List;
 @Fluent
 public final class DetectRequest {
     /*
-     * Time series data points. Points should be sorted by timestamp in
-     * ascending order to match the anomaly detection result. If the data is
-     * not sorted correctly or there is duplicated timestamp, the API will not
-     * work. In such case, an error message will be returned.
+     * Time series data points. Points should be sorted by timestamp in ascending order to match the anomaly detection
+     * result. If the data is not sorted correctly or there is duplicated timestamp, the API will not work. In such
+     * case, an error message will be returned.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
 
     /*
-     * Optional argument, can be one of yearly, monthly, weekly, daily, hourly,
-     * minutely, secondly, microsecond or none. If granularity is not present,
-     * it will be none by default. If granularity is none, the timestamp
-     * property in time series point can be absent.
+     * Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely, secondly, microsecond or
+     * none. If granularity is not present, it will be none by default. If granularity is none, the timestamp property
+     * in time series point can be absent.
      */
     @JsonProperty(value = "granularity")
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example,
-     * if the series is 5 minutes, request can be set as
-     * {"granularity":"minutely", "customInterval":5}.
+     * Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can
+     * be set as {"granularity":"minutely", "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null
-     * or does not present, the API will determine the period automatically.
+     * Optional argument, periodic value of a time series. If the value is null or does not present, the API will
+     * determine the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, max anomaly ratio in a time
-     * series.
+     * Optional argument, advanced model parameter, max anomaly ratio in a time series.
      */
     @JsonProperty(value = "maxAnomalyRatio")
     private Float maxAnomalyRatio;
 
     /*
-     * Optional argument, advanced model parameter, between 0-99, the lower the
-     * value is, the larger the margin value will be which means less anomalies
-     * will be accepted.
+     * Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value
+     * will be which means less anomalies will be accepted.
      */
     @JsonProperty(value = "sensitivity")
     private Integer sensitivity;
 
     /*
-     * Used to specify how to deal with missing values in the input series,
-     * it's used when granularity is not "none".
+     * Used to specify how to deal with missing values in the input series, it's used when granularity is not "none".
      */
     @JsonProperty(value = "imputeMode")
     private ImputeMode imputeMode;
 
     /*
-     * Used to specify the value to fill, it's used when granularity is not
-     * "none" and imputeMode is "fixed".
+     * Used to specify the value to fill, it's used when granularity is not "none" and imputeMode is "fixed".
      */
     @JsonProperty(value = "imputeFixedValue")
     private Float imputeFixedValue;
+
+    /** Creates an instance of DetectRequest class. */
+    public DetectRequest() {}
 
     /**
      * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FillNaMethod. */
+/**
+ * An optional field, indicating how missing values will be filled. One of Previous, Subsequent, Linear, Zero, Fixed,
+ * and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
+ */
 public final class FillNaMethod extends ExpandableStringEnum<FillNaMethod> {
     /** Static value Previous for FillNaMethod. */
     public static final FillNaMethod PREVIOUS = fromString("Previous");
@@ -39,7 +42,11 @@ public final class FillNaMethod extends ExpandableStringEnum<FillNaMethod> {
         return fromString(name, FillNaMethod.class);
     }
 
-    /** @return known FillNaMethod values. */
+    /**
+     * Gets known FillNaMethod values.
+     *
+     * @return known FillNaMethod values.
+     */
     public static Collection<FillNaMethod> values() {
         return values(FillNaMethod.class);
     }

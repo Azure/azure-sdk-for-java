@@ -12,75 +12,67 @@ import java.util.List;
 @Fluent
 public final class EntireDetectResponse {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has
-     * been found.
+     * Frequency extracted from the series, zero means no recurrent pattern has been found.
      */
     @JsonProperty(value = "period", required = true)
     private int period;
 
     /*
-     * ExpectedValues contain expected value for each input point. The index of
-     * the array is consistent with the input series.
+     * ExpectedValues contain expected value for each input point. The index of the array is consistent with the input
+     * series.
      */
     @JsonProperty(value = "expectedValues", required = true)
     private List<Float> expectedValues;
 
     /*
-     * UpperMargins contain upper margin of each input point. UpperMargin is
-     * used to calculate upperBoundary, which equals to expectedValue + (100 -
-     * marginScale)*upperMargin. Anomalies in response can be filtered by
-     * upperBoundary and lowerBoundary. By adjusting marginScale value, less
-     * significant anomalies can be filtered in client side. The index of the
-     * array is consistent with the input series.
+     * UpperMargins contain upper margin of each input point. UpperMargin is used to calculate upperBoundary, which
+     * equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response can be filtered by
+     * upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies can be filtered in
+     * client side. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "upperMargins", required = true)
     private List<Float> upperMargins;
 
     /*
-     * LowerMargins contain lower margin of each input point. LowerMargin is
-     * used to calculate lowerBoundary, which equals to expectedValue - (100 -
-     * marginScale)*lowerMargin. Points between the boundary can be marked as
-     * normal ones in client side. The index of the array is consistent with
-     * the input series.
+     * LowerMargins contain lower margin of each input point. LowerMargin is used to calculate lowerBoundary, which
+     * equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as normal
+     * ones in client side. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "lowerMargins", required = true)
     private List<Float> lowerMargins;
 
     /*
-     * IsAnomaly contains anomaly properties for each input point. True means
-     * an anomaly either negative or positive has been detected. The index of
-     * the array is consistent with the input series.
+     * IsAnomaly contains anomaly properties for each input point. True means an anomaly either negative or positive
+     * has been detected. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "isAnomaly", required = true)
     private List<Boolean> isAnomaly;
 
     /*
-     * IsNegativeAnomaly contains anomaly status in negative direction for each
-     * input point. True means a negative anomaly has been detected. A negative
-     * anomaly means the point is detected as an anomaly and its real value is
-     * smaller than the expected one. The index of the array is consistent with
-     * the input series.
+     * IsNegativeAnomaly contains anomaly status in negative direction for each input point. True means a negative
+     * anomaly has been detected. A negative anomaly means the point is detected as an anomaly and its real value is
+     * smaller than the expected one. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "isNegativeAnomaly", required = true)
     private List<Boolean> isNegativeAnomaly;
 
     /*
-     * IsPositiveAnomaly contain anomaly status in positive direction for each
-     * input point. True means a positive anomaly has been detected. A positive
-     * anomaly means the point is detected as an anomaly and its real value is
-     * larger than the expected one. The index of the array is consistent with
-     * the input series.
+     * IsPositiveAnomaly contain anomaly status in positive direction for each input point. True means a positive
+     * anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is
+     * larger than the expected one. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "isPositiveAnomaly", required = true)
     private List<Boolean> isPositiveAnomaly;
 
     /*
-     * The severity score for each input point. The larger the value is, the
-     * more sever the anomaly is. For normal points, the "severity" is always
-     * 0.
+     * The severity score for each input point. The larger the value is, the more sever the anomaly is. For normal
+     * points, the "severity" is always 0.
      */
     @JsonProperty(value = "severity")
     private List<Float> severity;
+
+    /** Creates an instance of EntireDetectResponse class. */
+    public EntireDetectResponse() {}
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.

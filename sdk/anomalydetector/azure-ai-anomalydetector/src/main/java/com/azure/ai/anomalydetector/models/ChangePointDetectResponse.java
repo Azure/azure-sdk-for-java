@@ -12,16 +12,14 @@ import java.util.List;
 @Fluent
 public final class ChangePointDetectResponse {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has
-     * been found.
+     * Frequency extracted from the series, zero means no recurrent pattern has been found.
      */
     @JsonProperty(value = "period", access = JsonProperty.Access.WRITE_ONLY)
     private Integer period;
 
     /*
-     * isChangePoint contains change point properties for each input point.
-     * True means an anomaly either negative or positive has been detected. The
-     * index of the array is consistent with the input series.
+     * isChangePoint contains change point properties for each input point. True means an anomaly either negative or
+     * positive has been detected. The index of the array is consistent with the input series.
      */
     @JsonProperty(value = "isChangePoint")
     private List<Boolean> isChangePoint;
@@ -31,6 +29,9 @@ public final class ChangePointDetectResponse {
      */
     @JsonProperty(value = "confidenceScores")
     private List<Float> confidenceScores;
+
+    /** Creates an instance of ChangePointDetectResponse class. */
+    public ChangePointDetectResponse() {}
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.

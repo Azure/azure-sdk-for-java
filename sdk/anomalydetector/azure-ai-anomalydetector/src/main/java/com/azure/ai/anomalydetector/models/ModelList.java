@@ -35,6 +35,9 @@ public final class ModelList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ModelList class. */
+    public ModelList() {}
+
     /**
      * Get the models property: List of models.
      *
