@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config.implementation;
 
 import static org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration.BOOTSTRAP_PROPERTY_SOURCE_NAME;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,6 @@ import org.springframework.core.env.PropertySource;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreTrigger;
@@ -39,8 +39,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
 
-    private final AppConfigurationProperties properties;
-
     private final List<ConfigStore> configStores;
 
     private final AppConfigurationProviderProperties appProperties;
@@ -48,6 +46,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+
+    private Duration refreshInterval;
 
     static final AtomicBoolean STARTUP = new AtomicBoolean(true);
 
@@ -58,12 +58,12 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
      * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
      */
-    public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory) {
-        this.properties = properties;
+    public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
+        AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
+        Duration refreshInterval,  List<ConfigStore> configStores) {
+        this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
-        this.configStores = properties.getStores();
+        this.configStores = configStores;
         this.clientFactory = clientFactory;
         this.keyVaultClientFactory = keyVaultClientFactory;
 
@@ -93,7 +93,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         Collections.reverse(configStores); // Last store has the highest precedence
 
         StateHolder newState = new StateHolder();
-        newState.setNextForcedRefresh(properties.getRefreshInterval());
+        newState.setNextForcedRefresh(refreshInterval);
 
         // Feature Management needs to be set in the last config store.
         for (ConfigStore configStore : configStores) {
@@ -233,9 +233,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             LOGGER.error("Refreshing failed while reading configuration from Azure App Configuration store "
                 + configStore.getEndpoint() + ".");
 
-            if (properties.getRefreshInterval() != null) {
+            if (refreshInterval != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties.getDefaultMinBackoff());
+                newState.updateNextRefreshTime(refreshInterval, appProperties.getDefaultMinBackoff());
             }
             throw new RuntimeException(message, e);
         } else if (configStore.isFailFast()) {
@@ -268,8 +268,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
                 store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
-                selectedKeys.getLabelFilter(profiles),
-                properties, appProperties.getMaxRetryTime());
+                selectedKeys.getLabelFilter(profiles), appProperties.getMaxRetryTime());
             propertySource.initProperties();
             sourceList.add(propertySource);
         }
@@ -277,7 +276,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
                 AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    store.getEndpoint(), client, selectedKeys.getKeyFilter(),
+                    selectedKeys.getLabelFilter(profiles));
 
                 propertySource.initProperties();
                 sourceList.add(propertySource);

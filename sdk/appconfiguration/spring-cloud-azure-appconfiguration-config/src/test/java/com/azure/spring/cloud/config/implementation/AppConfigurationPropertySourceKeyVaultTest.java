@@ -97,7 +97,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
-            keyVaultClientFactory, KEY_FILTER, labelFilter, new AppConfigurationProperties(), 60);
+            keyVaultClientFactory, KEY_FILTER, labelFilter, 60);
 
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
@@ -120,7 +120,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
-        when(keyVaultClientFactory.getClient(Mockito.any(URI.class), Mockito.any())).thenReturn(clientManagerMock);
+        when(keyVaultClientFactory.getClient(Mockito.any(URI.class))).thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
         try {

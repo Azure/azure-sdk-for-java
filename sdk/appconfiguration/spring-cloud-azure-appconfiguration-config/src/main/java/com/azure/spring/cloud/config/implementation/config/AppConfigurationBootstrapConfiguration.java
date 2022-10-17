@@ -51,8 +51,8 @@ public class AppConfigurationBootstrapConfiguration {
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
         throws IllegalArgumentException {
 
-        return new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactory,
-            keyVaultClientFactory);
+        return new AppConfigurationPropertySourceLocator(appProperties, clientFactory, keyVaultClientFactory,
+            properties.getRefreshInterval(), properties.getStores());
     }
 
     /**
@@ -60,7 +60,8 @@ public class AppConfigurationBootstrapConfiguration {
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
-    AppConfigurationKeyVaultClientFactory keyVaultClientFactory() throws IllegalArgumentException {
+    AppConfigurationKeyVaultClientFactory keyVaultClientFactory(AppConfigurationProperties appConfigurationProperties)
+        throws IllegalArgumentException {
 
         KeyVaultCredentialProvider keyVaultCredentialProvider = context
             .getBeanProvider(KeyVaultCredentialProvider.class).getIfAvailable();
@@ -75,7 +76,7 @@ public class AppConfigurationBootstrapConfiguration {
         }
 
         return new AppConfigurationKeyVaultClientFactory(keyVaultCredentialProvider, keyVaultClientProvider,
-            keyVaultSecretProvider);
+            keyVaultSecretProvider, appConfigurationProperties.getClientId());
     }
 
     /**

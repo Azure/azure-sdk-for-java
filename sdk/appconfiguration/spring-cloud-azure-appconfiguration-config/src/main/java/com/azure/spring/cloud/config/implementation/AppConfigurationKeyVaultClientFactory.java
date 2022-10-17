@@ -9,7 +9,6 @@ import java.util.Map;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
 
 public class AppConfigurationKeyVaultClientFactory {
@@ -22,22 +21,24 @@ public class AppConfigurationKeyVaultClientFactory {
 
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
+    private final String authClientId;
+
     public AppConfigurationKeyVaultClientFactory(KeyVaultCredentialProvider keyVaultCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider,
+        String authClientId) {
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
+        this.authClientId = authClientId;
         keyVaultClients = new HashMap<>();
     }
 
-    public AppConfigurationSecretClientManager getClient(URI uri,
-        AppConfigurationProperties appConfigurationProperties) {
+    public AppConfigurationSecretClientManager getClient(URI uri) {
         // Check if we already have a client for this key vault, if not we will make
         // one
         if (!keyVaultClients.containsKey(uri.getHost())) {
-            AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(
-                appConfigurationProperties, uri, keyVaultCredentialProvider,
-                keyVaultClientProvider, keyVaultSecretProvider);
+            AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(uri,
+                keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider, authClientId);
             keyVaultClients.put(uri.getHost(), client);
         }
         return keyVaultClients.get(uri.getHost());

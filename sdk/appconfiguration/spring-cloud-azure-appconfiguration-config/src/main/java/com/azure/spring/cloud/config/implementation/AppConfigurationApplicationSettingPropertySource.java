@@ -20,35 +20,32 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4
+ * AppConfigurationPropertySources need to be created.
  * </p>
  */
 final class AppConfigurationApplicationSettingPropertySource extends AppConfigurationPropertySource {
 
     private static final Logger LOGGER = LoggerFactory
-        .getLogger(AppConfigurationApplicationSettingPropertySource.class);
-
-    private final AppConfigurationProperties appConfigurationProperties;
+            .getLogger(AppConfigurationApplicationSettingPropertySource.class);
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     private final int maxRetryTime;
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
-        AppConfigurationProperties appConfigurationProperties, int maxRetryTime) {
+            AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
+            int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(originEndpoint, replicaClient, keyFilter, labelFilter);
         this.keyVaultClientFactory = keyVaultClientFactory;
-        this.appConfigurationProperties = appConfigurationProperties;
         this.maxRetryTime = maxRetryTime;
     }
 
@@ -56,6 +53,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
+     * 
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
     public void initProperties() throws JsonProcessingException {
@@ -64,14 +62,14 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*")
-                .setLabelFilter(label);
+                    .setLabelFilter(label);
 
             // * for wildcard match
             List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(keyFilter.length())
-                    .replace('/', '.');
+                        .replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
                     String entry = getKeyVaultEntry((SecretReferenceConfigurationSetting) setting);
 
@@ -80,7 +78,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                         properties.put(key, entry);
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
-                    && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                        && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                     Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(keyFilter.length());
@@ -94,9 +92,11 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
     }
 
     /**
-     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
+     * Given a Setting's Key Vault Reference stored in the Settings value, it will
+     * get its entry in Key Vault.
      *
-     * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
+     * @param secretReference {"uri":
+     *                        "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
     private String getKeyVaultEntry(SecretReferenceConfigurationSetting secretReference) {
@@ -112,8 +112,8 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                 ReflectionUtils.rethrowRuntimeException(e);
             }
 
-            KeyVaultSecret secret = keyVaultClientFactory.getClient(uri, appConfigurationProperties).getSecret(uri,
-                maxRetryTime);
+            KeyVaultSecret secret = keyVaultClientFactory.getClient(uri).getSecret(uri,
+                    maxRetryTime);
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }

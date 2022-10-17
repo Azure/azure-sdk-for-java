@@ -15,7 +15,6 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 
 /**
  * Client for connecting to and getting secrets from a Key Vault
@@ -23,8 +22,6 @@ import com.azure.spring.cloud.config.implementation.properties.AppConfigurationP
 public final class AppConfigurationSecretClientManager {
 
     private SecretAsyncClient secretClient;
-
-    private final AppConfigurationProperties properties;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
@@ -35,19 +32,20 @@ public final class AppConfigurationSecretClientManager {
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private Boolean useSecretResolver = false;
+    
+    private String authClientId;
 
     /**
      * Creates a Client for connecting to Key Vault
-     * @param properties AppConfiguration Properties
      * @param uri Key Vault URI
      * @param tokenCredentialProvider optional provider of the Token Credential for connecting to Key Vault
      * @param keyVaultClientProvider optional provider for overriding the Key Vault Client
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
+     * @param authClientId clientId used to authenticate with to App Configuration (Optional)
      */
-    public AppConfigurationSecretClientManager(AppConfigurationProperties properties, URI uri,
-        KeyVaultCredentialProvider tokenCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider) {
-        this.properties = properties;
+    public AppConfigurationSecretClientManager(URI uri, KeyVaultCredentialProvider tokenCredentialProvider,
+        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider,
+        String authClientId) {
         this.uri = uri;
         if (tokenCredentialProvider != null) {
             this.tokenCredential = tokenCredentialProvider.getKeyVaultCredential("https://" + uri.getHost());
@@ -56,23 +54,23 @@ public final class AppConfigurationSecretClientManager {
         }
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
+        this.authClientId = authClientId;
     }
 
     AppConfigurationSecretClientManager build() {
         SecretClientBuilder builder = getBuilder();
-        String clientId = properties.getClientId();
         String fullUri = "https://" + uri.getHost();
 
-        if (tokenCredential != null && clientId != null) {
+        if (tokenCredential != null && authClientId != null) {
             throw new IllegalArgumentException("More than 1 Connection method was set for connecting to Key Vault.");
         }
 
         if (tokenCredential != null) {
             // User Provided Token Credential
             builder.credential(tokenCredential);
-        } else if (StringUtils.hasText(clientId)) {
+        } else if (StringUtils.hasText(authClientId)) {
             // User Assigned Identity - Client ID through configuration file.
-            builder.credential(new ManagedIdentityCredentialBuilder().clientId(clientId).build());
+            builder.credential(new ManagedIdentityCredentialBuilder().clientId(authClientId).build());
         } else if (keyVaultSecretProvider != null) { // This is the Secret Resolver
             // Use this instead.
             useSecretResolver = true;
