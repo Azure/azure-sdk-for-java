@@ -142,14 +142,14 @@ public class AadOAuth2ClientConfiguration {
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
-        AadJwtBearerGrantRequestEntityConverter jwtBearerConverter = new AadJwtBearerGrantRequestEntityConverter();
+        DefaultJwtBearerTokenResponseClient client = new DefaultJwtBearerTokenResponseClient();
+        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        AadJwtBearerGrantRequestEntityConverter converter = new AadJwtBearerGrantRequestEntityConverter();
         if (resolver != null) {
-            jwtBearerConverter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
+            converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
         }
-        DefaultJwtBearerTokenResponseClient responseClient = new DefaultJwtBearerTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
-        responseClient.setRequestEntityConverter(jwtBearerConverter);
-        provider.setAccessTokenResponseClient(responseClient);
+        client.setRequestEntityConverter(converter);
+        provider.setAccessTokenResponseClient(client);
         return provider;
     }
 
@@ -159,47 +159,42 @@ public class AadOAuth2ClientConfiguration {
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
+        DefaultRefreshTokenTokenResponseClient client = new DefaultRefreshTokenTokenResponseClient();
+        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {
             OAuth2RefreshTokenGrantRequestEntityConverter converter = new OAuth2RefreshTokenGrantRequestEntityConverter();
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-
-            DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-            responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
-            responseClient.setRequestEntityConverter(converter);
-            provider.setAccessTokenResponseClient(responseClient);
+            client.setRequestEntityConverter(converter);
         }
+        provider.setAccessTokenResponseClient(client);
         return provider;
     }
 
     private void passwordGrantBuilderAccessTokenResponseClientCustomizer(
             OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {
+        DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
+        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {
             OAuth2PasswordGrantRequestEntityConverter converter = new OAuth2PasswordGrantRequestEntityConverter();
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-
-            DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
-            client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
             client.setRequestEntityConverter(converter);
-
-            builder.accessTokenResponseClient(client);
         }
+        builder.accessTokenResponseClient(client);
     }
 
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
             OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {
+        DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
+        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {
             OAuth2ClientCredentialsGrantRequestEntityConverter converter =
                 new OAuth2ClientCredentialsGrantRequestEntityConverter();
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-
-            DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
-            client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
             client.setRequestEntityConverter(converter);
-
-            builder.accessTokenResponseClient(client);
         }
+        builder.accessTokenResponseClient(client);
     }
 
     private AadAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedOAuth2AuthorizedClientProvider(

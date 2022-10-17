@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Subnet configuration for segment. */
 @Fluent
 public final class WorkloadNetworkSegmentSubnet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkSegmentSubnet.class);
-
     /*
      * DHCP Range assigned for subnet.
      */
@@ -26,6 +22,10 @@ public final class WorkloadNetworkSegmentSubnet {
      */
     @JsonProperty(value = "gatewayAddress")
     private String gatewayAddress;
+
+    /** Creates an instance of WorkloadNetworkSegmentSubnet class. */
+    public WorkloadNetworkSegmentSubnet() {
+    }
 
     /**
      * Get the dhcpRanges property: DHCP Range assigned for subnet.

@@ -45,6 +45,10 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
         return this.innerModel().status();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatastoreInner innerModel() {
         return this.innerObject;
     }

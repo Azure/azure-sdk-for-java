@@ -12,7 +12,6 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestCheckpointStore;
-import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
@@ -21,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EventHubsUserAgentTests {
@@ -45,8 +45,8 @@ class EventHubsUserAgentTests {
                 assertThat(context).hasSingleBean(EventHubConsumerClient.class);
 
                 EventProcessorClientBuilder eventProcessorClientBuilder = context.getBean(EventProcessorClientBuilder.class);
-                EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) UserAgentTestUtil.getPrivateFieldValue(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
-                ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
+                EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) getField(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
+                ClientOptions options = (ClientOptions) getField(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS, options.getApplicationId());
 

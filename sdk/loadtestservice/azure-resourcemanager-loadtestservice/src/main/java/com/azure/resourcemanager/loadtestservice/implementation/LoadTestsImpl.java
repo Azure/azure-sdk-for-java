@@ -11,12 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loadtestservice.fluent.LoadTestsClient;
 import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner;
+import com.azure.resourcemanager.loadtestservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.loadtestservice.models.LoadTestResource;
 import com.azure.resourcemanager.loadtestservice.models.LoadTests;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.loadtestservice.models.OutboundEnvironmentEndpoint;
 
 public final class LoadTestsImpl implements LoadTests {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadTestsImpl.class);
 
     private final LoadTestsClient innerClient;
 
@@ -49,15 +50,6 @@ public final class LoadTestsImpl implements LoadTests {
         return Utils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
     }
 
-    public LoadTestResource getByResourceGroup(String resourceGroupName, String loadTestName) {
-        LoadTestResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, loadTestName);
-        if (inner != null) {
-            return new LoadTestResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LoadTestResource> getByResourceGroupWithResponse(
         String resourceGroupName, String loadTestName, Context context) {
         Response<LoadTestResourceInner> inner =
@@ -73,6 +65,15 @@ public final class LoadTestsImpl implements LoadTests {
         }
     }
 
+    public LoadTestResource getByResourceGroup(String resourceGroupName, String loadTestName) {
+        LoadTestResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, loadTestName);
+        if (inner != null) {
+            return new LoadTestResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String loadTestName) {
         this.serviceClient().delete(resourceGroupName, loadTestName);
     }
@@ -81,10 +82,24 @@ public final class LoadTestsImpl implements LoadTests {
         this.serviceClient().delete(resourceGroupName, loadTestName, context);
     }
 
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String loadTestName) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, loadTestName);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String loadTestName, Context context) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, loadTestName, context);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    }
+
     public LoadTestResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +107,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -103,7 +118,7 @@ public final class LoadTestsImpl implements LoadTests {
     public Response<LoadTestResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +126,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -122,7 +137,7 @@ public final class LoadTestsImpl implements LoadTests {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +145,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -141,7 +156,7 @@ public final class LoadTestsImpl implements LoadTests {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +164,7 @@ public final class LoadTestsImpl implements LoadTests {
         }
         String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));

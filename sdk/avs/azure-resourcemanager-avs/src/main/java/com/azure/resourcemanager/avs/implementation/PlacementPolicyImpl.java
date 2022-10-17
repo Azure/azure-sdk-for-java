@@ -6,6 +6,8 @@ package com.azure.resourcemanager.avs.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.PlacementPolicyInner;
+import com.azure.resourcemanager.avs.models.AffinityStrength;
+import com.azure.resourcemanager.avs.models.AzureHybridBenefitType;
 import com.azure.resourcemanager.avs.models.PlacementPolicy;
 import com.azure.resourcemanager.avs.models.PlacementPolicyProperties;
 import com.azure.resourcemanager.avs.models.PlacementPolicyState;
@@ -31,6 +33,10 @@ public final class PlacementPolicyImpl implements PlacementPolicy, PlacementPoli
 
     public PlacementPolicyProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PlacementPolicyInner innerModel() {
@@ -171,6 +177,16 @@ public final class PlacementPolicyImpl implements PlacementPolicy, PlacementPoli
 
     public PlacementPolicyImpl withHostMembers(List<String> hostMembers) {
         this.updatePlacementPolicyUpdate.withHostMembers(hostMembers);
+        return this;
+    }
+
+    public PlacementPolicyImpl withAffinityStrength(AffinityStrength affinityStrength) {
+        this.updatePlacementPolicyUpdate.withAffinityStrength(affinityStrength);
+        return this;
+    }
+
+    public PlacementPolicyImpl withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType) {
+        this.updatePlacementPolicyUpdate.withAzureHybridBenefitType(azureHybridBenefitType);
         return this;
     }
 }

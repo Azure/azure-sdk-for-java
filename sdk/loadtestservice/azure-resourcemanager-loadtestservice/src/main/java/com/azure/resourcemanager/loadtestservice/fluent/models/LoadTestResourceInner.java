@@ -6,18 +6,16 @@ package com.azure.resourcemanager.loadtestservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.loadtestservice.models.EncryptionProperties;
+import com.azure.resourcemanager.loadtestservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtestservice.models.ResourceState;
-import com.azure.resourcemanager.loadtestservice.models.SystemAssignedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** LoadTest details. */
 @Fluent
 public final class LoadTestResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadTestResourceInner.class);
-
     /*
      * Load Test resource properties
      */
@@ -28,7 +26,17 @@ public final class LoadTestResourceInner extends Resource {
      * The type of identity used for the resource.
      */
     @JsonProperty(value = "identity")
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of LoadTestResourceInner class. */
+    public LoadTestResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Load Test resource properties.
@@ -44,7 +52,7 @@ public final class LoadTestResourceInner extends Resource {
      *
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -54,9 +62,18 @@ public final class LoadTestResourceInner extends Resource {
      * @param identity the identity value to set.
      * @return the LoadTestResourceInner object itself.
      */
-    public LoadTestResourceInner withIdentity(SystemAssignedServiceIdentity identity) {
+    public LoadTestResourceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -112,6 +129,29 @@ public final class LoadTestResourceInner extends Resource {
      */
     public String dataPlaneUri() {
         return this.innerProperties() == null ? null : this.innerProperties().dataPlaneUri();
+    }
+
+    /**
+     * Get the encryption property: CMK Encryption property.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: CMK Encryption property.
+     *
+     * @param encryption the encryption value to set.
+     * @return the LoadTestResourceInner object itself.
+     */
+    public LoadTestResourceInner withEncryption(EncryptionProperties encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadTestProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
     }
 
     /**

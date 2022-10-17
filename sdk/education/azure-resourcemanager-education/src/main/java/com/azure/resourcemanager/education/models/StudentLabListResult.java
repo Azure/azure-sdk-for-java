@@ -24,6 +24,10 @@ public final class StudentLabListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of StudentLabListResult class. */
+    public StudentLabListResult() {
+    }
+
     /**
      * Get the value property: The list of labs.
      *

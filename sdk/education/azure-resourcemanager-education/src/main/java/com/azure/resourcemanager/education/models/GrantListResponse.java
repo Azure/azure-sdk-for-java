@@ -24,6 +24,10 @@ public final class GrantListResponse {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GrantListResponse class. */
+    public GrantListResponse() {
+    }
+
     /**
      * Get the value property: The list of labs.
      *

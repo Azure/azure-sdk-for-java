@@ -65,15 +65,6 @@ public final class LabsImpl implements Labs {
         return Utils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
     }
 
-    public LabDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        LabDetailsInner inner = this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
-        if (inner != null) {
-            return new LabDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LabDetails> getWithResponse(
         String billingAccountName,
         String billingProfileName,
@@ -95,8 +86,13 @@ public final class LabsImpl implements Labs {
         }
     }
 
-    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName);
+    public LabDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+        LabDetailsInner inner = this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
+        if (inner != null) {
+            return new LabDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -106,15 +102,8 @@ public final class LabsImpl implements Labs {
             .deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, context);
     }
 
-    public LabDetails createOrUpdate(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
-        LabDetailsInner inner =
-            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
-        if (inner != null) {
-            return new LabDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName);
     }
 
     public Response<LabDetails> createOrUpdateWithResponse(
@@ -139,15 +128,10 @@ public final class LabsImpl implements Labs {
         }
     }
 
-    public LabDetails generateInviteCode(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters) {
+    public LabDetails createOrUpdate(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
         LabDetailsInner inner =
-            this
-                .serviceClient()
-                .generateInviteCode(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
         if (inner != null) {
             return new LabDetailsImpl(inner, this.manager());
         } else {
@@ -178,6 +162,22 @@ public final class LabsImpl implements Labs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LabDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LabDetails generateInviteCode(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        InviteCodeGenerateRequest parameters) {
+        LabDetailsInner inner =
+            this
+                .serviceClient()
+                .generateInviteCode(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+        if (inner != null) {
+            return new LabDetailsImpl(inner, this.manager());
         } else {
             return null;
         }
