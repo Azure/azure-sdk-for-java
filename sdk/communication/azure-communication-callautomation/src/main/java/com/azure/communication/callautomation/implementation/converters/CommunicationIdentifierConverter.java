@@ -3,11 +3,7 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.implementation.models.CommunicationCloudEnvironmentModel;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsUserIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.*;
 import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -32,6 +28,39 @@ public class CommunicationIdentifierConverter {
 
         assertSingleType(identifier);
         String rawId = identifier.getRawId();
+
+        CommunicationIdentifierModelKind kind = identifier.getKind();
+
+        if (kind != null) {
+            if (kind == CommunicationIdentifierModelKind.COMMUNICATION_USER
+                && identifier.getCommunicationUser() != null) {
+                Objects.requireNonNull(identifier.getCommunicationUser().getId());
+                return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
+            }
+
+            if (kind == CommunicationIdentifierModelKind.PHONE_NUMBER
+                && identifier.getPhoneNumber() != null) {
+                PhoneNumberIdentifierModel phoneNumberModel = identifier.getPhoneNumber();
+                Objects.requireNonNull(phoneNumberModel.getValue());
+                return new PhoneNumberIdentifier(phoneNumberModel.getValue()).setRawId(rawId);
+            }
+
+            if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER
+                && identifier.getMicrosoftTeamsUser() != null) {
+                MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
+                Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
+                Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
+                Objects.requireNonNull(rawId);
+                return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
+                    teamsUserIdentifierModel.isAnonymous())
+                    .setRawId(rawId)
+                    .setCloudEnvironment(CommunicationCloudEnvironment
+                        .fromString(teamsUserIdentifierModel.getCloud().toString()));
+            }
+
+            Objects.requireNonNull(rawId);
+            return new UnknownIdentifier(rawId);
+        }
 
         if (identifier.getCommunicationUser() != null) {
             Objects.requireNonNull(identifier.getCommunicationUser().getId());
