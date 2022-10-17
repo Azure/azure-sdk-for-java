@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Avs Management</name>
-  <description>This package contains Microsoft Azure SDK for Avs Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure VMware Solution API. Package tag package-2021-12-01.</description>
+  <description>This package contains Microsoft Azure SDK for Avs Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure VMware Solution API. Package tag package-2022-05-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

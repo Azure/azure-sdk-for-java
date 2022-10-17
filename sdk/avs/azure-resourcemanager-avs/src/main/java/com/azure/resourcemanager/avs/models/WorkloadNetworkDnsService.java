@@ -88,6 +88,13 @@ public interface WorkloadNetworkDnsService {
     Long revision();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsServiceInner object.
      *
      * @return the inner object.

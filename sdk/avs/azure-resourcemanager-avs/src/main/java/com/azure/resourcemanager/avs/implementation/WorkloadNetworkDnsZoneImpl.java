@@ -67,6 +67,10 @@ public final class WorkloadNetworkDnsZoneImpl
         return this.innerModel().revision();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkDnsZoneInner innerModel() {
         return this.innerObject;
     }

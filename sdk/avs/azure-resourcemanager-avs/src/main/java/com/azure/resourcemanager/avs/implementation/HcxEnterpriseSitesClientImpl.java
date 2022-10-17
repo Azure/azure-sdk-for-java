@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HcxEnterpriseSitesClient. */
 public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesClient {
-    private final ClientLogger logger = new ClientLogger(HcxEnterpriseSitesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HcxEnterpriseSitesService service;
 
@@ -145,7 +142,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listSinglePageAsync(
@@ -204,7 +202,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listSinglePageAsync(
@@ -259,7 +258,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HcxEnterpriseSiteInner> listAsync(String resourceGroupName, String privateCloudName) {
@@ -277,7 +276,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HcxEnterpriseSiteInner> listAsync(
@@ -295,7 +294,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcxEnterpriseSiteInner> list(String resourceGroupName, String privateCloudName) {
@@ -311,7 +310,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcxEnterpriseSiteInner> list(
@@ -328,7 +327,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud.
+     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> getWithResponseAsync(
@@ -384,7 +384,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud.
+     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> getWithResponseAsync(
@@ -436,20 +437,31 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud.
+     * @return an HCX Enterprise Site by name in a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HcxEnterpriseSiteInner> getAsync(
         String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName)
-            .flatMap(
-                (Response<HcxEnterpriseSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an HCX Enterprise Site by name in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HcxEnterpriseSiteInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context).block();
     }
 
     /**
@@ -465,25 +477,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcxEnterpriseSiteInner get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
-        return getAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName).block();
-    }
-
-    /**
-     * Get an HCX Enterprise Site by name in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HcxEnterpriseSiteInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context).block();
+        return getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE).getValue();
     }
 
     /**
@@ -496,7 +490,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource.
+     * @return an HCX Enterprise Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> createOrUpdateWithResponseAsync(
@@ -563,7 +557,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource.
+     * @return an HCX Enterprise Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HcxEnterpriseSiteInner>> createOrUpdateWithResponseAsync(
@@ -627,7 +621,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource.
+     * @return an HCX Enterprise Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HcxEnterpriseSiteInner> createOrUpdateAsync(
@@ -637,14 +631,32 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
         HcxEnterpriseSiteInner hcxEnterpriseSite) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite)
-            .flatMap(
-                (Response<HcxEnterpriseSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update an HCX Enterprise Site in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName The name of the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param hcxEnterpriseSite The HCX Enterprise Site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an HCX Enterprise Site resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HcxEnterpriseSiteInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String hcxEnterpriseSiteName,
+        HcxEnterpriseSiteInner hcxEnterpriseSite,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite, context)
+            .block();
     }
 
     /**
@@ -665,33 +677,9 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
         String privateCloudName,
         String hcxEnterpriseSiteName,
         HcxEnterpriseSiteInner hcxEnterpriseSite) {
-        return createOrUpdateAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite)
-            .block();
-    }
-
-    /**
-     * Create or update an HCX Enterprise Site in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
-     * @param hcxEnterpriseSite The HCX Enterprise Site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HcxEnterpriseSiteInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String hcxEnterpriseSiteName,
-        HcxEnterpriseSiteInner hcxEnterpriseSite,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -703,7 +691,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -759,7 +747,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -811,12 +799,30 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
         return deleteWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete an HCX Enterprise Site in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context).block();
     }
 
     /**
@@ -831,35 +837,19 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
-        deleteAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName).block();
-    }
-
-    /**
-     * Delete an HCX Enterprise Site in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context).block();
+        deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listNextSinglePageAsync(String nextLink) {
@@ -890,12 +880,14 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites.
+     * @return a paged list of HCX Enterprise Sites along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HcxEnterpriseSiteInner>> listNextSinglePageAsync(String nextLink, Context context) {

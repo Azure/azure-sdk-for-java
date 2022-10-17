@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HcxEnterpriseSites Delete. */
 public final class HcxEnterpriseSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/HcxEnterpriseSites_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_Delete.json
      */
     /**
      * Sample code: HcxEnterpriseSites_Delete.

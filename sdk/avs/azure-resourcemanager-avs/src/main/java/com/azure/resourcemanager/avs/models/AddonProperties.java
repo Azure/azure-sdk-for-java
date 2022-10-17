@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,17 +20,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SRM", value = AddonSrmProperties.class),
     @JsonSubTypes.Type(name = "VR", value = AddonVrProperties.class),
-    @JsonSubTypes.Type(name = "HCX", value = AddonHcxProperties.class)
+    @JsonSubTypes.Type(name = "HCX", value = AddonHcxProperties.class),
+    @JsonSubTypes.Type(name = "Arc", value = AddonArcProperties.class)
 })
 @Immutable
 public class AddonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddonProperties.class);
-
     /*
      * The state of the addon provisioning
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AddonProvisioningState provisioningState;
+
+    /** Creates an instance of AddonProperties class. */
+    public AddonProperties() {
+    }
 
     /**
      * Get the provisioningState property: The state of the addon provisioning.
