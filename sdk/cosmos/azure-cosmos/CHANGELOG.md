@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added improvement in `RntbdClientChannelHealthChecker` for continuous transit timeout. - See [PR 31544](https://github.com/Azure/azure-sdk-for-java/pull/31544)
 
 ### 4.38.0 (2022-10-12)
 #### Features Added
