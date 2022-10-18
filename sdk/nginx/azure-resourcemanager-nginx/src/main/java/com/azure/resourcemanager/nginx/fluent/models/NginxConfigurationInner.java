@@ -26,6 +26,10 @@ public final class NginxConfigurationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of NginxConfigurationInner class. */
+    public NginxConfigurationInner() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

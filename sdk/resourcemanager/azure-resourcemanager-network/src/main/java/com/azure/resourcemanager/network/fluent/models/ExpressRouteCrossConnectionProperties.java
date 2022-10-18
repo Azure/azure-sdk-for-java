@@ -74,6 +74,10 @@ public final class ExpressRouteCrossConnectionProperties {
     @JsonProperty(value = "peerings")
     private List<ExpressRouteCrossConnectionPeeringInner> peerings;
 
+    /** Creates an instance of ExpressRouteCrossConnectionProperties class. */
+    public ExpressRouteCrossConnectionProperties() {
+    }
+
     /**
      * Get the primaryAzurePort property: The name of the primary port.
      *

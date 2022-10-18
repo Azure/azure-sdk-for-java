@@ -22,6 +22,10 @@ public final class NginxConfigurationFile {
     @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
+    /** Creates an instance of NginxConfigurationFile class. */
+    public NginxConfigurationFile() {
+    }
+
     /**
      * Get the content property: The content property.
      *

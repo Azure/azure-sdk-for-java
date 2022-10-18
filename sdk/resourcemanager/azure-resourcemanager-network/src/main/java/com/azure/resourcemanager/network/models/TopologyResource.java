@@ -35,6 +35,10 @@ public final class TopologyResource {
     @JsonProperty(value = "associations")
     private List<TopologyAssociation> associations;
 
+    /** Creates an instance of TopologyResource class. */
+    public TopologyResource() {
+    }
+
     /**
      * Get the name property: Name of the resource.
      *

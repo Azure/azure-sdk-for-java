@@ -44,6 +44,10 @@ public final class AzureStorageLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
+    /** Creates an instance of AzureStorageLinkedServiceTypeProperties class. */
+    public AzureStorageLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.

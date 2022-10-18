@@ -17,6 +17,10 @@ public final class UpdateIntegrationRuntimeNodeRequest {
     @JsonProperty(value = "concurrentJobsLimit")
     private Integer concurrentJobsLimit;
 
+    /** Creates an instance of UpdateIntegrationRuntimeNodeRequest class. */
+    public UpdateIntegrationRuntimeNodeRequest() {
+    }
+
     /**
      * Get the concurrentJobsLimit property: The number of concurrent jobs permitted to run on the integration runtime
      * node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.

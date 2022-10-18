@@ -25,6 +25,10 @@ public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     private AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties =
         new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureDataLakeAnalyticsLinkedService class. */
+    public AzureDataLakeAnalyticsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Lake Analytics linked service properties.
      *

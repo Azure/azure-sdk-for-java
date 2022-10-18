@@ -51,21 +51,6 @@ public interface JoinRequests {
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param joinRequestName Join name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return student join requests.
-     */
-    JoinRequestDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
-
-    /**
-     * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,7 +65,7 @@ public interface JoinRequests {
         Context context);
 
     /**
-     * Approve student joining the redeemable lab.
+     * get student join requests.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -89,8 +74,9 @@ public interface JoinRequests {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return student join requests.
      */
-    void approve(
+    JoinRequestDetails get(
         String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 
     /**
@@ -114,7 +100,7 @@ public interface JoinRequests {
         Context context);
 
     /**
-     * Deny student joining the redeemable lab.
+     * Approve student joining the redeemable lab.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -124,7 +110,8 @@ public interface JoinRequests {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deny(String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    void approve(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 
     /**
      * Deny student joining the redeemable lab.
@@ -145,4 +132,17 @@ public interface JoinRequests {
         String invoiceSectionName,
         String joinRequestName,
         Context context);
+
+    /**
+     * Deny student joining the redeemable lab.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param joinRequestName Join name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deny(String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 }

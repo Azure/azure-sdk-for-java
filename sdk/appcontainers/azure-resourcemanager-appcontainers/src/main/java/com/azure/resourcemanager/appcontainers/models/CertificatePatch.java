@@ -19,6 +19,10 @@ public final class CertificatePatch {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of CertificatePatch class. */
+    public CertificatePatch() {
+    }
+
     /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
      *

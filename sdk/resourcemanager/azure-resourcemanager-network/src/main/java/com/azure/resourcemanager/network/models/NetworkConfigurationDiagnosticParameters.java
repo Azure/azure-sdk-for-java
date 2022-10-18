@@ -31,6 +31,10 @@ public final class NetworkConfigurationDiagnosticParameters {
     @JsonProperty(value = "profiles", required = true)
     private List<NetworkConfigurationDiagnosticProfile> profiles;
 
+    /** Creates an instance of NetworkConfigurationDiagnosticParameters class. */
+    public NetworkConfigurationDiagnosticParameters() {
+    }
+
     /**
      * Get the targetResourceId property: The ID of the target resource to perform network configuration diagnostic.
      * Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerAppsSourceControls ListByContainerApp. */
 public final class ContainerAppsSourceControlsListByContainerAppSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/SourceControls_ListByContainer.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/SourceControls_ListByContainer.json
      */
     /**
      * Sample code: List App's Source Controls.

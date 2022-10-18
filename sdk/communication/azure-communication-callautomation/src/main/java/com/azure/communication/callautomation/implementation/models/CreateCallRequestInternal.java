@@ -24,10 +24,10 @@ public final class CreateCallRequestInternal {
     private CallSourceInternal source;
 
     /*
-     * The subject.
+     * A customer set value used to track the answering of a call.
      */
-    @JsonProperty(value = "subject")
-    private String subject;
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
 
     /*
      * The callback URI.
@@ -82,22 +82,22 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the subject property: The subject.
+     * Get the operationContext property: A customer set value used to track the answering of a call.
      *
-     * @return the subject value.
+     * @return the operationContext value.
      */
-    public String getSubject() {
-        return this.subject;
+    public String getOperationContext() {
+        return this.operationContext;
     }
 
     /**
-     * Set the subject property: The subject.
+     * Set the operationContext property: A customer set value used to track the answering of a call.
      *
-     * @param subject the subject value to set.
+     * @param operationContext the operationContext value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSubject(String subject) {
-        this.subject = subject;
+    public CreateCallRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 

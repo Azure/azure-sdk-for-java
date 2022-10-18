@@ -26,6 +26,10 @@ public final class AvroSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private AvroWriteSettings formatSettings;
 
+    /** Creates an instance of AvroSink class. */
+    public AvroSink() {
+    }
+
     /**
      * Get the storeSettings property: Avro store settings.
      *

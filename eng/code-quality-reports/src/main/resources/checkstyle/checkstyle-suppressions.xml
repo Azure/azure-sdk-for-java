@@ -99,6 +99,7 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
     https://github.com/Azure/azure-sdk/issues/321 -->
@@ -519,5 +520,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Field additionallyAllowedTenants is not set in constructor and can be changed using the builder option. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
 
 </suppressions>

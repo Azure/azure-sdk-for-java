@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.TrialStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription trial availability. */
 @Immutable
 public final class TrialInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrialInner.class);
-
     /*
      * Trial status
      */
@@ -26,6 +22,10 @@ public final class TrialInner {
      */
     @JsonProperty(value = "availableHosts", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableHosts;
+
+    /** Creates an instance of TrialInner class. */
+    public TrialInner() {
+    }
 
     /**
      * Get the status property: Trial status.

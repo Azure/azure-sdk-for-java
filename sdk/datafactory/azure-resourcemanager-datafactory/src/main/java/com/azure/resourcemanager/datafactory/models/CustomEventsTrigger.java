@@ -23,6 +23,10 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties", required = true)
     private CustomEventsTriggerTypeProperties innerTypeProperties = new CustomEventsTriggerTypeProperties();
 
+    /** Creates an instance of CustomEventsTrigger class. */
+    public CustomEventsTrigger() {
+    }
+
     /**
      * Get the innerTypeProperties property: Custom Events Trigger properties.
      *

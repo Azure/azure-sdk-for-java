@@ -165,7 +165,7 @@ public final class CallAutomationAsyncClient {
             .setSource(callSourceDto)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
-            .setSubject(createCallOptions.getSubject());
+            .setOperationContext(createCallOptions.getOperationContext());
 
         if (createCallOptions.getMediaStreamingConfiguration() != null) {
             MediaStreamingConfigurationInternal streamingConfigurationInternal =

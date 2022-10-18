@@ -35,6 +35,10 @@ public final class SsisChildPackage {
     @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
 
+    /** Creates an instance of SsisChildPackage class. */
+    public SsisChildPackage() {
+    }
+
     /**
      * Get the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
      * string).

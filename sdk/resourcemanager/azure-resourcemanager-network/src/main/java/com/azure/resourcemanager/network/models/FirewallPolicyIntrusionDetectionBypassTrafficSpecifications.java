@@ -59,6 +59,10 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
     @JsonProperty(value = "destinationIpGroups")
     private List<String> destinationIpGroups;
 
+    /** Creates an instance of FirewallPolicyIntrusionDetectionBypassTrafficSpecifications class. */
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications() {
+    }
+
     /**
      * Get the name property: Name of the bypass traffic rule.
      *

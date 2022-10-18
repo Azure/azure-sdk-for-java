@@ -25,6 +25,10 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     private GoogleBigQueryLinkedServiceTypeProperties innerTypeProperties =
         new GoogleBigQueryLinkedServiceTypeProperties();
 
+    /** Creates an instance of GoogleBigQueryLinkedService class. */
+    public GoogleBigQueryLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Google BigQuery service linked service properties.
      *

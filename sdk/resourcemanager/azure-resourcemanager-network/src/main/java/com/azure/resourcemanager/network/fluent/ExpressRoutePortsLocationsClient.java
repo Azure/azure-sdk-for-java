@@ -81,19 +81,6 @@ public interface ExpressRoutePortsLocationsClient {
      * said peering location.
      *
      * @param locationName Name of the requested ExpressRoutePort peering location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Peering Location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRoutePortsLocationInner get(String locationName);
-
-    /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
-     * @param locationName Name of the requested ExpressRoutePort peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,4 +89,17 @@ public interface ExpressRoutePortsLocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRoutePortsLocationInner> getWithResponse(String locationName, Context context);
+
+    /**
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
+     * said peering location.
+     *
+     * @param locationName Name of the requested ExpressRoutePort peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoutePorts Peering Location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRoutePortsLocationInner get(String locationName);
 }

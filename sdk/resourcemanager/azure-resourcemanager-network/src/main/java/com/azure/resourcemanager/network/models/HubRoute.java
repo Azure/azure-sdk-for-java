@@ -42,6 +42,10 @@ public final class HubRoute {
     @JsonProperty(value = "nextHop", required = true)
     private String nextHop;
 
+    /** Creates an instance of HubRoute class. */
+    public HubRoute() {
+    }
+
     /**
      * Get the name property: The name of the Route that is unique within a RouteTable. This name can be used to access
      * this route.

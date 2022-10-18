@@ -74,6 +74,10 @@ public final class PrivateLinkServiceProperties {
     @JsonProperty(value = "enableProxyProtocol")
     private Boolean enableProxyProtocol;
 
+    /** Creates an instance of PrivateLinkServiceProperties class. */
+    public PrivateLinkServiceProperties() {
+    }
+
     /**
      * Get the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added SIP routing clients for handling Direct routing numbers.
+
 ### Breaking Changes
 
 ### Bugs Fixed
