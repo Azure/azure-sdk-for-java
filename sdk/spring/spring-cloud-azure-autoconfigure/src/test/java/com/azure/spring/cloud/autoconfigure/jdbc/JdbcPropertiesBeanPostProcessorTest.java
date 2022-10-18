@@ -115,7 +115,8 @@ class JdbcPropertiesBeanPostProcessorTest {
                 DatabaseType.MYSQL,
                 MYSQL_CONNECTION_STRING,
                 PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-                AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+                AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+                AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/"
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

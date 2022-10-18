@@ -136,6 +136,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
+        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
         databaseType.setDefaultEnhancedProperties(result);
 
