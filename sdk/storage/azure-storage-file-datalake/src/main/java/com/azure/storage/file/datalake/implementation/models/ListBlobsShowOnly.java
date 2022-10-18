@@ -27,6 +27,9 @@ public enum ListBlobsShowOnly {
      */
     @JsonCreator
     public static ListBlobsShowOnly fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ListBlobsShowOnly[] items = ListBlobsShowOnly.values();
         for (ListBlobsShowOnly item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ListBlobsShowOnly {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

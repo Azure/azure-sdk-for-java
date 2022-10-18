@@ -17,11 +17,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
@@ -120,6 +122,38 @@ public final class ServicesImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
+            ShareServiceProperties shareServiceProperties, Integer timeout) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.setProperties(
+                                this.client.getUrl(),
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                shareServiceProperties,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics
+     * and CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param shareServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -141,6 +175,77 @@ public final class ServicesImpl {
                 shareServiceProperties,
                 accept,
                 context);
+    }
+
+    /**
+     * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics
+     * and CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param shareServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(ShareServiceProperties shareServiceProperties, Integer timeout) {
+        return setPropertiesWithResponseAsync(shareServiceProperties, timeout).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics
+     * and CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param shareServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(
+            ShareServiceProperties shareServiceProperties, Integer timeout, Context context) {
+        return setPropertiesWithResponseAsync(shareServiceProperties, timeout, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Gets the properties of a storage account's File service, including properties for Storage Analytics metrics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
+     *     and CORS (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> getPropertiesWithResponseAsync(
+            Integer timeout) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.getProperties(
+                                this.client.getUrl(),
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -166,6 +271,43 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Gets the properties of a storage account's File service, including properties for Storage Analytics metrics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
+     *     and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareServiceProperties> getPropertiesAsync(Integer timeout) {
+        return getPropertiesWithResponseAsync(timeout).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the properties of a storage account's File service, including properties for Storage Analytics metrics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
+     *     and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareServiceProperties> getPropertiesAsync(Integer timeout, Context context) {
+        return getPropertiesWithResponseAsync(timeout, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -225,9 +367,73 @@ public final class ServicesImpl {
     }
 
     /**
+     * The List Shares Segment operation returns a list of the shares and share snapshots under the specified account.
+     *
+     * @param prefix Filters the results to return only entries whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of shares as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareItemInternal> listSharesSegmentAsync(
+            String prefix, String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
+        // TODO (alzimmer): This wasn't passing context as there is no Context to pass.
+        //  There will be a fix for this in a future Autorest release but for now this was done manually.
+        // Adding this comment to make this obvious on diff.
+        return new PagedFlux<>(() -> FluxUtil.withContext(context ->
+            listSharesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout, context)),
+            nextLink -> FluxUtil.withContext(context -> listSharesSegmentNextSinglePageAsync(nextLink, context)));
+    }
+
+    /**
+     * The List Shares Segment operation returns a list of the shares and share snapshots under the specified account.
+     *
+     * @param prefix Filters the results to return only entries whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     *     The operation returns a marker value within the response body if the list returned was not complete. The
+     *     marker value may then be used in a subsequent call to request the next set of list items. The marker value is
+     *     opaque to the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of shares as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareItemInternal> listSharesSegmentAsync(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListSharesIncludeType> include,
+            Integer timeout,
+            Context context) {
+        return new PagedFlux<>(
+                () -> listSharesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout, context),
+                nextLink -> listSharesSegmentNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
