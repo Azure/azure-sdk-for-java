@@ -284,7 +284,7 @@ class AadOAuth2ClientConfigurationTests {
                     assertTrue(jwtDecoder instanceof NimbusJwtDecoder);
                     DefaultJWTProcessor<?> processor = (DefaultJWTProcessor<?>) getField(NimbusJwtDecoder.class, "jwtProcessor", jwtDecoder);
                     JWSVerificationKeySelector<?> selector = (JWSVerificationKeySelector<?>) processor.getJWSKeySelector();
-                    RemoteJWKSet<?> source = (RemoteJWKSet<?>)selector.getJWKSource();
+                    RemoteJWKSet<?> source = (RemoteJWKSet<?>) selector.getJWKSource();
                     ResourceRetriever retriever = source.getResourceRetriever();
                     RestTemplate restTemplate = (RestTemplate) getField(retriever.getClass(), "restOperations", retriever);
                     assertEquals(FACTORY, restTemplate.getRequestFactory());
