@@ -160,6 +160,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
                 .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
         copyPropertiesIgnoreNull(azurePasswordlessProperties.getProfile(), result.getProfile());
         copyPropertiesIgnoreNull(azurePasswordlessProperties.getCredential(), result.getCredential());
+        copyPropertiesIgnoreNull(azurePasswordlessProperties.getClient(), result.getClient());
+        copyPropertiesIgnoreNull(azurePasswordlessProperties.getProxy(), result.getProfile());
+        result.setPasswordlessEnabled(azurePasswordlessProperties.isPasswordlessEnabled());
         return result;
     }
 }

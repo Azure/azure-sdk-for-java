@@ -4,7 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
@@ -32,14 +35,18 @@ class JdbcPropertiesBeanPostProcessorTest {
     private MockEnvironment mockEnvironment;
 
     private ApplicationContext applicationContext;
+    private AzureGlobalProperties azureGlobalProperties;
     private JdbcPropertiesBeanPostProcessor jdbcPropertiesBeanPostProcessor;
 
     @BeforeEach
     void beforeEach() {
         this.mockEnvironment = new MockEnvironment();
         this.applicationContext = mock(GenericApplicationContext.class);
+        this.azureGlobalProperties = mock(AzureGlobalProperties.class);
+        when(azureGlobalProperties.getProfile()).thenReturn(new AzureProfileConfigurationProperties());
+        when(azureGlobalProperties.getCredential()).thenReturn(new TokenCredentialConfigurationProperties());
         when(this.applicationContext.getBean(AzureTokenCredentialResolver.class)).thenReturn(new AzureTokenCredentialResolver());
-        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor();
+        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
         jdbcPropertiesBeanPostProcessor.setEnvironment(this.mockEnvironment);
         jdbcPropertiesBeanPostProcessor.setApplicationContext(this.applicationContext);
     }
