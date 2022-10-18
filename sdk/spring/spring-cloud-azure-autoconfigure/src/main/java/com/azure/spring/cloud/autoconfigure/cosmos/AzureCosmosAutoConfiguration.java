@@ -13,6 +13,9 @@ import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.Azu
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
+import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,6 +34,8 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosAutoConfiguration.class);
+
     AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
@@ -39,6 +44,16 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
     @ConfigurationProperties(AzureCosmosProperties.PREFIX)
     AzureCosmosProperties azureCosmosProperties() {
         return loadProperties(getAzureGlobalProperties(), new AzureCosmosProperties());
+    }
+
+    /**
+     * Default implementation for the {@link ResponseDiagnosticsProcessor}
+     * @return the response diagnostics logs
+     */
+    @Bean
+    @ConditionalOnProperty(value = AzureCosmosProperties.POPULATE_QUERY_METRICS, havingValue = "true")
+    ResponseDiagnosticsProcessor responseDiagnosticsProcessor() {
+        return responseDiagnostics -> LOGGER.info("Response Diagnostics {}", responseDiagnostics);
     }
 
     /**

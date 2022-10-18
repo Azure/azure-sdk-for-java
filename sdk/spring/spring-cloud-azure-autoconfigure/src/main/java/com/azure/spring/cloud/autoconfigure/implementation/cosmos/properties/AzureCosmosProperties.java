@@ -22,6 +22,7 @@ import java.util.List;
 public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
+    public static final String POPULATE_QUERY_METRICS = "spring.cloud.azure.cosmos.populate-query-metrics";
 
     @NestedConfigurationProperty
     private final HttpProxyConfigurationProperties proxy = new HttpProxyConfigurationProperties();
