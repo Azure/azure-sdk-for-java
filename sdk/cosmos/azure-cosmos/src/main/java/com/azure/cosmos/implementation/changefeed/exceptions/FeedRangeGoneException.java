@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.exceptions;
 
 /**
- * Exception occurred during partition split.
+ * Exception occurred during partition split or merge.
  */
 public class FeedRangeGoneException extends PartitionException {
     /**

@@ -99,7 +99,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                 })
                 .flatMap(pkRangesValueHolder -> {
                     if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
-                        logger.warn("There is no overlapping ranges found for range {}", range);
+                        logger.warn("There are no overlapping ranges found for range {}", range);
                         return Mono.just(new ArrayList<PartitionKeyRange>());
                     }
 
