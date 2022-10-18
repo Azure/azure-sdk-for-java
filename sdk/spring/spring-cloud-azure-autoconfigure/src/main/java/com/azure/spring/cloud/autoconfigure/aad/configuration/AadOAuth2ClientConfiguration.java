@@ -187,7 +187,7 @@ public class AadOAuth2ClientConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory(AadAuthenticationProperties properties) {
+    JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory(AadAuthenticationProperties properties) {
         AadProfileProperties profile = properties.getProfile();
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(
                 profile.getEnvironment().getActiveDirectoryEndpoint(), profile.getTenantId());
