@@ -7,34 +7,34 @@ package com.azure.resourcemanager.resourcegraph.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines in which format query result returned. */
-public enum ResultFormat {
-    /** Enum value table. */
-    TABLE("table"),
+/** The change category. */
+public enum ChangeCategory {
+    /** Enum value User. */
+    USER("User"),
 
-    /** Enum value objectArray. */
-    OBJECT_ARRAY("objectArray");
+    /** Enum value System. */
+    SYSTEM("System");
 
-    /** The actual serialized value for a ResultFormat instance. */
+    /** The actual serialized value for a ChangeCategory instance. */
     private final String value;
 
-    ResultFormat(String value) {
+    ChangeCategory(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ResultFormat instance.
+     * Parses a serialized value to a ChangeCategory instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ResultFormat object, or null if unable to parse.
+     * @return the parsed ChangeCategory object, or null if unable to parse.
      */
     @JsonCreator
-    public static ResultFormat fromString(String value) {
+    public static ChangeCategory fromString(String value) {
         if (value == null) {
             return null;
         }
-        ResultFormat[] items = ResultFormat.values();
-        for (ResultFormat item : items) {
+        ChangeCategory[] items = ChangeCategory.values();
+        for (ChangeCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

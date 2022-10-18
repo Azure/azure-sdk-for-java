@@ -7,34 +7,37 @@ package com.azure.resourcemanager.resourcegraph.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines in which format query result returned. */
-public enum ResultFormat {
-    /** Enum value table. */
-    TABLE("table"),
+/** The change type for snapshot. PropertyChanges will be provided in case of Update change type. */
+public enum ChangeType {
+    /** Enum value Create. */
+    CREATE("Create"),
 
-    /** Enum value objectArray. */
-    OBJECT_ARRAY("objectArray");
+    /** Enum value Update. */
+    UPDATE("Update"),
 
-    /** The actual serialized value for a ResultFormat instance. */
+    /** Enum value Delete. */
+    DELETE("Delete");
+
+    /** The actual serialized value for a ChangeType instance. */
     private final String value;
 
-    ResultFormat(String value) {
+    ChangeType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ResultFormat instance.
+     * Parses a serialized value to a ChangeType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ResultFormat object, or null if unable to parse.
+     * @return the parsed ChangeType object, or null if unable to parse.
      */
     @JsonCreator
-    public static ResultFormat fromString(String value) {
+    public static ChangeType fromString(String value) {
         if (value == null) {
             return null;
         }
-        ResultFormat[] items = ResultFormat.values();
-        for (ResultFormat item : items) {
+        ChangeType[] items = ChangeType.values();
+        for (ChangeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

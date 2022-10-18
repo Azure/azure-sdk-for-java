@@ -206,7 +206,7 @@ public final class ResourceGraphManager {
                 .append("-")
                 .append("com.azure.resourcemanager.resourcegraph")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -263,7 +263,11 @@ public final class ResourceGraphManager {
         }
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -271,7 +275,11 @@ public final class ResourceGraphManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);

@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for ResourceProvider Resources. */
 public final class ResourceProviderResourcesSamples {
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesMgBasicQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesMgBasicQuery.json
      */
     /**
      * Sample code: Basic management group query.
@@ -33,7 +33,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesBasicQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesBasicQuery.json
      */
     /**
      * Sample code: Basic query.
@@ -51,7 +51,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesFacetQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesFacetQuery.json
      */
     /**
      * Sample code: Query with a facet request.
@@ -99,7 +99,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesFilterQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesFilterQuery.json
      */
     /**
      * Sample code: Filter resources.
@@ -119,7 +119,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesSummarizeQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesSummarizeQuery.json
      */
     /**
      * Sample code: Summarize resources by location.
@@ -138,7 +138,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesPropertiesQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesPropertiesQuery.json
      */
     /**
      * Sample code: Access a properties field.
@@ -158,7 +158,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesComplexQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesComplexQuery.json
      */
     /**
      * Sample code: Complex query.
@@ -178,7 +178,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesNextPageQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesNextPageQuery.json
      */
     /**
      * Sample code: Next page query.
@@ -199,7 +199,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesFirstPageQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesFirstPageQuery.json
      */
     /**
      * Sample code: First page query.
@@ -218,7 +218,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesTenantBasicQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesTenantBasicQuery.json
      */
     /**
      * Sample code: Basic tenant query.
@@ -234,7 +234,7 @@ public final class ResourceProviderResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2021-03-01/examples/ResourcesRandomPageQuery.json
+     * x-ms-original-file: specification/resourcegraph/resource-manager/Microsoft.ResourceGraph/stable/2022-10-01/examples/ResourcesRandomPageQuery.json
      */
     /**
      * Sample code: Random page query.
