@@ -4,6 +4,7 @@
 package com.azure.identity.providers.jdbc.implementation.token;
 
 
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 
 import java.util.Properties;
@@ -27,7 +28,23 @@ public class AccessTokenResolverOptions {
         this.claims = AuthProperty.CLAIMS.get(properties);
 
         String scopeProperty = AuthProperty.SCOPES.get(properties);
-        this.scopes = scopeProperty == null ?  new String[0] : scopeProperty.split(",");
+        if (scopeProperty == null) {
+            scopeProperty = getDefaultScopes(properties);
+        }
+        this.scopes = scopeProperty.split(",");
+    }
+
+    private String getDefaultScopes(Properties properties) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            return "https://ossrdbms-aad.database.windows.net/.default";
+        } else if (AzureAuthorityHosts.AZURE_CHINA.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            return "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
+        } else if (AzureAuthorityHosts.AZURE_GERMANY.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            return "https://ossrdbms-aad.database.cloudapi.de/.default";
+        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            return "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
+        }
+        return "https://ossrdbms-aad.database.windows.net/.default";
     }
 
     public String getClaims() {
