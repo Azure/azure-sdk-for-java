@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-@Disabled("Disabled until issue #31476 has been fixed!")
+//@Disabled("Disabled until issue #31476 has been fixed!")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {
