@@ -265,6 +265,9 @@ public final class BlobItemPropertiesInternal {
     @JsonProperty(value = "LegalHold")
     private Boolean legalHold;
 
+    /** Creates an instance of BlobItemPropertiesInternal class. */
+    public BlobItemPropertiesInternal() {}
+
     /**
      * Get the creationTime property: The Creation-Time property.
      *

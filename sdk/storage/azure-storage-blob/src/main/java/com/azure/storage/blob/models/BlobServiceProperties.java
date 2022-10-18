@@ -69,6 +69,9 @@ public final class BlobServiceProperties {
     @JsonProperty(value = "StaticWebsite")
     private StaticWebsite staticWebsite;
 
+    /** Creates an instance of BlobServiceProperties class. */
+    public BlobServiceProperties() {}
+
     /**
      * Get the logging property: Azure Analytics Logging settings.
      *

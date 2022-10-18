@@ -20,7 +20,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
@@ -884,7 +883,7 @@ public final class BlobsImpl {
                         ifTags,
                         requestId,
                         cpkInfo)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -961,7 +960,7 @@ public final class BlobsImpl {
                         requestId,
                         cpkInfo,
                         context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -6061,7 +6060,7 @@ public final class BlobsImpl {
                         requestId,
                         queryRequest,
                         cpkInfo)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -6125,7 +6124,7 @@ public final class BlobsImpl {
                         queryRequest,
                         cpkInfo,
                         context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**

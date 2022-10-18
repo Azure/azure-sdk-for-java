@@ -27,6 +27,9 @@ public final class GeoReplication {
     @JsonProperty(value = "LastSyncTime", required = true)
     private DateTimeRfc1123 lastSyncTime;
 
+    /** Creates an instance of GeoReplication class. */
+    public GeoReplication() {}
+
     /**
      * Get the status property: The status of the secondary location.
      *

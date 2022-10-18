@@ -71,7 +71,10 @@ public final class ContainersGetAccessPolicyHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+        String xMsBlobPublicAccess = rawHeaders.getValue("x-ms-blob-public-access");
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
+        }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         String date = rawHeaders.getValue("Date");

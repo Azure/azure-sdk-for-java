@@ -42,6 +42,9 @@ public final class BlobAnalyticsLogging {
     @JsonProperty(value = "RetentionPolicy", required = true)
     private BlobRetentionPolicy retentionPolicy;
 
+    /** Creates an instance of BlobAnalyticsLogging class. */
+    public BlobAnalyticsLogging() {}
+
     /**
      * Get the version property: The version of Storage Analytics to configure.
      *

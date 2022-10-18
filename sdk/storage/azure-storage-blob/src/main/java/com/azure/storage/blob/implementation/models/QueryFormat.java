@@ -42,6 +42,9 @@ public final class QueryFormat {
     @JsonProperty(value = "ParquetTextConfiguration")
     private Object parquetTextConfiguration;
 
+    /** Creates an instance of QueryFormat class. */
+    public QueryFormat() {}
+
     /**
      * Get the type property: The quick query format type.
      *

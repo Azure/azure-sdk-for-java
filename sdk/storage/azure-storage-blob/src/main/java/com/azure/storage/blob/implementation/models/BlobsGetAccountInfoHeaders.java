@@ -61,8 +61,14 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public BlobsGetAccountInfoHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
-        this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+        String xMsAccountKind = rawHeaders.getValue("x-ms-account-kind");
+        if (xMsAccountKind != null) {
+            this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
+        }
+        String xMsSkuName = rawHeaders.getValue("x-ms-sku-name");
+        if (xMsSkuName != null) {
+            this.xMsSkuName = SkuName.fromString(xMsSkuName);
+        }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         String date = rawHeaders.getValue("Date");

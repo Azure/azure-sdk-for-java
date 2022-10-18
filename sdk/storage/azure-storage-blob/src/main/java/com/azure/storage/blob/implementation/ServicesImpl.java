@@ -21,7 +21,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
@@ -620,6 +619,50 @@ public final class ServicesImpl {
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BlobContainerItem> listBlobContainersSegmentAsync(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId) {
+        // TODO (alzimmer): This wasn't passing context as there is no Context to pass.
+        //  There will be a fix for this in a future Autorest release but for now this was done manually.
+        // Adding this comment to make this obvious on diff.
+        return new PagedFlux<>(() -> FluxUtil.withContext(context ->
+            listBlobContainersSegmentSinglePageAsync(
+                prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId, context)),
+            nextLink -> FluxUtil.withContext(context ->
+                listBlobContainersSegmentNextSinglePageAsync(nextLink, requestId, context)));
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -915,7 +958,7 @@ public final class ServicesImpl {
     public Flux<ByteBuffer> submitBatchAsync(
             long contentLength, String multipartContentType, Flux<ByteBuffer> body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout, requestId)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -945,7 +988,7 @@ public final class ServicesImpl {
             String requestId,
             Context context) {
         return submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout, requestId, context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1047,7 +1090,7 @@ public final class ServicesImpl {
     public Flux<ByteBuffer> submitBatchAsync(
             long contentLength, String multipartContentType, BinaryData body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout, requestId)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1077,7 +1120,7 @@ public final class ServicesImpl {
             String requestId,
             Context context) {
         return submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout, requestId, context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**

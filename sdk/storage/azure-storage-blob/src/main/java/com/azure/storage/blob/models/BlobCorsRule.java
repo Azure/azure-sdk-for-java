@@ -51,6 +51,9 @@ public final class BlobCorsRule {
     @JsonProperty(value = "MaxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
 
+    /** Creates an instance of BlobCorsRule class. */
+    public BlobCorsRule() {}
+
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the storage
      * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be

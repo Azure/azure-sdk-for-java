@@ -126,7 +126,10 @@ public final class ContainersGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        }
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         String xMsImmutableStorageWithVersioningEnabled =
                 rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled");
@@ -134,7 +137,10 @@ public final class ContainersGetPropertiesHeaders {
             this.xMsImmutableStorageWithVersioningEnabled =
                     Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
         }
-        this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
+        }
         String xMsDenyEncryptionScopeOverride = rawHeaders.getValue("x-ms-deny-encryption-scope-override");
         if (xMsDenyEncryptionScopeOverride != null) {
             this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
@@ -157,8 +163,14 @@ public final class ContainersGetPropertiesHeaders {
         if (xMsHasImmutabilityPolicy != null) {
             this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
         }
-        this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
-        this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        }
+        String xMsBlobPublicAccess = rawHeaders.getValue("x-ms-blob-public-access");
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
+        }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();

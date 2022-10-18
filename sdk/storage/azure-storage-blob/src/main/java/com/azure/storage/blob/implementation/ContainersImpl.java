@@ -19,7 +19,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
@@ -1806,7 +1805,7 @@ public final class ContainersImpl {
             String requestId) {
         return submitBatchWithResponseAsync(
                         containerName, contentLength, multipartContentType, body, timeout, requestId)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1839,7 +1838,7 @@ public final class ContainersImpl {
             Context context) {
         return submitBatchWithResponseAsync(
                         containerName, contentLength, multipartContentType, body, timeout, requestId, context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1962,7 +1961,7 @@ public final class ContainersImpl {
             String requestId) {
         return submitBatchWithResponseAsync(
                         containerName, contentLength, multipartContentType, body, timeout, requestId)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1995,7 +1994,7 @@ public final class ContainersImpl {
             Context context) {
         return submitBatchWithResponseAsync(
                         containerName, contentLength, multipartContentType, body, timeout, requestId, context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**

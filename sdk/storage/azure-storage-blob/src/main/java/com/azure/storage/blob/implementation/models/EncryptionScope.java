@@ -20,6 +20,9 @@ public final class EncryptionScope {
     @JsonProperty(value = "encryptionScope")
     private String encryptionScope;
 
+    /** Creates an instance of EncryptionScope class. */
+    public EncryptionScope() {}
+
     /**
      * Get the encryptionScope property: Optional. Version 2019-07-07 and later. Specifies the name of the encryption
      * scope to use to encrypt the data provided in the request. If not specified, encryption is performed with the

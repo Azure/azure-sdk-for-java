@@ -54,6 +54,9 @@ public final class BlobHttpHeaders {
     @JsonProperty(value = "contentDisposition")
     private String contentDisposition;
 
+    /** Creates an instance of BlobHttpHeaders class. */
+    public BlobHttpHeaders() {}
+
     /**
      * Get the cacheControl property: Optional. Sets the blob's cache control. If specified, this property is stored
      * with the blob and returned with a read request.

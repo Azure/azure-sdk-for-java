@@ -36,6 +36,9 @@ public final class BlobMetrics {
     @JsonProperty(value = "RetentionPolicy")
     private BlobRetentionPolicy retentionPolicy;
 
+    /** Creates an instance of BlobMetrics class. */
+    public BlobMetrics() {}
+
     /**
      * Get the version property: The version of Storage Analytics to configure.
      *

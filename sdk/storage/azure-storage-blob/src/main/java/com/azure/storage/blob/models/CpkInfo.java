@@ -33,6 +33,9 @@ public final class CpkInfo {
     @JsonProperty(value = "encryptionAlgorithm")
     private EncryptionAlgorithmType encryptionAlgorithm;
 
+    /** Creates an instance of CpkInfo class. */
+    public CpkInfo() {}
+
     /**
      * Get the encryptionKey property: Optional. Specifies the encryption key to use to encrypt the data provided in the
      * request. If not specified, encryption is performed with the root account encryption key. For more information,
