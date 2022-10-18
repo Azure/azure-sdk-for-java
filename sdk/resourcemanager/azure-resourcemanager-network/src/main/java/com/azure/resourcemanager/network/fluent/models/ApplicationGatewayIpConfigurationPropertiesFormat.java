@@ -24,6 +24,10 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayIpConfigurationPropertiesFormat class. */
+    public ApplicationGatewayIpConfigurationPropertiesFormat() {
+    }
+
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.

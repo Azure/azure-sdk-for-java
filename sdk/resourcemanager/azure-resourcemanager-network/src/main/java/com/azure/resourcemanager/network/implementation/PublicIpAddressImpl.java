@@ -56,7 +56,7 @@ class PublicIpAddressImpl
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)

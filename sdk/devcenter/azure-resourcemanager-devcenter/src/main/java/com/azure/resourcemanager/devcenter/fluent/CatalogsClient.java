@@ -51,20 +51,6 @@ public interface CatalogsClient {
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param catalogName The name of the Catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a catalog.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CatalogInner get(String resourceGroupName, String devCenterName, String catalogName);
-
-    /**
-     * Gets a catalog.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param catalogName The name of the Catalog.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,6 +60,20 @@ public interface CatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CatalogInner> getWithResponse(
         String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Gets a catalog.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a catalog.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CatalogInner get(String resourceGroupName, String devCenterName, String catalogName);
 
     /**
      * Creates or updates a catalog.

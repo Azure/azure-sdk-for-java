@@ -39,6 +39,10 @@ public class FactoryIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> userAssignedIdentities;
 
+    /** Creates an instance of FactoryIdentity class. */
+    public FactoryIdentity() {
+    }
+
     /**
      * Get the type property: The identity type.
      *

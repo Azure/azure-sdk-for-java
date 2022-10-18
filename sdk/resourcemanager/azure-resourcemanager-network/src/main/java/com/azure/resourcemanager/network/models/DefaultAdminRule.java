@@ -23,6 +23,10 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     @JsonProperty(value = "properties")
     private DefaultAdminPropertiesFormat innerProperties;
 
+    /** Creates an instance of DefaultAdminRule class. */
+    public DefaultAdminRule() {
+    }
+
     /**
      * Get the innerProperties property: Indicates the properties of the security admin rule.
      *

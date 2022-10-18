@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
@@ -10,9 +11,9 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

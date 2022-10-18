@@ -30,6 +30,10 @@ public final class VpnClientRevokedCertificate extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of VpnClientRevokedCertificate class. */
+    public VpnClientRevokedCertificate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the vpn client revoked certificate.
      *

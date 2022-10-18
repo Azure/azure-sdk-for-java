@@ -25,6 +25,10 @@ public final class ProjectInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ProjectInner class. */
+    public ProjectInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a project.
      *

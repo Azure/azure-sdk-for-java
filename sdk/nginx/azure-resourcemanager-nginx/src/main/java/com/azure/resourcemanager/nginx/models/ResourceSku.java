@@ -17,6 +17,10 @@ public final class ResourceSku {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ResourceSku class. */
+    public ResourceSku() {
+    }
+
     /**
      * Get the name property: Name of the SKU.
      *

@@ -62,7 +62,6 @@ public class CallAutomationUnitTestBase {
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
-            .setSubject(subject)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setMediaSubscriptionId(mediaSubscriptionId)
             .setSource(new CallSourceInternal()

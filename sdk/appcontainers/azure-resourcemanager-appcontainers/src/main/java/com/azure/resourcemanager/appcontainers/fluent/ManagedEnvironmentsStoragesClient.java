@@ -18,20 +18,6 @@ public interface ManagedEnvironmentsStoragesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all storages for a managedEnvironment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedEnvironmentStoragesCollectionInner list(String resourceGroupName, String environmentName);
-
-    /**
-     * Get all storages for a managedEnvironment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -44,19 +30,18 @@ public interface ManagedEnvironmentsStoragesClient {
         String resourceGroupName, String environmentName, Context context);
 
     /**
-     * Get storage for a managedEnvironment.
+     * Get all storages for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage for a managedEnvironment.
+     * @return all storages for a managedEnvironment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedEnvironmentStorageInner get(String resourceGroupName, String environmentName, String storageName);
+    ManagedEnvironmentStoragesCollectionInner list(String resourceGroupName, String environmentName);
 
     /**
      * Get storage for a managedEnvironment.
@@ -76,24 +61,19 @@ public interface ManagedEnvironmentsStoragesClient {
         String resourceGroupName, String environmentName, String storageName, Context context);
 
     /**
-     * Create or update storage for a managedEnvironment.
+     * Get storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for managedEnvironment.
+     * @return storage for a managedEnvironment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedEnvironmentStorageInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String storageName,
-        ManagedEnvironmentStorageInner storageEnvelope);
+    ManagedEnvironmentStorageInner get(String resourceGroupName, String environmentName, String storageName);
 
     /**
      * Create or update storage for a managedEnvironment.
@@ -118,18 +98,24 @@ public interface ManagedEnvironmentsStoragesClient {
         Context context);
 
     /**
-     * Delete storage for a managedEnvironment.
+     * Create or update storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
+     * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storage resource for managedEnvironment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String environmentName, String storageName);
+    ManagedEnvironmentStorageInner createOrUpdate(
+        String resourceGroupName,
+        String environmentName,
+        String storageName,
+        ManagedEnvironmentStorageInner storageEnvelope);
 
     /**
      * Delete storage for a managedEnvironment.
@@ -147,4 +133,18 @@ public interface ManagedEnvironmentsStoragesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String storageName, Context context);
+
+    /**
+     * Delete storage for a managedEnvironment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String environmentName, String storageName);
 }

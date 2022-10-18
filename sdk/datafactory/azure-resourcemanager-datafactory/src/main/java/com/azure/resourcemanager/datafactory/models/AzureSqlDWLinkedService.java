@@ -24,6 +24,10 @@ public final class AzureSqlDWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSqlDWLinkedServiceTypeProperties innerTypeProperties = new AzureSqlDWLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSqlDWLinkedService class. */
+    public AzureSqlDWLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure SQL Data Warehouse linked service properties.
      *

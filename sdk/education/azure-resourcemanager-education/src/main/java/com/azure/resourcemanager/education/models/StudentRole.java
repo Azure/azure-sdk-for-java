@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StudentRole. */
+/** Student Role. */
 public final class StudentRole extends ExpandableStringEnum<StudentRole> {
     /** Static value Student for StudentRole. */
     public static final StudentRole STUDENT = fromString("Student");

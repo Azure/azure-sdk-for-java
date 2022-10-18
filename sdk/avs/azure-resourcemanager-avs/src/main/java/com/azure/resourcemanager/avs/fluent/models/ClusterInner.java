@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A cluster resource. */
 @Fluent
 public final class ClusterInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * The cluster SKU
      */
@@ -27,6 +24,10 @@ public final class ClusterInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
 
     /**
      * Get the sku property: The cluster SKU.
@@ -64,7 +65,7 @@ public final class ClusterInner extends ProxyResource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
@@ -74,4 +75,6 @@ public final class ClusterInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterInner.class);
 }

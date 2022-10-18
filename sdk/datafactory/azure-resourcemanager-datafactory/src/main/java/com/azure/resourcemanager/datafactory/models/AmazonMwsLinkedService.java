@@ -24,6 +24,10 @@ public final class AmazonMwsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonMwsLinkedServiceTypeProperties innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonMwsLinkedService class. */
+    public AmazonMwsLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon Marketplace Web Service linked service properties.
      *

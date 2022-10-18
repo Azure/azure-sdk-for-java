@@ -33,7 +33,11 @@ public final class ScriptOutputStreamType extends ExpandableStringEnum<ScriptOut
         return fromString(name, ScriptOutputStreamType.class);
     }
 
-    /** @return known ScriptOutputStreamType values. */
+    /**
+     * Gets known ScriptOutputStreamType values.
+     *
+     * @return known ScriptOutputStreamType values.
+     */
     public static Collection<ScriptOutputStreamType> values() {
         return values(ScriptOutputStreamType.class);
     }

@@ -25,6 +25,10 @@ public final class AzureDataLakeStoreLinkedService extends LinkedService {
     private AzureDataLakeStoreLinkedServiceTypeProperties innerTypeProperties =
         new AzureDataLakeStoreLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureDataLakeStoreLinkedService class. */
+    public AzureDataLakeStoreLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Lake Store linked service properties.
      *

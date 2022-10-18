@@ -444,22 +444,6 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Global parameter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName) {
-        return getAsync(resourceGroupName, factoryName, globalParameterName).block();
-    }
-
-    /**
-     * Gets a Global parameter.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,6 +454,22 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
     public Response<GlobalParameterResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, globalParameterName, context).block();
+    }
+
+    /**
+     * Gets a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Global parameter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName) {
+        return getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE).getValue();
     }
 
     /**
@@ -630,27 +630,6 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
      * @param defaultParameter Global parameter resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global parameters resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalParameterResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String globalParameterName,
-        GlobalParameterResourceInner defaultParameter) {
-        return createOrUpdateAsync(resourceGroupName, factoryName, globalParameterName, defaultParameter).block();
-    }
-
-    /**
-     * Creates or updates a Global parameter.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
-     * @param defaultParameter Global parameter resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -667,6 +646,29 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, globalParameterName, defaultParameter, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return global parameters resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GlobalParameterResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, factoryName, globalParameterName, defaultParameter, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -798,21 +800,6 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
-        deleteAsync(resourceGroupName, factoryName, globalParameterName).block();
-    }
-
-    /**
-     * Deletes a Global parameter.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param globalParameterName The global parameter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -823,6 +810,21 @@ public final class GlobalParametersClientImpl implements GlobalParametersClient 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String globalParameterName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, globalParameterName, context).block();
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
+        deleteWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE);
     }
 
     /**

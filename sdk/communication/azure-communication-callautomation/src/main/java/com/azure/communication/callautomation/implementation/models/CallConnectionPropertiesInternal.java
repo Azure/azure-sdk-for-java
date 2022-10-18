@@ -42,12 +42,6 @@ public final class CallConnectionPropertiesInternal {
     private CallConnectionStateModelInternal callConnectionState;
 
     /*
-     * The subject.
-     */
-    @JsonProperty(value = "subject")
-    private String subject;
-
-    /*
      * The callback URI.
      */
     @JsonProperty(value = "callbackUri")
@@ -157,26 +151,6 @@ public final class CallConnectionPropertiesInternal {
     public CallConnectionPropertiesInternal setCallConnectionState(
             CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
-        return this;
-    }
-
-    /**
-     * Get the subject property: The subject.
-     *
-     * @return the subject value.
-     */
-    public String getSubject() {
-        return this.subject;
-    }
-
-    /**
-     * Set the subject property: The subject.
-     *
-     * @param subject the subject value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setSubject(String subject) {
-        this.subject = subject;
         return this;
     }
 

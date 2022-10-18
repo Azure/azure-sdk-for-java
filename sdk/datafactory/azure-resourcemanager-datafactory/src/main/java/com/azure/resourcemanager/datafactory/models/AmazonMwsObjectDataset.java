@@ -23,6 +23,10 @@ public final class AmazonMwsObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AmazonMwsObjectDataset class. */
+    public AmazonMwsObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

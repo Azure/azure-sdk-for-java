@@ -65,6 +65,10 @@ public class PacketCaptureParameters {
     @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
 
+    /** Creates an instance of PacketCaptureParameters class. */
+    public PacketCaptureParameters() {
+    }
+
     /**
      * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
      * supported.

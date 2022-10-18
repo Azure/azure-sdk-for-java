@@ -16,6 +16,7 @@ import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
@@ -120,6 +121,10 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().secondaryCircuit();
     }
 
+    public NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised() {
+        return this.innerModel().nsxPublicIpQuotaRaised();
+    }
+
     public ManagementCluster managementCluster() {
         return this.innerModel().managementCluster();
     }
@@ -151,6 +156,10 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PrivateCloudInner innerModel() {
@@ -262,14 +271,14 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         serviceManager.privateClouds().rotateNsxtPassword(resourceGroupName, privateCloudName, context);
     }
 
-    public AdminCredentials listAdminCredentials() {
-        return serviceManager.privateClouds().listAdminCredentials(resourceGroupName, privateCloudName);
-    }
-
     public Response<AdminCredentials> listAdminCredentialsWithResponse(Context context) {
         return serviceManager
             .privateClouds()
             .listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, context);
+    }
+
+    public AdminCredentials listAdminCredentials() {
+        return serviceManager.privateClouds().listAdminCredentials(resourceGroupName, privateCloudName);
     }
 
     public PrivateCloudImpl withRegion(Region location) {
@@ -363,13 +372,8 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     }
 
     public PrivateCloudImpl withAvailability(AvailabilityProperties availability) {
-        if (isInCreateMode()) {
-            this.innerModel().withAvailability(availability);
-            return this;
-        } else {
-            this.updatePrivateCloudUpdate.withAvailability(availability);
-            return this;
-        }
+        this.innerModel().withAvailability(availability);
+        return this;
     }
 
     public PrivateCloudImpl withEncryption(Encryption encryption) {

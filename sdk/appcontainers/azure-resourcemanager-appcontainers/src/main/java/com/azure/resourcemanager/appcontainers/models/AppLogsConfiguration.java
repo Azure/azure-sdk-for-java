@@ -22,6 +22,10 @@ public final class AppLogsConfiguration {
     @JsonProperty(value = "logAnalyticsConfiguration")
     private LogAnalyticsConfiguration logAnalyticsConfiguration;
 
+    /** Creates an instance of AppLogsConfiguration class. */
+    public AppLogsConfiguration() {
+    }
+
     /**
      * Get the destination property: Logs destination.
      *

@@ -24,6 +24,10 @@ public final class HubspotLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HubspotLinkedServiceTypeProperties innerTypeProperties = new HubspotLinkedServiceTypeProperties();
 
+    /** Creates an instance of HubspotLinkedService class. */
+    public HubspotLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Hubspot Service linked service properties.
      *
