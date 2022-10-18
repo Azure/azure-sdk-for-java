@@ -126,6 +126,8 @@
                 </goals>
                 <configuration>
                   <compilerArgs>
+                    <compilerArg>--add-modules</compilerArg>
+                    <compilerArg>java.sql</compilerArg>
                     <compilerArg>--add-reads</compilerArg>
                     <compilerArg>com.azure.data.appconfiguration=java.sql</compilerArg>
                   </compilerArgs>
