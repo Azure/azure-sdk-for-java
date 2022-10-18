@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PlacementPolicies Get. */
 public final class PlacementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PlacementPolicies_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_Get.json
      */
     /**
      * Sample code: PlacementPolicies_Get.

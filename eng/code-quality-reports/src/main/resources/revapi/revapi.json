@@ -519,6 +519,11 @@
           "code": "java.annotation.added",
           "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
           "justification": "Skip customized getters on class when serialization and deserialization."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
+          "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
         }
       ]
     }

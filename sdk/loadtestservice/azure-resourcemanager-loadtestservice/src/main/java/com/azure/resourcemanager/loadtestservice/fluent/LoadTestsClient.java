@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner;
+import com.azure.resourcemanager.loadtestservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.loadtestservice.models.LoadTestResourcePatchRequestBody;
 
 /** An instance of this class provides access to all the operations defined in LoadTestsClient. */
@@ -21,7 +22,7 @@ public interface LoadTestsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> list();
@@ -33,7 +34,7 @@ public interface LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> list(Context context);
@@ -45,7 +46,7 @@ public interface LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName);
@@ -58,10 +59,25 @@ public interface LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result.
+     * @return list of resources page result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Get a LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LoadTest resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LoadTestResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String loadTestName, Context context);
 
     /**
      * Get a LoadTest resource.
@@ -77,19 +93,35 @@ public interface LoadTestsClient {
     LoadTestResourceInner getByResourceGroup(String resourceGroupName, String loadTestName);
 
     /**
-     * Get a LoadTest resource.
+     * Create or update LoadTest resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource);
+
+    /**
+     * Create or update LoadTest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResource LoadTest resource data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return the {@link SyncPoller} for polling of loadTest details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadTestResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadTestName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context);
 
     /**
      * Create or update LoadTest resource.
@@ -119,8 +151,44 @@ public interface LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadTestResourceInner> createOrUpdateWithResponse(
+    LoadTestResourceInner createOrUpdate(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context);
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody);
+
+    /**
+     * Update a loadtest resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
+        String resourceGroupName,
+        String loadTestName,
+        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
+        Context context);
 
     /**
      * Update a loadtest resource.
@@ -152,7 +220,7 @@ public interface LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadTestResourceInner> updateWithResponse(
+    LoadTestResourceInner update(
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
@@ -166,7 +234,7 @@ public interface LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName);
@@ -180,7 +248,7 @@ public interface LoadTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName, Context context);
@@ -209,4 +277,33 @@ public interface LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String loadTestName, Context context);
+
+    /**
+     * Lists the endpoints that agents may call as part of load testing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String loadTestName);
+
+    /**
+     * Lists the endpoints that agents may call as part of load testing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String loadTestName, Context context);
 }

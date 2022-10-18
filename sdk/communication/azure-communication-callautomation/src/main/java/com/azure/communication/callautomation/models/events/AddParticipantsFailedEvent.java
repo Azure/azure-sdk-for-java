@@ -27,8 +27,15 @@ public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
     @JsonIgnore
     private final List<CommunicationIdentifier> participants;
 
+    /*
+     * Contains the resulting SIP code/sub-code and message from NGC services.
+     */
+    @JsonProperty(value = "resultInformation")
+    private final ResultInformation resultInformation;
+
     @JsonCreator
     private AddParticipantsFailedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
+        this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants
@@ -47,5 +54,14 @@ public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
      */
     public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
+     *
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 }

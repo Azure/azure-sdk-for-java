@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-elevation</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-elevation;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-elevation;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Elevation client library</name>

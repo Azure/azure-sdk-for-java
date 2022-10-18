@@ -8,11 +8,14 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
@@ -38,6 +41,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -61,18 +65,32 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     private void createCertificateClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
                                          String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
-        CertificateAsyncClient asyncClient = spy(new CertificateClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
+            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        CertificateClientImpl implClient = spy(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        certificateClient = new CertificateClient(asyncClient);
+        certificateClient = new CertificateClient(implClient);
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        //skip paging and polling requests until their sync stack support lands in azure-core.
+        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
+            String callerMethod = (String) context.getData("caller-method").orElse("");
+            return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
+                || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
+                || callerMethod.contains("recover") || callerMethod.contains("createCertificate")
+                || callerMethod.contains("getCertificateOperation") || callerMethod.contains("setCertificateContacts")
+                || callerMethod.contains("deleteCertificateContacts") || callerMethod.contains("getCertificateContacts")
+                || callerMethod.contains("getCertificateIssuers"));
+        };
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(skipRequestFunction)
+            .assertSync()
+            .build();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
