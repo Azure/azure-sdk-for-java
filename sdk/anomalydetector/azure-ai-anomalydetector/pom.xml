@@ -99,5 +99,11 @@
       <version>1.1.4</version>  <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
+      <version>1.1.4</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
