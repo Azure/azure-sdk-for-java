@@ -188,8 +188,8 @@ public class ChangeFeedProcessorBuilder {
 
         ChangeFeedProcessor changeFeedProcessor = null;
         // Lease version will decide which version of the changeFeed processor we are going to use internally
-        // PARTITION_KEY_BASED_LEASE -> ChangeFeedProcessor V0
-        // EPK_RANGE_BASED_LEASE -> ChangeFeedProcessor V1
+        // PARTITION_KEY_BASED_LEASE -> ChangeFeedProcessor pkRangeVersion
+        // EPK_RANGE_BASED_LEASE -> ChangeFeedProcessor epkRangeVersion
         if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             switch (this.changeFeedMode) {
                 case FULL_FIDELITY:
