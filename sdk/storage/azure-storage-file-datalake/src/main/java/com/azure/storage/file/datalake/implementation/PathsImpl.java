@@ -53,6 +53,7 @@ import com.azure.storage.file.datalake.implementation.models.SetAccessControlRec
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -350,6 +351,9 @@ public final class PathsImpl {
                 @HeaderParam("Content-Length") Long contentLength,
                 @HeaderParam("x-ms-content-md5") String contentMd5,
                 @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+                @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-cache-control") String cacheControl,
                 @HeaderParam("x-ms-content-type") String contentType,
                 @HeaderParam("x-ms-content-disposition") String contentDisposition,
@@ -381,6 +385,9 @@ public final class PathsImpl {
                 @HeaderParam("Content-MD5") String transactionalContentHash,
                 @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
                 @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+                @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
@@ -405,6 +412,9 @@ public final class PathsImpl {
                 @HeaderParam("Content-MD5") String transactionalContentHash,
                 @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
                 @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+                @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+                @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
@@ -1605,6 +1615,14 @@ public final class PathsImpl {
      *     stream has been closed.".
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      *     of the request content in bytes for "Append Data".
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     *     "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     *     operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     *     string formats.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param pathHttpHeaders Parameter group.
@@ -1624,6 +1642,9 @@ public final class PathsImpl {
             Boolean retainUncommittedData,
             Boolean close,
             Long contentLength,
+            LeaseAction leaseAction,
+            Long leaseDuration,
+            String proposedLeaseId,
             String requestId,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
@@ -1719,6 +1740,9 @@ public final class PathsImpl {
                 contentLength,
                 contentMd5Converted,
                 leaseId,
+                leaseAction,
+                leaseDuration,
+                proposedLeaseId,
                 cacheControl,
                 contentType,
                 contentDisposition,
@@ -1753,6 +1777,14 @@ public final class PathsImpl {
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      *     of the request content in bytes for "Append Data".
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     *     "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     *     operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     *     string formats.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
@@ -1772,6 +1804,9 @@ public final class PathsImpl {
             Integer timeout,
             Long contentLength,
             byte[] transactionalContentCrc64,
+            LeaseAction leaseAction,
+            Long leaseDuration,
+            String proposedLeaseId,
             String requestId,
             Boolean flush,
             PathHttpHeaders pathHttpHeaders,
@@ -1818,6 +1853,9 @@ public final class PathsImpl {
                 transactionalContentHashConverted,
                 transactionalContentCrc64Converted,
                 leaseId,
+                leaseAction,
+                leaseDuration,
+                proposedLeaseId,
                 requestId,
                 this.client.getVersion(),
                 encryptionKey,
@@ -1845,6 +1883,14 @@ public final class PathsImpl {
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      *     of the request content in bytes for "Append Data".
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     *     "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     *     operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     *     in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     *     if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     *     string formats.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param flush If file should be flushed after the append.
@@ -1864,6 +1910,9 @@ public final class PathsImpl {
             Integer timeout,
             Long contentLength,
             byte[] transactionalContentCrc64,
+            LeaseAction leaseAction,
+            Long leaseDuration,
+            String proposedLeaseId,
             String requestId,
             Boolean flush,
             PathHttpHeaders pathHttpHeaders,
@@ -1910,6 +1959,9 @@ public final class PathsImpl {
                 transactionalContentHashConverted,
                 transactionalContentCrc64Converted,
                 leaseId,
+                leaseAction,
+                leaseDuration,
+                proposedLeaseId,
                 requestId,
                 this.client.getVersion(),
                 encryptionKey,
