@@ -34,7 +34,7 @@ public class DataLakeFileFlushOptions {
      *
      * @return whether to retain uncommitted data.
      */
-    public Boolean getRetainUncommittedData() {
+    public Boolean isUncommittedDataRetained() {
         return retainUncommittedData;
     }
 
@@ -47,7 +47,7 @@ public class DataLakeFileFlushOptions {
      * @param retainUncommittedData boolean flag to indicate whether uncommitted data should be retained.
      * @return the updated DataLakeFileFlushOptions object.
      */
-    public DataLakeFileFlushOptions setRetainUncommittedData(Boolean retainUncommittedData) {
+    public DataLakeFileFlushOptions setUncommittedDataRetained(Boolean retainUncommittedData) {
         this.retainUncommittedData = retainUncommittedData;
         return this;
     }

@@ -279,7 +279,7 @@ public class DataLakeFileClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileClient#uploadFromFileWithResponse(String, ParallelTransferOptions,
-     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration)}
+     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void uploadFromFileWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
@@ -436,7 +436,7 @@ public class DataLakeFileClientJavaDocSamples {
         Integer leaseDuration = 15;
 
         DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
-            .setRetainUncommittedData(retainUncommittedData)
+            .setUncommittedDataRetained(retainUncommittedData)
             .setClose(close)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)

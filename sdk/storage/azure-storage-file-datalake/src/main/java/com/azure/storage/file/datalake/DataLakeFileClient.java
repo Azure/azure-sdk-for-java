@@ -952,7 +952,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
-            .setRetainUncommittedData(retainUncommittedData)
+            .setUncommittedDataRetained(retainUncommittedData)
             .setClose(close)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions);
