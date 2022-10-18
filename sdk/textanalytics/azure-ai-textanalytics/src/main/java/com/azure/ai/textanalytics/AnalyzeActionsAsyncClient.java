@@ -804,7 +804,15 @@ class AnalyzeActionsAsyncClient {
 
     private List<com.azure.ai.textanalytics.implementation.models.PhraseControl> toPhraseControlsImpl(
         List<PhraseControl> phraseControls) {
+        if (phraseControls == null) {
+            return null;
+        }
+
         List<com.azure.ai.textanalytics.implementation.models.PhraseControl> phraseControlsImpl = new ArrayList<>();
+        if (phraseControls.isEmpty()) {
+            return phraseControlsImpl;
+        }
+
         for (PhraseControl phraseControl : phraseControls) {
             phraseControlsImpl.add(
                 new com.azure.ai.textanalytics.implementation.models.PhraseControl()
@@ -1290,10 +1298,10 @@ class AnalyzeActionsAsyncClient {
                         actionResult = singleLabelClassifyActionResults.get(taskIndex);
                     } else if (CUSTOM_MULTI_LABEL_CLASSIFICATION.equals(taskName)) {
                         actionResult = multiLabelClassifyActionResults.get(taskIndex);
-//                    } else if (HEALTHCARE.equals(taskName)) {
-//                        // TODO: add it in healthcare PR
-//                    } else if (EXTRACTIVE_SUMMARIZATION.equals(taskName)) {
-//                        // TODO: add it in extractive summary PR
+                    } else if (HEALTHCARE.equals(taskName)) {
+                        actionResult = analyzeHealthcareEntitiesActionResults.get(taskIndex);
+                    } else if (EXTRACTIVE_SUMMARIZATION.equals(taskName)) {
+                        actionResult = extractSummaryActionResults.get(taskIndex);
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
                         actionResult = abstractiveSummaryActionResults.get(taskIndex);
                     } else {

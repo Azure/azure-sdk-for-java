@@ -8,6 +8,7 @@ features for understanding and analyzing text, and includes the following main f
 - Key Phrase Extraction
 - Multiple Actions Analysis Per Document
 - Healthcare Entities Analysis
+- Abstractive Text Summarization
 - Extractive Text Summarization
 - Custom Named Entity Recognition
 - Custom Text Classification
@@ -65,14 +66,15 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `2022-05-01` version of the service.
-It is a newer version than `3_0` and `3_1`.
+**Note:** This version of the client library defaults to the `2022-10-01-preview` version of the service.
+It is a newer version than `3_0`, `3_1` and `2022-05-01`.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.2.x | 3.0, 3.1, 2022-05-01 (default)
+|5.3.x | 3.0, 3.1, 2022-05-01, 2022-10-01-preview (default)
+|5.2.x | 3.0, 3.1, 2022-05-01
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
@@ -237,6 +239,8 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
+* [Extractive Text Summarization](#extractive-text-summarization "Extractive text summarization")
+* [Abstractive Text Summarization](#abstractive-text-summarization "Abstractive text summarization")
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
@@ -527,6 +531,15 @@ syncPoller.getFinalResult().forEach(documentsResults -> {
 
 For more information see [How to use: Custom Text Classification][custom_text_classification_overview].
 
+### Extractive Text Summarization
+
+### Abstractive Text Summarization
+Abstractive summarization generates a summary for the input documents. Abstractive summarization
+is different from extractive summarization in that extractive summarization is the strategy of
+concatenating extracted sentences from the input document into a summary, while abstractive
+summarization involves paraphrasing the document using novel sentences.
+
+
 ### Analyze multiple actions
 The `Analyze` functionality allows choosing which of the supported Language service features to execute in the same
 set of documents. Currently, the supported features are:
@@ -537,9 +550,11 @@ set of documents. Currently, the supported features are:
 - Key Phrase Extraction
 - Sentiment Analysis
 - Healthcare Analysis
-- Custom Entity Recognition
-- Custom Single-Label Classification
-- Custom Multi-Label Classification
+- Custom Entity Recognition (API version 2022-05-01 and newer)
+- Custom Single-Label Classification (API version 2022-05-01 and newer)
+- Custom Multi-Label Classification (API version 2022-05-01 and newer)
+- Extractive Text Summarization (API version 2022-05-01 and newer)
+- Abstractive Text Summarization (API version 2022-05-01 and newer)
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(

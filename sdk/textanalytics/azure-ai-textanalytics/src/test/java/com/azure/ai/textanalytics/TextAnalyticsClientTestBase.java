@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
@@ -33,6 +34,7 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
+import com.azure.ai.textanalytics.models.PhraseControl;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -630,7 +632,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient,
+                                                        TextAnalyticsServiceVersion serviceVersion);
 
     // Healthcare LRO - Cancellation
 
@@ -724,16 +727,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                                                                TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
-                                                                               TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
-                                                                         TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
-                                                                                   TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(
+        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1323,6 +1326,26 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             asList(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
                 AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME));
+    }
+
+    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+                                     Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
+        testRunner.accept(SUMMARY_INPUTS,
+            new TextAnalyticsActions()
+                .setExtractSummaryActions(
+                    new ExtractSummaryAction()
+                        .setMaxSentenceCount(maxSentenceCount)
+                        .setOrderBy(summarySentencesOrder)));
+    }
+
+    void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+                               List<PhraseControl> phraseControls, Integer maxSentenceCount) {
+        testRunner.accept(SUMMARY_INPUTS,
+            new TextAnalyticsActions()
+                .setAbstractiveSummaryActions(
+                    new AbstractiveSummaryAction()
+                            .setPhraseControls(phraseControls)
+                        .setSentenceCount(maxSentenceCount)));
     }
 
     String getEndpoint() {
@@ -2101,16 +2124,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(actualError.getMessage());
     }
 
-    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
-                                     Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
-        testRunner.accept(SUMMARY_INPUTS,
-            new TextAnalyticsActions()
-                .setExtractSummaryActions(
-                    new ExtractSummaryAction()
-                        .setMaxSentenceCount(maxSentenceCount)
-                        .setOrderBy(summarySentencesOrder)));
-    }
-
     static void validateExtractSummaryResultCollection(boolean showStatistics,
         ExtractSummaryResultCollection expected, ExtractSummaryResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual,
@@ -2134,7 +2147,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateExtractSummaryActionResult(boolean showStatistics,
-                                                   ExtractSummaryActionResult expected, ExtractSummaryActionResult actual) {
+                                                   ExtractSummaryActionResult expected,
+                                                   ExtractSummaryActionResult actual) {
         assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
             if (expected.getError() == null) {
