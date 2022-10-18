@@ -54,8 +54,8 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.common to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.changefeed.pkRangeVersion to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.changefeed.epkRangeVersion to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed.pkversion to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed.epkversion to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.feedranges to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.directconnectivity to com.fasterxml.jackson.databind;

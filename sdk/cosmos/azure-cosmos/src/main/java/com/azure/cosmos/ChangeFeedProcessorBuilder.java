@@ -5,8 +5,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
-import com.azure.cosmos.implementation.changefeed.pkRangeVersion.IncrementalChangeFeedProcessorImpl;
-import com.azure.cosmos.implementation.changefeed.epkRangeVersion.FullFidelityChangeFeedProcessorImpl;
+import com.azure.cosmos.implementation.changefeed.pkversion.IncrementalChangeFeedProcessorImpl;
+import com.azure.cosmos.implementation.changefeed.epkversion.FullFidelityChangeFeedProcessorImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.util.Beta;
@@ -188,8 +188,8 @@ public class ChangeFeedProcessorBuilder {
 
         ChangeFeedProcessor changeFeedProcessor = null;
         // Lease version will decide which version of the changeFeed processor we are going to use internally
-        // PARTITION_KEY_BASED_LEASE -> ChangeFeedProcessor pkRangeVersion
-        // EPK_RANGE_BASED_LEASE -> ChangeFeedProcessor epkRangeVersion
+        // PARTITION_KEY_BASED_LEASE -> ChangeFeedProcessor pkversion
+        // EPK_RANGE_BASED_LEASE -> ChangeFeedProcessor epkversion
         if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             switch (this.changeFeedMode) {
                 case FULL_FIDELITY:
@@ -201,7 +201,7 @@ public class ChangeFeedProcessorBuilder {
                             this.changeFeedProcessorOptions);
                     break;
                 case INCREMENTAL:
-                    changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkRangeVersion.IncrementalChangeFeedProcessorImpl(
+                    changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
                             this.leaseContainer,
