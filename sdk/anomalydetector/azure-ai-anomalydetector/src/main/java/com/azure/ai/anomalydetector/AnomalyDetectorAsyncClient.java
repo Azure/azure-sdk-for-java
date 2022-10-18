@@ -692,13 +692,13 @@ public final class AnomalyDetectorAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of detection results for the given resultId.
+     * @return response of getting detection results along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBatchDetectAnomaly(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> batchDetectAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginBatchDetectAnomalyAsync(modelId, body, requestOptions);
+        return this.serviceClient.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions);
     }
 
     /**

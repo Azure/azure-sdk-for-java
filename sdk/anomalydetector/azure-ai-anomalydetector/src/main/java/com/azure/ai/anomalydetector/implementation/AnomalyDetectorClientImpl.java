@@ -1736,7 +1736,7 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
+    public Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1751,107 +1751,6 @@ public final class AnomalyDetectorClientImpl {
                                 context));
     }
 
-    /**
-     * Detect Multivariate Anomaly
-     *
-     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
-     * schema should be the same with the training request. The request will complete asynchronously and return a
-     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
-     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
-     * storage.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     dataSource: String (Required)
-     *     topContributorCount: int (Required)
-     *     startTime: OffsetDateTime (Required)
-     *     endTime: OffsetDateTime (Required)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     resultId: String (Required)
-     *     summary (Required): {
-     *         status: String(CREATED/RUNNING/READY/FAILED) (Required)
-     *         errors (Optional): [
-     *              (Optional){
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *             }
-     *         ]
-     *         variableStates (Optional): [
-     *              (Optional){
-     *                 variable: String (Optional)
-     *                 filledNARatio: Float (Optional)
-     *                 effectiveCount: Integer (Optional)
-     *                 firstTimestamp: OffsetDateTime (Optional)
-     *                 lastTimestamp: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         setupInfo (Required): {
-     *             dataSource: String (Required)
-     *             topContributorCount: int (Required)
-     *             startTime: OffsetDateTime (Required)
-     *             endTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     results (Required): [
-     *          (Required){
-     *             timestamp: OffsetDateTime (Required)
-     *             value (Optional): {
-     *                 isAnomaly: boolean (Required)
-     *                 severity: float (Required)
-     *                 score: float (Required)
-     *                 interpretation (Optional): [
-     *                      (Optional){
-     *                         variable: String (Optional)
-     *                         contributionScore: Float (Optional)
-     *                         correlationChanges (Optional): {
-     *                             changedVariables (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     }
-     *                 ]
-     *             }
-     *             errors (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param modelId Model identifier.
-     * @param body Detect anomaly request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of detection results for the given resultId.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBatchDetectAnomalyAsync(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.getHttpPipeline(),
-                        "{Endpoint}/anomalydetector/{ApiVersion}".replace("{Endpoint}", this.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
-    }
 
     /**
      * Detect Multivariate Anomaly
@@ -1936,12 +1835,12 @@ public final class AnomalyDetectorClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of detection results for the given resultId.
+     * @return the {@link Response} of getting detection results for the given modelId.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBatchDetectAnomaly(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> batchDetectAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.beginBatchDetectAnomalyAsync(modelId, body, requestOptions).getSyncPoller();
+        return this.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions).block();
     }
 
     /**
