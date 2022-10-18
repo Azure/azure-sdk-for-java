@@ -99,6 +99,7 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                         'eng/versioning',
                         'pom.xml'
                     ],
+                    'cadlProject': [cadl_project],
                     'artifacts': artifacts,
                     'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
                     'language': 'Java',
