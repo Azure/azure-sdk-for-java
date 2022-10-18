@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,15 +32,15 @@ public class AppConfigurationKeyVaultClientFactory {
         keyVaultClients = new HashMap<>();
     }
 
-    public AppConfigurationSecretClientManager getClient(URI uri) {
+    public AppConfigurationSecretClientManager getClient(String host) {
         // Check if we already have a client for this key vault, if not we will make
         // one
-        if (!keyVaultClients.containsKey(uri.getHost())) {
-            AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(uri,
+        if (!keyVaultClients.containsKey(host)) {
+            AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(host,
                 keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider, authClientId);
-            keyVaultClients.put(uri.getHost(), client);
+            keyVaultClients.put(host, client);
         }
-        return keyVaultClients.get(uri.getHost());
+        return keyVaultClients.get(host);
     }
 
 }

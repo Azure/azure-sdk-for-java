@@ -120,7 +120,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
-        when(keyVaultClientFactory.getClient(Mockito.any(URI.class))).thenReturn(clientManagerMock);
+        when(keyVaultClientFactory.getClient(Mockito.eq("https://test.key.vault.com"))).thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
         try {

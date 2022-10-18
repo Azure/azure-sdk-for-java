@@ -8,10 +8,10 @@ package com.azure.spring.cloud.config;
 public interface KeyVaultSecretProvider {
 
     /**
-     * Returns a secret value for a given uri
-     * @param uri Key Vault Reference
+     * Returns a secret value for a given endpoint
+     * @param endpoint Key Vault Reference
      * @return String value of the secret
      */
-    String getSecret(String uri);
+    String getSecret(String endpoint);
 
 }

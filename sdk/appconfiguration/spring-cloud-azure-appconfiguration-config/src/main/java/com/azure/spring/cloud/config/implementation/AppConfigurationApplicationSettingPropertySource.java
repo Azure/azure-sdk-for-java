@@ -103,17 +103,17 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
         String secretValue = null;
         try {
             URI uri = null;
+            KeyVaultSecret secret = null;
 
             // Parsing Key Vault Reference for URI
             try {
                 uri = new URI(secretReference.getSecretId());
+                secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri, maxRetryTime);
             } catch (URISyntaxException e) {
                 LOGGER.error("Error Processing Key Vault Entry URI.");
                 ReflectionUtils.rethrowRuntimeException(e);
             }
-
-            KeyVaultSecret secret = keyVaultClientFactory.getClient(uri).getSecret(uri,
-                    maxRetryTime);
+            
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }

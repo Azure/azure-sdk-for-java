@@ -25,7 +25,7 @@ public final class AppConfigurationSecretClientManager {
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private final URI uri;
+    private final String endpoint;
 
     private final TokenCredential tokenCredential;
 
@@ -37,18 +37,18 @@ public final class AppConfigurationSecretClientManager {
 
     /**
      * Creates a Client for connecting to Key Vault
-     * @param uri Key Vault URI
+     * @param endpoint Key Vault endpoint
      * @param tokenCredentialProvider optional provider of the Token Credential for connecting to Key Vault
      * @param keyVaultClientProvider optional provider for overriding the Key Vault Client
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
      * @param authClientId clientId used to authenticate with to App Configuration (Optional)
      */
-    public AppConfigurationSecretClientManager(URI uri, KeyVaultCredentialProvider tokenCredentialProvider,
+    public AppConfigurationSecretClientManager(String endpoint, KeyVaultCredentialProvider tokenCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider,
         String authClientId) {
-        this.uri = uri;
+        this.endpoint = endpoint;
         if (tokenCredentialProvider != null) {
-            this.tokenCredential = tokenCredentialProvider.getKeyVaultCredential("https://" + uri.getHost());
+            this.tokenCredential = tokenCredentialProvider.getKeyVaultCredential(endpoint);
         } else {
             this.tokenCredential = null;
         }
@@ -59,8 +59,6 @@ public final class AppConfigurationSecretClientManager {
 
     AppConfigurationSecretClientManager build() {
         SecretClientBuilder builder = getBuilder();
-        String fullUri = "https://" + uri.getHost();
-
         if (tokenCredential != null && authClientId != null) {
             throw new IllegalArgumentException("More than 1 Connection method was set for connecting to Key Vault.");
         }
@@ -78,10 +76,10 @@ public final class AppConfigurationSecretClientManager {
             // System Assigned Identity.
             builder.credential(new ManagedIdentityCredentialBuilder().build());
         }
-        builder.vaultUrl(fullUri);
+        builder.vaultUrl(endpoint);
 
         if (keyVaultClientProvider != null) {
-            keyVaultClientProvider.setup(builder, fullUri);
+            keyVaultClientProvider.setup(builder, endpoint);
         }
 
         if (!useSecretResolver) {

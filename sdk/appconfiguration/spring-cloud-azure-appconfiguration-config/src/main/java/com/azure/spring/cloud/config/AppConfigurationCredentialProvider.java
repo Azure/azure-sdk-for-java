@@ -12,9 +12,9 @@ public interface AppConfigurationCredentialProvider {
 
     /**
      * Returns a Token Credential for connecting to the given endpoint.
-     * @param uri App Configuration endpoint
-     * @return TokenCredential for connecting to the uri.
+     * @param endpoint App Configuration endpoint
+     * @return TokenCredential for connecting to the endpoint.
      */
-    TokenCredential getAppConfigCredential(String uri);
+    TokenCredential getAppConfigCredential(String endpoint);
 
 }

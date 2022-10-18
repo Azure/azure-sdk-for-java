@@ -58,7 +58,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
 
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
-        super(originEndpoint, replicaClient, "FM_" + keyFilter, labelFilter);
+        super("FM_" + originEndpoint, replicaClient, keyFilter, labelFilter);
         featureConfigurationSettings = new ArrayList<>();
     }
 
