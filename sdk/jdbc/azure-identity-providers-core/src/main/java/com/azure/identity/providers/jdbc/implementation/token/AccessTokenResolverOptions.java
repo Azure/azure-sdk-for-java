@@ -35,13 +35,13 @@ public class AccessTokenResolverOptions {
     }
 
     private String getDefaultScopes(Properties properties) {
-        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
             return "https://ossrdbms-aad.database.windows.net/.default";
-        } else if (AzureAuthorityHosts.AZURE_CHINA.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_CHINA.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
             return "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
-        } else if (AzureAuthorityHosts.AZURE_GERMANY.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_GERMANY.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
             return "https://ossrdbms-aad.database.cloudapi.de/.default";
-        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.equals(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
             return "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
         }
         return "https://ossrdbms-aad.database.windows.net/.default";
