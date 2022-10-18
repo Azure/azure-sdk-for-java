@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -341,6 +343,22 @@ public class ReadmeSamples {
         SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
             configurationClient.deleteConfigurationSetting(referenceConfigurationSetting);
         // END: readme-sample-deleteSecretReferenceConfigurationSetting
+    }
+
+    public void enableHttpLogging() {
+        // BEGIN: readme-sample-enablehttplogging
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+                .credential(credential)
+                .endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // END: readme-sample-enablehttplogging
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {
