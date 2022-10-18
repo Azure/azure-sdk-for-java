@@ -187,6 +187,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "channelRead");
 
+        this.timestamps.channelReadCompleted();
+        this.timestamps.resetTransitTimeout(); // we have got a successful read, so reset the transitTimeout count.
+
         try {
             if (message.getClass() == RntbdResponse.class) {
 
@@ -230,7 +233,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelReadComplete(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelReadComplete");
-        this.timestamps.channelReadCompleted();
         context.fireChannelReadComplete();
     }
 
@@ -577,7 +579,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
+
             this.timestamps.channelWriteAttempted();
+            record.setTimestamps(this.timestamps);
+
             record.setSendingRequestHasStarted();
 
             context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
