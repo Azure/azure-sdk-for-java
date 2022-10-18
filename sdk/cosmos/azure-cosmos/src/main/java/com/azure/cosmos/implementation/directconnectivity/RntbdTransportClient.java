@@ -544,7 +544,7 @@ public class RntbdTransportClient extends TransportClient {
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.sslHandshakeTimeoutMinDuration = Duration.ofSeconds(5);
-            this.transientTimeoutDetectionThreshold = 5;
+            this.transientTimeoutDetectionThreshold = 3;
             this.preferTcpNative = true;
         }
 

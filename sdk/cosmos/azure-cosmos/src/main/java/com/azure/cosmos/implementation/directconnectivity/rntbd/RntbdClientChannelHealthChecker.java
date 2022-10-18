@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
@@ -335,7 +334,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
     // region Types
 
-    static final class Timestamps {
+    public static final class Timestamps {
 
         private static final AtomicLongFieldUpdater<Timestamps> lastPingUpdater =
             newUpdater(Timestamps.class, "lastPingNanoTime");
@@ -349,14 +348,14 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         private static final AtomicLongFieldUpdater<Timestamps> lastWriteAttemptUpdater =
             newUpdater(Timestamps.class, "lastWriteAttemptNanoTime");
 
-        private static final AtomicIntegerFieldUpdater<Timestamps> transitTimeoutCountUpdater =
-                AtomicIntegerFieldUpdater.newUpdater(Timestamps.class, "transitTimeoutCount");
+        private static final AtomicLongFieldUpdater<Timestamps> transitTimeoutCountUpdater =
+            newUpdater(Timestamps.class, "transitTimeoutCount");
 
         private volatile long lastPingNanoTime;
         private volatile long lastReadNanoTime;
         private volatile long lastWriteNanoTime;
         private volatile long lastWriteAttemptNanoTime;
-        private volatile int transitTimeoutCount;
+        private volatile long transitTimeoutCount;
 
         public Timestamps() {
         }
