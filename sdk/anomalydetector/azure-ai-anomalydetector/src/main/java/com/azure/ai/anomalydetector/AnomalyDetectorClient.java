@@ -684,13 +684,13 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of detection results for the given resultId.
+     * @return the {@link Response} of getting detection results for the given modelId.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBatchDetectAnomaly(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> batchDetectAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.beginBatchDetectAnomaly(modelId, body, requestOptions).getSyncPoller();
+        return this.client.batchDetectAnomalyWithResponse(modelId, body, requestOptions).block();
     }
 
     /**
