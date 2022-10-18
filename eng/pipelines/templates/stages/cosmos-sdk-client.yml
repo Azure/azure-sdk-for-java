@@ -103,7 +103,7 @@ stages:
               $targetDir = "D:\Hadoop"
               Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline2"
               Write-Host "Target: $targetDir"
-              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
+              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline2" -OutFile $downloadTarget
               if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
               Write-Host "Copying binaries to windows sytem32 folder"
