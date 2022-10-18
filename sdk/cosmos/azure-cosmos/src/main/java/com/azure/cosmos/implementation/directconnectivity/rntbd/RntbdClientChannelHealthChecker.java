@@ -280,7 +280,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         String readHangMessage = StringUtils.EMPTY;
 
         if (readDelay > this.readDelayLimitInNanos &&
-                (readHangDuration > readHangGracePeriodInNanos || timestamps.transitTimeoutCount() > this.transitTimeoutDetectionThreshold)) {
+                (readHangDuration > readHangGracePeriodInNanos || timestamps.transitTimeoutCount() >= this.transitTimeoutDetectionThreshold)) {
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();

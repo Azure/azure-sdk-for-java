@@ -135,7 +135,7 @@ public class RntbdClientChannelHealthCheckerTests {
         long lastChannelWriteNanoTime = System.nanoTime();
         long lastChannelWriteAttemptNanoTime = lastChannelWriteNanoTime;
         long lastChannelReadNanoTime = lastChannelWriteNanoTime - config.receiveHangDetectionTimeInNanos() - 10;
-        long transitTimeoutCount = config.transitTimeoutDetectionThreshold() + 1;
+        long transitTimeoutCount = config.transitTimeoutDetectionThreshold();
 
         Mockito.when(timestampsMock.lastChannelWriteAttemptNanoTime()).thenReturn(lastChannelWriteAttemptNanoTime);
         Mockito.when(timestampsMock.lastChannelWriteNanoTime()).thenReturn(lastChannelWriteNanoTime);
