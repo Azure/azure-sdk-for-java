@@ -142,10 +142,8 @@ public class MultivariateSample {
     }
 
     public static void Run(BinaryData trainBody, BinaryData beginInferBody) throws Exception {
-//        String endpoint = "<anomaly-detector-resource-endpoint>";
-//        String key = "<anomaly-detector-resource-key>";
-        String endpoint = "https://multi-ad-test-uscx.cognitiveservices.azure.com/";
-        String key = "7fbc448065f54affa3515f2affb979d5";
+        String endpoint = "<anomaly-detector-resource-endpoint>";
+        String key = "<anomaly-detector-resource-key>";
         // Get multivariate client
         AnomalyDetectorClient client = getClient(endpoint, key);
 
