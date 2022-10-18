@@ -30,6 +30,7 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -691,7 +692,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
+    @Disabled("Disable after https://github.com/Azure/azure-sdk-for-java/issues/31510 is fixed.")
+    //@DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient,
                                                                 KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.

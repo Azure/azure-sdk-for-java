@@ -6,23 +6,23 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Port Mirroring. */
 @Fluent
 public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkPortMirroringInner.class);
-
     /*
      * Port Mirroring Properties.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkPortMirroringProperties innerProperties;
+
+    /** Creates an instance of WorkloadNetworkPortMirroringInner class. */
+    public WorkloadNetworkPortMirroringInner() {
+    }
 
     /**
      * Get the innerProperties property: Port Mirroring Properties.

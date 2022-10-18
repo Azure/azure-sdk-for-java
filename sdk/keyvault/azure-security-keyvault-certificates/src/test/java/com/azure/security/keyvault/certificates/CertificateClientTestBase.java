@@ -104,6 +104,7 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .clientSecret(clientKey)
                 .clientId(clientId)
                 .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
                 .build();
         }
 

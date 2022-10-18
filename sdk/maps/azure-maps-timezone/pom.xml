@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-timezone</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-timezone;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-timezone;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Timezone Client Library</name>

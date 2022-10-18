@@ -7,10 +7,9 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.OffsetDateTime;
 
-/** The NamespaceProperties model. */
+/** The metadata related to a Service Bus namespace. */
 @JacksonXmlRootElement(
         localName = "NamespaceInfo",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
