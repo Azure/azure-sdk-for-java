@@ -60,7 +60,8 @@ class CosmosDataDiagnosticsConfigurationTests {
             .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
             .withPropertyValues(
                 "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
-                "spring.cloud.azure.cosmos.database=test-database")
+                "spring.cloud.azure.cosmos.database=test-database",
+                "spring.cloud.azure.cosmos.populate-query-metrics=false")
             .run(context -> assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class));
     }
 
