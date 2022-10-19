@@ -42,6 +42,9 @@ public final class FileItem {
     @JsonProperty(value = "PermissionKey")
     private String permissionKey;
 
+    /** Creates an instance of FileItem class. */
+    public FileItem() {}
+
     /**
      * Get the name property: The Name property.
      *

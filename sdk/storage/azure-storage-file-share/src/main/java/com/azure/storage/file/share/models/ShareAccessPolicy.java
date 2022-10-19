@@ -31,6 +31,9 @@ public final class ShareAccessPolicy {
     @JsonProperty(value = "Permission")
     private String permissions;
 
+    /** Creates an instance of ShareAccessPolicy class. */
+    public ShareAccessPolicy() {}
+
     /**
      * Get the startsOn property: The date-time the policy is active.
      *
