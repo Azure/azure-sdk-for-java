@@ -23,6 +23,9 @@ public final class Repositories {
     @JsonProperty(value = "link")
     private String link;
 
+    /** Creates an instance of Repositories class. */
+    public Repositories() {}
+
     /**
      * Get the repositories property: Repository names.
      *

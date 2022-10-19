@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsStartUploadHeaders model. */
@@ -27,6 +28,18 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsStartUploadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsStartUploadHeaders(HttpHeaders rawHeaders) {
+        this.dockerUploadUUID = rawHeaders.getValue("Docker-Upload-UUID");
+        this.range = rawHeaders.getValue("Range");
+        this.location = rawHeaders.getValue("Location");
+    }
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.

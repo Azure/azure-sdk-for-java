@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsCompleteUploadHeaders model. */
@@ -27,6 +28,18 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
      */
     @JsonProperty(value = "Docker-Content-Digest")
     private String dockerContentDigest;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsCompleteUploadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsCompleteUploadHeaders(HttpHeaders rawHeaders) {
+        this.range = rawHeaders.getValue("Range");
+        this.location = rawHeaders.getValue("Location");
+        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
+    }
 
     /**
      * Get the range property: The Range property.

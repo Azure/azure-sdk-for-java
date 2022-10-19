@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsDeleteBlobHeaders model. */
@@ -15,6 +16,16 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
      */
     @JsonProperty(value = "Docker-Content-Digest")
     private String dockerContentDigest;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsDeleteBlobHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsDeleteBlobHeaders(HttpHeaders rawHeaders) {
+        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
+    }
 
     /**
      * Get the dockerContentDigest property: The Docker-Content-Digest property.
