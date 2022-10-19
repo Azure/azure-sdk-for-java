@@ -3,10 +3,6 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
-import com.azure.ai.anomalydetector.models.TimeGranularity;
-import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -16,8 +12,17 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonObjectBuilder;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +44,7 @@ public class DetectChangePoints {
     public static void main(final String[] args) throws IOException {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
+
         HttpHeaders headers = new HttpHeaders()
             .put("Accept", ContentType.APPLICATION_JSON);
 
@@ -51,47 +57,24 @@ public class DetectChangePoints {
         // Instantiate a client that will be used to call the service.
         AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
+            .apiVersion("v1.1")
             .endpoint(endpoint)
             .buildClient();
 
-        // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
-        // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.
-        // The following is a snippet of the sample csv file:
-        //      2018-03-01T00:00:00Z,32858923
-        //      2018-03-02T00:00:00Z,29615278
-        //      2018-03-03T00:00:00Z,22839355
-        //      2018-03-04T00:00:00Z,25948736
-        Path path = Paths.get("./src/samples/java/sample_data/request-data.csv");
-        List<String> requestData = Files.readAllLines(path);
-        List<TimeSeriesPoint> series = requestData.stream()
-            .map(line -> line.trim())
-            .filter(line -> line.length() > 0)
-            .map(line -> line.split(",", 2))
-            .filter(splits -> splits.length == 2)
-            .map(splits -> {
-                TimeSeriesPoint timeSeriesPoint = new TimeSeriesPoint();
-                timeSeriesPoint.setTimestamp(OffsetDateTime.parse(splits[0]));
-                timeSeriesPoint.setValue(Float.parseFloat(splits[1]));
-                return timeSeriesPoint;
-            })
-            .collect(Collectors.toList());
+        InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\request-data.json");
+        JsonReader reader = Json.createReader(fileInputStream);
+        JsonObject jsonObject = reader.readObject();
 
-        System.out.println("Detecting change points...");
-        ChangePointDetectRequest request = new ChangePointDetectRequest();
-        request.setSeries(series);
-        // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
-        request.setGranularity(TimeGranularity.DAILY);
-        ChangePointDetectResponse response = anomalyDetectorClient.detectChangePoint(request);
-        if (response.getIsChangePoint().contains(true)) {
-            System.out.println("Change points found in the following data positions:");
-            for (int i = 0; i < request.getSeries().size(); ++i) {
-                if (response.getIsChangePoint().get(i)) {
-                    System.out.print(i + " ");
-                }
-            }
-            System.out.println();
-        } else {
-            System.out.println("No change points were found in the series.");
-        }
+        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder(jsonObject);
+        jsonObjectBuilder.add("granularity", "daily");
+        jsonObject = jsonObjectBuilder.build();
+
+        String detectBodyStr = jsonObject.toString();
+        System.out.println(detectBodyStr);
+        BinaryData detectBody = BinaryData.fromString(detectBodyStr);
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response = anomalyDetectorClient.detectChangePointWithResponse(detectBody, requestOptions);
+        System.out.println(response.getValue().toString());
+
     }
 }
