@@ -26,7 +26,7 @@ public final class ReadmeSamples {
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createDevCenterClient
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.createDevBoxClient
         DevBoxesClient devBoxClient =
                         new DevBoxesClientBuilder()
@@ -35,7 +35,7 @@ public final class ReadmeSamples {
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createDevBoxClient
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.getProjectsAndPools
         // Find available Projects and Pools
         PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
@@ -48,7 +48,7 @@ public final class ReadmeSamples {
             System.out.println(p);
         }
         // END: com.azure.developer.devcenter.readme.getProjectsAndPools
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.createAndConnectToDevBox
         // Provision a Dev Box
         BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
@@ -56,17 +56,17 @@ public final class ReadmeSamples {
                 devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
         devBoxCreateResponse.waitForCompletion();
 
-        
+
         Response<BinaryData> remoteConnectionResponse =
                         devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
         System.out.println(remoteConnectionResponse.getValue());
         // END: com.azure.developer.devcenter.readme.createAndConnectToDevBox
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.deleteDevBox
         // Tear down the Dev Box when we're finished:
-        SyncPoller<BinaryData, BinaryData> devBoxDeleteResponse =
+        SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                         devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-        devBoxDeleteResponse.waitForCompletion();        
+        devBoxDeleteResponse.waitForCompletion();
         // END: com.azure.developer.devcenter.readme.deleteDevBox
         // END: com.azure.developer.devcenter.readme.devboxes
 
@@ -79,7 +79,7 @@ public final class ReadmeSamples {
                                 .credential(new DefaultAzureCredentialBuilder().build())
                                 .buildClient();
         // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
         // Fetch available catalog items and environment types
         PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
@@ -92,7 +92,7 @@ public final class ReadmeSamples {
             System.out.println(p);
         }
         // END: com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironment
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
@@ -108,10 +108,10 @@ public final class ReadmeSamples {
             System.out.println(p);
         }
 
-        
+
         // BEGIN: com.azure.developer.devcenter.readme.deleteEnvironment
         // Delete the environment when we're finished:
-        SyncPoller<BinaryData, BinaryData> environmentDeleteResponse =
+        SyncPoller<BinaryData, Void> environmentDeleteResponse =
                         environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
         environmentDeleteResponse.waitForCompletion();
         // END: com.azure.developer.devcenter.readme.deleteEnvironment
