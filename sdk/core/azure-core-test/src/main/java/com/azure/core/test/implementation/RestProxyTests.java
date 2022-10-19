@@ -24,6 +24,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -370,10 +371,18 @@ public abstract class RestProxyTests {
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+
         assertEquals("A", headers.getValue("A"));
+        assertEquals("A", headers.getValue(HttpHeaderName.fromString("A")));
+
         assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+        assertArrayEquals(new String[]{"A"}, headers.getValues(HttpHeaderName.fromString("A")));
+
         assertEquals("15", headers.getValue("B"));
+        assertEquals("15", headers.getValue(HttpHeaderName.fromString("B")));
+
         assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues(HttpHeaderName.fromString("B")));
     }
 
     @Test
@@ -383,10 +392,18 @@ public abstract class RestProxyTests {
                 assertMatchWithHttpOrHttps("localhost/anything", json.url());
                 assertNotNull(json.headers());
                 final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+
                 assertEquals("A", headers.getValue("A"));
+                assertEquals("A", headers.getValue(HttpHeaderName.fromString("A")));
+
                 assertArrayEquals(new String[]{"A"}, headers.getValues("A"));
+                assertArrayEquals(new String[]{"A"}, headers.getValues(HttpHeaderName.fromString("A")));
+
                 assertEquals("15", headers.getValue("B"));
+                assertEquals("15", headers.getValue(HttpHeaderName.fromString("B")));
+
                 assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
+                assertArrayEquals(new String[]{"15"}, headers.getValues(HttpHeaderName.fromString("B")));
             })
             .verifyComplete();
     }
@@ -396,10 +413,18 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service7.class).getAnything(null, 15);
 
         final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+
         assertNull(headers.getValue("A"));
+        assertNull(headers.getValue(HttpHeaderName.fromString("A")));
+
         assertArrayEquals(null, headers.getValues("A"));
+        assertArrayEquals(null, headers.getValues(HttpHeaderName.fromString("A")));
+
         assertEquals("15", headers.getValue("B"));
+        assertEquals("15", headers.getValue(HttpHeaderName.fromString("B")));
+
         assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
+        assertArrayEquals(new String[]{"15"}, headers.getValues(HttpHeaderName.fromString("B")));
     }
 
     @Host("http://localhost")
@@ -964,8 +989,13 @@ public abstract class RestProxyTests {
                 assertMatchWithHttpOrHttps("localhost/anything", json.url());
                 assertNotNull(json.headers());
                 final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+
                 assertEquals("MyHeaderValue", headers.getValue("MyHeader"));
+                assertEquals("MyHeaderValue", headers.getValue(HttpHeaderName.fromString("MyHeader")));
+
                 assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues("MyHeader"));
+                assertArrayEquals(new String[]{"MyHeaderValue"},
+                    headers.getValues(HttpHeaderName.fromString("MyHeader")));
             }).verifyComplete();
     }
 
@@ -1749,7 +1779,7 @@ public abstract class RestProxyTests {
                 try {
                     assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
                 } catch (IOException e) {
-                    Exceptions.propagate(e);
+                    throw Exceptions.propagate(e);
                 }
             })
             .verifyComplete();
@@ -1884,9 +1914,14 @@ public abstract class RestProxyTests {
         final HttpBinJSON result = createService(Service24.class)
             .put(headerCollection);
         assertNotNull(result.headers());
+
         final HttpHeaders resultHeaders = new HttpHeaders().setAll(result.headers());
+
         assertEquals("GHIJ", resultHeaders.getValue("ABCDEF"));
+        assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
+
         assertEquals("45", resultHeaders.getValue("ABC123"));
+        assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
     }
 
     @Host("http://localhost")
