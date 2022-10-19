@@ -25,6 +25,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Partition ownership changes frequently](#partition-ownership-changes-frequently)
   - ["...current receiver '<RECEIVER_NAME>' with epoch '0' is getting disconnected"](#current-receiver-receiver_name-with-epoch-0-is-getting-disconnected)
   - [High CPU usage](#high-cpu-usage)
+  - [Out of memory and choosing the heap size](#out-of-memory-and-choosing-the-heap-size)
   - [Processor client stops receiving](#processor-client-stops-receiving)
   - [Migrate from legacy to new client library](#migrate-from-legacy-to-new-client-library)
 - [Get additional help](#get-additional-help)
@@ -198,6 +199,27 @@ However, if no instances are being added or removed, there is an underlying issu
 
 High CPU usage is usually because an instance owns too many partitions.  We recommend no more than three partitions for every 1 CPU core; better to start with 1.5 partitions for each CPU core and test increasing the number of partitions owned.
 
+### Out of memory and choosing the heap size
+
+The Out of memory (OOM) can happen if the current max heap for the JVM is insufficient to run the application. You may want to measure the application's heap requirement, then, based on the result, size the heap by setting the appropriate max heap memory (-Xmx JVM option).
+
+Note that you should not specify -Xmx as a value larger than the memory available or limit set for the host (VM, container), e.g., the memory requested in the container's configuration. You should allocate enough memory for the host to support the Java heap.
+
+A typical way to measure the value for max Java Heap is -
+
+Run the application in an environment close to production, where the application sends, receives, and processes events under the peak load expected in production.
+
+Wait for the application to reach a steady state. At this stage, the application and JVM would have loaded all domain objects, class types, static instances, object pools (TCP, DB connection pools), etc.
+
+Under the steady state you will see the stable sawtooth-shaped pattern for the heap collection -
+
+![healthy-heap-pattern][HealthyHeapPattern]
+
+Once the application reaches the steady state, force a full GC using tools like JConsole. Observe the memory occupied after the full GC. You want to size the heap such that only 30% is occupied after the full GC. You can use this value to set the max heap size (-Xmx).
+
+If you're on the container, then size the container to have an "additional ~1 GB" of memory for the "non-heap" need for the JVM instance.
+
+
 ### Processor client stops receiving
 
 The processor client often is continually running in a host application for days on end.  Sometimes, they notice that EventProcessorClient is not processing one or more partitions.  Usually, this is not enough information to determine why the exception occurred.  The EventProcessorClient stopping is the symptom of an underlying cause (i.e. race condition) that occurred while trying to recover from a transient error.  Please see [Filing Github issues](#filing-github-issues) for the information we require.
@@ -236,6 +258,7 @@ When filing GitHub issues, the following details are requested:
 [PublishEventsWithAzureIdentity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
 [PublishEventsWithWebSocketsAndProxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
 [SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
+[HealthyHeapPattern]: ./docs/images/healthyheappattern.png
 
 <!-- docs.microsoft.com links -->
 [AmqpErrorCondition]: https://docs.microsoft.com/java/api/com.azure.core.amqp.exception.amqperrorcondition
