@@ -201,6 +201,10 @@ public class SearchAliasTests extends SearchTestBase {
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
         assertDoesNotThrow(() -> indexClient.deleteIndex(aliasName));
+
+        // Alias changes take up to 10 seconds to propagate.
+        TestHelpers.sleepIfRunningAgainstService(10000);
+
         assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName));
     }
 
