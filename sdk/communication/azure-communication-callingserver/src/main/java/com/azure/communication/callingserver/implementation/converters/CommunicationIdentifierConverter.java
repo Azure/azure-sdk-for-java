@@ -47,6 +47,7 @@ public class CommunicationIdentifierConverter {
                 && identifier.getPhoneNumber() != null) {
                 String phoneNumber = identifier.getPhoneNumber().getValue();
                 Objects.requireNonNull(phoneNumber);
+                Objects.requireNonNull(rawId);
                 return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
             }
 
@@ -75,6 +76,7 @@ public class CommunicationIdentifierConverter {
         if (identifier.getPhoneNumber() != null) {
             String phoneNumber = identifier.getPhoneNumber().getValue();
             Objects.requireNonNull(phoneNumber);
+            Objects.requireNonNull(rawId);
             return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
         }
 
