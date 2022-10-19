@@ -502,7 +502,7 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteDevBox(
+    public PollerFlux<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteDevBoxAsync(projectName, userId, devBoxName, requestOptions);
     }

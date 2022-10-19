@@ -1742,7 +1742,7 @@ public final class DevBoxesImpl {
      * @return the {@link PollerFlux} for polling of a DevBox Dev Box.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteDevBoxAsync(
+    public PollerFlux<BinaryData, Void> beginDeleteDevBoxAsync(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
@@ -1755,7 +1755,7 @@ public final class DevBoxesImpl {
                                 ? requestOptions.getContext()
                                 : Context.NONE),
                 TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -1813,7 +1813,7 @@ public final class DevBoxesImpl {
      * @return the {@link SyncPoller} for polling of a DevBox Dev Box.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteDevBox(
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.beginDeleteDevBoxAsync(projectName, userId, devBoxName, requestOptions).getSyncPoller();
     }

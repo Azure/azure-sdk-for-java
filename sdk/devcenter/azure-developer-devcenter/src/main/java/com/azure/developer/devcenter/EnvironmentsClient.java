@@ -354,7 +354,7 @@ public final class EnvironmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteEnvironment(
+    public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return this.client.beginDeleteEnvironment(projectName, userId, environmentName, requestOptions).getSyncPoller();
     }

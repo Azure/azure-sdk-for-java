@@ -1528,7 +1528,7 @@ public final class EnvironmentsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteEnvironmentAsync(
+    public PollerFlux<BinaryData, Void> beginDeleteEnvironmentAsync(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
@@ -1541,7 +1541,7 @@ public final class EnvironmentsImpl {
                                 ? requestOptions.getContext()
                                 : Context.NONE),
                 TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -1559,7 +1559,7 @@ public final class EnvironmentsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteEnvironment(
+    public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return this.beginDeleteEnvironmentAsync(projectName, userId, environmentName, requestOptions).getSyncPoller();
     }

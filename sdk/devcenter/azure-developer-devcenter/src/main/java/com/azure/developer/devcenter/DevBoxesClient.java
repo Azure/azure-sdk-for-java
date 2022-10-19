@@ -500,7 +500,7 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteDevBox(
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
         return this.client.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
     }

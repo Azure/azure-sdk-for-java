@@ -353,7 +353,7 @@ public final class EnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteEnvironment(
+    public PollerFlux<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteEnvironmentAsync(projectName, userId, environmentName, requestOptions);
     }
