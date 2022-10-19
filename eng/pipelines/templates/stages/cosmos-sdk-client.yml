@@ -47,7 +47,6 @@ stages:
           - TestFromSource=^$|false
         MatrixReplace:
           - AZURE_TEST.*=.*/
-          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         BuildParallelization: 1
         TestOptions: '-Punit'
 
@@ -63,8 +62,6 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
-        MatrixReplace:
-          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         AdditionalParameters:
           BuildParallelization: 1
           DisableAzureResourceCreation: true

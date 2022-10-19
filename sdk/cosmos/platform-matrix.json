@@ -3,10 +3,9 @@
     "-Pe2e": "E2E",
     "-Pfast": "Fast",
     "-Pdirect": "Direct",
-    "-Pnon-emulator": "NonEmulator",
     "-Pmulti-master": "MultiMaster",
     "-Pmulti-region": "MultiRegion",
-    "-e -Plong": "Long",
+    "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -39,7 +38,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pnon-emulator", "-Pfast", "-Pdirect", "-e -Plong" ],
+      "ProfileFlag": [ "-Pfast", "-Pdirect", "-e -Plong" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -69,11 +68,12 @@
       "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
       "ACCOUNT_CONSISTENCY": "Strong",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pdirect", "-Pnon-emulator" ],
+      "ProfileFlag": [ "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      }
+      },
+      "JavaTestVersion": ["1.8", "1.11", "1.17"]
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
@@ -89,7 +89,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pnon-emulator" ],
+      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
