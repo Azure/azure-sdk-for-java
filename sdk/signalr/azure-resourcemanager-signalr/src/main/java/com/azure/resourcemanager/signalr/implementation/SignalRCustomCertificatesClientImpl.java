@@ -449,31 +449,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     private Mono<CustomCertificateInner> getAsync(
         String resourceGroupName, String resourceName, String certificateName) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName)
-            .flatMap(
-                (Response<CustomCertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a custom certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomCertificateInner get(String resourceGroupName, String resourceName, String certificateName) {
-        return getAsync(resourceGroupName, resourceName, certificateName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -493,6 +469,23 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     public Response<CustomCertificateInner> getWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName, context).block();
+    }
+
+    /**
+     * Get a custom certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param certificateName Custom certificate name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a custom certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomCertificateInner get(String resourceGroupName, String resourceName, String certificateName) {
+        return getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -940,23 +933,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String certificateName) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a custom certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String certificateName) {
-        deleteAsync(resourceGroupName, resourceName, certificateName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -979,9 +956,26 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     }
 
     /**
+     * Delete a custom certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param certificateName Custom certificate name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String certificateName) {
+        deleteWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1016,7 +1010,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

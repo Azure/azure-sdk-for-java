@@ -231,7 +231,7 @@ public final class SignalRManager {
                 .append("-")
                 .append("com.azure.resourcemanager.signalr")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -288,7 +288,11 @@ public final class SignalRManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -296,7 +300,11 @@ public final class SignalRManager {
         return operations;
     }
 
-    /** @return Resource collection API of SignalRs. */
+    /**
+     * Gets the resource collection API of SignalRs. It manages SignalRResource.
+     *
+     * @return Resource collection API of SignalRs.
+     */
     public SignalRs signalRs() {
         if (this.signalRs == null) {
             this.signalRs = new SignalRsImpl(clientObject.getSignalRs(), this);
@@ -304,7 +312,11 @@ public final class SignalRManager {
         return signalRs;
     }
 
-    /** @return Resource collection API of Usages. */
+    /**
+     * Gets the resource collection API of Usages.
+     *
+     * @return Resource collection API of Usages.
+     */
     public Usages usages() {
         if (this.usages == null) {
             this.usages = new UsagesImpl(clientObject.getUsages(), this);
@@ -312,7 +324,11 @@ public final class SignalRManager {
         return usages;
     }
 
-    /** @return Resource collection API of SignalRCustomCertificates. */
+    /**
+     * Gets the resource collection API of SignalRCustomCertificates. It manages CustomCertificate.
+     *
+     * @return Resource collection API of SignalRCustomCertificates.
+     */
     public SignalRCustomCertificates signalRCustomCertificates() {
         if (this.signalRCustomCertificates == null) {
             this.signalRCustomCertificates =
@@ -321,7 +337,11 @@ public final class SignalRManager {
         return signalRCustomCertificates;
     }
 
-    /** @return Resource collection API of SignalRCustomDomains. */
+    /**
+     * Gets the resource collection API of SignalRCustomDomains. It manages CustomDomain.
+     *
+     * @return Resource collection API of SignalRCustomDomains.
+     */
     public SignalRCustomDomains signalRCustomDomains() {
         if (this.signalRCustomDomains == null) {
             this.signalRCustomDomains = new SignalRCustomDomainsImpl(clientObject.getSignalRCustomDomains(), this);
@@ -329,7 +349,11 @@ public final class SignalRManager {
         return signalRCustomDomains;
     }
 
-    /** @return Resource collection API of SignalRPrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of SignalRPrivateEndpointConnections.
+     *
+     * @return Resource collection API of SignalRPrivateEndpointConnections.
+     */
     public SignalRPrivateEndpointConnections signalRPrivateEndpointConnections() {
         if (this.signalRPrivateEndpointConnections == null) {
             this.signalRPrivateEndpointConnections =
@@ -338,7 +362,11 @@ public final class SignalRManager {
         return signalRPrivateEndpointConnections;
     }
 
-    /** @return Resource collection API of SignalRPrivateLinkResources. */
+    /**
+     * Gets the resource collection API of SignalRPrivateLinkResources.
+     *
+     * @return Resource collection API of SignalRPrivateLinkResources.
+     */
     public SignalRPrivateLinkResources signalRPrivateLinkResources() {
         if (this.signalRPrivateLinkResources == null) {
             this.signalRPrivateLinkResources =
@@ -347,7 +375,11 @@ public final class SignalRManager {
         return signalRPrivateLinkResources;
     }
 
-    /** @return Resource collection API of SignalRSharedPrivateLinkResources. */
+    /**
+     * Gets the resource collection API of SignalRSharedPrivateLinkResources. It manages SharedPrivateLinkResource.
+     *
+     * @return Resource collection API of SignalRSharedPrivateLinkResources.
+     */
     public SignalRSharedPrivateLinkResources signalRSharedPrivateLinkResources() {
         if (this.signalRSharedPrivateLinkResources == null) {
             this.signalRSharedPrivateLinkResources =

@@ -366,29 +366,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     private Mono<NameAvailabilityInner> checkNameAvailabilityAsync(
         String location, NameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<NameAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks that the resource name is valid and is not already in use.
-     *
-     * @param location the region.
-     * @param parameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityInner checkNameAvailability(String location, NameAvailabilityParameters parameters) {
-        return checkNameAvailabilityAsync(location, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -406,6 +384,21 @@ public final class SignalRsClientImpl implements SignalRsClient {
     public Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityParameters parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Checks that the resource name is valid and is not already in use.
+     *
+     * @param location the region.
+     * @param parameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to check name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityInner checkNameAvailability(String location, NameAvailabilityParameters parameters) {
+        return checkNameAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -840,30 +833,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SignalRResourceInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<SignalRResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the resource and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignalRResourceInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -882,6 +852,22 @@ public final class SignalRsClientImpl implements SignalRsClient {
     public Response<SignalRResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get the resource and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignalRResourceInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -1782,30 +1768,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SignalRKeysInner> listKeysAsync(String resourceGroupName, String resourceName) {
         return listKeysWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<SignalRKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the access keys of the resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignalRKeysInner listKeys(String resourceGroupName, String resourceName) {
-        return listKeysAsync(resourceGroupName, resourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1824,6 +1787,22 @@ public final class SignalRsClientImpl implements SignalRsClient {
     public Response<SignalRKeysInner> listKeysWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get the access keys of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignalRKeysInner listKeys(String resourceGroupName, String resourceName) {
+        return listKeysWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -2451,30 +2430,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SkuListInner> listSkusAsync(String resourceGroupName, String resourceName) {
         return listSkusWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<SkuListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List all available skus of the resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list skus operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuListInner listSkus(String resourceGroupName, String resourceName) {
-        return listSkusAsync(resourceGroupName, resourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2495,9 +2451,26 @@ public final class SignalRsClientImpl implements SignalRsClient {
     }
 
     /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuListInner listSkus(String resourceGroupName, String resourceName) {
+        return listSkusWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2534,7 +2507,8 @@ public final class SignalRsClientImpl implements SignalRsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2572,7 +2546,8 @@ public final class SignalRsClientImpl implements SignalRsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2609,7 +2584,8 @@ public final class SignalRsClientImpl implements SignalRsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

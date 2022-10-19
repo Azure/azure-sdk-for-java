@@ -443,31 +443,7 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomDomainInner> getAsync(String resourceGroupName, String resourceName, String name) {
         return getWithResponseAsync(resourceGroupName, resourceName, name)
-            .flatMap(
-                (Response<CustomDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param name Custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner get(String resourceGroupName, String resourceName, String name) {
-        return getAsync(resourceGroupName, resourceName, name).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -487,6 +463,23 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     public Response<CustomDomainInner> getWithResponse(
         String resourceGroupName, String resourceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, name, context).block();
+    }
+
+    /**
+     * Get a custom domain.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param name Custom domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainInner get(String resourceGroupName, String resourceName, String name) {
+        return getWithResponse(resourceGroupName, resourceName, name, Context.NONE).getValue();
     }
 
     /**
@@ -1046,7 +1039,8 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1081,7 +1075,8 @@ public final class SignalRCustomDomainsClientImpl implements SignalRCustomDomain
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

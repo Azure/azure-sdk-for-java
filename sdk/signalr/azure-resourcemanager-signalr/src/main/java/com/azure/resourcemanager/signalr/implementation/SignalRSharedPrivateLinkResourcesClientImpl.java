@@ -462,32 +462,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     private Mono<SharedPrivateLinkResourceInner> getAsync(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
         return getWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName)
-            .flatMap(
-                (Response<SharedPrivateLinkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified shared private link resource.
-     *
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedPrivateLinkResourceInner get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        return getAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -507,6 +482,24 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     public Response<SharedPrivateLinkResourceInner> getWithResponse(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
         return getWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get the specified shared private link resource.
+     *
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified shared private link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SharedPrivateLinkResourceInner get(
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+        return getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -1134,7 +1127,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1170,7 +1164,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
