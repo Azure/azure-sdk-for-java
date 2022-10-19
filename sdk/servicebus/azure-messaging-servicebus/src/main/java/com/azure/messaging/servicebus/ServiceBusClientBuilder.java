@@ -731,7 +731,8 @@ public final class ServiceBusClientBuilder implements
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP."));
+                "Cannot use a proxy when TransportType is not AMQP Web Sockets. "
+                    + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
         if (proxyOptions == null) {
