@@ -14,8 +14,8 @@ import com.azure.communication.callautomation.models.RecordingFormat;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
@@ -74,7 +74,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(answerCallResult);
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // get properties
@@ -99,7 +99,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = client.getCallConnection(callConnectionId);
                 callConnection.hangUp(true);
-                CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+                CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
             }
         } catch (Exception ex) {
@@ -151,7 +151,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(answerCallResult);
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // get properties
@@ -182,7 +182,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = client.getCallConnection(callConnectionId);
                 callConnection.hangUp(true);
-                CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+                CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
             }
         } catch (Exception ex) {

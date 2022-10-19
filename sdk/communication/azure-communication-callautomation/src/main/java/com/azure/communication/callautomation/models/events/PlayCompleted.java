@@ -6,16 +6,16 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallTransferAcceptedEvent model. */
+/** The PlayCompleted model. */
 @Immutable
-public final class CallTransferAcceptedEvent extends CallAutomationEventBase {
+public final class PlayCompleted extends CallAutomationEventWithReasonCodeBase {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    private CallTransferAcceptedEvent() {
+    private PlayCompleted() {
         this.resultInformation = null;
     }
 
